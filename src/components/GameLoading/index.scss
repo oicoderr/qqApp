@@ -1,0 +1,43 @@
+.loading{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(30, 30, 30, .6);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    z-index: 99;
+
+    .loadingGifWrap{
+        width: 400rpx;
+        height: 260rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        .loadingGif{
+            width: 200rpx;
+            height: 200rpx;
+            margin: 0 auto;
+        }
+
+        .gif{
+            width: 100%;
+            height: 100%;
+            border-radius: 20rpx;
+        }
+
+        .text{
+            font-size: 30rpx;
+            font-weight: 600;
+            color: rgba(242,246,255,1);
+            text-shadow: 0rpx 0rpx 10rpx gba(46, 85, 168, 1);
+        }
+    }
+}

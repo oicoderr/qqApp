@@ -1,0 +1,38 @@
+.hide{
+    display: none;
+}
+
+.bgColor{
+    width: 100vw;
+    height: 100vh;
+    background-image: linear-gradient(rgba(137, 220, 255, 1), rgba(170, 170, 252, 1));
+    position: relative;
+    top: 0;
+    left: 0;
+    
+    .bgImg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/texture001.png');
+        background-size: 750px 3000px;
+        background-repeat: no-repeat;
+        opacity: 1;
+        filter:alpha(opacity=1);
+    }
+
+    .body{
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 20rpx;
+    }
+
+    
+}

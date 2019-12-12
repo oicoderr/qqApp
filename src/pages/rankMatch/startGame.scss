@@ -1,0 +1,331 @@
+.hide{
+    display: none;
+}
+.rankStartGame{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.bgColor{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(97, 130, 242, 1);
+    position: relative;
+    top: 0;
+    left: 0;
+    
+    .bgImg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/rank-texture-0001.png');
+        background-size: 750px 3000px;
+        background-repeat: no-repeat;
+        opacity: 1;
+        filter:alpha(opacity=1);
+    }
+
+    .body{
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding-top: 130rpx;
+
+        .head{
+            height: 500rpx;
+            display: flex;
+            justify-content: space-between;
+            overflow: hidden;
+
+            .headImg{
+                width: 80rpx;
+                height: 80rpx;
+                line-height: 80rpx;
+                border-radius: 50%;
+                display: inline-block;
+                margin-top: 20rpx;
+            }
+
+            .redSelf, .blueSelf{
+                width: 80rpx;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            
+             // 用户选择‘正确’头像显示遮罩
+            .falseOptionHeadMask{
+                width: 80rpx;
+                height: 80rpx;
+                border-radius: 50%;
+                background-color: rgba(255, 68, 68, .4);
+                position: absolute;
+                z-index: 12;
+                margin-top: 20rpx;
+            }
+            // 用户选择正‘错误’像显示遮罩
+            .trueOptionHeadMask{
+                width: 80rpx;
+                height: 80rpx;
+                border-radius: 50%;
+                background-color: rgba(0, 153, 68, .6);
+                position: absolute;
+                z-index: 12;
+                margin-top: 20rpx;
+            }
+            .personalScore{
+                position: absolute;
+                z-index: 14;
+                width: 80rpx;
+                height: 40rpx;
+                text-align: center;
+                background: rgba(255,68,68,1);
+                border: 2rpx solid   rgba(255,255,255,1);
+                border-radius: 20rpx;
+                font-size: 30rpx;
+                font-weight: 600;
+                color: rgba(255,255,255,1);
+                text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+            }
+
+            .blueTeamBgColor{
+                background-color: rgba(35, 71, 255, 1) !important;
+            }
+            
+            .redTeam{
+                width: 130rpx;
+                height: 500rpx;
+                border: 8rpx solid rgba(255,68,68,1);
+                background-color: rgba(30, 30, 30, .3);
+                border-radius: 20rpx;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                margin-left:-12rpx;
+                padding: 18rpx 25rpx 50rpx 20rpx; // top: 38
+
+                .myselfHead{
+                    width: 80rpx;
+                    height: 80rpx;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    box-sizing: border-box;
+                }
+            }
+
+            .blueTeam{
+                width: 130rpx;
+                height: 500rpx;
+                border: 8rpx solid rgba(35,71,255,1);
+                background-color: rgba(30, 30, 30, .3);
+                border-radius: 20rpx;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                margin-right:-12rpx;
+                padding: 18rpx 20rpx 50rpx 25rpx;
+            }
+
+            .question{
+                width: 100%;
+                height: 380rpx;
+                background:rgba(0,0,0,.5);
+                margin-top: 70rpx;
+                position: relative;
+
+                .countdownWrap{
+                    width: 406rpx;
+                    height: 130rpx;
+                    position: absolute;
+                    top: -65rpx;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    text-align: center;
+
+                    .countdown{
+                        font-size: 60rpx;
+                        color: rgba(48, 48, 48, 1);
+                        font-weight: 600;
+                        width: 80rpx;
+                        position: absolute;
+                        top: 20rpx;
+                        left: 165rpx;
+                        overflow: hidden;
+                        text-align: center;
+                    }
+
+                    .score{
+                        width: 145rpx;
+                        box-sizing: border-box;
+                        padding: 0 10rpx;
+                        text-align: center;
+                        font-size: 40rpx;
+                        font-weight: 600;
+                        color: rgba(255,255,255,1);
+                        text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+                        position: absolute;
+                        top: 40rpx;
+                        overflow: hidden;
+                    }
+
+                    .teamAScore{
+                        left: 0;
+                    }
+
+                    .teamBScore{
+                        right: 0;
+                    }
+
+                }
+
+                .countdown-score{
+                    width: 100%;
+                    height: 100%;
+                }
+
+                .Text{
+                    width: 100%;
+                    max-height: 280rpx;
+                    box-sizing: border-box;
+                    padding: 0 18rpx;
+                    position: absolute;
+                    top: 100rpx;
+                    overflow: hidden;
+                    font-size: 32rpx;
+                    color: rgba(255, 255, 255, 1);
+                    font-weight: 600;
+                }
+
+            }
+        }
+
+        .content{
+            width: 100%;
+            height: 540rpx;
+            box-sizing: border-box;
+            padding:0 147rpx 57rpx 147rpx;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .optionWarp{
+                width: 454rpx;
+                height: 105rpx;
+                background: rgba(202,202,202,1);
+                border: 2rpx solid rgba(30,30,30,1);
+                border-radius: 51rpx;
+
+                .option{
+                    width: 451rpx;
+                    height: 96rpx;
+                    background: rgba(255,255,255,1);
+                    border-radius: 48rpx;
+                    line-height: 96rpx;
+                    padding: 13rpx 17rpx;
+                    box-sizing: border-box;
+                    display: flex;
+                    justify-content: flex-start;
+
+                    .optionMark{
+                        width: 70rpx;
+                        height: 70rpx;
+                        line-height: 70rpx;
+                        background: rgba(255,255,255,1);
+                        border: 2rpx solid rgba(30,30,30,1);
+                        border-radius: 50%;
+                        text-align: center;
+                        font-size: 40rpx;
+                        font-weight:600;
+                        color:rgba(48,48,48,1);
+                    }
+
+                    .optionContent{
+                        width: 340rpx;
+                        height: 70rpx;
+                        text-align: center;
+                        line-height: 70rpx;
+                        padding: 0 12rpx;
+                        box-sizing: border-box;
+                        overflow: hidden;
+                        font-weight: 600;
+                    }
+
+                }
+            }
+            
+            // 选怎了正确/错误答案页面显示
+            .trueOption{
+                background-color: rgba(153, 233, 126, 1) !important;
+                color:rgba(255,255,255,1) !important;
+            }
+            .trueOptionBottom{
+                background-color: rgba(113, 170, 94, 1) !important;
+            }
+            .falseOption{
+                background-color: rgba(238, 134, 104, 1) !important;
+                color:rgba(255,255,255,1) !important;
+            }
+            .flaseOptionBottom{
+                background-color: rgba(212, 89, 53, 1) !important;
+            }
+            // 遮罩mask
+            .mask{
+                position:absolute;
+                width:470rpx;
+                height:500rpx;
+                background-color: rgba(0,0,0,.01);
+                z-index: 12;
+            }
+        }
+
+        .foot{
+            width: 100%;
+            height: 150rpx;
+            box-sizing: border-box;
+            padding: 25rpx 96rpx;
+            display: flex;
+            justify-content: space-between;
+            // background:rgba(30,30,30,.3);
+            position: absolute;
+            left: 0;
+            bottom: 0;
+
+            .cardBtn{
+                width: 214rpx;
+                height: 94rpx;
+                position: relative;
+
+                image{
+                    width: 100%;
+                    height: 100%;
+                }
+
+                .card-num{
+                    display: inline-block;
+                    width: 40rpx;
+                    text-align: left;
+                    font-size: 24rpx;
+                    font-weight: 600;
+                    color: rgba(254,254,254,1);
+                    text-shadow: 0rpx 0rpx 10rpx rgba(0, 110, 160, 1);
+                    position: absolute;
+                    top: 28rpx;
+                    left: 160rpx;
+                    overflow: hidden;
+                }
+            }
+
+        }
+
+    }
+}

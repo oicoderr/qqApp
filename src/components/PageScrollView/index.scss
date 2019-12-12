@@ -1,0 +1,58 @@
+.content{
+    width: 85.3333333vw;
+    height: 98.6666666vw;
+    box-sizing: border-box;
+    border-radius: 2.66666667vw;
+    background-color: #29BDFF;
+    margin: 0 auto;
+    border: 0.26666667vw solid rgba(30,30,30,1);
+}
+.title{
+    height: 13.0666666vw;
+    font-size: 5.33333333vw;
+    color: #FFFFFF;
+    font-weight: 500;
+    text-align: center;
+    line-height: 13.0666666vw;
+}
+.body{
+    font-size: 3.73333333vw;
+    color: #303030;
+}
+.scrollview {
+    width: 81.3333333vw;
+    height: 64vw;
+    box-sizing: border-box;
+    border-radius: 2.66666667vw;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 4vw 3.06666667vw;
+}
+
+.confirm{
+    text-align: center;
+    margin-top: 5.33333333vw;
+    border: 1px solid transparent;
+}
+.confirm .btnWrap{
+    width: 36vw;
+    height: 12vw;
+    background:rgba(255,255,255,1);
+    border: 0.26666667vw solid rgba(30,30,30,1);
+    border-radius: 2.66666667vw;
+    margin: 0 auto;
+    display: inline-block;
+}
+.confirm .btn{
+    width: 34.6666666vw;
+    height: 10.6666666vw;
+    line-height: 10.6666666vw;
+    background:rgba(41,189,255,1);
+    border-radius: 2.66666667vw;
+    display: inline-block;
+    text-align: center;
+    font-size: 4vw;
+    font-weight:400;
+    color: #fff;
+    margin: 0.86666667vw auto;
+}

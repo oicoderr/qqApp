@@ -1,0 +1,197 @@
+
+.hide{
+    display: none;
+}
+
+.rankResultInfo{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    z-index: 99;
+    background-color: rgba(97, 130, 242, 1);
+
+    .bgColor{
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,.6);
+        position: relative;
+        top: 0;
+        left: 0;
+        bottom: 0;
+    }
+
+    .bgImg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/rank-texture-0001.png');
+        background-size: 750px 3000px;
+        background-repeat: no-repeat;
+        opacity: .1;
+        filter:alpha(opacity=1);
+    }
+
+    .content{
+        width: 100%;
+        height: 100%;
+        position:relative;
+        z-index: 101;
+        padding: 215rpx 57rpx 200rpx 57rpx;
+        box-sizing: border-box;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .titleWrap{
+            width: 636rpx;
+            height: 97rpx;
+            position: relative;
+            z-index: 104;
+
+            .titleImg{
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .body{
+            width: 100%;
+            height: 100%;
+            position: relative;
+            top: -22rpx;
+            z-index: 103;
+
+            .rankResultBgImg{
+                width: 585rpx;
+                height: 605rpx;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .stars{
+                position: absolute;
+                transform: translateX(-50%);
+                width:110%;
+                height:160rpx;
+                top:52%; // 50%
+                left:50%;
+            }
+
+            .glory{
+                width: 390rpx;
+                height: 330rpx;
+                position: absolute;
+                top: 50rpx;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .moreStarWrap{
+                width: 130rpx;
+                position:absolute;
+                top: 50%;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .blankStar, .shineStar, .moreShineStar{
+                width: 53rpx;
+                height: 58rpx;
+            }
+
+            .moreNum{
+                font-size: 30rpx;
+                font-weight: 600;
+                color: rgba(255,255,255,1);
+                text-shadow: 0rpx 0rpx 10rpx gba(46, 85, 168, 1);
+                height: 58rpx;
+                line-height: 58rpx;
+            }
+
+            .starPosi{
+                position: absolute;
+                width: 53rpx;
+                height: 58rpx;
+            }
+
+            /* 星星位置 */
+            .fisrtPosi{
+                top: 0;
+                left: 90rpx;
+            }
+
+            .secondePosi{
+                top: 52rpx;
+                left: 139rpx;
+            }
+
+            .thirdPosi{
+                top: 100rpx;
+                left: 220rpx;
+            }
+
+            .fouthPosi{
+                top: 102rpx;
+                left: 289rpx;
+            }
+
+            .fifthPosi{
+                top: 104rpx;
+                left: 359rpx;
+            }
+
+            .sixthPosi{
+                top: 87rpx;
+                left: 430rpx;
+            }
+
+            .seventhPosi{
+                top: 52rpx;
+                left: 504rpx;
+            }
+
+            .eighthPosi{
+                top: 0rpx;
+                left: 554rpx;
+            }
+        }
+
+        .foot{
+            width: 100%;
+            text-align: center;
+            position: relative;
+            bottom: 28rpx;
+
+            .submitBtn{
+                width: 214rpx;
+                height: 94rpx;
+                text-align: center;
+            }
+            
+            .seeAdsStatus{
+                width: 100%;
+                padding-top: 24rpx;
+                text-align: center;
+                color: rgba(254, 254, 254, 1);
+                font-size: 24rpx;
+
+                .checkbox{
+                    color: pink;
+                }
+            }
+
+        }
+    }
+}

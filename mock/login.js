@@ -1,0 +1,1 @@
+const Mock = require('mockjs');
