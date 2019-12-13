@@ -19,7 +19,13 @@ class App extends Component {
 
 	config: Config = {
 		pages: [
-			'pages/prizeMatch/queue',	  // 大奖赛匹配
+
+			'pages/prizeMatch/entrance',	  // 大奖赛入口
+			'pages/prizeMatch/enterGame',	  // 大奖赛匹配
+			
+			'pages/prizeMatch/queue',	  	  // 大奖赛匹配
+			
+
 			'pages/login/index',			  // app 登录
 			'pages/index/index',			  // 游戏登录
 			'pages/rankMatch/entrance', 	  // 排位赛入口
@@ -31,8 +37,7 @@ class App extends Component {
 			'pages/payTakeMoney/takeMoney',	  // 提现
 			'pages/payTakeMoney/recharge', 	  // 充值
 
-			// 大奖赛
-			'pages/prizeMatch/entrance',	  // 大奖赛入口
+			
 			
 
 			'pages/startWriteQuestion/index',

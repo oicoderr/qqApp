@@ -29,12 +29,13 @@ export class MatchRanking extends Component {
 		this.state = {
 			// 路由
 			routers:{
-				enterGame: '/pages/'
+				enterGame: '/pages/prizeMatch/enterGame'
+
 			},
 
 			// 后台返回数据
 			data:{
-			
+				curTeamInfo: {currCount:1, maxCount:50}
 			},
 
 			// 前台数据
@@ -166,7 +167,27 @@ export class MatchRanking extends Component {
 
 	componentWillMount () {
 		let _this = this;
-		
+
+		// 1334 当前队伍情况
+		this.eventEmitter = emitter.addListener('getTeamSituation', (message) => {
+			clearInterval(message[1]);
+			console.info('接受当前队伍情况 ====>');console.info(message[0]);
+			let curTeamInfo = message[0]['data'];
+			this.setState((preState)=>{
+				preState.data.curTeamInfo = curTeamInfo;
+			})
+		});
+
+		// 1304 服务器通知客户端角色进入比赛房间
+		this.eventEmitter = emitter.once('getBattleTeams', (message) => {
+			clearInterval(message[1]);
+			console.info('接受当前所有参赛玩家信息 ====>');console.info(message[0]);
+			let enterGame = this.state.routers.enterGame;
+			Taro.redirectTo({
+				url: enterGame
+			})
+		});
+
 	}
 
 	componentDidMount () {}
@@ -205,7 +226,6 @@ export class MatchRanking extends Component {
 			// console.info(this.state.local_data.selectedHead);
 			// console.info(this.state.local_data.selectedPosi);
 		})
-
 
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
@@ -291,8 +311,26 @@ export class MatchRanking extends Component {
 		App.globalData.webSocket = this.websocket;
 	}
 	
+	// 退出排队
+	exitQueue(e){
+		let exitQueue = this.msgProto.exitQueue();
+		let parentModule = this.msgProto.parentModule(exitQueue);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(){
+				
+			},
+			fail(err){
+
+			}
+		})
+	}
+
+
 	render () {
 		const { isShowLoading, quitBtn, selectedHead, selectedPosi } = this.state.local_data;
+		const { curTeamInfo } = this.state.data;
+
 		const headImg = selectedPosi.map((cur,index)=>{
 			return  <View className='headImg headSize' style={`background-position: ${selectedHead[index].x}rpx ${selectedHead[index].y}rpx; top: ${cur.y}rpx;left: ${cur.x}rpx`}></View>
 		});
@@ -309,7 +347,7 @@ export class MatchRanking extends Component {
 					<View className='mask_black'></View>
 					<View className='body'>
 						<View className='status'>
-							<Image src={quitBtn} className='quitBtn' />
+							<Image onClick={this.exitQueue.bind(this)} src={quitBtn} className='quitBtn' />
 							<View className='text'>{'匹配中...'}</View>
 						</View>
 						<View className='content'>
@@ -324,7 +362,7 @@ export class MatchRanking extends Component {
 									</View>
 								</View>
 							</View>	
-							<View className='queuePeopleNum'>当前人数: {'44'}/{'50'}</View>
+							<View className='queuePeopleNum'>当前人数: {curTeamInfo['currCount']}/{curTeamInfo['maxCount']}</View>
 							{/* 头像 */}
 							{headImg}
 						</View>

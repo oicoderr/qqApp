@@ -61,7 +61,7 @@ export default class MsgProto{
     }
 
     // 1307 排位赛发送答题内容
-    submitRankAnswer(params){
+    submitAnswer(params){
         const { questId, optionId } = params;
         return {
             'code': 1307,
@@ -149,9 +149,16 @@ export default class MsgProto{
      /* -------------------------- 提现 End-------------------------- */
 
 
+    /*  大奖赛 */
 
-
-
+    // 1331 退出排队
+    exitQueue(){
+        return {
+            'code': 1331,
+            'data':{}
+        }
+    }
+    
 
 
 

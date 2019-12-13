@@ -48,7 +48,8 @@ export class RankEntrance extends Component {
 				},
 				ruleTitle: '赛事规则',
 				directionsTitle: '说明',
-				infoText: '当前可领取:',
+				pendingText: '待领取：',
+				surplusText:'剩余：',
 				adsTip: '每局比赛自动使用一张加速卡',
 				quickenTip: 'Tips: 邀请好友获取加速卡，减少每局答题总耗时。',
 				checked: true,     // 默认勾选观看广告
@@ -96,7 +97,7 @@ export class RankEntrance extends Component {
 			let parentModule = this.msgProto.parentModule(adsRewards);
 
 			if(status.isEnded){
-				console.info('%c 正常播放结束，下发奖励','font-size:14px;color:#0fdb24;');
+				console.info('%c 正常播放结束，进入大奖赛','font-size:14px;color:#0fdb24;');
 				this.webSocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
@@ -105,13 +106,7 @@ export class RankEntrance extends Component {
 					fail(err) { console.log(err) }
 				});
 			}else{
-				console.log('%c 未看完视频，没有奖励啦','font-size:14px;color:#db2a0f;');
-				Taro.showToast({
-					title: '未获得奖励',
-					icon: 'none',
-					mask: true,
-					duration: 2000
-				});
+				console.log('%c 未看完视频，不能进入大进入大奖赛呦','font-size:14px;color:#db2a0f;');
 			}
 		});
 
@@ -281,7 +276,7 @@ export class RankEntrance extends Component {
 	render () {
 
 		const { backBtn, entranceBg, ruleTitle, freeBtn, ticketsBtn, tipImg, adsTip, checked, 
-			StayTunedImg, quickenCardBg, directionsTitle, infoText, quickenTip, progress_item_blank,
+			StayTunedImg, quickenCardBg, directionsTitle, pendingText, surplusText, quickenTip, progress_item_blank,
 			progress_item, inviteBtn, receiveBtn
 		} = this.state.local_data;
 		
@@ -342,7 +337,10 @@ export class RankEntrance extends Component {
 						<View className='quickenCard'>
 							<Image src={quickenCardBg} className='quickenCardBg'/>
 							<View className='title'>
-								<View className='num'>{infoText}<Text decode={true}>&ensp;{'999'}&ensp;</Text>张</View>
+								<View className='num'>
+									{pendingText}<Text decode={true}>{'999'}&ensp;</Text>张 
+									{surplusText}<Text decode={true}>{'999'}&ensp;</Text>张 
+								</View>
 								<View className='directions'>{directionsTitle}</View>
 							</View>
 

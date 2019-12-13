@@ -307,7 +307,7 @@ export class Index extends Component {
 			}
 		});
 		// 1304 - 2.在游戏中杀死的
-		this.eventEmitter = emitter.once('getRankBattleTeams', (message) => {
+		this.eventEmitter = emitter.once('getBattleTeams', (message) => {
 			clearInterval(message[1]);
 
 			let url_ = buildURL(_this.state.routers.matchRankingPage,{item: message[0]['data']});

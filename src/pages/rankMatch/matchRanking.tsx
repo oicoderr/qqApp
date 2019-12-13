@@ -181,7 +181,7 @@ export class MatchRanking extends Component {
 
 		// 匹配成功！获取对战队伍信息
 		if(!this.state.local_data.isIntheGame){
-			this.eventEmitter = emitter.addListener('getRankBattleTeams', (message) => {
+			this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
 				clearInterval(message[1]);
 				console.info('所有队伍');
 				console.log(message[0]['data']);

@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
 import { getStorage, setStorage, getCurrentTime } from '../../utils'
-import './startGame.scss'
+import './enterGame.scss'
 import emitter from '../../service/events'
 import { websocketUrl } from '../../service/config'
 import MsgProto from '../../service/msgProto'
@@ -14,7 +14,7 @@ const App = Taro.getApp()
 export class StartGame extends Component {
 
 	config: Config = {
-		navigationBarTitleText: '排位赛～开始比赛～',
+		navigationBarTitleText: '大奖赛游戏开始',
 		navigationBarBackgroundColor: 'rgba(97, 130, 242, 1)',
 		navigationBarTextStyle: 'white',
 	}
@@ -29,58 +29,22 @@ export class StartGame extends Component {
 			// 后台返回数据
 			data:{
 				timer:'', 				// 计时器
-				curQuestion:{
-					currContent:'',
-					currIndex: null,
-					currQuestId: null,
-					option1:'',
-					option2: '',
-					option3: '',
-					option4: '',
-					time: 10,
-					totalCount: 5 
-				},
-				isSuccess: -1,
-
-				curAnswer: {			// 当前题正确答案
-					questId: '',
-					optionId: '',      	// 正确选项id
-					isSuccess: '',
-				},	
-
-				prevQAInfo:{			// 所有人的得分情况
-					blueScore: 0, 
-					lastQuestId: '',
-					optionId:'',
-					redScore: 0,
-					selfCamp:'',
-					list:[],
-				},
-				rankResultInfo:{},		// 结果页数据
+				time: '10',				// 倒计时
+				curQuestion: {},		// 当前题
 			},
 
 			// 前台数据
 			local_data:{
-				rankUserInfo:{},
-				PartyATeam: [], 		// 排位赛红队伍
-				PartyBTeam: [], 		// 排位赛蓝队伍
-				scoreTeamA:[],			// 积分(roleId)队伍A
-				scoreTeamB:[],			// 积分(roleId)队伍B
-				selfScore:{},			// 自己得分情况
-				curQuestion:{			// 重新编辑后台返回的问题数据
-					currContent:'',
-					currIndex: 0,
-					time: 10,
-				},			
+				dieOutText: '已淘汰：',
+				surplusText: '剩余人数：',
+				countdownPrizeMatch: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/countdownPrizeMatch.png',
 				defultClass: '',	   	// 选项上层默认样式class 
-				defultBottomClass: '', 	// 选项下层默认样式class 
-				selectedOptionIndex: 0, // 当前题的index
-				selectedOptionId:'',	// 用户所选optionId
+				defultBottomClass: '', 	// 选项下层默认样式class
 				isShowMask: false,		// 默认不显示遮罩
-				isShowLoading: true,	// 默认显示加载动画
-				delayCardBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/delayCardBtn.png',
-				helpCardBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/helpCardBtn.png',
-				countdown: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/rank-countdown.png',
+				isShowLoading: false,	// 默认显示加载动画
+				curQuestion: {},		// 当前题
+				selectedOptionIndex: '',// 当前题index
+				selectedOptionId: '',	// 所选题optionId
 			}
 		}
 		this.webSocket = App.globalData.webSocket;
@@ -89,16 +53,21 @@ export class StartGame extends Component {
 
 	componentWillMount () {}
 
-	componentDidMount () {
-		// 获取'自己' 及 `队伍信息`
-		this.getRankUserInfo(()=>{});
-		this.getPartyTeamInfo();
-	}
+	componentDidMount () {}
 
 	componentWillUnmount () {}
 
 	componentDidShow () {
 		let _this = this;
+		// 关闭加载动画
+		let timerOut = setTimeout(()=>{
+			_this.setState((preState)=>{
+				preState.local_data.isShowLoading = false;
+			},()=>{
+				clearTimeout(timerOut);
+			})
+		},500)
+
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
 			this.webSocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求
@@ -113,6 +82,7 @@ export class StartGame extends Component {
 				}
 			})
 		}
+
 		// 隐藏答题遮罩
 		this.setState((preState)=>{
 			preState.local_data.isShowMask = false;
@@ -120,128 +90,40 @@ export class StartGame extends Component {
 			// console.info('%c' + this.state.local_data.isShowMask,'font-size:20px; color:pink;');
 		});
 
-		// 关闭加载动画
-		let timerOut = setTimeout(()=>{
-			_this.setState((preState)=>{
-				preState.local_data.isShowLoading = false;
-			},()=>{
-				clearTimeout(timerOut);
-			})
-		},500)
-
-		// 接受排位赛发题
+		// 1306 服务器广播当前题
 		this.eventEmitter = emitter.addListener('getQuestion', (message) => {
 			clearInterval(message[1]);
-			// console.log('%c 接受到的题目及选项', 'color:#000; font-size:14px;');
-			// console.log(message['data']);
-			console.info('%c <========== 1306发题了 ==========>' + getCurrentTime(), 'font-size:14px;color:#f04e00;');
+			console.info('%c 306发题了: ' + getCurrentTime(), 'font-size:14px;color:#1a4dff;');console.info(message[0]['data']);
 			let time = message[0]['data']['time'];
-
 			clearInterval(this.state.data.timer);
 			// 开始倒计时
 			this.getCountdown(time); 
 
-			this.setState((preState)=>{
-				preState.data.curQuestion = message[0]['data'];
-				preState.local_data.curQuestion = this.resetQA(message[0]['data']);
-			},()=>{
-				// console.log('%c 处理数据时间 =======> '+  new Date().getSeconds() +'修改返回数据 =====>', 'color:pink;font-size:14px;');
-				// console.log(this.state.local_data.curQuestion);
-			});
+			this.setState((presState)=>{
+				presState.data.curQuestion = message[0]['data'];
+				presState.local_data.curQuestion = this.resetQA(message[0]['data']);
+			})
 		});
 
-		// 接受正确答案信息
+		// 1308 接受正确答案信息
 		this.eventEmitter = emitter.addListener('getAnswer', (message) => {
+			clearInterval(message[1]);
 			let _this = this;
-			// console.log('%c 已接受到答案', 'color:blue; font-size:12px;');
+			console.info('%c 已接受到答案', 'color:blue; font-size:12px;');console.info(message[0]['data']);
 			let selectedOptionId = this.state.local_data.selectedOptionId;
 			this.setState((preState)=>{
-				preState.data.curAnswer = message['data'];
+				preState.data.curAnswer = message[0]['data'];
 			},()=>{
-				if( selectedOptionId == this.state.data.curAnswer.optionId){
-					this.setState((preState)=>{
-						preState.local_data.defultClass = 'trueOption';
-						preState.local_data.defultBottomClass = 'trueOptionBottom';
-					},()=>{
-						// console.info('%c 选则正确', 'color:#228B22;font-size:14px;background-color:#3c3c3c;');
 
-						// 消失选中样式
-						let timer = setTimeout(()=>{
-							_this.setState((preState)=>{
-								preState.local_data.defultClass = '';
-								preState.local_data.defultBottomClass = '';
-							},()=>{
-								clearTimeout(timer);
-							})
-						},1000);
-
-					})
-				}else{
-					this.setState((preState)=>{
-						preState.local_data.defultClass = 'falseOption';
-						preState.local_data.defultBottomClass = 'flaseOptionBottom';
-					},()=>{
-						// console.info('%c 选则错误', 'color:#EE6363;font-size:14px;background-color:#3c3c3c;');
-						// 消失选中样式
-						let timer = setTimeout(()=>{
-							_this.setState((preState)=>{
-								preState.local_data.defultClass = '';
-								preState.local_data.defultBottomClass = '';
-							},()=>{
-								clearTimeout(timer);
-							})
-						},1000);
-					})
-				}
 			})
 		});
 
-		// 接受上一题基本信息 
+		// 1312 服务器广播上道题的统计
 		this.eventEmitter = emitter.addListener('getPrevQAInfo', (message) => {
-			console.log('%c 上一题基本信息','font-size:14px;color:#A020F0;');
-			console.info(message['data']);
-			this.setState((preState)=>{
-				preState.data.prevQAInfo = JSON.parse(JSON.stringify(message['data']));
-			},()=>{
-				let list = this.state.data.prevQAInfo.list;			// 上一题得分情况
-				let scoreTeamA = this.state.local_data.scoreTeamA;	// A队积分信息
-				let scoreTeamB = this.state.local_data.scoreTeamB;	// B对积分信息
-				let selfScore = this.state.local_data.selfScore;	// 自己的积分信息
-				
-				// 找到我的积分信息
-				list.map(function (cur) {
-					if( selfScore['roleId'] == cur['roleId']){
-						_this.state.local_data.selfScore['score'] = cur['currScore'];
-					}
-				});
-
-				// 找到A队伍积分信息
-				list.map(function (cur, index) {
-					if( scoreTeamA.length >0 && index < scoreTeamA.length && scoreTeamA[index]['roleId'] == cur['roleId']){
-						_this.state.local_data.scoreTeamA[index]['score'] = cur['currScore'];
-					}
-				});
-
-				// 找到B队伍积分信息
-				list.map(function (cur, index) {
-					if( scoreTeamB.length > 0 && index < scoreTeamB.length && scoreTeamB[index]['roleId'] == cur['roleId']){
-						console.log(_this.state.local_data.scoreTeamB, 7777)
-						_this.state.local_data.scoreTeamB[index]['score'] = cur['currScore'];
-					}
-				});
+			clearInterval(message[1]);
+			console.info('服务器广播上一题统计 ====>');console.info(message[0]);
 			
-				this.setState((preState)=>{
-					preState.local_data.selfScore = selfScore;
-					preState.local_data.scoreTeamA = scoreTeamA;
-					preState.local_data.scoreTeamB = scoreTeamB;
-				},()=>{
-					console.info('%c <==== 自己 - 各队伍 ====>', 'font-size:14px;color:#f08a00;');
-					console.log(this.state.local_data.selfScore);
-					console.log(this.state.local_data.scoreTeamA);
-					console.log(this.state.local_data.scoreTeamB);
-				})
-			})
-		})
+		});
 
 		// 接受排位赛结果信息 => `跳转`结果页
 		this.eventEmitter = emitter.once('getRankResultInfo', (message) => {
@@ -266,8 +148,8 @@ export class StartGame extends Component {
 	}
 	
 	// 接受到的问题答案数据放入数组, 同时设置答案optionId
-	resetQA(message){
-		let data = JSON.parse(JSON.stringify(message['data']));
+	resetQA(data_){
+		let data = JSON.parse(JSON.stringify(data_));
 		data['options'] = [];
 		data['options'].push({key:'A', value: data['option1'], optionId: 1},{key: 'B', value: data['option2'], optionId: 2}, {key:'C', value: data['option3'], optionId: 3}, {key:'D', value: data['option4'], optionId: 4})
 		delete data['option1'];
@@ -358,7 +240,6 @@ export class StartGame extends Component {
 	// 开始倒计时
 	getCountdown(time){
 		let _this = this;
-		clearInterval(this.state.data.timer);
 
 		// 关闭遮罩，可选择答案
 		this.setState((preState)=>{
@@ -385,13 +266,14 @@ export class StartGame extends Component {
 		},()=>{})
 	}
 	
-	// 发送用户所选optionId
+	// 发送用户所选optionId，更改选中样式
 	submitAnswer(e){
 		let _this = this;
 		let optionId = e.currentTarget.dataset.optionid; 	  		 // 用户所选optionId
-		let currquestid = e.currentTarget.dataset.currquestid;
+		let currquestid = e.currentTarget.dataset.currquestid;		 // 当前题id
 		let curOptionIndex = e.currentTarget.dataset.curoptionindex; // 用户所选当前题的index
-		// console.info('%c 用户所选当前题的index ==>' + curOptionIndex,'color:#FFC125;font-size:14px;');
+
+		console.info('%c 用户所选当前题的index ==>' + curOptionIndex,'color:#FFC125;font-size:14px;');
 		let data = {
 			questId: currquestid,
 			optionId: optionId
@@ -405,7 +287,7 @@ export class StartGame extends Component {
 			preState.local_data.selectedOptionId = optionId;
 		},()=>{});
 
-		// console.info('%c 发送questId为：'+ currquestid +'， 答案optionId为： ' + optionId, 'font-size:14px;color:#FF4500;');
+		console.info('%c 发送questId为：'+ currquestid +'， 答案optionId为： ' + optionId, 'font-size:14px;color:#FF4500;');
 		this.webSocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {
@@ -470,96 +352,59 @@ export class StartGame extends Component {
 		// 对外抛出websocket
 		App.globalData.webSocket = this.websocket;
 	}
-	
+
 	render () {
-		const { defultClass, defultBottomClass, isShowMask, isShowLoading, selectedOptionIndex, countdown, scoreTeamA, 
-			scoreTeamB, selfScore, delayCardBtn, helpCardBtn, rankUserInfo, PartyATeam, PartyBTeam } = this.state.local_data;
+		const { 
+			countdownPrizeMatch, surplusText, dieOutText, isShowMask, 
+			defultClass, defultBottomClass, isShowLoading, selectedOptionIndex, 
+		} = this.state.local_data;
+		// 当前题
 		const { currContent, currIndex, currQuestId, time, totalCount, options } = this.state.local_data.curQuestion;
-		const {blueScore, redScore, selfCamp} = this.state.data.prevQAInfo;
-
-		const redContent = PartyATeam.map((currentValue,index) => {
-			return  <View className='redSelf' data-roleId={currentValue.roleId}>
-						<Image src={currentValue.headUrl} className='headImg' />
-						<View className='personalScore'>
-							{currentValue.roleId == scoreTeamA[index]['roleId']? scoreTeamA[index]['score'] : ''}
-						</View>
-					</View>
-		});
-
-		const blueContent = PartyBTeam.map((currentValue,index) => {
-			return  <View className='blueSelf' data-roleId={currentValue.roleId}>
-						<Image src={currentValue.headUrl} className='headImg' />
-						<View className='personalScore blueTeamBgColor'>
-							{currentValue.roleId == scoreTeamB[index]['roleId']? scoreTeamB[index]['score'] : ''}
-						</View>
-						<View className='hide falseOptionHeadMask'></View>
-					</View>
-		});
 
 		const Answer  = options.map((currentValue,index) => { // selectedOptionIndex 所选题的index
-			return  <View className={`optionWarp ${ selectedOptionIndex == index? defultBottomClass:'' }`}>
-						<View 
-							onClick={this.submitAnswer.bind(this)} 
-							className={`option ${ selectedOptionIndex == index? defultClass:'' }`}
-							data-curOptionIndex={index} // 当前题的index
-							data-currQuestId={currQuestId} 
+			return  <View className={`optionBox`}>
+						<View onClick={this.submitAnswer.bind(this)} 
+							className={`optionWarp ${selectedOptionIndex == index?'selectedOption':''}`}
+							data-curOptionIndex={index} 	  // 当前题的index
+							data-currQuestId={currQuestId}
 							data-quesIndex={currIndex} 
 							data-optionId={currentValue.optionId}
 						>
-							<View className='optionMark'>{currentValue.key}</View>
-							<View className='optionContent'>{currentValue.value}</View>
+							<View className={`option`}>
+								<View className='optionMark'>{currentValue.key}</View>
+								<View className='optionContent'>{currentValue.value}</View>
+							</View>
 						</View>
+						<View className='optionPeople'>{'10'}人</View>
 					</View>
+					
 		});
 
 		return (
-			<View className='rankStartGame'>
+			<View className='prizeMatch'>
+				{/* 加载loading */}
 				<View className={isShowLoading?'':'hide'}>
-					<GameLoading />
+					{/* <GameLoading /> */}
 				</View>
-				
+				{/* 内容区 */}
 				<View className='bgColor'>
 					<View className='bgImg'></View>
 					<View className='body'>
 						<View className='head'>
-							<View className='redTeam'>
-								<View className='redSelf' data-roleId={rankUserInfo.roleId}>
-									<View className='myselfHead headImg'>
-										<openData type="userAvatarUrl"></openData>
-									</View>
-									<View className='personalScore'>{selfScore.score}</View>
-								</View>
-								{ redContent }
+							<View className='countdownWrap'>
+								<Image src={countdownPrizeMatch} className='countdown' />
+								<View className='people surplus'>{surplusText}{'10'}人</View>
+								<View className='countdown_time'>{time}</View>
+								<View className='people dieOut'>{dieOutText}{'10'}人</View>
 							</View>
-							
-							<View className='question' data-totalCount={totalCount}>
-								<View className='countdownWrap'>
-									<Image src={countdown} className='countdown-score'/>
-									<View className='score teamAScore'>{selfCamp?blueScore : redScore}</View>
-									<View className='countdown'>{time}</View>
-									<View className='score teamBScore'>{selfCamp?redScore : blueScore}</View>
-								</View>
-								<View className='Text'>{currIndex+1}. { currContent }</View>
-							</View>
-
-							<View className='blueTeam'>
-								{ blueContent }
+							<View className='questionBg'>
+								<View className='questionText'>{currIndex+1}. {currContent}</View>
 							</View>
 						</View>
+						{/* 答案 */}
 						<View className='content'>
 							<View className={`mask ${isShowMask?'':'hide'}`}></View>
-							{ Answer }
-						</View>
-						<View className='foot'>
-							<View className='cardBtn'>
-								<Image src={delayCardBtn} className='delayCardBtn'/>
-								<Text className='card-num'>{12}</Text>
-							</View>
-							
-							<View className='cardBtn'>
-								<Image src={helpCardBtn} className='helpCardBtn'/>
-								<Text className='card-num'>{32}</Text>
-							</View>
+							{Answer}
 						</View>
 					</View>
 				</View>
