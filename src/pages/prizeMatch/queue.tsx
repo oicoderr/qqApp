@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import { getStorage, setStorage } from '../../utils'
+import { getStorage, setStorage, getArrayItems } from '../../utils'
 import emitter from '../../service/events'
 import './queue.scss'
 
@@ -39,7 +39,7 @@ export class MatchRanking extends Component {
 
 			// 前台数据
 			local_data:{
-				headImg: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/headImg.png',
+				timer: '',			// 定时器
 				headImgPosi:[
 					{
 						x: 0,
@@ -103,15 +103,15 @@ export class MatchRanking extends Component {
 						y: 152,
 					},{
 						x: 328,
-						y: 37,
+						y: 340,
 					},{
-						x: 623,
-						y: 146,
+						x: 460,
+						y: 286,
 					},{
-						x: 217,
-						y: 429,
+						x: 392,
+						y: 688,
 					},{
-						x: 406,
+						x: 430,
 						y: 550,
 					},{
 						x: 347,
@@ -132,28 +132,30 @@ export class MatchRanking extends Component {
 						x: 190,
 						y: 506,
 					},{
-						x: 438,
-						y: 536,
+						x: 200,
+						y: 172,
 					},{
-						x: 320,
-						y: 152,
-					},{
-						x: 37,
-						y: 328,
+						x: 340,
+						y: 780,
 					},{
 						x: 146,
 						y: 623,
 					},{
 						x: 430,
-						y: 765,
+						y: 756,
 					},{
-						x: 550,
-						y: 406,
+						x: 536,
+						y: 540,
 					},{
 						x: 250,
 						y: 347,
+					},{
+						x: 60,
+						y: 660,
 					}
 				],
+				selectedHead:[],
+				selectedPosi:[],
 				isShowLoading: true,
 				quitBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/quitBtn.png',
 			}
@@ -164,7 +166,7 @@ export class MatchRanking extends Component {
 
 	componentWillMount () {
 		let _this = this;
-
+		
 	}
 
 	componentDidMount () {}
@@ -181,6 +183,29 @@ export class MatchRanking extends Component {
 				clearTimeout(timerOut);
 			})
 		},500)
+		// 切换匹配头像 1.5s切换一次
+		this.setState((preState)=>{
+			let headImgPosi = preState.local_data.headImgPosi;
+			let headPosi = preState.local_data.headPosi;
+			preState.local_data.selectedHead = getArrayItems(headImgPosi,6);
+			preState.local_data.selectedPosi = getArrayItems(headPosi,6);
+		},()=>{
+			let index = 1;
+			_this.state.local_data.timer = setInterval(()=>{
+				index+=1;
+				this.setState((preState)=>{
+					let headImgPosi = preState.local_data.headImgPosi;
+					let headPosi = preState.local_data.headPosi;
+					preState.local_data.selectedHead = getArrayItems(headImgPosi,6);
+					preState.local_data.selectedPosi = getArrayItems(headPosi,6);
+				},()=>{
+					if(index>3)clearInterval(_this.state.local_data.timer);
+				})
+			},1500);
+			// console.info(this.state.local_data.selectedHead);
+			// console.info(this.state.local_data.selectedPosi);
+		})
+
 
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
@@ -267,9 +292,9 @@ export class MatchRanking extends Component {
 	}
 	
 	render () {
-		const { isShowLoading, quitBtn, headPosi  } = this.state.local_data;
-		const content = headPosi.map((cur,index)=>{
-
+		const { isShowLoading, quitBtn, selectedHead, selectedPosi } = this.state.local_data;
+		const headImg = selectedPosi.map((cur,index)=>{
+			return  <View className='headImg headSize' style={`background-position: ${selectedHead[index].x}rpx ${selectedHead[index].y}rpx; top: ${cur.y}rpx;left: ${cur.x}rpx`}></View>
 		});
 
 		return (
@@ -290,10 +315,18 @@ export class MatchRanking extends Component {
 						<View className='content'>
 							<View className='circle outer'>
 								<View className='circle middle'>
-									<View className='circle inner'></View>
+									<View className='circle inner'>
+									<View className='avatarWrap'>
+										<View className='avatar'>
+											<openData type="userAvatarUrl"></openData>
+										</View>
+									</View>
+									</View>
 								</View>
 							</View>	
 							<View className='queuePeopleNum'>当前人数: {'44'}/{'50'}</View>
+							{/* 头像 */}
+							{headImg}
 						</View>
 					</View>
 				</View>
