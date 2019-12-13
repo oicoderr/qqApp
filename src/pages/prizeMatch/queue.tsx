@@ -14,7 +14,7 @@ const App = Taro.getApp()
 
 
 export class MatchRanking extends Component {
-	
+
 	config: Config = {
 		navigationBarTitleText: '大奖赛匹配ing',
 		navigationBarBackgroundColor: 'rgba(97, 130, 242, 1)',
@@ -39,6 +39,121 @@ export class MatchRanking extends Component {
 
 			// 前台数据
 			local_data:{
+				headImg: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/headImg.png',
+				headImgPosi:[
+					{
+						x: 0,
+						y: 0,
+					},{
+						x: -64,
+						y: 0,
+					},{
+						x: -128,
+						y: 0,
+					},{
+						x: -192,
+						y: 0,
+					},{
+						x: -256,
+						y: 0,
+					},{
+						x: -320,
+						y: 0,
+					},{
+						x: -384,
+						y: 0,
+					},{
+						x: -448,
+						y: 0,
+					},{
+						x: -512,
+						y: 0,
+					},{
+						x: 0,
+						y: -68,
+					},{
+						x: -64,
+						y: -68,
+					},{
+						x: -128,
+						y: -68,
+					},{
+						x: -192,
+						y: -68,
+					},{
+						x: -256,
+						y: -68,
+					},{
+						x: -320,
+						y: -68,
+					},{
+						x: -384,
+						y: -68,
+					},{
+						x: -448,
+						y: -68,
+					},{
+						x: -513,
+						y: -68,
+					}
+				],
+				headPosi:[
+					{
+						x: 320,
+						y: 152,
+					},{
+						x: 328,
+						y: 37,
+					},{
+						x: 623,
+						y: 146,
+					},{
+						x: 217,
+						y: 429,
+					},{
+						x: 406,
+						y: 550,
+					},{
+						x: 347,
+						y: 250,
+					},{
+						x: 185,
+						y: 275,
+					},{
+						x: 6,
+						y: 478,
+					},{
+						x: 428,
+						y: 676,
+					},{
+						x: 540,
+						y: 242,
+					},{
+						x: 190,
+						y: 506,
+					},{
+						x: 438,
+						y: 536,
+					},{
+						x: 320,
+						y: 152,
+					},{
+						x: 37,
+						y: 328,
+					},{
+						x: 146,
+						y: 623,
+					},{
+						x: 430,
+						y: 765,
+					},{
+						x: 550,
+						y: 406,
+					},{
+						x: 250,
+						y: 347,
+					}
+				],
 				isShowLoading: true,
 				quitBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/quitBtn.png',
 			}
@@ -80,8 +195,6 @@ export class MatchRanking extends Component {
 				}
 			})
 		}
-
-
 	}
 
 	componentDidHide () {}
@@ -154,7 +267,10 @@ export class MatchRanking extends Component {
 	}
 	
 	render () {
-		const { isShowLoading, quitBtn  } = this.state.local_data;
+		const { isShowLoading, quitBtn, headPosi  } = this.state.local_data;
+		const content = headPosi.map((cur,index)=>{
+
+		});
 
 		return (
 			<View className='queue'>

@@ -68,7 +68,7 @@ export const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
-// 金币/红包单位置换
+// 金币/能量//门票单位置换
 export const unitReplacement = (val) =>{
   const units = ['K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y', 'S', 'O', 'N', 'H', 'X'];
   let str1 = val.toString();
@@ -362,7 +362,7 @@ export const getCurrentTime = () => {
   return curTime;
 }
 
-// 构建url
+/* 构建url */
 export const buildURL = (url, query = {}, isSequence = true) => {
   if (!query) return url
   const joiner = url.match(/\?/) ? '&' : '?'
@@ -370,4 +370,19 @@ export const buildURL = (url, query = {}, isSequence = true) => {
     .map(key => `${key}=${encodeURIComponent(isSequence ? JSON.stringify(query[key]) : query[key])}`)
     .join('&')
   return url + joiner + queryStr
+}
+
+/* 随机数 */
+export const randomInterval = (n, min, max) => {
+  let arr=[];
+  for(let i=0;i<n;i++){
+    arr[i] = parseInt(Math.random()*(max-min+1)+min);
+    for(let j=0;j<i;j++){
+      if(arr[i]==arr[j]){
+        i=i-1;
+        break;
+      } 
+    }
+  }
+  return arr;
 }
