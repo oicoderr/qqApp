@@ -25,7 +25,7 @@ export class RankEntrance extends Component {
 		this.state = {
 			// 路由
 			routers:{
-				matchRanking: '/pages/rankMatch/matchRanking',
+				queue: '/pages/rankMatch/queue',
 			},
 
 			// 后台返回数据
@@ -177,9 +177,9 @@ export class RankEntrance extends Component {
 	// 跳转匹配页
 	goMatchRank(){
 		console.info('～跳转匹配～');
-		let matchRanking = this.state.routers.matchRanking;
+		let queue = this.state.routers.queue;
 		Taro.navigateTo({
-			url: matchRanking
+			url: queue
 		})
 	}
 

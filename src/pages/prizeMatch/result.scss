@@ -1,0 +1,280 @@
+.hide{
+    display: none;
+}
+
+.rankResult .bgColor{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(97, 130, 242, 1);
+    position: relative;
+    top: 0;
+    left: 0;
+    
+    .bgImg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/rank-texture-0001.png');
+        background-size: 750px 3000px;
+        background-repeat: no-repeat;
+        opacity: 1;
+        filter:alpha(opacity=1);
+    }
+
+    .body{
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 124rpx 20rpx 20rpx 20rpx;
+
+        .head{
+            width: 100%;
+            height: auto;
+            box-sizing: border-box;
+
+            .container{
+                width: 710rpx;
+                height: 640rpx;
+                background:rgba(30,30,30,.3);
+                border-radius: 20rpx;
+                box-sizing: border-box;
+                padding: 124rpx 20rpx 15rpx 20rpx;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                position: relative;
+
+                .titleImg{
+                    width:540rpx;
+                    height:100rpx;
+                    position:absolute;
+                    top:-40rpx;
+                    left:50%;
+                    transform:translateX(-50%);
+                }
+
+                .scoreBgWrap{
+                    position: absolute;
+                    position: absolute;
+                    top: 65rpx;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 9;
+
+                    .score_{
+                        width: 87rpx;
+                        height: 40rpx;
+                        line-height: 40rpx;
+                        overflow: hidden;
+                        font-size: 40rpx;
+                        text-align: center;
+                        font-weight: 600;
+                        color:rgba(255,255,255,1);
+                        text-shadow: 0rpx 0rpx 10rpx rgba(168, 40, 40, 1);
+                        position: absolute;
+                        top: 10rpx;
+                    }
+                    
+                    .redScore{
+                        left: 12rpx;
+                    }
+
+                    .blueScore{
+                        right: 12rpx;
+                        text-shadow: 0rpx 0rpx 10rpx rgba(25, 51, 180, 1);
+                    }
+                }
+
+                .scoreBg{
+                    width: 234rpx;
+                    height: 70rpx;
+                }
+
+                .bg{
+                    width: 670rpx;
+                    height: 530rpx;
+                    position: absolute;
+                }
+
+                .team{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    height: 530rpx;
+                    box-sizing: border-box;
+                    width: 50%;
+                    padding: 100rpx 20rpx 64rpx 40rpx;
+                    position: absolute;
+                    z-index: 6;
+                }
+                
+                .redTeam{
+                    left: 0;
+                }
+
+                .blueTeam{
+                    right: 0;
+                    padding-left:20rpx;
+                }
+
+                .player{
+                    width: 100%;
+                    height: 90rpx;
+                    box-sizing: border-box;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+
+                    .personMvp{
+                        width: 80rpx;
+                        height: 40rpx;
+                        position: absolute;
+                        margin-top: -10rpx;
+                    }
+                }
+
+                .nameAndscore{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+
+                .myselfHead{
+                    width: 80rpx;
+                    height: 80rpx;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    box-sizing: border-box;
+                    border: 2rpx solid rgba(48,48,48,1);
+                }
+
+                .userAvatarUrl{
+                    width: 80rpx;
+                    height: 80rpx;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    box-sizing: border-box;
+                }
+
+                .nickName{
+                    max-width: 180rpx;
+                    box-sizing: border-box;
+                    padding: 0 9rpx;
+                    overflow: hidden;
+                    display: inline-block;
+                    text-align: left;
+                    font-size: 30rpx;
+                    font-weight: 600;
+                    color:rgba(255,98,98,1);
+                    text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+                }
+
+                .curScore{
+                    width: 130rpx;
+                    height: 28rpx;
+                    line-height: 28rpx;
+                    background-color: rgba(30, 30, 30, .3);
+                    border-radius: 14rpx;
+                    font-size: 24rpx;
+                    font-weight: 600;
+                    color:rgba(255,255,255,1); 
+                    padding: 0 20rpx;
+                    box-sizing: border-box;
+                    text-align: right;
+                    position: relative;
+                    top: -10rpx;
+                    left: -60rpx;
+                    z-index: -1;
+                }
+
+                
+            }
+        }
+
+        .content{
+            width: 590rpx;
+            height: 180rpx;
+            background:rgba(30,30,30,.3);
+            border-radius: 20rpx;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin: 25rpx auto 0 auto;
+            padding: 13rpx 25rpx 13rpx 17rpx;
+            box-sizing: border-box;
+
+            .goldIconWarp{
+                width: 128rpx;
+                height: 100%;
+                background:rgba(30,30,30,.3);
+                border-radius: 18rpx;
+                padding: 26rpx 20rpx;
+                box-sizing: border-box;
+
+                .goldIcon{
+                    width: 88rpx;
+                    height: 99rpx;
+                }
+            }
+
+            .list{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 100%;
+                box-sizing: border-box;
+
+                .score{
+                    width: 180rpx;
+                    height: 35rpx;
+                    line-height: 35rpx;
+                    padding: 6rpx 8rpx;
+                    background:rgba(30,30,30,.3);
+                    border-radius: 26rpx;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+
+                    text{
+                        font-size: 24rpx;
+                        color:rgba(255,201,108,1);
+                        text-shadow: 0rpx 0rpx 10rpx rgba(65, 46, 10, 1);
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+
+        .foot{
+            position: fixed;
+            bottom: 30rpx;
+            width: 674rpx;
+            padding: 0 18rpx;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            left: 50%;
+            transform: translateX(-50%);
+
+            .btns{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-bottom: 15rpx
+                ;
+                .btn{
+                    width: 214rpx;
+                    height: 94rpx;
+                }
+            }
+
+        }
+    }
+}

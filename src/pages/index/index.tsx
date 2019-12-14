@@ -101,11 +101,11 @@ export class Index extends Component {
 				rankGameEntrance: '/pages/rankMatch/entrance',
 				prizeMatch: '/pages/prizeMatch/entrance',
 				/* 断线重连 */
-				matchRankingPage: '/pages/rankMatch/matchRanking', 
+				enterGamePage: '/pages/rankMatch/enterGame', 
 				prizeMatchQueue: '/pages/prizeMatch/queue',
 				prizeMatchEnterGame: '/pages/prizeMatch/enterGame',
 				/* 断线重连 End*/
-				startGamePage: '/pages/rankMatch/startGame',
+				enterGamePage: '/pages/rankMatch/enterGame',
 				goTakeMoneyPage: '/pages/payTakeMoney/takeMoney',
 				goPayTicketsPage: '/pages/payTakeMoney/recharge'
 			},
@@ -312,7 +312,7 @@ export class Index extends Component {
 					case 3:
 						// 跳转匹配页
 						Taro.reLaunch({
-							url: this.state.routers.matchRankingPage + '?isreconnection=1'
+							url: this.state.routers.enterGamePage + '?isreconnection=1'
 						});
 						break;
 					case 4:
@@ -345,7 +345,7 @@ export class Index extends Component {
 				case 3:
 					// 跳转匹配页
 					Taro.reLaunch({
-						url: buildURL(_this.state.routers.matchRankingPage,{item: message[0]['data']})
+						url: buildURL(_this.state.routers.enterGamePage,{item: message[0]['data']})
 					});
 					break;
 				case 4:

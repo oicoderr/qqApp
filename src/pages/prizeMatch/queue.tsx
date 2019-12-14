@@ -13,7 +13,7 @@ import ReceiveMsg from '../../service/receivedMsg'
 const App = Taro.getApp()
 
 
-export class MatchRanking extends Component {
+export class enterGame extends Component {
 
 	config: Config = {
 		navigationBarTitleText: '大奖赛匹配ing',

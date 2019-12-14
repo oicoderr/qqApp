@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
 import { getStorage, setStorage, getCurrentTime } from '../../utils'
-import './startGame.scss'
+import './enterGame.scss'
 import emitter from '../../service/events'
 import { websocketUrl } from '../../service/config'
 import MsgProto from '../../service/msgProto'
@@ -11,7 +11,7 @@ import ReceiveMsg from '../../service/receivedMsg'
 
 const App = Taro.getApp()
 
-export class StartGame extends Component {
+export class enterGame extends Component {
 
 	config: Config = {
 		navigationBarTitleText: '排位赛～开始比赛～',
@@ -513,7 +513,7 @@ export class StartGame extends Component {
 		});
 
 		return (
-			<View className='rankStartGame'>
+			<View className='rankenterGame'>
 				<View className={isShowLoading?'':'hide'}>
 					<GameLoading />
 				</View>

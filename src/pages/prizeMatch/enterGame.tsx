@@ -11,7 +11,7 @@ import ReceiveMsg from '../../service/receivedMsg'
 
 const App = Taro.getApp()
 
-export class StartGame extends Component {
+export class enterGame extends Component {
 
 	config: Config = {
 		navigationBarTitleText: '大奖赛游戏开始',

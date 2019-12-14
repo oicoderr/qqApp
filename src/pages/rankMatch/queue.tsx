@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { getStorage, setStorage } from '../../utils'
 import emitter from '../../service/events'
-import './matchRanking.scss'
+import './queue.scss'
 
 import GameLoading from '../../components/GameLoading'
 import { websocketUrl } from '../../service/config'
@@ -13,7 +13,7 @@ import ReceiveMsg from '../../service/receivedMsg'
 const App = Taro.getApp()
 
 
-export class MatchRanking extends Component {
+export class enterGame extends Component {
 	
 	config: Config = {
 		navigationBarTitleText: '排位赛',
@@ -29,7 +29,7 @@ export class MatchRanking extends Component {
 		this.state = {
 			// 路由
 			routers:{
-				goStartGame: '/pages/rankMatch/startGame'
+				goenterGame: '/pages/rankMatch/enterGame'
 			},
 
 			// 后台返回数据
@@ -103,9 +103,10 @@ export class MatchRanking extends Component {
 				// 收到后台 ‘匹配成功后开始从新编队’
 				console.log('B队：')
 				console.info(teams['bluePalyerOnInstance']);
+				let goenterGame = this.state.routers.goenterGame
 				this.afreshFormation(teams['redPalyerOnInstance'], teams['bluePalyerOnInstance'], ()=>{
 					Taro.reLaunch({
-						url: _this.state.routers.goStartGame,
+						url: goenterGame
 					});
 				});
 			})
@@ -186,6 +187,7 @@ export class MatchRanking extends Component {
 		if(!this.state.local_data.isIntheGame){
 			this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
 				clearInterval(message[1]);
+				let goenterGame = this.state.routers.goenterGame;
 				console.info('所有队伍');
 				console.log(message[0]['data']);
 				let PartyATeam = message[0]['data']['redPalyerOnInstance'];
@@ -193,7 +195,7 @@ export class MatchRanking extends Component {
 				// 收到后台 ‘匹配成功后开始从新编队’
 				_this.afreshFormation(PartyATeam, PartyBTeam, ()=>{
 					Taro.redirectTo({
-						url: _this.state.routers.goStartGame,
+						url: goenterGame,
 					});
 				});
 			});

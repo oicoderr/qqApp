@@ -24,13 +24,13 @@ class App extends Component {
 			'pages/prizeMatch/enterGame',	  // 大奖赛匹配
 			
 			'pages/prizeMatch/queue',	  	  // 大奖赛匹配
-			
+			'pages/prizeMatch/result',	  	  // 大奖赛结果
 
 			'pages/login/index',			  // app 登录
 			'pages/index/index',			  // 游戏登录
 			'pages/rankMatch/entrance', 	  // 排位赛入口
-			'pages/rankMatch/matchRanking',   // 正在排位赛匹配
-			'pages/rankMatch/startGame',      // 开始排位赛游戏
+			'pages/rankMatch/enterGame',   // 正在排位赛匹配
+			'pages/rankMatch/enterGame',      // 开始排位赛游戏
 			'pages/rankMatch/result', 	      // 排位赛结果页
 		
 
