@@ -29,8 +29,8 @@ export class MatchRanking extends Component {
 		this.state = {
 			// 路由
 			routers:{
-				enterGame: '/pages/prizeMatch/enterGame'
-
+				enterGame: '/pages/prizeMatch/enterGame',
+				entrancePage: '/pages/prizeMatch/entrance'
 			},
 
 			// 后台返回数据
@@ -165,7 +165,7 @@ export class MatchRanking extends Component {
 				quitBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/quitBtn.png',
 			}
 		}
-		this.webSocket = App.globalData.webSocket;
+		this.websocket = App.globalData.webSocket;
 		this.msgProto = new MsgProto();
 	}
 
@@ -186,6 +186,15 @@ export class MatchRanking extends Component {
 				preState.local_data.isreconnection = 0;
 			});
 		}
+
+		// 1332 玩家离开大奖赛匹配队列 
+		this.eventEmitter = emitter.once('exitQueueStatus', (message) => {
+			console.info('%c 玩家离开大奖赛匹配队列','font-size:14px;color:#ff641a;');
+			let entrancePage = this.state.routers.entrancePage;
+			Taro.redirectTo({
+				url: entrancePage
+			})
+		});
 
 		// 1334 当前队伍情况
 		this.eventEmitter = emitter.addListener('getTeamSituation', (message) => {
@@ -251,7 +260,7 @@ export class MatchRanking extends Component {
 
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
-			this.webSocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求
+			this.websocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求
 				data: 'ws alive test',
 				success(data) {
 					console.log('wss is ok:')
@@ -271,7 +280,7 @@ export class MatchRanking extends Component {
 
 		// 请求开始大奖赛
 		if(isreconnection){
-			this.webSocket.sendWebSocketMsg({
+			this.websocket.sendWebSocketMsg({
 				data: parentModule,
 				success(res) { console.info('%c 进入匹配ing','font-size:14px;color:#e66900;')},
 				fail(err) {
@@ -370,13 +379,14 @@ export class MatchRanking extends Component {
 	exitQueue(e){
 		let exitQueue = this.msgProto.exitQueue();
 		let parentModule = this.msgProto.parentModule(exitQueue);
+		console.log(this.websocket,1234)
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(){
-				
+			success(res){
+				console.info('～发送退出请求成功～');
 			},
 			fail(err){
-
+				console.info(err);
 			}
 		})
 	}

@@ -99,6 +99,8 @@ export default class ReceiveMsg{
 			case 1326:			// 服务器排位赛战报
 				emitter.emit('getRankBattleReport', message);
 				break;
+			case 1332:			// 响应大奖赛退出状态 
+				emitter.emit('exitQueueStatus', [message, this.tiemrMsg]);
 			case 1334:			// 大奖赛当前队伍情况
 				this.tiemrMsg = setInterval(()=>{
 					emitter.emit('getTeamSituation', [message, this.tiemrMsg]);

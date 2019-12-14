@@ -227,10 +227,7 @@ export default class websocket {
 			}, 10000)
 			this._connectNum += 1;
 		} else {
-			timer = setTimeout(() => {
-				this.initWebSocket(options)
-			}, 450000)
-			this._connectNum += 1;
+			this.closeWebSocket();
 		}
 	}
 

@@ -51,6 +51,7 @@ export class StartGame extends Component {
 					currIndex: 0,
 					time: 10,
 					totalCount:'',
+					list:[ 0, 0, 0, 0 ],
 				},
 				selectedOptionIndex: -1,// 当前题index
 				selectedOptionId: '',	// 所选题optionId
@@ -128,6 +129,11 @@ export class StartGame extends Component {
 			console.info('%c 306发题了: ' + getCurrentTime(), 'font-size:14px;color:#1a4dff;');console.info(message[0]['data']);
 			let time = message[0]['data']['time'];
 			clearInterval(this.state.data.timer);
+			// 取消所有选中样式
+			this.setState((preState)=>{
+				preState.local_data.curQuestion.correctOption = -1;
+				preState.local_data.selectedOptionIndex = -1;
+			},()=>{});
 			// 开始倒计时
 			this.getCountdown(time); 
 
@@ -169,14 +175,10 @@ export class StartGame extends Component {
 					// 复活倒计时开始
 					let time = _this.state.local_data.curQuestion.waitreceivetime;
 					_this.resurrectionCountdown(time,()=>{
-						// 倒计时结束1.关闭弹窗 -> 2.跳转战报页
+						// 倒计时结束1.关闭弹窗
 						_this.setState((preState)=>{
 							preState.local_data.isShowToast = false;
-						},()=>{
-							Taro.redirectTo({
-								url: _this.state.routers.resultPage
-							})
-						})
+						},()=>{})
 					});
 					// 显示是否弹窗
 					_this.isResurrection();
@@ -207,23 +209,26 @@ export class StartGame extends Component {
 					icon: 'none',
 					mask: false,
 					duration: 1000,
-					success(){
-						Taro.redirectTo({
-							url: _this.state.routers.resultPage
-						})
-					}
 				})
 			}
 		});
 
 		// 1318 发送战报(看完战报就离开房间吧)
-		this.eventEmitter = emitter.addListener('getPrizeMatchReport', (message) => {
+		this.eventEmitter = emitter.once('getPrizeMatchReport', (message) => {
 			clearInterval(message[1]);			
 			console.info('%c 服务器广播战报 ====>','color:#ff9d1a;font-size:14px;');console.info(message[0]);
+			// 取消所有选中样式
+			this.setState((preState)=>{
+				preState.local_data.curQuestion.correctOption = -1;
+				preState.local_data.selectedOptionIndex = -1;
+			},()=>{});
+
 			this.setState((preState)=>{
 				
 			},()=>{
-
+				Taro.redirectTo({
+					url: _this.state.routers.resultPage
+				})
 			})
 		});
 
@@ -244,7 +249,6 @@ export class StartGame extends Component {
 				console.info(_this.state.local_data.curQuestion);
 			})
 		});
-
 	}
 
 	componentDidHide () {
@@ -432,12 +436,8 @@ export class StartGame extends Component {
 			data: parentModule,
 			success(res) {
 				_this.setState((preState)=>{
-					preState.local_data.isShowToast = fasle;
-				},()=>{
-					Taro.redirectTo({
-						url: _this.state.routers.resultPage
-					});
-				});
+					preState.local_data.isShowToast = false;
+				},()=>{console.info('选择 --> 取消复活')});
 			},
 			fail(err) { console.log(err) }
 		});
@@ -451,7 +451,7 @@ export class StartGame extends Component {
 		let parentModule = this.msgProto.parentModule(resurrect);
 		this.webSocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) { console.info(res);},
+			success(res) { console.info('选择 --> 确认复活')},
 			fail(err) { console.info(err) }
 		});
 	}
@@ -459,13 +459,12 @@ export class StartGame extends Component {
 	render () {
 		const {
 			countdownPrizeMatch, surplusText, dieOutText, isShowMask, isShowToast,
-			defultClass, defultBottomClass, isShowLoading, selectedOptionIndex, unit
+			isShowLoading, selectedOptionIndex, unit,
 		} = this.state.local_data;
 		// 当前题
 		const { currContent, currIndex, currQuestId, time, totalCount, options, 
-			correctOption, currCount, dieCount, receiveCount, 
-		
-		} = this.state.local_data.curQuestion;
+			correctOption, currCount, dieCount, receiveCount, list } = this.state.local_data.curQuestion;
+
 		// 弹窗提示
 		const { toastTitle, toastContent, toastBtn1, toastBtn2, toastUnit} = this.state.local_data.dieInfo;
 
@@ -489,7 +488,7 @@ export class StartGame extends Component {
 								<View className='optionContent'>{currentValue.value}</View>
 							</View>
 						</View>
-						<View className='optionPeople'>{'10'}人</View>
+						<View className='optionPeople'>{list[index]}人</View>
 					</View>
 		});
 
@@ -499,6 +498,7 @@ export class StartGame extends Component {
 				<View className={isShowLoading?'':'hide'}>
 					<GameLoading />
 				</View>
+
 				{/* 挂了弹窗提示是否复活 */}
 				<View className={`toast ${isShowToast?'':'hide'}`}>
 					<View className='content'>
@@ -509,7 +509,7 @@ export class StartGame extends Component {
 								<View className='cancelBtn'>{toastBtn1}</View>
 							</View>
 							<View onClick={this.toastConfirm.bind(this)} className='confirmBtnWarp'>
-							<View className='confirmBtn'>{toastBtn2}(${waitreceivetime})${toastUnit}</View>
+								<View className='confirmBtn'>{toastBtn2}({waitreceivetime}){toastUnit}</View>
 							</View>
 						</View>
 					</View>

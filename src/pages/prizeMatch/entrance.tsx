@@ -262,7 +262,7 @@ export class RankEntrance extends Component {
 		let parentModule = this.msgProto.parentModule(matchingRequest);
 		this.webSocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) { console.info('%c 进入大奖赛匹配ing','font-size:14px;color:#e66900;')},
+			success(res) { console.info('%c 门票入场大奖赛匹配ing','font-size:14px;color:#e66900;')},
 			fail(err) {
 				Taro.showToast({
 					title: err.errormsg,
@@ -321,7 +321,7 @@ export class RankEntrance extends Component {
 							<Image src={tipImg} className='tip'/>
 							<View className='items'>
 								<Image onClick={this.freeAdmission.bind(this)} src={freeBtn} className='btn freeBtn'/>
-								<Image src={ticketsBtn} className='btn ticketsBtn'/>
+								<Image onClick={this.payAdmission.bind(this)} src={ticketsBtn} className='btn ticketsBtn'/>
 							</View>
 							<View className='seeAdsStatus'>
                                 <RadioGroup className='checkBox'>
