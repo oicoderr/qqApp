@@ -73,6 +73,21 @@ export default class ReceiveMsg{
 					emitter.emit('getAnswer', [message, this.tiemrMsg]);
 				},20);
 				break;
+			case 1320:			// 大奖赛玩家复活信息
+				this.tiemrMsg = setInterval(()=>{
+					emitter.emit('getRenascenceInfo', [message, this.tiemrMsg]);
+				},20);
+				break;
+			case 1314:			// 复活结果（大奖赛）
+				this.tiemrMsg = setInterval(()=>{
+					emitter.emit('getResurrectResult', [message, this.tiemrMsg]);
+				},20);
+				break;
+			case 1318:
+				this.tiemrMsg = setInterval(()=>{
+					emitter.emit('getPrizeMatchReport', [message, this.tiemrMsg]);
+				},20);
+				break;
 			case 1322:  		// 服务器广播上道题的回答情况(排位赛)
 				// console.info('%c === 答案 ===','font-size:14px;color:#FF6A6A');console.info(message);
 				emitter.emit('getPrevQAInfo', message);

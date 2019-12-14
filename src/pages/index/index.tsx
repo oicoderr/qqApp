@@ -103,6 +103,7 @@ export class Index extends Component {
 				/* 断线重连 */
 				matchRankingPage: '/pages/rankMatch/matchRanking', 
 				prizeMatchQueue: '/pages/prizeMatch/queue',
+				prizeMatchEnterGame: '/pages/prizeMatch/enterGame',
 				/* 断线重连 End*/
 				startGamePage: '/pages/rankMatch/startGame',
 				goTakeMoneyPage: '/pages/payTakeMoney/takeMoney',
@@ -333,7 +334,7 @@ export class Index extends Component {
 
 			console.error('游戏中杀死游戏退出，进来的玩家');
 			// 游戏中杀死退出
-			let type = message[0]['data']['type']
+			let type = message[0]['data']['redPalyerOnInstance'][0]['type'];
 			// 开启断线重连并进入匹配队列
 			switch(type){
 				case 1:
@@ -349,7 +350,7 @@ export class Index extends Component {
 					break;
 				case 4:
 					Taro.reLaunch({
-						url: buildURL(_this.state.routers.prizeMatchQueue,{item: message[0]['data']});
+						url: _this.state.routers.prizeMatchEnterGame
 					});
 					break;
 			}

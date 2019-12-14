@@ -81,12 +81,15 @@ export class MatchRanking extends Component {
 
 		// 匹配中是否断线重连状态
 		const params = this.$router.params;
-		console.info('params ==>');
-		console.info(params);
+		console.info('params ==>');console.info(params);
 		const isreconnection = params.isreconnection;
 		if(isreconnection === '1'){
 			this.setState((preState)=>{
-				preState.local_data.isreconnection = isreconnection;
+				preState.local_data.isreconnection = 1;
+			});
+		}else{
+			this.setState((preState)=>{
+				preState.local_data.isreconnection = 0;
 			});
 		}
 
@@ -142,8 +145,8 @@ export class MatchRanking extends Component {
 		// 排位赛
 		let isreconnection = this.state.local_data.isreconnection; // 是否断线重连
 		let data = {type: 3,useSpeedItem: 0,};
-		let matchingGame = this.msgProto.matchingGame(data)
-		let parentModule = this.msgProto.parentModule(matchingGame);
+		let matchingRequest = this.msgProto.matchingRequest(data)
+		let parentModule = this.msgProto.parentModule(matchingRequest);
 
 		// 请求开始匹配排位
 		if(!isreconnection){

@@ -72,7 +72,7 @@ export class RankEntrance extends Component {
 	}
 	componentWillMount () {
 		let _this = this;
-		// 获取门票 / 能量
+		// 设置门票 / 能量
 		getStorage('gameUserInfo',(res)=>{
 			_this.setState((preState)=>{
 				preState.local_data.gameUserInfo = res;
@@ -88,8 +88,8 @@ export class RankEntrance extends Component {
 			let data = {
 				type: 3,
 				value:'',
-				param1:'',
-				param2: '', // int(如果类型是3，这个参数是是否使用加速卡<0.不使用;1.使用>
+				param1: '', // 扩展参数暂无用
+				param2: -1, // int(如果类型是3，这个参数是是否使用加速卡<0.不使用;1.使用>
 			}
 			if(checked) {data.param2 = 1} else {data.param2 = 0};
 			console.info('是否勾选加速卡 ===>', data.param2);
@@ -97,11 +97,11 @@ export class RankEntrance extends Component {
 			let parentModule = this.msgProto.parentModule(adsRewards);
 
 			if(status.isEnded){
-				console.info('%c 正常播放结束，进入大奖赛','font-size:14px;color:#0fdb24;');
+				console.info('%c 看完广告，进入大奖赛','font-size:14px;color:#0fdb24;');
 				this.webSocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
-						// 允许进入匹配页
+						// 允许进入匹配页 1302监测返回成功后跳转匹配页
 					},
 					fail(err) { console.log(err) }
 				});
@@ -185,18 +185,7 @@ export class RankEntrance extends Component {
 
 	componentDidHide () {}
 
-	// 跳转大奖赛匹配页
-	goMatchRank(){
-		console.info('～跳转大奖赛匹配～');
-		let matchRanking = this.state.routers.matchRanking;
-		Taro.navigateTo({
-			url: matchRanking
-		})
-	}
-
-	// 获取奖励
 	watchAdsGetReward(e){
-		// 开始播放激励视频
 		this.videoAd.openVideoAd();
 	}
 
@@ -264,6 +253,25 @@ export class RankEntrance extends Component {
 	// 开始看广告 -> 免费入场
     freeAdmission(e){
 		this.videoAd.openVideoAd();
+	}
+
+	// 门票入场 -> 付费入场
+	payAdmission(e){
+		let data = {type: 2,useSpeedItem: 1,};
+		let matchingRequest = this.msgProto.matchingRequest(data)
+		let parentModule = this.msgProto.parentModule(matchingRequest);
+		this.webSocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) { console.info('%c 进入大奖赛匹配ing','font-size:14px;color:#e66900;')},
+			fail(err) {
+				Taro.showToast({
+					title: err.errormsg,
+					icon: 'none',
+					duration: 2000
+				})
+				console.error('匹配错误信息==> ');console.info(err);
+			}
+		});
 	}
 
 	// 更改勾选状态

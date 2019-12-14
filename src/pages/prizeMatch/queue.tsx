@@ -40,7 +40,7 @@ export class MatchRanking extends Component {
 
 			// 前台数据
 			local_data:{
-				timer: '',			// 定时器
+				timer: '',				// 定时器
 				gameUserInfo: {},	
 				prizeMatchUserInfo: {},
 				headImgPosi:[
@@ -160,6 +160,8 @@ export class MatchRanking extends Component {
 				selectedHead:[],
 				selectedPosi:[],
 				isShowLoading: true,
+				isreconnection: 0,		// 断线重连
+				isIntheGame: false,		// 是否游戏中断线，默认不是
 				quitBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/quitBtn.png',
 			}
 		}
@@ -170,6 +172,21 @@ export class MatchRanking extends Component {
 	componentWillMount () {
 		let _this = this;
 		this.getGameUserInfo();
+
+		// 匹配中是否断线重连状态
+		const params = this.$router.params;
+		console.info('是否断线重连 ==>');console.info(params);
+		const isreconnection = params.isreconnection;
+		if(isreconnection === '1'){
+			this.setState((preState)=>{
+				preState.local_data.isreconnection = 1;
+			});
+		}else{
+			this.setState((preState)=>{
+				preState.local_data.isreconnection = 0;
+			});
+		}
+
 		// 1334 当前队伍情况
 		this.eventEmitter = emitter.addListener('getTeamSituation', (message) => {
 			clearInterval(message[1]);
@@ -185,13 +202,14 @@ export class MatchRanking extends Component {
 			clearInterval(message[1]);
 			console.info('接受当前所有参赛玩家信息 ====>');console.info(message[0]['data']);
 			// 设置自己大奖赛游戏信息
-			this.setPrizeMatchUserInfo(message[0]['data']);
+			this.setPrizeMatchUserInfo(message[0]['data']['redPalyerOnInstance']);
 			let enterGame = this.state.routers.enterGame;
+			// 所有参赛总人数
+			let countPeople = message[0]['data']['redPalyerOnInstance'].length;
 			Taro.redirectTo({
-				url: enterGame
+				url: enterGame + '?countPeople=' + countPeople
 			})
 		});
-
 	}
 
 	componentDidMount () {}
@@ -244,6 +262,28 @@ export class MatchRanking extends Component {
 				}
 			})
 		}
+
+		// 是否断线重连
+		let isreconnection = this.state.local_data.isreconnection;
+		let data = {type: 4,useSpeedItem: 0,};
+		let matchingRequest = this.msgProto.matchingRequest(data)
+		let parentModule = this.msgProto.parentModule(matchingRequest);
+
+		// 请求开始大奖赛
+		if(isreconnection){
+			this.webSocket.sendWebSocketMsg({
+				data: parentModule,
+				success(res) { console.info('%c 进入匹配ing','font-size:14px;color:#e66900;')},
+				fail(err) {
+					Taro.showToast({
+						title: err.errormsg,
+						icon: 'none',
+						duration: 2000
+					})
+					console.error('匹配错误信息==> ');console.info(err);
+				}
+			});
+		}
 	}
 
 	componentDidHide () {}
@@ -261,6 +301,7 @@ export class MatchRanking extends Component {
 
 	// 设置自己大奖赛游戏信息
 	setPrizeMatchUserInfo(data){
+		let _this = this;
 		let roleId = this.state.local_data.gameUserInfo.roleId;
 		for(let i = 0; i < data.length; i++){
 			if(data[i]['roleId'] == roleId){

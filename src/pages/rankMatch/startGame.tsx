@@ -396,8 +396,8 @@ export class StartGame extends Component {
 			questId: currquestid,
 			optionId: optionId
 		}
-		let matchingGame = this.msgProto.submitAnswer(data)
-		let parentModule = this.msgProto.parentModule(matchingGame);
+		let matchingRequest = this.msgProto.submitAnswer(data)
+		let parentModule = this.msgProto.parentModule(matchingRequest);
 
 		// 设置所选答案index - optionId
 		this.setState((preState)=>{

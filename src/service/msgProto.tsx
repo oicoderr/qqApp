@@ -49,7 +49,7 @@ export default class MsgProto{
     }
 
     // 1301 匹配比赛
-    matchingGame(params){ // type 1.好友赛；2.红包赛；3.排位赛；4.大奖赛
+    matchingRequest(params){ // type 1.好友赛；2.红包赛；3.排位赛；4.大奖赛
         const { type, useSpeedItem } = params;
         return {
             'code': 1301,
@@ -68,6 +68,16 @@ export default class MsgProto{
             'data': {
                 'questId': questId,
                 'optionId': optionId
+            }
+        }
+    }
+
+    // 1309 大奖赛是否复活 0.不复活  1.复活
+    resurrect(val){
+        return {
+            'code': 1309,
+            'data': {
+                'value': val,
             }
         }
     }

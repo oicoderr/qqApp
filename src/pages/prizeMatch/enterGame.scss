@@ -1,14 +1,118 @@
 .hide{
     display: none;
 }
-.rankStartGame{
+.prizeMatch{
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
+
+    .toast{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        background:rgba(0,0,0,.6);
+        z-index: 19;
+
+        .content{
+            position: absolute;
+            top: 440rpx;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 640rpx;
+            height:340rpx;
+            box-sizing: border-box;
+            overflow: hidden;
+            background:rgba(68,125,239,1);
+            border: 2rpx solid rgba(0,0,0,1);
+            border-radius: 20rpx;
+            display: flex;
+            flex-direction: column;
+            padding: 30rpx;
+
+            .title{
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+                height: 40rpx;
+                line-height: 40rpx;
+                overflow: hidden;
+                font-size: 40rpx;
+                font-weight:600;
+                color:rgba(255,255,255,1);
+                text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+            }
+
+            .body{
+                width: 100%;
+                box-sizing: border-box;
+                height: 146rpx;
+                line-height: 146rpx;
+                font-size: 30rpx;
+                font-weight: 400;
+                color:rgba(255,255,255,1);
+                text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+                text-align: center;
+            }
+
+            .btns{
+                width: 100%;
+                height: 94rpx;
+                display: flex;
+                justify-content: space-between;
+
+                .cancelBtnWarp{
+                    width: 214rpx;
+                    height: 94rpx;
+                    background:rgba(32,139,187,1);
+                    border: 2rpx solid rgba(48,48,48,1);
+                    border-radius: 20rpx;
+                }
+
+                .cancelBtn{
+                    width:210rpx;
+                    height:84rpx;
+                    line-height:84rpx;
+                    text-align:center;
+                    background-color:rgba(41,189,255,1);
+                    border-radius: 20rpx;
+                    margin: 0 2rpx;
+                    font-size: 30rpx;
+                    font-weight: 400;
+                    color:rgba(250,250,250,1);
+                    text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57)
+                }
+
+                .confirmBtnWarp{
+                    width: 214rpx;
+                    height: 94rpx;
+                    background-color:rgba(187,137,32,1);
+                    border: 2rpx solid rgba(48,48,48,1);
+                    border-radius: 20rpx;
+                }
+
+                .confirmBtn{
+                    width: 210rpx;
+                    height: 84rpx;
+                    line-height:84rpx;
+                    text-align:center;
+                    background: rgba(254,183,39,1);
+                    border-radius: 20rpx;
+                    margin: 0 2rpx;
+                    font-size: 30rpx;
+                    font-weight: 400;
+                    color:rgba(250,250,250,1);
+                    text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57)
+                }
+            }
+        }
+    }
 }
 
-.bgColor{
+.prizeMatch .bgColor{
     width: 100vw;
     height: 100vh;
     background-color: rgba(97, 130, 242, 1);
