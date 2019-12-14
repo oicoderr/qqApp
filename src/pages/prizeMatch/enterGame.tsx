@@ -235,7 +235,7 @@ export class enterGame extends Component {
 		// 1320 广播复活信息（活着的玩家可以看到）
 		this.eventEmitter = emitter.addListener('getRenascenceInfo', (message) => {
 			clearInterval(message[1]);			
-			console.info('%c 服务器广播复活信息 ====>','color:#ff9d1a;font-size:14px;');console.info(message[0]);
+			console.info('%c 服务器广播复活情况信息 ====>','color:#ff9d1a;font-size:14px;');console.info(message[0]);
 			this.setState((preState)=>{
 				preState.data.preQuestionInfo = message[0]['data'];
 				// 添加全局剩余人数

@@ -5,7 +5,6 @@ import { getStorage, removeStorage,  } from '../../utils'
 import './result.scss'
 
 import GameLoading from '../../components/GameLoading'
-import RankResultInfo from '../../components/rankResultInfoUi'
 
 import createVideoAd from '../../service/createVideoAd'
 import { websocketUrl } from '../../service/config'
@@ -18,7 +17,7 @@ const App = Taro.getApp()
 export class Reasult extends Component {
 
 	config: Config = {
-		navigationBarTitleText: '排位赛～结果页～',
+		navigationBarTitleText: '大奖赛结果',
 		navigationBarBackgroundColor: 'rgba(97, 130, 242, 1)',
 		navigationBarTextStyle: 'white',
 	}
@@ -512,10 +511,6 @@ export class Reasult extends Component {
 			<View className='rankResult' catchtouchmove="ture">
 				<View className={isShowLoading?'':'hide'} catchtouchmove="ture">
 					< GameLoading />
-				</View>
-
-				<View className={isShowRankResult?'':'hide'} catchtouchmove="ture">
-					<RankResultInfo />
 				</View>
 
 				<View className='bgColor'>
