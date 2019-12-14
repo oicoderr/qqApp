@@ -100,7 +100,10 @@ export class Index extends Component {
 			routers:{
 				rankGameEntrance: '/pages/rankMatch/entrance',
 				prizeMatch: '/pages/prizeMatch/entrance',
-				matchRankingPage: '/pages/rankMatch/matchRanking', // 断线重连
+				/* 断线重连 */
+				matchRankingPage: '/pages/rankMatch/matchRanking', 
+				prizeMatchQueue: '/pages/prizeMatch/queue',
+				/* 断线重连 End*/
 				startGamePage: '/pages/rankMatch/startGame',
 				goTakeMoneyPage: '/pages/payTakeMoney/takeMoney',
 				goPayTicketsPage: '/pages/payTakeMoney/recharge'
@@ -290,15 +293,33 @@ export class Index extends Component {
 			})
 		}
 // -------------------------- 游戏被杀死，重新进入游戏 --------------------------------------
-		// 匹配ing / 答题ing，杀死app，重新进入，根据字段是否短线重连判断：isreconnection 1. 在匹配中杀死的
+		// 匹配ing / 答题ing，杀死app，重新进入，根据字段是否断线重连判断：isreconnection 1. 在匹配中杀死的
 		this.eventEmitter = emitter.once('enterMatch', (message) => {
 			clearInterval(message[1]);
-			
-			if(message[0]['data']['isreconnection'] && message[0]['data']['result']){
-				// 跳转匹配页
-				Taro.reLaunch({
-					url: this.state.routers.matchRankingPage + '?isreconnection=1'
-				});
+			let isreconnection = message[0]['data']['isreconnection'];
+			let result = message[0]['data']['result'];
+			let type =  message[0]['data']['type']; // 1.好友赛；2.红包赛；3.排位赛；4.大奖赛
+
+			// 开启断线重连并进入匹配队列
+			if(isreconnection && result){
+				switch(type){
+					case 1:
+
+						break;
+					case 2:
+						break;
+					case 3:
+						// 跳转匹配页
+						Taro.reLaunch({
+							url: this.state.routers.matchRankingPage + '?isreconnection=1'
+						});
+						break;
+					case 4:
+						Taro.reLaunch({
+							url: this.state.routers.prizeMatchQueue + '?isreconnection=1'
+						});
+						break;
+				}
 				Taro.showToast({
 					title: '进入匹配队列',
 					icon: 'none',
@@ -310,10 +331,28 @@ export class Index extends Component {
 		this.eventEmitter = emitter.once('getBattleTeams', (message) => {
 			clearInterval(message[1]);
 
-			let url_ = buildURL(_this.state.routers.matchRankingPage,{item: message[0]['data']});
-			Taro.reLaunch({
-				url: url_
-			});
+			console.error('游戏中杀死游戏退出，进来的玩家');
+			// 游戏中杀死退出
+			let type = message[0]['data']['type']
+			// 开启断线重连并进入匹配队列
+			switch(type){
+				case 1:
+
+					break;
+				case 2:
+					break;
+				case 3:
+					// 跳转匹配页
+					Taro.reLaunch({
+						url: buildURL(_this.state.routers.matchRankingPage,{item: message[0]['data']})
+					});
+					break;
+				case 4:
+					Taro.reLaunch({
+						url: buildURL(_this.state.routers.prizeMatchQueue,{item: message[0]['data']});
+					});
+					break;
+			}
 		});
 // -------------------------- 游戏被杀死，重新进入游戏 End-----------------------------------
 		// 更新金币/红包/能量-数量
@@ -331,22 +370,6 @@ export class Index extends Component {
 	}
 
 	componentDidHide () {}
-
-	// 红包赛入口页
-	goPrizeMatchBtn = () => {
-		let prizeMatch = this.state.routers.prizeMatch;
-		Taro.navigateTo({
-			url: prizeMatch
-		})
-	}
-
-	// 跳转排位赛入口页
-	rankEntrance = () => {
-		let rankGameEntrance = this.state.routers.rankGameEntrance;
-		Taro.navigateTo({
-			url: rankGameEntrance
-		})
-	}
 
 	// 主动断开重新new和联接，重新登录
 	createSocket(){
@@ -399,6 +422,22 @@ export class Index extends Component {
 		
 		// 对外抛出websocket
 		App.globalData.webSocket = this.websocket;
+	}
+
+	// 红包赛入口页
+	goPrizeMatchBtn(){
+		let prizeMatch = this.state.routers.prizeMatch;
+		Taro.navigateTo({
+			url: prizeMatch
+		})
+	}
+
+	// 跳转排位赛入口页
+	rankEntrance(){
+		let rankGameEntrance = this.state.routers.rankGameEntrance;
+		Taro.navigateTo({
+			url: rankGameEntrance
+		})
 	}
 
 	// 跳转提现页

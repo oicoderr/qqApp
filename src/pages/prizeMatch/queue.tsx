@@ -41,6 +41,8 @@ export class MatchRanking extends Component {
 			// 前台数据
 			local_data:{
 				timer: '',			// 定时器
+				gameUserInfo: {},	
+				prizeMatchUserInfo: {},
 				headImgPosi:[
 					{
 						x: 0,
@@ -109,8 +111,11 @@ export class MatchRanking extends Component {
 						x: 460,
 						y: 286,
 					},{
-						x: 392,
+						x: 92,
 						y: 688,
+					},{
+						x: 428,
+						y: 676,
 					},{
 						x: 430,
 						y: 550,
@@ -123,9 +128,6 @@ export class MatchRanking extends Component {
 					},{
 						x: 6,
 						y: 478,
-					},{
-						x: 428,
-						y: 676,
 					},{
 						x: 540,
 						y: 242,
@@ -167,7 +169,7 @@ export class MatchRanking extends Component {
 
 	componentWillMount () {
 		let _this = this;
-
+		this.getGameUserInfo();
 		// 1334 当前队伍情况
 		this.eventEmitter = emitter.addListener('getTeamSituation', (message) => {
 			clearInterval(message[1]);
@@ -181,7 +183,9 @@ export class MatchRanking extends Component {
 		// 1304 服务器通知客户端角色进入比赛房间
 		this.eventEmitter = emitter.once('getBattleTeams', (message) => {
 			clearInterval(message[1]);
-			console.info('接受当前所有参赛玩家信息 ====>');console.info(message[0]);
+			console.info('接受当前所有参赛玩家信息 ====>');console.info(message[0]['data']);
+			// 设置自己大奖赛游戏信息
+			this.setPrizeMatchUserInfo(message[0]['data']);
 			let enterGame = this.state.routers.enterGame;
 			Taro.redirectTo({
 				url: enterGame
@@ -249,13 +253,23 @@ export class MatchRanking extends Component {
 		let _this = this;
 		getStorage('gameUserInfo',(val)=>{
 			_this.setState((preState)=>{
-				console.info('%c 自己游戏基本信息 ==>','font-size:14px;color:#c500f0;');
-				console.log(preState);
+				console.info('%c 自己游戏基本信息 ==>','font-size:14px;color:#c500f0;');console.info(val);
 				preState.local_data.gameUserInfo = val;
-			},()=>{
-				console.log(_this.state.local_data.gameUserInfo.danDesc);
-			});
+			},()=>{});
 		})
+	}
+
+	// 设置自己大奖赛游戏信息
+	setPrizeMatchUserInfo(data){
+		let roleId = this.state.local_data.gameUserInfo.roleId;
+		for(let i = 0; i < data.length; i++){
+			if(data[i]['roleId'] == roleId){
+				setStorage('prizeMatchUserInfo',data[i]);
+				this.setState((preState)=>{
+					preState.local_data.prizeMatchUserInfo = JSON.parse(JSON.stringify(data[i]));
+				},()=>{})
+			}
+		}
 	}
 
 	// 主动断开重新new和联接，重新登录
