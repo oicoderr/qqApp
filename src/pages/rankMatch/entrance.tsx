@@ -133,14 +133,6 @@ export class RankEntrance extends Component {
 				preState.data = res;
 			})
 		});
-		/*
-			// 货币发生变化通知
-			this.eventEmitter = emitter.once('currencyChange', (message) => {
-				clearInterval(message[1]);
-				console.info('%c 金币变化啦','color:#3c3c3c;fon-size:16px;background-color:#BBFFFF;'); console.info(message);
-				setStorage('currencyChange', message[0]);
-			});
-		*/
 	}
 	
 	componentWillUnmount () {}

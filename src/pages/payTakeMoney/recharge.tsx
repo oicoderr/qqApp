@@ -45,18 +45,7 @@ export class Login extends Component {
 				preState.data.redEnvelope = message[0]['data']['redEnvelope'];
 			})
 		});
-		/*
-			// 货币变化通知
-			this.eventEmitter = emitter.addListener('currencyChange', (message) => {
-				clearInterval(message[1]);
-				let currencyChange = message[0]['data'];
-				let redEnvelope = message[0]['data']['redEnvelope']
-				this.setState((preState)=>{
-					preState.data.redEnvelope = redEnvelope;
-				},()=>{})
-				setStorage('currencyChange',currencyChange);
-			});
-		*/
+
 		// 1904 接受prepay_id 拉起支付, 开始支付
 		this.eventEmitter = emitter.addListener('getPrePay_id', (message) => {
 			clearInterval(message[1]);

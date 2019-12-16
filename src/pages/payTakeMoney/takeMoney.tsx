@@ -66,19 +66,6 @@ export class Login extends Component {
 				})
 			}
 		});
-		/*	
-			// 货币变化通知
-			this.eventEmitter = emitter.addListener('currencyChange', (message) => {
-				clearInterval(message[1]);
-				let currencyChange = message[0]['data'];
-				let energy = message[0]['data']['energy']
-				this.setState((preState)=>{
-					preState.data.energy = energy;
-				},()=>{})
-				setStorage('currencyChange',currencyChange);
-				console.info(message);
-			});
-		*/
 	}
 
 	componentWillUnmount () {}

@@ -187,38 +187,39 @@ export class Reasult extends Component {
 
 		// 接受排位赛结果战报
 		this.eventEmitter = emitter.addListener('getRankBattleReport', (message) => {
-            console.info('%c 接受排位赛结果战报','color:#3c3c3c;fon-size:14px;background-color:#BBFFFF;'); console.info(message);
+			clearInterval(message[1]);
+            console.info('%c 接受排位赛结果战报','color:#3c3c3c;fon-size:14px;background-color:#BBFFFF;'); console.info(message[0]['data']);
 			// 设置输赢平横幅
-			this.successFailDraw(message['data']['result']);
+			this.successFailDraw(message[0]['data']['result']);
 			// 奖项列表
 			let leftGetAward_ = [
 				{
 					key: '胜利',
-					value: message['data']['rewardinit']
+					value: message[0]['data']['rewardinit']
 				},{
 					key: 'MVP',
-					value: message['data']['mvp']
+					value: message[0]['data']['mvp']
 				},{
 					key: '金币卡',
-					value: message['data']['goldItem']
+					value: message[0]['data']['goldItem']
 				}
 			]
 			let rightGetAward_ = [
 				{
 					key: '连胜',
-					value: message['data']['row']
+					value: message[0]['data']['row']
 				},{
 					key: '组队',
-					value: message['data']['team']
+					value: message[0]['data']['team']
 				},{
 					key: '额外奖励',
-					value: message['data']['other']
+					value: message[0]['data']['other']
 				}
 			]
 
-			let rankBattleReport = JSON.parse(JSON.stringify(message['data']));
+			let rankBattleReport = JSON.parse(JSON.stringify(message[0]['data']));
 			this.setState((preState)=>{
-				preState.data.rankBattleReport = message['data'];
+				preState.data.rankBattleReport = message[0]['data'];
 				preState.local_data.rankBattleReport = this.reForm(rankBattleReport);
 				preState.local_data.selfRankBattleReport;
 				// 设置奖项列表
@@ -226,64 +227,6 @@ export class Reasult extends Component {
 				preState.local_data.rightGetAward = rightGetAward_;
 			},()=>{});
 		});
-		// 接受广告id
-		this.eventEmitter = emitter.addListener('getAdUnitId', (message) => {
-            console.info('%c 接受排位赛`广告id`','color:#3c3c3c;fon-size:16px;background-color:#BBFFFF;'); console.info(message);
-			let type = message['data']['type'];
-			let adUnitId = message['data']['value'];
-			console.info('type:' + type);console.log('adUnitId:' + adUnitId);
-
-			if(type == 1){ 		// 额外奖励
-				this.videoAd = new createVideoAd(adUnitId);
-				// 下发视频监听事件 (排位额外奖励)
-				this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
-					if(status.isEnded){
-						console.info('%c 正常播放结束，下发奖励','font-size:14px;color:#0fdb24;');
-						console.error(adUnitId);
-						let data_ = {
-							type: 1,
-							value: adUnitId,
-							param1:'',
-							param2: '', // int(如果类型是3，这个参数是是否使用加速卡<0.不使用;1.使用>
-						}
-						let adsRewards = this.msgProto.adsRewards(data_);
-						let parentModule = this.msgProto.parentModule(adsRewards);
-						this.webSocket.sendWebSocketMsg({
-							data: parentModule,
-							success(res) {
-								Taro.showToast({
-									title: '成功获取奖励',
-									icon: 'none',
-									mask: true,
-									duration: 2000
-								});
-								// 关闭结果页Ui
-								_this.setState((preState)=>{
-									preState.local_data.isShowRankResult = false;
-								},()=>{});
-							},
-							fail(err) { console.log(err) }
-						});
-					}else{
-						console.log('%c 未看完视频，没有奖励啦','font-size:14px;color:#db2a0f;');
-
-						let isSeeAds = this.msgProto.isSeeAds();
-						let parentModule = this.msgProto.parentModule(isSeeAds);
-						this.webSocket.sendWebSocketMsg({
-							data: parentModule,
-							success(res) {
-								// 关闭结果页Ui
-								_this.setState((preState)=>{
-									preState.local_data.isShowRankResult = false;
-								},()=>{});
-							},
-							fail(err) { console.log(err) }
-						});
-					}
-				});
-			}
-		});
-
 	}
 	
 	componentWillUnmount () {}
