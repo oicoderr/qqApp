@@ -313,7 +313,7 @@ export class Reasult extends Component {
 								<View className='wrap'>
 									<View className='msg'>{rankMsg}</View>
 									<View className='barBg successCount'>{'答对题数：'}{successCount} {questionUnit}</View>
-									<View className='barBg speedtime'>{'加速卡：'}<Text>-{speedtime} {timeUnit}</Text></View>
+									<View className='barBg speedtime'>{'加速卡：'}<Text>{speedtime != 0?-speedtime: '0'} {timeUnit}</Text></View>
 									<View className='barBg endtime'>{'最终用时：'}{endtime} {timeUnit}</View>
 									<View className='barBg energy'>
 										{'获得奖励：'}

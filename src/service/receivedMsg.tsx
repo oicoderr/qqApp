@@ -40,7 +40,7 @@ export default class ReceiveMsg{
 				break;
 			case 1040:  		// 服务器返回文字提示(每一步都可能会有) 1. 异常type 2.异常说明(content)
 				this.timerCount[3] = setInterval(()=>{
-					emitter.emit('globalTips', [message, tthis.timerCount[3] ]);
+					emitter.emit('globalTips', [message, this.timerCount[3] ]);
 				},20);
 				break;
 			case 1010:			// 服务器推送当前货币数量: 当前剩余金币数量 / 剩余能量数量 / 门票数量
