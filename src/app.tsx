@@ -20,25 +20,20 @@ class App extends Component {
 	config: Config = {
 		pages: [
 
-			'pages/prizeMatch/entrance',	  // 大奖赛入口
-			'pages/prizeMatch/enterGame',	  // 大奖赛匹配
-			
-			'pages/prizeMatch/queue',	  	  // 大奖赛匹配
-			'pages/prizeMatch/result',	  	  // 大奖赛结果
-
 			'pages/login/index',			  // app 登录
 			'pages/index/index',			  // 游戏登录
 			'pages/rankMatch/entrance', 	  // 排位赛入口
-			'pages/rankMatch/enterGame',   // 正在排位赛匹配
-			'pages/rankMatch/enterGame',      // 开始排位赛游戏
-			'pages/rankMatch/result', 	      // 排位赛结果页
-		
+			'pages/rankMatch/enterGame',   	  // 排位赛匹配
+			'pages/rankMatch/enterGame',      // 排位赛开始游戏
+			'pages/rankMatch/result', 	      // 排位赛结果
+			
+			'pages/prizeMatch/entrance',	  // 大奖赛入口
+			'pages/prizeMatch/queue',	  	  // 大奖赛匹配
+			'pages/prizeMatch/enterGame',	  // 大奖赛开始游戏
+			'pages/prizeMatch/result',	  	  // 大奖赛结果
 
 			'pages/payTakeMoney/takeMoney',	  // 提现
 			'pages/payTakeMoney/recharge', 	  // 充值
-
-			
-			
 
 			'pages/startWriteQuestion/index',
 			'pages/writeQuestion/index',
@@ -146,9 +141,9 @@ class App extends Component {
 							setStorage('userInfo', userInfo);
 						}else{
 							// 跳转游戏主页
-							// Taro.redirectTo({
-							// 	url: '/pages/index/index'
-							// });
+							Taro.redirectTo({
+								url: '/pages/index/index'
+							});
 						}
 					});
 				})

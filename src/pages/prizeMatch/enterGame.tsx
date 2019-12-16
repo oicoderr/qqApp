@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
-import { getStorage, setStorage, getCurrentTime } from '../../utils'
+import { getStorage, setStorage, buildURL, getCurrentTime } from '../../utils'
 import './enterGame.scss'
 import emitter from '../../service/events'
 import { websocketUrl } from '../../service/config'
@@ -31,7 +31,13 @@ export class enterGame extends Component {
 				timer:'', 				// 计时器
 				time: '10',				// 倒计时
 				curQuestion: {},		// 当前题
-				preQuestionInfo:{},		// 上一题回答基本信息
+				preQuestionInfo:{		// 上一题回答基本信息
+					answerErrorCount: '',
+					lastQuestId: '',
+					list: [],
+					optionId: '',
+					waitreceivetime: 3,
+				},		
 			},
 
 			// 前台数据
@@ -45,17 +51,23 @@ export class enterGame extends Component {
 				isShowLoading: false,	// 默认显示加载动画
 				curQuestion: {			// 当前题
 					currCount: 30,
-					dieCount: 0,
-					receiveCount: 0,
-					currContent: '',
-					currIndex: 0,
+					dieCount: 0,		// 已淘汰人数
+					receiveCount: 0,	// 复活人数
+					currContent: '',	// 当前题文案
+					currIndex: 0,	
 					time: 10,
 					totalCount:'',
 					list:[ 0, 0, 0, 0 ],
 				},
 				selectedOptionIndex: -1,// 当前题index
 				selectedOptionId: '',	// 所选题optionId
-				preQuestionInfo: '',	// 上一题回答基本信息
+				preQuestionInfo: {		// 上一题回答基本信息
+					answerErrorCount: '',
+					lastQuestId: '',
+					list: [],
+					optionId: '',
+					waitreceivetime: 3,
+				},	
 				prizeMatchUserInfo:{},	// 大奖赛个人信息
 				unit: '人',
 				dieInfo:{
@@ -66,7 +78,6 @@ export class enterGame extends Component {
 					toastUnit: '秒',
 				},
 				isShowToast: false,		// 是否显示复活toast
-
 			}
 		}
 		this.webSocket = App.globalData.webSocket;
@@ -126,13 +137,16 @@ export class enterGame extends Component {
 		// 1306 服务器广播当前题
 		this.eventEmitter = emitter.addListener('getQuestion', (message) => {
 			clearInterval(message[1]);
-			console.info('%c 306发题了: ' + getCurrentTime(), 'font-size:14px;color:#1a4dff;');console.info(message[0]['data']);
+			console.info('%c 1306发题了: ' + getCurrentTime(), 'font-size:14px;color:#1a4dff;');console.info(message[0]['data']);
 			let time = message[0]['data']['time'];
 			clearInterval(this.state.data.timer);
 			// 取消所有选中样式
 			this.setState((preState)=>{
 				preState.local_data.curQuestion.correctOption = -1;
 				preState.local_data.selectedOptionIndex = -1;
+				// 隐藏答错人数提示
+				preState.local_data.curQuestion.answerErrorCount = 0;
+
 			},()=>{});
 			// 开始倒计时
 			this.getCountdown(time); 
@@ -157,12 +171,18 @@ export class enterGame extends Component {
 			this.setState((preState)=>{
 				preState.data.preQuestionInfo = message[0]['data'];
 				preState.local_data.preQuestionInfo = JSON.parse(JSON.stringify(message[0]['data']));
+				// 上一题quesId
+				preState.local_data.curQuestion['lastQuestId'] = JSON.parse(JSON.stringify(message[0]['data']['lastQuestId']));
+				// 复活时间
+				preState.local_data.curQuestion['waitreceivetime'] = JSON.parse(JSON.stringify(message[0]['data']['waitreceivetime']));
 				// 在curQuestion中添加正确答案
 				preState.local_data.curQuestion['correctOption'] = JSON.parse(JSON.stringify(message[0]['data']['optionId']));
-				// 添加玩家复活时间： (0意思是大家都答对了)
-				preState.local_data.curQuestion['waitreceivetime'] = JSON.parse(JSON.stringify(message[0]['data']['waitreceivetime']));
 				// 添加各答案答对/打错人数
+				preState.local_data.curQuestion['answerErrorCount'] = JSON.parse(JSON.stringify(message[0]['data']['answerErrorCount']));
 				preState.local_data.curQuestion['list'] = JSON.parse(JSON.stringify(message[0]['data']['list']));
+				// 清除选中样式
+				preState.local_data.curQuestion.correctOption = -1;
+				preState.local_data.selectedOptionIndex = -1;
 			},()=>{
 				console.info('%c 最终的curQuestion =====>', 'font-size:14px;color:#1ae3ff;')
 				console.info(_this.state.local_data.curQuestion);
@@ -221,15 +241,11 @@ export class enterGame extends Component {
 			this.setState((preState)=>{
 				preState.local_data.curQuestion.correctOption = -1;
 				preState.local_data.selectedOptionIndex = -1;
-			},()=>{});
-
-			this.setState((preState)=>{
-				
 			},()=>{
 				Taro.redirectTo({
-					url: _this.state.routers.resultPage
+					url: buildURL(_this.state.routers.resultPage,{item: message[0]['data']})
 				})
-			})
+			});
 		});
 
 		// 1320 广播复活信息（活着的玩家可以看到）
@@ -244,6 +260,8 @@ export class enterGame extends Component {
 				preState.local_data.curQuestion['dieCount'] = JSON.parse(JSON.stringify(message[0]['data']['dieCount']));
 				// 添加全局复活人数
 				preState.local_data.curQuestion['receiveCount'] = JSON.parse(JSON.stringify(message[0]['data']['receiveCount']));
+				// 隐藏答错人数提醒
+				preState.local_data.curQuestion['answerErrorCount'] = 0;
 			},()=>{
 				console.info('%c 收到[ 复活信息 ]后的curQuestion =====>', 'font-size:14px;color:#1ae3ff;')
 				console.info(_this.state.local_data.curQuestion);
@@ -424,7 +442,7 @@ export class enterGame extends Component {
 				});
 			}
 		},1000)
-	}
+	}	
 
 	// 取消复活，跳转战报
 	toastCancel(e){
@@ -462,8 +480,9 @@ export class enterGame extends Component {
 			isShowLoading, selectedOptionIndex, unit,
 		} = this.state.local_data;
 		// 当前题
-		const { currContent, currIndex, currQuestId, time, totalCount, options, 
-			correctOption, currCount, dieCount, receiveCount, list } = this.state.local_data.curQuestion;
+		const { currContent, currIndex, currQuestId, time, totalCount, options, answerErrorCount,
+			correctOption, currCount, dieCount, receiveCount, list,
+		} = this.state.local_data.curQuestion;
 
 		// 弹窗提示
 		const { toastTitle, toastContent, toastBtn1, toastBtn2, toastUnit} = this.state.local_data.dieInfo;
@@ -534,6 +553,14 @@ export class enterGame extends Component {
 						<View className='content'>
 							<View className={`mask ${isShowMask?'':'hide'}`}></View>
 							{Answer}
+						</View>
+						{/* 提示答错人数 */}
+						<View className={`footer ${ answerErrorCount > 0?'':'hide'}`}>
+							<View className='wrongAnswer'>{'本题答错'}<Text decode={true}>&ensp;{answerErrorCount}&ensp;</Text>{unit},{'等待他人复活中……'}</View>
+						</View>
+						{/* 提示复活人数 */}
+						<View className={`footer ${receiveCount > 0?'':'hide'}`}>
+							<View className='wrongAnswer'>{'上题复活'}<Text decode={true}>&ensp;{receiveCount}&ensp;</Text>{unit}</View>
 						</View>
 					</View>
 				</View>

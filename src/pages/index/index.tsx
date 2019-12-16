@@ -328,31 +328,35 @@ export class Index extends Component {
 				});
 			}
 		});
+
 		// 1304 - 2.在游戏中杀死的
 		this.eventEmitter = emitter.once('getBattleTeams', (message) => {
 			clearInterval(message[1]);
 
-			console.error('游戏中杀死游戏退出，进来的玩家');
-			// 游戏中杀死退出
-			let type = message[0]['data']['redPalyerOnInstance'][0]['type'];
-			// 开启断线重连并进入匹配队列
-			switch(type){
-				case 1:
-
-					break;
-				case 2:
-					break;
-				case 3:
-					// 跳转匹配页
-					Taro.reLaunch({
-						url: buildURL(_this.state.routers.enterGamePage,{item: message[0]['data']})
-					});
-					break;
-				case 4:
-					Taro.reLaunch({
-						url: _this.state.routers.prizeMatchEnterGame
-					});
-					break;
+			let isreconnection = message[0]['data']['redPalyerOnInstance'][0]['isreconnection'];
+			// 在游戏中杀死的
+			if(isreconnection){
+				console.error('游戏中杀死游戏退出，进来的玩家');
+				// 比赛类型 1.好友赛；2.大奖赛；3.排位赛；
+				let type = message[0]['data']['redPalyerOnInstance'][0]['type'];
+				switch(type){
+					case 1:
+	
+						break;
+					case 2:
+						Taro.reLaunch({
+							url: _this.state.routers.prizeMatchEnterGame
+						});
+						break;
+					case 3:
+						// 跳转匹配页
+						Taro.reLaunch({
+							url: buildURL(_this.state.routers.enterGamePage,{item: message[0]['data']})
+						});
+						break;
+				}
+			}else{
+				console.info('%c ～正常进入比赛玩家～','font-size:14px; color:#ffc61a;');
 			}
 		});
 // -------------------------- 游戏被杀死，重新进入游戏 End-----------------------------------
@@ -360,9 +364,9 @@ export class Index extends Component {
 		getStorage('currencyChange',(res)=>{
 			if(res!=''){
 				_this.setState((preState)=>{
-					preState.gameUserInfo.copper = unitReplacement(res.data.copper);
-					preState.gameUserInfo.energy = unitReplacement(res.data.energy);
-					preState.gameUserInfo.redEnvelope = unitReplacement(res.data.redEnvelope);
+					preState.gameUserInfo.copper = unitReplacement(res.copper);
+					preState.gameUserInfo.energy = unitReplacement(res.energy);
+					preState.gameUserInfo.redEnvelope = unitReplacement(res.redEnvelope);
 				},()=>{
 					removeStorage('currencyChange');
 				})
