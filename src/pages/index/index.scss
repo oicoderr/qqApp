@@ -178,33 +178,35 @@
     top: 150rpx;
     right: 20rpx;
     z-index: 9;
-    width: 88rpx;
+    width: auto;
     height: auto;
 
-    .rightBtnIcon{
-        background-image:url( https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/index-game-import-icon.png );
-        background-repeat: no-repeat;
-        background-size: 580rpx 432rpx;
-        margin-bottom: 20rpx;
-    }
-
     .problemBtn{
-        width: 86rpx;
-        height: 90rpx;
-        background-position: -484rpx -0rpx;
+        width: 86px;
+        height: 94rpx;
+        background-position: -358px -266px
     }
 
     .signInBtn{
-        width: 86rpx;
-        height: 90rpx;
-        background-position: -484rpx -90rpx;
+        width: 86px;
+        height: 94rpx;
+        background-position: -382px -388px;
     }
 
     .welfareBtn{
-        width: 86rpx;
-        height: 90rpx;
-        background-position: -0rpx -341rpx;
+        width: 86px;
+        height: 94rpx;
+        background-position: -278px -388px;
     }
+
+    .rightBtnIcon{
+        background-image:url( https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/index-game-import-icon0.png );
+        background-repeat: no-repeat;
+        background-size: 525px 500px;
+        margin-bottom: 20px;
+    }
+
+    
 }
 
 // 身体区域
@@ -239,16 +241,16 @@
     background-size: 750px 360px;
 
     .sameBtn{    
-        background-image:url( https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/index-game-import-icon.png );
+        background-image:url( https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/index-game-import-icon0.png );
         background-repeat: no-repeat;
-        background-size: 580px 432px;
+        background-size: 525px 500px;
         position: absolute;
     }
 
     .redEnvelopeBtn{
         width: 243px;
         height: 234px;
-        background-position: -242px -0px;
+        background-position: -273px -10px;
         bottom: 6px;
         left: 20px;
     }
@@ -264,7 +266,7 @@
     .withdrawBtn{
         width: 250px;
         height: 99px;
-        background-position: -330px -239px;
+        background-position:  -10px -391px;
         top: 32px;
         left: 50px;
     }
@@ -272,15 +274,15 @@
     .OneVOneBtn{
         width: 330px;
         height: 106px;
-        background-position: -0px -237px;
+        background-position: -10px -268px;
         top: 138px;
-        left: 10px;
+        left: 11.5px;
     }
 
     .rankBtn{
         width: 243px;
         height: 238px;
-        background-position: -0px -0px;
+        background-position: -10px -10px;
         bottom: 6px;
         right: 20px;
     }
