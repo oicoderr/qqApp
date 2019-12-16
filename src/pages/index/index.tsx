@@ -299,7 +299,7 @@ export class Index extends Component {
 			clearInterval(message[1]);
 			let isreconnection = message[0]['data']['isreconnection'];
 			let result = message[0]['data']['result'];
-			let type =  message[0]['data']['type']; // 1.好友赛；2.红包赛；3.排位赛；4.大奖赛
+			let type =  message[0]['data']['type']; // 1.好友赛；2.大奖赛；3.排位赛
 
 			// 开启断线重连并进入匹配队列
 			if(isreconnection && result){
@@ -308,16 +308,14 @@ export class Index extends Component {
 
 						break;
 					case 2:
-						break;
-					case 3:
-						// 跳转匹配页
-						Taro.reLaunch({
-							url: this.state.routers.enterGamePage + '?isreconnection=1'
+						Taro.redirectTo({
+							url: this.state.routers.prizeMatchQueue + '?isreconnection=1'
 						});
 						break;
-					case 4:
-						Taro.reLaunch({
-							url: this.state.routers.prizeMatchQueue + '?isreconnection=1'
+					case 3:
+						// 跳转排位赛匹配页
+						Taro.redirectTo({
+							url: this.state.routers.enterGamePage + '?isreconnection=1'
 						});
 						break;
 				}

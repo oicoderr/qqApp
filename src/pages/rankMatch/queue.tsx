@@ -165,7 +165,7 @@ export class enterGame extends Component {
 			});
 		}
 
-		// 返回是否已进入匹配队列，判断不是断线重连开始进入匹配
+		// 1302 返回是否已进入匹配队列，判断不是断线重连开始进入匹配
 		this.eventEmitter = emitter.addListener('enterMatch', (message) => {
 			clearInterval(message[1]);
 			if(!message[0]['data']['isreconnection'] && message[0]['data']['result']){

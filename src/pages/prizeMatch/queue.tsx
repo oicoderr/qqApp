@@ -189,6 +189,7 @@ export class enterGame extends Component {
 
 		// 1332 玩家离开大奖赛匹配队列 
 		this.eventEmitter = emitter.once('exitQueueStatus', (message) => {
+			clearInterval(message[1]);
 			console.info('%c 玩家离开大奖赛匹配队列','font-size:14px;color:#ff641a;');
 			let entrancePage = this.state.routers.entrancePage;
 			Taro.redirectTo({

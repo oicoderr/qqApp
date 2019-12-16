@@ -166,7 +166,7 @@ export class enterGame extends Component {
 		});
 
 		// 1312 服务器广播上道题的统计
-		this.eventEmitter = emitter.addListener('getPrevQAInfo', (message) => {
+		this.eventEmitter = emitter.addListener('getPrizePrevQAInfo', (message) => {
 			clearInterval(message[1]);			
 			console.info('%c 服务器广播上一题统计 ====>','color:#ff9d1a;font-size:14px;');console.info(message[0]);
 			this.setState((preState)=>{

@@ -132,15 +132,23 @@ export class Reasult extends Component {
 		let _this = this;
 		this.getRankUserInfo();
 		// 获取本局结果页数据
-		getStorage('rankResultInfo',(res)=>{
-			console.error(' ====== rank结果页数据 ======');
-			console.log(res);
+		const params = this.$router.params;
+		console.info('获取排位赛结果数据 ==>');console.info(params.item);
+		const rankResultInfo = JSON.parse(params.item);
+		if(rankResultInfo){
 			this.setState((preState)=>{
-				preState.local_data.rankResultInfo = res;
+				preState.local_data.rankResultInfo = rankResultInfo;
 			},()=>{});
 			// 本局结果页数据发送给子组件rankResultInfoUi
-			emitter.emit('rankResultInfo', res);
-		});
+			emitter.emit('rankResultInfo', rankResultInfo);
+		}else{
+			Taro.showToast({
+				title: '未获得排位赛结果数据',
+				icon: 'none',
+				mask: false,
+				duration: 2000
+			})
+		}
 
 		// 接受子组件 ==> 返回是否勾选播放激励视频状态
 		this.eventEmitter = emitter.addListener('isCheckPlayVideo', (message) => {

@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
-import { getStorage, setStorage, getCurrentTime } from '../../utils'
+import { getStorage, setStorage, buildURL, getCurrentTime } from '../../utils'
 import './enterGame.scss'
 import emitter from '../../service/events'
 import { websocketUrl } from '../../service/config'
@@ -61,12 +61,12 @@ export class enterGame extends Component {
 
 			// 前台数据
 			local_data:{
-				rankUserInfo:{},
+				rankUserInfo: {},
 				PartyATeam: [], 		// 排位赛红队伍
 				PartyBTeam: [], 		// 排位赛蓝队伍
-				scoreTeamA:[],			// 积分(roleId)队伍A
-				scoreTeamB:[],			// 积分(roleId)队伍B
-				selfScore:{},			// 自己得分情况
+				scoreTeamA: [],			// 积分(roleId)队伍A
+				scoreTeamB: [],			// 积分(roleId)队伍B
+				selfScore: {},			// 自己得分情况
 				curQuestion:{			// 重新编辑后台返回的问题数据
 					currContent:'',
 					currIndex: 0,
@@ -75,7 +75,7 @@ export class enterGame extends Component {
 				defultClass: '',	   	// 选项上层默认样式class 
 				defultBottomClass: '', 	// 选项下层默认样式class 
 				selectedOptionIndex: 0, // 当前题的index
-				selectedOptionId:'',	// 用户所选optionId
+				selectedOptionId: '',	// 用户所选optionId
 				isShowMask: false,		// 默认不显示遮罩
 				isShowLoading: true,	// 默认显示加载动画
 				delayCardBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/delayCardBtn.png',
@@ -99,6 +99,15 @@ export class enterGame extends Component {
 
 	componentDidShow () {
 		let _this = this;
+		// 关闭加载动画
+		let timerOut = setTimeout(()=>{
+			_this.setState((preState)=>{
+				preState.local_data.isShowLoading = false;
+			},()=>{
+				clearTimeout(timerOut);
+			})
+		},500);
+
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
 			this.webSocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求
@@ -120,20 +129,10 @@ export class enterGame extends Component {
 			// console.info('%c' + this.state.local_data.isShowMask,'font-size:20px; color:pink;');
 		});
 
-		// 关闭加载动画
-		let timerOut = setTimeout(()=>{
-			_this.setState((preState)=>{
-				preState.local_data.isShowLoading = false;
-			},()=>{
-				clearTimeout(timerOut);
-			})
-		},500)
-
 		// 接受排位赛发题
 		this.eventEmitter = emitter.addListener('getQuestion', (message) => {
 			clearInterval(message[1]);
-			// console.log('%c 接受到的题目及选项', 'color:#000; font-size:14px;');
-			// console.log(message['data']);
+			// console.info('%c 接受到的题目及选项', 'color:#000; font-size:14px;'); console.log(message[0]['data']);
 			console.info('%c <========== 1306发题了 ==========>' + getCurrentTime(), 'font-size:14px;color:#f04e00;');
 			let time = message[0]['data']['time'];
 
@@ -152,11 +151,12 @@ export class enterGame extends Component {
 
 		// 接受正确答案信息
 		this.eventEmitter = emitter.addListener('getAnswer', (message) => {
+			clearInterval(message[1]);
 			let _this = this;
 			// console.log('%c 已接受到答案', 'color:blue; font-size:12px;');
 			let selectedOptionId = this.state.local_data.selectedOptionId;
 			this.setState((preState)=>{
-				preState.data.curAnswer = message['data'];
+				preState.data.curAnswer = message[0]['data'];
 			},()=>{
 				if( selectedOptionId == this.state.data.curAnswer.optionId){
 					this.setState((preState)=>{
@@ -164,7 +164,6 @@ export class enterGame extends Component {
 						preState.local_data.defultBottomClass = 'trueOptionBottom';
 					},()=>{
 						// console.info('%c 选则正确', 'color:#228B22;font-size:14px;background-color:#3c3c3c;');
-
 						// 消失选中样式
 						let timer = setTimeout(()=>{
 							_this.setState((preState)=>{
@@ -198,10 +197,11 @@ export class enterGame extends Component {
 
 		// 接受上一题基本信息 
 		this.eventEmitter = emitter.addListener('getPrevQAInfo', (message) => {
+			clearInterval(message[1]);
 			console.log('%c 上一题基本信息','font-size:14px;color:#A020F0;');
-			console.info(message['data']);
+			console.info(message[0]['data']);
 			this.setState((preState)=>{
-				preState.data.prevQAInfo = JSON.parse(JSON.stringify(message['data']));
+				preState.data.prevQAInfo = JSON.parse(JSON.stringify(message[0]['data']));
 			},()=>{
 				let list = this.state.data.prevQAInfo.list;			// 上一题得分情况
 				let scoreTeamA = this.state.local_data.scoreTeamA;	// A队积分信息
@@ -245,16 +245,16 @@ export class enterGame extends Component {
 
 		// 接受排位赛结果信息 => `跳转`结果页
 		this.eventEmitter = emitter.once('getRankResultInfo', (message) => {
-			console.log('%c 接受到本局结果信息', 'color:#000; font-size:14px;');
-			console.log(message['data']);
-
+			clearInterval(message[1]);
+			console.info('%c 接受到本局结果信息', 'color:#000; font-size:14px;');
+			console.info(message[0]['data']);
+			
 			this.setState((preState)=>{
-				preState.data.rankResultInfo = message['data'];
+				preState.data.rankResultInfo = message[0]['data'];
 			},()=>{
 				// 跳转结果页
-				setStorage('rankResultInfo', message['data']);
 				Taro.redirectTo({
-					url: this.state.routers.resultPage
+					url: buildURL(_this.state.routers.resultPage, {item: message[0]['data']})
 				})
 			});
 		});
@@ -267,7 +267,7 @@ export class enterGame extends Component {
 	
 	// 接受到的问题答案数据放入数组, 同时设置答案optionId
 	resetQA(message){
-		let data = JSON.parse(JSON.stringify(message['data']));
+		let data = JSON.parse(JSON.stringify(message));
 		data['options'] = [];
 		data['options'].push({key:'A', value: data['option1'], optionId: 1},{key: 'B', value: data['option2'], optionId: 2}, {key:'C', value: data['option3'], optionId: 3}, {key:'D', value: data['option4'], optionId: 4})
 		delete data['option1'];

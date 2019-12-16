@@ -117,7 +117,7 @@ export default class ReceiveMsg{
 				break;
 			case 1312:			// 服务器广播上道题的统计（红包赛消息）
 				this.timerCount[17] = setInterval(()=>{
-					emitter.emit('getPrevQAInfo', [message, this.timerCount[17]]);
+					emitter.emit('getPrizePrevQAInfo', [message, this.timerCount[17]]);
 				},20);
 				break;
 			case 1902: 			// 回应充值模板信息
