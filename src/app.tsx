@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import 'taro-ui/dist/style/index.scss'
-import { getUa, getNetworkStatusChange, setStorage, getStorage, loginRequest, getCurrentPageUrl } from './utils'
+import './utils/ald-stat'
+import { getNetworkStatusChange, setStorage, getStorage, loginRequest, getCurrentPageUrl } from './utils'
 import { Api } from './service/api'
 import './app.scss'
 import emitter from './service/events';

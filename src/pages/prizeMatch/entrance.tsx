@@ -3,7 +3,7 @@ import { View, Image, Text } from '@tarojs/components'
 import './entrance.scss'
 import emitter from '../../service/events';
 
-import { getStorage, setStorage } from '../../utils';
+import { getStorage } from '../../utils';
 
 import createVideoAd from '../../service/createVideoAd'
 import { websocketUrl } from '../../service/config'

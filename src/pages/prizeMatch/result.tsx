@@ -1,11 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import emitter from '../../service/events';
-import { getStorage, removeStorage,  } from '../../utils'
+import { removeStorage,  } from '../../utils'
 import './result.scss'
 
 import GameLoading from '../../components/GameLoading'
-
 import createVideoAd from '../../service/createVideoAd'
 import { websocketUrl } from '../../service/config'
 import MsgProto from '../../service/msgProto'

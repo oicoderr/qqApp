@@ -1,10 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import './entrance.scss'
-import emitter from '../../service/events';
-
-import { getStorage, setStorage } from '../../utils';
-
+import { getStorage } from '../../utils';
 import createVideoAd from '../../service/createVideoAd'
 import { websocketUrl } from '../../service/config'
 import MsgProto from '../../service/msgProto'
@@ -57,7 +54,6 @@ export class RankEntrance extends Component {
 				rewardTip: '每天限领10次',
 				backBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/backBtn.png',
 			}
-
 		}
 		this.webSocket = App.globalData.webSocket;
 		this.msgProto = new MsgProto();
@@ -79,10 +75,8 @@ export class RankEntrance extends Component {
 			}
 			let isSeeAds = this.msgProto.adsRewards(data);
 			let parentModule = this.msgProto.parentModule(isSeeAds);
-
 			let adsRewards = this.msgProto.adsRewards(data_);
 			let parentModule_ = this.msgProto.parentModule(adsRewards);
-
 			if(status.isEnded){
 				console.info('%c 正常播放结束，下发奖励','font-size:14px;color:#0fdb24;');
 				this.webSocket.sendWebSocketMsg({
@@ -104,7 +98,6 @@ export class RankEntrance extends Component {
 				
 			}else{
 				console.log('%c 未看完视频，没有奖励啦','font-size:14px;color:#db2a0f;');
-				
 				this.webSocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
