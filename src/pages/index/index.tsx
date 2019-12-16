@@ -128,7 +128,7 @@ export class Index extends Component {
 				level: 1,
 				imgurl: '',
 				nickName: '',
-				sex: '-1',  	// 默认性别空
+				sex: -1,  		// 默认性别空
 				copper: 1234,	// 金币 
 				redEnvelope: 0, // 红包
 				energy: 0,		// 能量
@@ -150,6 +150,7 @@ export class Index extends Component {
 		let _this = this;
 		// console.log(getCurrentTime(),'DidMount');
 		getStorage('gameUserInfo',(res)=>{
+			console.info(res,1);
 			if(res!==''){
 				_this.setState((preState)=>{
 					preState.gameUserInfo = res;
@@ -479,7 +480,7 @@ export class Index extends Component {
 				</View>
 
 				<View className='bgColor'>
-					<View className={`genderSlection hide ${ sex === '-1'?'':'hide'} `} > 
+					<View className={`genderSlection ${ sex === -1?'':'hide'} `} > 
 						<GenderSelectionUi />
 					</View>
 					<View className='bgImg'></View>
