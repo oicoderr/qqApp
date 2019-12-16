@@ -142,19 +142,20 @@ export class enterGame extends Component {
 			clearInterval(this.state.data.timer);
 			// 取消所有选中样式
 			this.setState((preState)=>{
+				preState.data.curQuestion = message[0]['data'];
+				preState.local_data.curQuestion = this.resetQA(message[0]['data']);
 				preState.local_data.curQuestion.correctOption = -1;
 				preState.local_data.selectedOptionIndex = -1;
 				// 隐藏答错人数提示
 				preState.local_data.curQuestion.answerErrorCount = 0;
-
-			},()=>{});
+				// 隐藏答复活人数提示
+				preState.local_data.curQuestion.receiveCount = 0;
+			},()=>{
+				console.error('=====  >< =====')
+				console.info(_this.state.local_data.curQuestion);
+			});
 			// 开始倒计时
 			this.getCountdown(time); 
-
-			this.setState((presState)=>{
-				presState.data.curQuestion = message[0]['data'];
-				presState.local_data.curQuestion = this.resetQA(message[0]['data']);
-			},()=>{})
 		});
 
 		// 1308 接受答案通知
@@ -276,19 +277,18 @@ export class enterGame extends Component {
 	
 	// 接受到的问题答案数据放入数组, 同时设置答案optionId
 	resetQA(data_){
-		let data = JSON.parse(JSON.stringify(data_));
-		data['options'] = [];
-		data['options'].push(
-			{key:'A', value: data['option1'], optionId: 1},
-			{key:'B', value: data['option2'], optionId: 2}, 
-			{key:'C', value: data['option3'], optionId: 3}, 
-			{key:'D', value: data['option4'], optionId: 4}
+		data_['options'] = [];
+		data_['options'].push(
+			{key:'A', value: data_['option1'], optionId: 1},
+			{key:'B', value: data_['option2'], optionId: 2}, 
+			{key:'C', value: data_['option3'], optionId: 3}, 
+			{key:'D', value: data_['option4'], optionId: 4}
 		)
-		delete data['option1'];
-		delete data['option2'];
-		delete data['option3'];
-		delete data['option4'];
-		return data;
+		delete data_['option1'];
+		delete data_['option2'];
+		delete data_['option3'];
+		delete data_['option4'];
+		return data_;
 	}
 
 	// 获取自己游戏信息
@@ -310,7 +310,7 @@ export class enterGame extends Component {
 		},()=>{});
 		this.setState((preState)=>{
 			clearInterval(preState.data.timer);
-			preState.data.timer = setInterval(function(){			// 执行计时器
+			preState.data.timer = setInterval(function(){
 				if( time > 0 ){
 					time--;
 					// console.error('倒计时==>' + time);
@@ -328,7 +328,7 @@ export class enterGame extends Component {
 			},1000)
 		},()=>{})
 	}
-	
+
 	// 发送用户所选optionId，更改选中样式
 	submitAnswer(e){
 		let _this = this;

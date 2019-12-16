@@ -95,7 +95,7 @@ export class Reasult extends Component {
 
 		// 下发视频监听事件
 		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
-			console.error('是否看完视频？' + status);
+			console.error('是否看完视频？' + status.isEnded);
 			if(status.isEnded){
 				console.info('%c 正常播放结束，领取复活卡','font-size:14px;color:#0fdb24;');
 				let data_ = {
