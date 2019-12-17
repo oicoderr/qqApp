@@ -25,87 +25,16 @@ export class Index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			// 左侧iconBox
-			iconBoxData: {
-                iconUrl: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/icon-box.png',
-                Width:560,
-                Height: 160,
-                item:[
-                    {   title: '战绩',
-                        x: -480,
-                        y: 0,
-                        router: '',
-                    },{
-                        title: '背包',
-                        x: 0,
-                        y: 0,
-                        router: '',
-                    },{
-                        title: '商店',
-                        x: 0,
-                        y: -80,
-                        router: '',
-                    },{
-                        title: '乐队',
-                        x: -80,
-                        y: -80,
-                        router: '',
-                    },{
-                        title: '排行',
-                        x: -400,
-                        y: 0,
-                        router: '',
-                    },{
-                        title: '成就',
-                        x: -320,
-                        y: 0,
-                        router: '',
-                    },{
-                        title: '好友',
-                        x: -160,
-                        y: 0,
-                        router: '',
-                    },{
-                        title: '反馈',
-                        x: -80,
-                        y: 0,
-                        router: '',
-                    },{
-                        title: '审题',
-                        x: -240,
-                        y: 0,
-                        router: '',
-                    }
-                ],
-                setting:[
-                    {
-                        title: '设置',
-                        x: -284,
-                        y: -80,
-                        router: '',
-                    },{
-                        title: '邮件',
-                        x: -220,
-                        y: -80,
-                        router: '',
-                    },{
-                        title: '公告',
-                        x: -160,
-                        y: -80,
-                        router: '',
-                    }
-                ]
-			},
-
 			routers:{
-				rankGameEntrance: '/pages/rankMatch/entrance',
-				prizeMatch: '/pages/prizeMatch/entrance',
 				/* 断线重连 */
-				enterGamePage: '/pages/rankMatch/enterGame', 
+				rankQueue: '/pages/rankMatch/queue',
+				rankGameEntrance: '/pages/rankMatch/entrance',
+				rankEnterGame: '/pages/rankMatch/enterGame',
+
+				prizeMatch: '/pages/prizeMatch/entrance',
 				prizeMatchQueue: '/pages/prizeMatch/queue',
 				prizeMatchEnterGame: '/pages/prizeMatch/enterGame',
 				/* 断线重连 End*/
-				enterGamePage: '/pages/rankMatch/enterGame',
 				goTakeMoneyPage: '/pages/payTakeMoney/takeMoney',
 				goPayTicketsPage: '/pages/payTakeMoney/recharge'
 			},
@@ -128,7 +57,7 @@ export class Index extends Component {
 				level: 1,
 				imgurl: '',
 				nickName: '',
-				sex: -1,  		// 默认性别空
+				sex: 0,  		// 默认已选择性别
 				copper: 1234,	// 金币 
 				redEnvelope: 0, // 红包
 				energy: 0,		// 能量
@@ -141,12 +70,10 @@ export class Index extends Component {
 		this.webSocket = App.globalData.webSocket;
 	}
 
-	componentWillMount () {
-		// 左侧工具盒子
-		emitter.emit('iconBoxData', this.state.iconBoxData);
-	}
+	componentWillMount () {}
 
 	componentDidMount () {
+		
 		let _this = this;
 		// console.info(getCurrentTime(),'DidMount');
 		getStorage('gameUserInfo',(res)=>{
@@ -275,32 +202,51 @@ export class Index extends Component {
 			});
 		});
 	}
-	
+
 	componentWillUnmount () {}
 
 	componentDidShow () {
 		let _this = this;
+		// 更新金币/红包/能量-数量
+		getStorage('currencyChange',(res)=>{
+			if(res!=''){
+				_this.setState((preState)=>{
+					preState.gameUserInfo.copper = unitReplacement(res.copper);
+					preState.gameUserInfo.energy = unitReplacement(res.energy);
+					preState.gameUserInfo.redEnvelope = unitReplacement(res.redEnvelope);
+				},()=>{
+					removeStorage('currencyChange');
+				})
+			}
+		});
+
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
 			this.webSocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求
 				data: {item: 'ws alive test'},
 				success(data) {
-					console.log('wss is ok:')
+					Taro.showToast({
+						title: 'wss is ok',
+						mask: true,
+						icon: 'none',
+						duration: 2000,
+					})
 				},
 				fail(err) {
-					console.info('可以重连了:' + err.errMsg, 'color: red; font-size:14px;');
+					console.info('可以重连了:' + err.errMsg, 'color: red; font-size:16px;');
 					_this.createSocket();
 				}
 			})
 		}
 // -------------------------- 游戏被杀死，重新进入游戏 --------------------------------------
-		// 匹配ing / 答题ing，杀死app，重新进入，根据字段是否断线重连判断：isreconnection 1. 在匹配中杀死的
-		this.eventEmitter = emitter.once('enterMatch', (message) => {
+		// 1302 匹配ing杀死app，根据字段是否断线重连判断：isreconnection 1. 在匹配中杀死的
+		this.eventEmitter = emitter.addListener('enterMatch', (message) => {
 			clearInterval(message[1]);
+
 			let isreconnection = message[0]['data']['isreconnection'];
 			let result = message[0]['data']['result'];
 			let type =  message[0]['data']['type']; // 1.好友赛；2.大奖赛；3.排位赛
-
+			console.info('%c 队列ing杀死app，开始进入队列','font-size:14px;color:#ffa61a;');
 			// 开启断线重连并进入匹配队列
 			if(isreconnection && result){
 				switch(type){
@@ -328,12 +274,16 @@ export class Index extends Component {
 		});
 
 		// 1304 - 2.在游戏中杀死的
-		this.eventEmitter = emitter.once('getBattleTeams', (message) => {
+		this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
 			clearInterval(message[1]);
 
+			console.error('～游戏中杀死app～');console.info(message[0]['data']);
+			// 排位赛杀死的
+			let isreconnection_ = message[0]['data']['isreconnection']; 
+			// 大奖赛杀死的
 			let isreconnection = message[0]['data']['redPalyerOnInstance'][0]['isreconnection'];
 			// 在游戏中杀死的
-			if(isreconnection){
+			if(isreconnection_ === 1 || isreconnection === 1){
 				console.error('游戏中杀死游戏退出，进来的玩家');
 				// 比赛类型 1.好友赛；2.大奖赛；3.排位赛；
 				let type = message[0]['data']['redPalyerOnInstance'][0]['type'];
@@ -342,14 +292,14 @@ export class Index extends Component {
 	
 						break;
 					case 2:
-						Taro.reLaunch({
+						Taro.redirectTo({
 							url: _this.state.routers.prizeMatchEnterGame
 						});
 						break;
 					case 3:
-						// 跳转匹配页
-						Taro.reLaunch({
-							url: buildURL(_this.state.routers.enterGamePage,{item: message[0]['data']})
+						// 排位赛游戏中退出跳转到队列页，因为队伍处理在队列页面
+						Taro.redirectTo({
+							url: buildURL(_this.state.routers.rankQueue,{item: message[0]['data']})
 						});
 						break;
 				}
@@ -358,21 +308,12 @@ export class Index extends Component {
 			}
 		});
 // -------------------------- 游戏被杀死，重新进入游戏 End-----------------------------------
-		// 更新金币/红包/能量-数量
-		getStorage('currencyChange',(res)=>{
-			if(res!=''){
-				_this.setState((preState)=>{
-					preState.gameUserInfo.copper = unitReplacement(res.copper);
-					preState.gameUserInfo.energy = unitReplacement(res.energy);
-					preState.gameUserInfo.redEnvelope = unitReplacement(res.redEnvelope);
-				},()=>{
-					removeStorage('currencyChange');
-				})
-			}
-		})	
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('enterMatch');
+		emitter.removeAllListeners('getBattleTeams');
+	}
 
 	// 主动断开重新new和联接，重新登录
 	createSocket(){

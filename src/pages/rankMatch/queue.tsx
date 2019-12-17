@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import { getStorage, setStorage } from '../../utils'
+import { getStorage, setStorage, buildURL } from '../../utils'
 import emitter from '../../service/events'
 import './queue.scss'
 
@@ -79,7 +79,7 @@ export class enterGame extends Component {
 		let _this = this;
 		this.getGameUserInfo();
 
-		// 匹配中是否断线重连状态
+		// 匹配中断线重连状态
 		const params = this.$router.params;
 		console.info('params ==>');console.info(params);
 		const isreconnection = params.isreconnection;
@@ -93,7 +93,7 @@ export class enterGame extends Component {
 			});
 		}
 
-		// 游戏中断线重连
+		// 游戏中断线重连状态
 		if( params.item ){
 			console.info('%c 游戏中途退出重连','font-size:14px;#5d00f0;');
 			let teams =  JSON.parse(params.item);
@@ -101,12 +101,12 @@ export class enterGame extends Component {
 				// 设置游戏中断线重连
 				preState.local_data.isIntheGame = true;
 				// 收到后台 ‘匹配成功后开始从新编队’
-				console.log('B队：')
-				console.info(teams['bluePalyerOnInstance']);
 				let goenterGame = this.state.routers.goenterGame
-				this.afreshFormation(teams['redPalyerOnInstance'], teams['bluePalyerOnInstance'], ()=>{
+				this.afreshFormation(teams['redPalyerOnInstance'], teams['bluePalyerOnInstance'], (data)=>{
+					console.error('断线data ===>')
+					console.info(data);
 					Taro.reLaunch({
-						url: goenterGame
+						url: buildURL(goenterGame,{item: data})
 					});
 				});
 			})
@@ -193,9 +193,11 @@ export class enterGame extends Component {
 				let PartyATeam = message[0]['data']['redPalyerOnInstance'];
 				let PartyBTeam = message[0]['data']['bluePalyerOnInstance'];
 				// 收到后台 ‘匹配成功后开始从新编队’
-				_this.afreshFormation(PartyATeam, PartyBTeam, ()=>{
+				_this.afreshFormation(PartyATeam, PartyBTeam, (data)=>{
+					console.error('正常data ===>')
+					console.info(data);
 					Taro.redirectTo({
-						url: goenterGame,
+						url: buildURL(goenterGame,{item:data}),
 					});
 				});
 			});
@@ -222,40 +224,45 @@ export class enterGame extends Component {
 	afreshFormation(readTeam, blueTeam, callback){ // readTeam, blueTeam后台数据
 		let _this = this;
 		const myselfRoleId = this.state.local_data.gameUserInfo.roleId;
-		let PartyATeam = JSON.parse(JSON.stringify(readTeam));
-		let PartyBTeam = JSON.parse(JSON.stringify(blueTeam));
+		let PartyATeam_ = JSON.parse(JSON.stringify(readTeam));
+		let PartyBTeam_ = JSON.parse(JSON.stringify(blueTeam));
 		console.info('%c 我的roleId===> '+myselfRoleId, 'font-size:14px;color:#f06300;');
 		this.setState((preState)=>{
-			PartyATeam.map((value, index, arr)=>{
+			PartyATeam_.map((value, index, arr)=>{
 				if(value['roleId'] == myselfRoleId){
 					preState.local_data.rankUserInfo = JSON.parse(JSON.stringify(value));
 					arr.splice(index,1);
-					preState.local_data.PartyATeam = PartyATeam;
-					preState.local_data.PartyBTeam = PartyBTeam;
+					preState.local_data.PartyATeam = PartyATeam_;
+					preState.local_data.PartyBTeam = PartyBTeam_;
 					console.info('A队找到自己:'); console.info(preState.local_data.rankUserInfo)
 				}else{
-					preState.local_data.PartyATeam = PartyATeam;
-					preState.local_data.PartyBTeam = PartyBTeam;
+					preState.local_data.PartyATeam = PartyATeam_;
+					preState.local_data.PartyBTeam = PartyBTeam_;
 				}
 			});
 
-			PartyBTeam.map((value, index, arr)=>{
+			PartyBTeam_.map((value, index, arr)=>{
 				if(value['roleId'] == myselfRoleId){
 					preState.local_data.rankUserInfo = JSON.parse(JSON.stringify(value));
 					arr.splice(index,1);
-					preState.local_data.PartyATeam = PartyBTeam;
-					preState.local_data.PartyBTeam = PartyATeam;
+					preState.local_data.PartyATeam = PartyBTeam_;
+					preState.local_data.PartyBTeam = PartyATeam_;
 					console.info('B队找到自己:'); console.info(preState.local_data.rankUserInfo);
 				}else{
 					return;
 				}
 			});
 
-			setStorage('rankUserInfo', _this.state.local_data.rankUserInfo ); // 个人排位信息
-			setStorage('PartyATeam',_this.state.local_data.PartyATeam); 	  // 队伍A信息
-			setStorage('PartyBTeam',_this.state.local_data.PartyBTeam);       // 队伍B信息
-			console.info('%c 设置成功缓存: rankUserInfo / PartyATeam / PartyBTeam', 'font-size:14px;color:#0004f0;');
-			if(callback)callback();
+			let rankUserInfo = _this.state.local_data.rankUserInfo;
+			let PartyATeam = _this.state.local_data.PartyATeam;
+			let PartyBTeam = _this.state.local_data.PartyBTeam;
+			console.error('所有队伍 ===>')
+			console.info(rankUserInfo,PartyATeam,PartyBTeam)
+			if(callback)callback({
+				'rankUserInfo': rankUserInfo,
+				'PartyATeam': PartyATeam,
+				'PartyBTeam': PartyBTeam,
+			});
 		});
 	}
 

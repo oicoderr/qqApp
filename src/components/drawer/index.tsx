@@ -81,15 +81,7 @@ export default class Drawer extends Component{
         }
     }
 
-    componentWillMount () {
-        let _this = this;
-        // 接受父传递iconBoxData
-        this.eventEmitter = emitter.addListener('iconBoxData', (message) => {
-            _this.setState((preState)=>{
-                preState.iconBoxData = message;
-            },()=>{})
-        });
-    }
+    componentWillMount () {}
 
     componentDidMount() {}
 
@@ -125,7 +117,6 @@ export default class Drawer extends Component{
     }
     // 页面跳转
     onRouting(router){
-        console.log(router)
         Taro.navigateTo({
             url: router
         })

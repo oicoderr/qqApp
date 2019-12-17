@@ -87,13 +87,51 @@ export class enterGame extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {}
+	componentWillMount () {
+		let _this = this;
+		const params = this.$router.params;
+		console.info('自己/所有队伍信息 ==>');console.info(JSON.parse(params.item));
+		let item = JSON.parse(params.item);
+		if(item){
+			let arrayJsonA = new Array, arrayJsonB = new Array;
+			item.PartyATeam.map(function(currentValue,){
+				arrayJsonA.push({
+					roleId: currentValue['roleId'],
+					score: 0,
+				})
+			});
 
-	componentDidMount () {
-		// 获取'自己' 及 `队伍信息`
-		this.getRankUserInfo(()=>{});
-		this.getPartyTeamInfo();
+			item.PartyBTeam.map((currentValue)=>{
+				arrayJsonB.push({
+					roleId: currentValue['roleId'],
+					score: 0,
+				})
+			})
+
+			this.setState((preState)=>{
+				preState.local_data.rankUserInfo = item['rankUserInfo'];
+				preState.local_data.selfScore = { roleId: item['rankUserInfo']['roleId'], score: 0,}
+				preState.local_data.PartyATeam = item.PartyATeam;
+				preState.local_data.scoreTeamA = arrayJsonA;
+				preState.local_data.PartyBTeam = item.PartyBTeam;
+				preState.local_data.scoreTeamB = arrayJsonB;
+			},()=>{
+				console.error('设置好了scoreTeamA/B/selfScore')
+				console.info(_this.state.local_data.selfScore);
+				console.info(_this.state.local_data.scoreTeamA);
+				console.info(_this.state.local_data.scoreTeamB);
+			});
+		}else{
+			Taro.showToast({
+				title: '未接收到队伍信息',
+				mask: true,
+				icon: 'none',
+				duration: 2000
+			})
+		}
 	}
+
+	componentDidMount () {}
 
 	componentWillUnmount () {}
 
@@ -234,12 +272,7 @@ export class enterGame extends Component {
 					preState.local_data.selfScore = selfScore;
 					preState.local_data.scoreTeamA = scoreTeamA;
 					preState.local_data.scoreTeamB = scoreTeamB;
-				},()=>{
-					console.info('%c <==== 自己 - 各队伍 ====>', 'font-size:14px;color:#f08a00;');
-					console.log(this.state.local_data.selfScore);
-					console.log(this.state.local_data.scoreTeamA);
-					console.log(this.state.local_data.scoreTeamB);
-				})
+				},()=>{})
 			})
 		})
 
@@ -275,84 +308,6 @@ export class enterGame extends Component {
 		delete data['option3'];
 		delete data['option4'];
 		return data;
-	}
-
-	// 获取自己排位模式个人信息
-	getRankUserInfo(callback){
-		let _this = this;
-		getStorage('rankUserInfo',(val)=>{
-			_this.setState((preState)=>{
-				preState.local_data.rankUserInfo = val
-			},()=>{
-				console.info('%c 自己的排位模式个人信息 ===>','color:#FF83FA;font-size:14px;');
-				console.info(this.state.local_data.rankUserInfo);
-				if(callback)callback();
-			})
-		})
-	}
-
-	// 获取排位赛队伍信息
-	getPartyTeamInfo(){
-		let _this = this;
-		getStorage('PartyATeam',(val)=>{
-			_this.setState((preState)=>{
-				preState.local_data.PartyATeam = val;
-			},()=>{
-				// console.log(' 获取排位赛‘A’队伍信息 ===>','font-szie:18px; color:#000;');console.log(this.state.local_data.PartyATeam);
-				// 获取各个队伍roleId，重新放入新数组
-				let PartyATeam = this.state.local_data.PartyATeam;
-				let arrayJson = new Array;
-				PartyATeam.map(function(currentValue,index,arr){
-					arrayJson.push({
-						roleId: currentValue['roleId'],
-						score: 0,
-					})
-				})
-
-				this.setState((preState)=>{
-					preState.local_data.scoreTeamA = arrayJson;
-				},()=>{
-					console.error('设置好了scoreTeamA')
-					console.info(this.state.local_data.scoreTeamA);
-				})
-			})
-		})
-		getStorage('PartyBTeam',(val)=>{
-			_this.setState((preState)=>{
-				preState.local_data.PartyBTeam = val;
-			},()=>{
-				// console.log('%c 获取排位赛‘B’队伍信息 ===>', 'font-szie:18px; color:#000;');console.log(this.state.local_data.PartyBTeam);
-				// 获取各个队伍roleId，重新放入新数组json中，score空
-				let PartyBTeam = this.state.local_data.PartyBTeam;
-				let arrayJson = new Array;
-				PartyBTeam.map((currentValue,index,arr)=>{
-					arrayJson.push({
-						roleId: currentValue['roleId'],
-						score: 0,
-					})
-				})
-				this.setState((preState)=>{
-					preState.local_data.scoreTeamB = arrayJson;
-				},()=>{
-					// console.error('设置好了scoreTeamB')
-					console.info(this.state.local_data.scoreTeamB);
-				})
-			})
-		})
-
-		// 自己的roleId
-		this.getRankUserInfo(()=>{
-			let rankUserInfo = this.state.local_data.rankUserInfo;
-			this.setState((preState)=>{
-				preState.local_data.selfScore = {
-					roleId: rankUserInfo['roleId'],
-					score: 0,
-				};
-			},()=>{
-				// console.error('设置好了 selfScore ')
-				console.info(this.state.local_data.selfScore);
-			})
-		})
 	}
 
 	// 开始倒计时
