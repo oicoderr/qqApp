@@ -48,7 +48,7 @@ export class enterGame extends Component {
 				defultClass: '',	   	// 选项上层默认样式class 
 				defultBottomClass: '', 	// 选项下层默认样式class
 				isShowMask: false,		// 默认不显示遮罩
-				isShowLoading: false,	// 默认显示加载动画
+				isShowLoading: true,	// 默认显示加载动画
 				curQuestion: {			// 当前题
 					currCount: 30,
 					dieCount: 0,		// 已淘汰人数
@@ -151,9 +151,10 @@ export class enterGame extends Component {
 			// 开始倒计时
 			this.getCountdown(time);
 			// 发题后关闭加载动画
+			console.error('关闭动画')
 			this.setState((preState)=>{
 				preState.local_data.isShowLoading = false;
-			})
+			});
 		});
 
 		// 1308 接受答案通知
