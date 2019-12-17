@@ -1,6 +1,6 @@
 const isWeapp = process.env.CLIENT_ENV === 'weapp'
 // 你自己的请求域名
-const HOST = "http://192.168.1.198:3800"; 
+const HOST = "http://192.168.1.39:3800"; 
 
 module.exports = {
   env: {
