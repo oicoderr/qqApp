@@ -4,7 +4,6 @@ import emitter from '../../service/events';
 import { getStorage, removeStorage,  } from '../../utils'
 import './result.scss'
 
-import GameLoading from '../../components/GameLoading'
 import RankResultInfo from '../../components/rankResultInfoUi'
 
 import createVideoAd from '../../service/createVideoAd'
@@ -40,7 +39,6 @@ export class Reasult extends Component {
 
 			// 前台数据
 			local_data:{
-				isShowLoading: true,
 				isShowRankResult: true,
 				rankUserInfo:{},
 				PartyATeam: [], 		// 红队 战报各玩家数据
@@ -252,14 +250,6 @@ export class Reasult extends Component {
 				}
 			})
 		}
-		// 关闭加载动画
-		let timerOut = setTimeout(()=>{
-			_this.setState((preState)=>{
-				preState.local_data.isShowLoading = false;
-			},()=>{
-				clearTimeout(timerOut);
-			})
-		},500);
 	}
 
 	componentDidHide () {}
@@ -396,7 +386,7 @@ export class Reasult extends Component {
 	}
 	
 	render () {
-		const { isShowLoading, isShowRankResult, resultBg, scoreBg, goldIcon, leftGetAward, rightGetAward, goBackBtn,
+		const { isShowRankResult, resultBg, scoreBg, goldIcon, leftGetAward, rightGetAward, goBackBtn,
 			replayBtn, PartyATeam, PartyBTeam, rankResultTitleUrl, personMvpUrl} = this.state.local_data;
 		const { selfCamp, blueScore, redScore, mvpRoleId } = this.state.local_data.rankBattleReport;
 		const { score, camp, roleId } = this.state.local_data.selfRankBattleReport;
@@ -447,10 +437,6 @@ export class Reasult extends Component {
 
 		return (
 			<View className='rankResult' catchtouchmove="ture">
-				<View className={isShowLoading?'':'hide'} catchtouchmove="ture">
-					< GameLoading />
-				</View>
-
 				<View className={isShowRankResult?'':'hide'} catchtouchmove="ture">
 					<RankResultInfo />
 				</View>

@@ -120,14 +120,6 @@ export class enterGame extends Component {
 
 	componentDidShow () {
 		let _this = this;
-		// 关闭加载动画
-		let timerOut = setTimeout(()=>{
-			_this.setState((preState)=>{
-				preState.local_data.isShowLoading = false;
-			},()=>{
-				clearTimeout(timerOut);
-			})
-		},500)
 
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
@@ -158,7 +150,13 @@ export class enterGame extends Component {
 		if(!isreconnection){
 			this.webSocket.sendWebSocketMsg({
 				data: parentModule,
-				success(res) { console.info('%c 进入匹配ing','font-size:14px;color:#e66900;')},
+				success(res) { 
+					console.info('%c 进入匹配ing','font-size:14px;color:#e66900;');
+					// 进入匹配后关闭加载动画
+					_this.setState((preState)=>{
+						preState.local_data.isShowLoading = false;
+					});
+				},
 				fail(err) {
 					Taro.showToast({
 						title: err.errormsg,

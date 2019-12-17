@@ -72,12 +72,6 @@ export class RankEntrance extends Component {
 	}
 	componentWillMount () {
 		let _this = this;
-		// 设置门票 / 能量
-		getStorage('gameUserInfo',(res)=>{
-			_this.setState((preState)=>{
-				preState.local_data.gameUserInfo = res;
-			})
-		});
 
 		// 创建激励视频
 		this.videoAd= new createVideoAd();
@@ -153,20 +147,19 @@ export class RankEntrance extends Component {
 		});
 	}
 
-	// 设置玩家基本信息UI显示
-	componentDidMount () {
-		let _this = this;
-		getStorage('gameUserInfo',(res)=>{
-			this.setState((preState)=>{
-				preState.local_data.gameUserInfo = res;
-			})
-		});
-	}
+	componentDidMount () {}
 
 	componentWillUnmount () {}
 
 	componentDidShow () {
 		let _this = this;
+		// 设置门票 / 能量
+		getStorage('gameUserInfo',(res)=>{
+			_this.setState((preState)=>{
+				preState.local_data.gameUserInfo = res;
+			})
+		});
+
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
 			this.webSocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求

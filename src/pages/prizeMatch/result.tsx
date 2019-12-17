@@ -78,6 +78,7 @@ export class Reasult extends Component {
 			const prizeMatchResult = JSON.parse(params.item);
 			this.setState((preState)=>{
 				preState.data.prizeMatchReport = prizeMatchResult;
+				preState.local_data.isShowLoading = false; // 关闭加载动画
 			},()=>{
 				_this.ranking(prizeMatchResult.rank);
 			});
@@ -132,14 +133,6 @@ export class Reasult extends Component {
 
 	componentDidShow () {
 		let _this = this;
-		// 关闭加载动画
-		let timerOut = setTimeout(()=>{
-			_this.setState((preState)=>{
-				preState.local_data.isShowLoading = false;
-			},()=>{
-				clearTimeout(timerOut);
-			})
-		},800);
 
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){

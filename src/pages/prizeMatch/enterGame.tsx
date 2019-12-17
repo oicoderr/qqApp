@@ -103,14 +103,6 @@ export class enterGame extends Component {
 
 	componentDidShow () {
 		let _this = this;
-		// 关闭加载动画
-		let timerOut = setTimeout(()=>{
-			_this.setState((preState)=>{
-				preState.local_data.isShowLoading = false;
-			},()=>{
-				clearTimeout(timerOut);
-			})
-		},500)
 
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
@@ -157,7 +149,11 @@ export class enterGame extends Component {
 				preState.local_data.curQuestion.receiveCount = 0;
 			},()=>{	/*console.info(_this.state.local_data.curQuestion);*/ });
 			// 开始倒计时
-			this.getCountdown(time); 
+			this.getCountdown(time);
+			// 发题后关闭加载动画
+			this.setState((preState)=>{
+				preState.local_data.isShowLoading = false;
+			})
 		});
 
 		// 1308 接受答案通知

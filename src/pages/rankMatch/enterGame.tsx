@@ -137,14 +137,6 @@ export class enterGame extends Component {
 
 	componentDidShow () {
 		let _this = this;
-		// 关闭加载动画
-		let timerOut = setTimeout(()=>{
-			_this.setState((preState)=>{
-				preState.local_data.isShowLoading = false;
-			},()=>{
-				clearTimeout(timerOut);
-			})
-		},500);
 
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
@@ -182,13 +174,16 @@ export class enterGame extends Component {
 			clearInterval(this.state.data.timer);
 			// 开始倒计时
 			this.getCountdown(time); 
+			// 发题后关闭加载动画
+			_this.setState((preState)=>{
+				preState.local_data.isShowLoading = false;
+			});
 
 			this.setState((preState)=>{
 				preState.data.curQuestion = message[0]['data'];
 				preState.local_data.curQuestion = this.resetQA(message[0]['data']);
 			},()=>{
 				// console.log('%c 处理数据时间 =======> '+  new Date().getSeconds() +'修改返回数据 =====>', 'color:pink;font-size:14px;');
-				// console.log(this.state.local_data.curQuestion);
 			});
 		});
 
