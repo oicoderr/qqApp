@@ -85,14 +85,14 @@ export class enterGame extends Component {
 	}
 
 	componentWillMount () {
-		this.getPrizeMatchUserInfo();
 		// 设置总人数
 		const params = this.$router.params;
-		console.info('收到总参赛人数 ==>');console.info(params);
-		let count = params.countPeople;
-		if(count){
+		console.info('%c 收到大奖赛自己信息 / 参赛总人数 ==>', 'font-size:14px;color:#ff751a;');console.info(JSON.parse(params.item));
+		let item = JSON.parse(params.item);
+		if(item){
 			this.setState((preState)=>{
-				preState.local_data.curQuestion.currCount = count;
+				preState.local_data.curQuestion.currCount = item.count;
+				preState.local_data.prizeMatchUserInfo= item.prizeMatchUserInfo;
 			})
 		}
 	}
@@ -288,16 +288,6 @@ export class enterGame extends Component {
 		delete data_['option3'];
 		delete data_['option4'];
 		return data_;
-	}
-
-	// 获取自己游戏信息
-	getPrizeMatchUserInfo(){
-		let _this = this;
-		getStorage('prizeMatchUserInfo',(res)=>{
-			_this.setState((preState)=>{
-				preState.local_data.prizeMatchUserInfo = res;
-			})
-		})
 	}
 
 	// 开始倒计时

@@ -30,7 +30,6 @@ export class Index extends Component {
 				rankQueue: '/pages/rankMatch/queue',
 				rankGameEntrance: '/pages/rankMatch/entrance',
 				rankEnterGame: '/pages/rankMatch/enterGame',
-
 				prizeMatch: '/pages/prizeMatch/entrance',
 				prizeMatchQueue: '/pages/prizeMatch/queue',
 				prizeMatchEnterGame: '/pages/prizeMatch/enterGame',

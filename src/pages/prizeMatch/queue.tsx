@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import { getStorage, setStorage, getArrayItems } from '../../utils'
+import { getStorage, setStorage, buildURL, getArrayItems } from '../../utils'
 import emitter from '../../service/events'
 import './queue.scss'
 
@@ -41,8 +41,7 @@ export class enterGame extends Component {
 			// 前台数据
 			local_data:{
 				timer: '',				// 定时器
-				gameUserInfo: {},	
-				prizeMatchUserInfo: {},
+				gameUserInfo: {},
 				headImgPosi:[
 					{
 						x: -10,
@@ -212,12 +211,15 @@ export class enterGame extends Component {
 			clearInterval(message[1]);
 			console.info('接受当前所有参赛玩家信息 ====>');console.info(message[0]['data']);
 			// 设置自己大奖赛游戏信息
-			this.setPrizeMatchUserInfo(message[0]['data']['redPalyerOnInstance']);
+			let prizeMatchUserInfo = this.getPrizeMatchUserInfo(message[0]['data']['redPalyerOnInstance']);
 			let enterGame = this.state.routers.enterGame;
 			// 所有参赛总人数
 			let countPeople = message[0]['data']['redPalyerOnInstance'].length;
 			Taro.redirectTo({
-				url: enterGame + '?countPeople=' + countPeople
+				url: buildURL(enterGame,{item: {
+					'prizeMatchUserInfo': prizeMatchUserInfo,
+					'count': countPeople
+				}})
 			})
 		});
 	}
@@ -235,7 +237,8 @@ export class enterGame extends Component {
 			},()=>{
 				clearTimeout(timerOut);
 			})
-		},500)
+		},500);
+
 		// 切换匹配头像 1.5s切换一次
 		this.setState((preState)=>{
 			let headImgPosi = preState.local_data.headImgPosi;
@@ -257,7 +260,7 @@ export class enterGame extends Component {
 			},1500);
 			// console.info(this.state.local_data.selectedHead);
 			// console.info(this.state.local_data.selectedPosi);
-		})
+		});
 
 		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
@@ -314,18 +317,16 @@ export class enterGame extends Component {
 		})
 	}
 
-	// 设置自己大奖赛游戏信息
-	setPrizeMatchUserInfo(data){
+	// 获取自己大奖赛游戏信息
+	getPrizeMatchUserInfo(data){
 		let _this = this;
-		let roleId = this.state.local_data.gameUserInfo.roleId;
+		let roleId = this.state.local_data.gameUserInfo.roleId, prizeMatchUserInfo;
 		for(let i = 0; i < data.length; i++){
 			if(data[i]['roleId'] == roleId){
-				setStorage('prizeMatchUserInfo',data[i]);
-				this.setState((preState)=>{
-					preState.local_data.prizeMatchUserInfo = JSON.parse(JSON.stringify(data[i]));
-				},()=>{})
+				prizeMatchUserInfo = data[i];
 			}
 		}
+		return prizeMatchUserInfo;
 	}
 
 	// 主动断开重新new和联接，重新登录
