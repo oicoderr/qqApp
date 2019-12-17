@@ -99,14 +99,10 @@
                 height: 80rpx;
                 background-repeat: no-repeat;
                 margin-bottom: 8rpx;
+                background-image: url(https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/icon-box0.png);
+                background-size: 380rpx 300rpx;
             }
-            .settingItemBg{
-                width: 60rpx;
-                height: 60rpx;
-                background-repeat: no-repeat;
-                margin-bottom: 8rpx;
-            }
-            
+
             .title{
                 font-size: 24rpx;
                 font-weight: 400;
@@ -132,17 +128,21 @@
         padding: 15rpx 46rpx 34rpx 28rpx;
 
         .item{
-            width: 60rpx;
-            height: 118rpx;
+            width: 60px;
+            height: 118px;
 
             .settingItemBg{
                 width: 60rpx;
                 height: 60rpx;
                 background-repeat: no-repeat;
                 margin-bottom: 8rpx;
+                background-image: url(https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/icon-box0.png);
+                background-size: 380px 300px;
             }
-            
+
             .title{
+                width:60rpx;
+                text-align: center;
                 font-size: 24rpx;
                 font-weight: 400;
                 color:rgba(255,255,255,1);

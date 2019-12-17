@@ -150,10 +150,7 @@ export class enterGame extends Component {
 				preState.local_data.curQuestion.answerErrorCount = 0;
 				// 隐藏答复活人数提示
 				preState.local_data.curQuestion.receiveCount = 0;
-			},()=>{
-				console.error('=====  >< =====')
-				console.info(_this.state.local_data.curQuestion);
-			});
+			},()=>{	/*console.info(_this.state.local_data.curQuestion);*/ });
 			// 开始倒计时
 			this.getCountdown(time); 
 		});
@@ -161,7 +158,7 @@ export class enterGame extends Component {
 		// 1308 接受答案通知
 		this.eventEmitter = emitter.addListener('getAnswer', (message) => {
 			clearInterval(message[1]);
-			console.info('%c 已接受到答案', 'color:blue; font-size:12px;');
+			console.info('%c 已接受到答案', 'color:#1a9cff; font-size:14px;');
 			console.info(message[0]['data']);
 		});
 

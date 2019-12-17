@@ -148,9 +148,8 @@ export class Index extends Component {
 
 	componentDidMount () {
 		let _this = this;
-		// console.log(getCurrentTime(),'DidMount');
+		// console.info(getCurrentTime(),'DidMount');
 		getStorage('gameUserInfo',(res)=>{
-			console.info(res,1);
 			if(res!==''){
 				_this.setState((preState)=>{
 					preState.gameUserInfo = res;
