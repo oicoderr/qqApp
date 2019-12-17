@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
-import { getStorage, buildURL, getCurrentTime } from '../../utils'
+import { buildURL, getCurrentTime } from '../../utils'
 import './enterGame.scss'
 import emitter from '../../service/events'
 import { websocketUrl } from '../../service/config'
@@ -29,6 +29,7 @@ export class enterGame extends Component {
 			// 后台返回数据
 			data:{
 				timer:'', 				// 计时器
+				secondsTimer:'',		// 3s计时器
 				time: '10',				// 倒计时
 				curQuestion: {},		// 当前题
 				preQuestionInfo:{		// 上一题回答基本信息
@@ -151,7 +152,6 @@ export class enterGame extends Component {
 			// 开始倒计时
 			this.getCountdown(time);
 			// 发题后关闭加载动画
-			console.error('关闭动画')
 			this.setState((preState)=>{
 				preState.local_data.isShowLoading = false;
 			});
@@ -194,6 +194,7 @@ export class enterGame extends Component {
 				}else{	// 提示`是否复活`
 					// 复活倒计时开始
 					let time = _this.state.local_data.curQuestion.waitreceivetime;
+					clearInterval(_this.state.data.secondsTimer);
 					_this.resurrectionCountdown(time,()=>{
 						// 倒计时结束1.关闭弹窗
 						_this.setState((preState)=>{
@@ -414,15 +415,15 @@ export class enterGame extends Component {
 
 	// 复活倒计时
 	resurrectionCountdown(time, callback){
-		let _this = this, timer;
-		clearInterval(timer);
-		timer = setInterval(()=>{
+		let _this = this;
+		clearInterval(_this.state.data.secondsTimer);
+		this.state.data.secondsTimer = setInterval(()=>{
 			time-=1;
 			if(time < 0){
 				_this.setState((preState)=>{
 					preState.local_data.preQuestionInfo.waitreceivetime = 0;
 				},()=>{
-					clearInterval(time);
+					clearInterval(_this.state.data.secondsTimer);
 					if(callback)callback();
 				});
 			}else{

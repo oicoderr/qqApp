@@ -312,6 +312,21 @@ export class Index extends Component {
 	componentDidHide () {
 		emitter.removeAllListeners('enterMatch');
 		emitter.removeAllListeners('getBattleTeams');
+		emitter.removeAllListeners('getQuestion');
+		emitter.removeAllListeners('getAnswer');
+		emitter.removeAllListeners('getRenascenceInfo');
+		emitter.removeAllListeners('getResurrectResult');
+		emitter.removeAllListeners('getPrizeMatchReport');
+		emitter.removeAllListeners('getPrevQAInfo');
+		emitter.removeAllListeners('getRankResultInfo');
+		emitter.removeAllListeners('getRankBattleReport');
+		emitter.removeAllListeners('exitQueueStatus');
+		emitter.removeAllListeners('getTeamSituation');
+		emitter.removeAllListeners('getPrizePrevQAInfo');
+		emitter.removeAllListeners('getRechargeMessage');
+		emitter.removeAllListeners('getPrePay_id');
+		emitter.removeAllListeners('takeMoney');
+		emitter.removeAllListeners('getPrevQtakeMoneyStatusAInfo');
 	}
 
 	// 主动断开重新new和联接，重新登录
