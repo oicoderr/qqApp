@@ -134,7 +134,12 @@ export class enterGame extends Component {
 			this.webSocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求
 				data: 'ws alive test',
 				success(data) {
-					console.log('wss is ok:')
+					Taro.showToast({
+						title: 'wss is ok',
+						mask: true,
+						icon: 'none',
+						duration: 2000,
+					})
 				},
 				fail(err) {
 					console.info('可以重连了:' + err.errMsg, 'color: red; font-size:14px;');

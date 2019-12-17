@@ -151,7 +151,12 @@ export class enterGame extends Component {
 			this.webSocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求
 				data: 'ws alive test',
 				success(data) {
-					console.log('wss is ok:')
+					Taro.showToast({
+						title: 'wss is ok',
+						mask: true,
+						icon: 'none',
+						duration: 2000,
+					})
 				},
 				fail(err) {
 					console.info('可以重连了:' + err.errMsg, 'color: red; font-size:14px;');
@@ -276,7 +281,7 @@ export class enterGame extends Component {
 			})
 		})
 
-		// 接受排位赛结果信息 => `跳转`结果页
+		// 1324 接受排位赛结果信息 => `跳转`结果页
 		this.eventEmitter = emitter.once('getRankResultInfo', (message) => {
 			clearInterval(message[1]);
 			console.info('%c 接受到本局结果信息', 'color:#000; font-size:14px;');
@@ -287,7 +292,12 @@ export class enterGame extends Component {
 			},()=>{
 				// 跳转结果页
 				Taro.redirectTo({
-					url: buildURL(_this.state.routers.resultPage, {item: message[0]['data']})
+					url: buildURL(_this.state.routers.resultPage, {
+						item:{
+							'rankResultInfo': message[0]['data'],
+							'rankUserInfo': _this.state.local_data.rankUserInfo
+						}
+					})
 				})
 			});
 		});

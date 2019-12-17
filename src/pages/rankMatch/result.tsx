@@ -126,21 +126,18 @@ export class Reasult extends Component {
 				});
 			}
 		});
-	}
 
-	componentDidMount () {
-		let _this = this;
-		this.getRankUserInfo();
 		// 获取本局结果页数据
 		const params = this.$router.params;
-		console.info('获取排位赛结果数据 ==>');console.info(params.item);
-		const rankResultInfo = JSON.parse(params.item);
-		if(rankResultInfo){
+		console.info('获取排位赛结果数据 ==>');console.info(JSON.parse(params.item));
+		const item = JSON.parse(params.item);
+		if(item){
 			this.setState((preState)=>{
-				preState.local_data.rankResultInfo = rankResultInfo;
+				preState.local_data.rankResultInfo = item.rankResultInfo;
+				preState.local_data.rankUserInfo = item.rankUserInfo;
 			},()=>{});
 			// 本局结果页数据发送给子组件rankResultInfoUi
-			emitter.emit('rankResultInfo', rankResultInfo);
+			emitter.emit('rankResultInfo', item.rankResultInfo);
 		}else{
 			Taro.showToast({
 				title: '未获得排位赛结果数据',
@@ -149,6 +146,10 @@ export class Reasult extends Component {
 				duration: 2000
 			})
 		}
+	}
+
+	componentDidMount () {
+		let _this = this;		
 
 		// 接受子组件 ==> 返回是否勾选播放激励视频状态
 		this.eventEmitter = emitter.addListener('isCheckPlayVideo', (message) => {
@@ -238,11 +239,15 @@ export class Reasult extends Component {
 			this.webSocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求
 				data: 'ws alive test',
 				success(data) {
-					console.log('wss is ok:')
+					Taro.showToast({
+						title: 'wss is ok',
+						mask: true,
+						icon: 'none',
+						duration: 2000,
+					})
 				},
 				fail(err) {
 					console.info('可以重连了:' + err.errMsg, 'color: red; font-size:14px;');
-					
 					_this.createSocket();
 				}
 			})
@@ -258,16 +263,6 @@ export class Reasult extends Component {
 	}
 
 	componentDidHide () {}
-
-	// 获取自己排位模式个人信息
-	getRankUserInfo(){
-		let _this = this;
-		getStorage('rankUserInfo',(val)=>{
-			_this.setState((preState)=>{
-				preState.local_data.rankUserInfo = val;
-			},()=>{})
-		})
-	}
 
 	// 重新编队
 	reForm(data){
@@ -342,18 +337,9 @@ export class Reasult extends Component {
 
 	// 重玩返回入口页面
 	replay(){
-		this.clearLocalStorage();
 		Taro.redirectTo({
 			url: this.state.routers.entrancePage
 		});
-	}
-
-	// 清除本局游戏缓存
-	clearLocalStorage(){
-		removeStorage('PartyATeam');
-		removeStorage('PartyBTeam');
-		removeStorage('rankUserInfo');
-		removeStorage('rankResultInfo');
 	}
 
 	// 主动断开重新new和联接，重新登录
