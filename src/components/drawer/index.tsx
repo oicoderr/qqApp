@@ -25,7 +25,7 @@ export default class Drawer extends Component{
                         title: '商店',
                         x: -210,
                         y: -110,
-                        router: '',
+                        router: '/pages/mall/index',
                     },{
                         title: '乐队',
                         x: -210,

@@ -151,6 +151,11 @@ export default class ReceiveMsg{
 					emitter.emit('propsInfo', [message, this.timerCount[23]]);
 				},20);
 				break;
+			case 1702: 			// 服务器回复商城当天已免费领取情况
+				this.timerCount[24] = setInterval(()=>{
+					emitter.emit('getMall', [message, this.timerCount[24]]);
+				},20);
+				break;
 		}
     }
 }

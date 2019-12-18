@@ -189,8 +189,35 @@ export default class MsgProto{
         }
     }
 
+    /* --------------------------- 商城 ----------------------------- */
+    // 1701 客户端请求商城数据  类型(1.道具;2.乐队人物;)
+    getMall(val){
+        return {
+            code: 1701,
+            data: {
+                value: val
+            }
+        }
+    }
 
+    // 1703 购买商城道具
+    buyProps(params){
+        const {id, count} = params;
+        return{
+            'id': id,
+            'count': count,
+        }
+    }
 
+    // 1705 商城看完广告免费领取道具
+    seeAdsGetProps(val){
+        return{
+            code: 1705,
+            data:{
+                id: val
+            }
+        }
+    }
 
 
     // 反序列化接受服务器返回信息

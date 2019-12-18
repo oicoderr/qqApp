@@ -37,6 +37,7 @@ class App extends Component {
 			'pages/payTakeMoney/recharge', 	  // 充值
 
 			'pages/backpack/index', 	  	  // 背包
+			'pages/mall/index', 	  	  	  // 商城
 
 			'pages/startWriteQuestion/index',
 			'pages/writeQuestion/index',
