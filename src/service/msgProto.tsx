@@ -169,8 +169,25 @@ export default class MsgProto{
         }
     }
     
+    // 1501 客户端请求背包数据
+    getBackpack(){
+        return {
+            'code': 1501,
+            'data':{}
+        }
+    }
 
-
+    // 1503 背包内使用道具
+    usedProps(params){
+        const {id, count} = params;
+        return{
+            code: 1503,
+            data:{
+                'id': id,
+                'count': count,
+            }
+        }
+    }
 
 
 

@@ -1,0 +1,257 @@
+.hide{
+    display: none;
+}
+.backpack{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+.bgColor{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(97, 130, 242, 1);
+    position: relative;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+
+    .bgImg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/rank-texture-0001.png');
+        background-size: 750px 3000px;
+        background-repeat: no-repeat;
+        opacity: 1;
+        filter:alpha(opacity=1);
+    }
+
+    .content{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 68rpx 20rpx 20rpx 20rpx;
+        overflow: hidden;
+        box-sizing: border-box;
+        z-index: 2;
+
+        .head{
+            width: 100%;
+            height: 54rpx;
+            display: flex;
+            justify-content: left;
+            padding-bottom: 9rpx;
+
+            .backBtnBox{
+                width: 100%;
+                height: 54rpx;
+                display: flex;
+                justify-content: space-between;
+                background-color: transparent;
+                position: absolute;
+                z-index: 99;
+        
+                .backBtn{
+                    width: 33rpx;
+                    height: 54rpx;
+                }
+            }
+
+            .energyIcon{
+                width: 64rpx;
+                height: 76rpx;
+                position: relative;
+                z-index: 4;
+                left: 86rpx;
+            }
+
+            .energyBox{
+                position: relative;
+                z-index: 3;
+                min-width: 120rpx;
+                max-width: 160rpx;
+                font-size: 28rpx;
+                height: 44rpx;
+                line-height: 24rpx;
+                font-weight:600;
+                color:rgba(255,255,255,1);
+                padding: 10rpx;
+                box-sizing: border-box;
+                overflow: hidden;
+                text-align: center;
+                border: 2rpx solid rgba(48,48,48,1);
+                border-radius: 10rpx;
+                background: rgba(30,30,30,.3);
+                margin: auto 0;
+                left: 62rpx;
+            }
+        }
+
+        .body{
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            box-sizing: border-box;
+            
+            .backpackTitleWrap{
+                width: 100%;
+                height: auto;
+                position: absolute;
+                top: 70rpx;
+                display: flex;
+                justify-content: center;
+
+                .backpackTitle{
+                    width: 426rpx;
+                    height: 60rpx;
+                }
+            }
+
+            .backpackContent{
+
+                width: 100%;
+                height: calc(100vh - 150rpx);
+                box-sizing: border-box;
+                overflow: hidden;
+                background:rgba(0,0,0,.3);
+                border: 2rpx solid rgba(0,0,0,.3);
+                border-radius: 20rpx;
+                padding: 30rpx;
+                box-sizing: border-box;
+
+                .scrollview{
+                    height: 100%;
+                    position: relative;
+
+                    .box{
+
+                        box-sizing: border-box;
+                        overflow: hidden;
+                        display: flex;
+                        flex-wrap: wrap;
+                        flex-direction: row;
+                        justify-content: flex-start;
+
+                        .bothMargin{
+                            margin: 0 26rpx;
+                        }
+
+                        .item{
+                            position: relative;
+                            width: 200rpx;
+                            height: 300rpx;
+                            background:rgba(0,0,0,.3);
+                            border-radius: 20rpx;
+                            padding: 20rpx;
+                            box-sizing: border-box;
+                            overflow: hidden;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            margin-bottom: 14rpx;
+
+                            .cardBg{
+                                width: 160rpx;
+                                height: 120rpx;
+                                padding: 14rpx 24rpx;
+                                box-sizing: border-box;
+                                display:flex;
+                                background:rgba(255,255,255,1);
+                                border-radius: 20rpx;
+                                position: absolute;
+                                z-index: 10;
+
+                                .cardImg{
+                                    width: 110rpx;
+                                    height: 90rpx;
+                                    margin: auto;
+                                    position: absolute;
+                                    z-index: 11;
+                                }
+
+                                .haveNum{
+                                    width: 110rpx;
+                                    height: 32rpx;
+                                    line-height: 32rpx;
+                                    background: rgba(0,0,0,.6);
+                                    border-radius: 16rpx;
+                                    position: absolute;
+                                    z-index: 12;
+                                    bottom: 20rpx;
+                                    font-size: 24rpx;
+                                    font-weight: 600;
+                                    color: rgba(255,255,255,1);
+                                    text-align: center;
+                                    overflow: hidden;
+                                    text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+                                }
+                            }
+
+                            .name{
+                                position: absolute;
+                                top: 160rpx;
+                                left: 0;
+                                width: 200rpx;;
+                                height: 24rpx;
+                                line-height: 24rpx;
+                                box-sizing: border-box;
+                                font-size: 24rpx;
+                                font-weight: 600;
+                                color:rgba(255,255,255,1);
+                                text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+                                overflow: hidden;
+                                text-align: center;
+                                padding: 0 4rpx;
+                                box-sizing: border-box;
+                            }
+
+                            .isUsed{
+                                width: 160rpx;
+                                height: 74rpx;
+                                box-sizing: border-box;
+                                overflow: hidden;
+                                position: absolute;
+                                bottom: 20rpx;
+
+                                .usedBtn{
+                                    width: 144rpx;
+                                    height: 74rpx;
+                                    margin: 0 auto;
+                                }
+
+                                .tipCard{
+                                    font-size: 30rpx;
+                                    font-weight: 600;
+                                    color:rgba(255,186,13,1);
+                                    text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+                                    text-align: center;
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .commonTip{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+        height: 70rpx;
+        line-height: 70rpx;
+        overflow: hidden;
+        box-sizing: border-box;
+        background:rgba(248,181,42,1);
+        font-size: 30rpx;
+        font-weight: 600;
+        color: rgba(255,255,255,1);
+    }
+}

@@ -20,7 +20,7 @@ export default class Drawer extends Component{
                         title: '背包',
                         x: -10,
                         y: -10,
-                        router: '',
+                        router: '/pages/backpack/index',
                     },{
                         title: '商店',
                         x: -210,
@@ -89,7 +89,12 @@ export default class Drawer extends Component{
 
     componentDidShow () {}
 
-    componentDidHide () {}
+    componentDidHide () {
+        this.setState({
+            showModalStatus: false,
+            isAnimateClass: 'animateBack'
+        });
+    }
 
     powerDrawer (e) {
         var currentStatu = e.currentTarget.dataset.statu;

@@ -141,6 +141,16 @@ export default class ReceiveMsg{
 					emitter.emit('takeMoneyStatus', [message, this.timerCount[21]]);
 				},20);
 				break;
+			case 1502:			// 背包数据
+				this.timerCount[22] = setInterval(()=>{
+					emitter.emit('getBackpack', [message, this.timerCount[22]]);
+				},20);
+				break;
+			case 1504:			// 服务器回复背包内道具id剩余道具数量
+				this.timerCount[23] = setInterval(()=>{
+					emitter.emit('propsInfo', [message, this.timerCount[23]]);
+				},20);
+				break;
 		}
     }
 }

@@ -36,6 +36,8 @@ class App extends Component {
 			'pages/payTakeMoney/takeMoney',	  // 提现
 			'pages/payTakeMoney/recharge', 	  // 充值
 
+			'pages/backpack/index', 	  	  // 背包
+
 			'pages/startWriteQuestion/index',
 			'pages/writeQuestion/index',
 			'pages/redEnvelopeConvert/index',
