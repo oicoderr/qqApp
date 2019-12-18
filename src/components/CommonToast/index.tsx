@@ -13,7 +13,7 @@ export default class CommonToast extends Component{
                 money: 10,
                 tip: '确认提取',
             },
-            
+
             // 默认组件数据
             local_data:{
                 cancelBtnText: '取消',
