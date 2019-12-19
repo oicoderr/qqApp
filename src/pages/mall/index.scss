@@ -167,9 +167,9 @@
                         justify-content: flex-start;
                         padding-top: 20rpx;
 
-                        .freePiece{
+                        .samePiece{
                             width: 100%;
-                            height: 360rpx;
+                            height: auto;
                             overflow: hidden;
                             box-sizing: border-box;
 
@@ -178,22 +178,20 @@
                                 height: 60rpx;
                                 line-height: 60rpx;
                                 display: flex;
-                                background-image: linear-gradient(to right, #ff315d , #ff977f );
                                 padding: 0 30rpx 0 35rpx;
                                 box-sizing: border-box;
                                 display: flex;
                                 justify-content: space-between;
                                 flex-direction: row;
 
-                                .freeTitle{
+                                .Title{
                                     font-size: 30rpx;
                                     height: 60rpx;
                                     line-height: 60rpx;
                                     font-weight: 600;
                                     color:rgba(255,255,255,1);
-                                    text-shadow:0rpx 0rpx 10rpx rgba(136, 31, 50, 1);
                                 }
-                                .freeTip{
+                                .Tip{
                                     font-size: 24rpx;
                                     height: 60rpx;
                                     line-height: 60rpx;
@@ -201,9 +199,57 @@
                                     color:rgba(255,255,255,1);
                                 }
                             }
+
+                            // 免费道具横条 / 提示语
+                            .bar1{
+                                background-image: linear-gradient(to right, #ff315d , #ff977f ) !important;
+                            }
+                            .title1{
+                                text-shadow:0rpx 0rpx 10rpx rgba(136, 31, 50, 1) !important;
+                            }
+                            // 付费道具横条 / 提示语
+                            .bar2{
+                                background-image: linear-gradient(to right, #23b765 , #2cdb9f ) !important;
+                            }
+                            .title2{
+                                text-shadow:0rpx 0rpx 10rpx rgba(34, 128, 79, 1) !important;
+                            }
+
+                            // 主唱横条 / 提示语
+                            .bar3{
+                                background-image: linear-gradient(to right, #F11165 , #FF42FD ) !important;
+                            }
+                            .title3{
+                                text-shadow:0rpx 0rpx 10rpx rgba(155, 26, 69, 1) !important;
+                            }
+
+                            // 吉他手 / 提示语
+                            .bar4{
+                                background-image: linear-gradient(to right, #FFE372 , #FFBA27 ) !important;
+                            }
+                            .title4{
+                                text-shadow:0rpx 0rpx 10rpx rgba(127, 96, 25, 1) !important;
+                            }
+
+                            // 鼓手 / 提示语
+                            .bar5{
+                                background-image: linear-gradient(to right, #3276FF , #30DAFF ) !important;
+                            }
+                            .title5{
+                                text-shadow:0rpx 0rpx 10rpx rgba(24, 64, 129, 1) !important;
+                            }
+
+                            // 贝斯手 / 提示语
+                            .bar6{
+                                background-image: linear-gradient(to right, #23B765 , #2CDB9F ) !important;
+                            }
+                            .title6{
+                                text-shadow:0rpx 0rpx 10rpx rgba(18, 89, 53, 1) !important;
+                            }
                         }
 
-                        .propsPiece{
+                        // 主唱
+                        .leadSinger{
                             width: 100%;
                             height: 100%;
                             overflow: hidden;
@@ -214,7 +260,7 @@
                                 height: 60rpx;
                                 line-height: 60rpx;
                                 display: flex;
-                                background-image: linear-gradient(to right, #23b765 , #2cdb9f );
+                                background-image: linear-gradient(to right, #F11165 , #FF42FD );
                                 padding: 0 30rpx 0 35rpx;
                                 box-sizing: border-box;
                                 display: flex;
@@ -227,7 +273,7 @@
                                     line-height: 60rpx;
                                     font-weight: 600;
                                     color:rgba(255,255,255,1);
-                                    text-shadow:0rpx 0rpx 10rpx rgba(34, 128, 79, 1);
+                                    text-shadow:0rpx 0rpx 10rpx rgba(155, 26, 69, 1);
                                 }
 
                                 .propsTip{
@@ -305,11 +351,25 @@
                             flex-direction: column;
                             justify-content: space-between;
                             margin-bottom: 17rpx;
+                        }
 
-                            .cardBg{
+                        .item_{
+                            position: relative;
+                            width: 200rpx;
+                            height: 300rpx;
+                            background:rgba(0,0,0,.3);
+                            border-radius: 20rpx;
+                            padding: 20rpx;
+                            box-sizing: border-box;
+                            overflow: hidden;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            margin-bottom: 20rpx;
+
+                            .cardBg_{
                                 width: 160rpx;
-                                height: 120rpx;
-                                padding: 14rpx 24rpx;
+                                height: 170rpx;
                                 box-sizing: border-box;
                                 display:flex;
                                 background:rgba(255,255,255,1);
@@ -317,61 +377,86 @@
                                 position: absolute;
                                 z-index: 10;
 
-                                .cardImg{
-                                    width: 110rpx;
-                                    height: 90rpx;
+                                .cardImg_{
+                                    width: 160rpx;
+                                    height: 170rpx;
                                     margin: auto;
                                     position: absolute;
                                     z-index: 11;
                                 }
                             }
+                        }
 
-                            .name{
-                                position: absolute;
-                                top: 160rpx;
-                                left: 0;
-                                width: 200rpx;;
-                                height: 24rpx;
-                                line-height: 24rpx;
-                                box-sizing: border-box;
+
+                        .consumCountWrap{
+                            position: absolute;
+                            bottom: 14rpx;
+                            width: 160rpx;
+                            height: 45rpx;
+                            box-sizing: border-box;
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            
+                            .icon{
+                                width: 36rpx;
+                                height: 45rpx;
+                            }
+
+                            .consumCount{
+                                line-height: 45rpx;
                                 font-size: 24rpx;
                                 font-weight: 600;
                                 color:rgba(255,255,255,1);
                                 text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
-                                overflow: hidden;
-                                text-align: center;
-                                padding: 0 4rpx;
-                                box-sizing: border-box;
-                            }
-
-                            .consumCountWrap{
-                                position: absolute;
-                                bottom: 14rpx;
-                                width: 160rpx;
-                                height: 45rpx;
-                                box-sizing: border-box;
-                                display: flex;
-                                flex-direction: row;
-                                justify-content: center;
-                                
-                                .icon{
-                                    width: 36rpx;
-                                    height: 45rpx;
-                                }
-
-                                .consumCount{
-                                    line-height: 45rpx;
-                                    font-size: 24rpx;
-                                    font-weight: 600;
-                                    color:rgba(255,255,255,1);
-                                    text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
-                                    margin-left: 8rpx;
-                                }
+                                margin-left: 8rpx;
                             }
                         }
 
+                        .cardBg{
+                            width: 160rpx;
+                            height: 120rpx;
+                            padding: 14rpx 24rpx;
+                            box-sizing: border-box;
+                            display:flex;
+                            background:rgba(255,255,255,1);
+                            border-radius: 20rpx;
+                            position: absolute;
+                            z-index: 10;
+
+                            .cardImg{
+                                width: 110rpx;
+                                height: 90rpx;
+                                margin: auto;
+                                position: absolute;
+                                z-index: 11;
+                            }
+                        }
+
+                        .name{
+                            position: absolute;
+                            top: 160rpx;
+                            left: 0;
+                            width: 200rpx;;
+                            height: 24rpx;
+                            line-height: 24rpx;
+                            box-sizing: border-box;
+                            font-size: 24rpx;
+                            font-weight: 600;
+                            color:rgba(255,255,255,1);
+                            text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+                            overflow: hidden;
+                            text-align: center;
+                            padding: 0 4rpx;
+                            box-sizing: border-box;
+                        }
+
+                        .name_{
+                            top: 205rpx !important;
+                        }
+
                         .bothMargin{
-                            margin: 0 26rpx;
+                            margin: 0  calc(100% - 625rpx);
                         }
                     }
                 }

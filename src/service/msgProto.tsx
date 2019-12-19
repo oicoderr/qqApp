@@ -27,7 +27,7 @@ export default class MsgProto{
         }
     }
 
-     // 1101 前台发送心跳
+    // 1101 前台发送心跳
     heartModule(data){
         let _this = this;
         return {
@@ -218,6 +218,12 @@ export default class MsgProto{
             }
         }
     }
+
+
+
+
+
+
 
 
     // 反序列化接受服务器返回信息
