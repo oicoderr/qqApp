@@ -204,17 +204,10 @@ export default class MsgProto{
     buyProps(params){
         const {id, count} = params;
         return{
-            'id': id,
-            'count': count,
-        }
-    }
-
-    // 1705 商城看完广告免费领取道具
-    seeAdsGetProps(val){
-        return{
-            code: 1705,
+            code: 1703,
             data:{
-                id: val
+                id: id,
+                count: count,
             }
         }
     }

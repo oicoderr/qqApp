@@ -37,7 +37,7 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        padding: 68rpx 20rpx 20rpx 20rpx;
+        padding: 50rpx 20rpx 20rpx 20rpx;
         overflow: hidden;
         box-sizing: border-box;
         z-index: 2;
@@ -47,13 +47,14 @@
             height: 54rpx;
             display: flex;
             justify-content: left;
-            padding-bottom: 9rpx;
+            padding-bottom: 30rpx;
 
             .backBtnBox{
                 width: 100%;
                 height: 54rpx;
                 display: flex;
-                justify-content: space-between;
+                flex-direction: row;
+                justify-content: flex-start;
                 background-color: transparent;
                 position: absolute;
                 z-index: 99;
@@ -62,6 +63,62 @@
                     width: 33rpx;
                     height: 54rpx;
                 }
+
+                .goldWrap{
+                    position: relative;
+                    width: 140rpx;
+                    max-width: 200rpx;
+                    height: 62rpx;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    left: 60rpx;
+
+                    .goldIcon_{
+                        position:absolute;
+                        z-index:18;
+                        width: 52rpx;
+                        height: 62rpx;
+                    }
+                    
+                }
+
+                .energyWrap{
+                    position: relative;
+                    width: 140rpx;
+                    max-width: 200rpx;
+                    height: 62rpx;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    left: 100rpx;
+                    .energyIcon_{
+                        position:absolute;
+                        z-index:18;
+                        width: 45rpx;
+                        height: 60rpx;
+                    }
+                }
+
+                .num{
+                    position: absolute;
+                    height: 44rpx;
+                    z-index: 16;
+                    text-align: center;
+                    line-height: 42rpx;
+                    border: 2rpx solid rgba(48,48,48,1);
+                    background:rgba(0,0,0,.2);
+                    border-radius: 10rpx;
+                    font-size: 24rpx;
+                    font-weight: 600;
+                    color: rgba(255,255,255,1);
+                    padding: 0 20rpx 0 42rpx;
+                    box-sizing: border-box;
+                    margin: auto;
+                    left:14rpx;
+                    top:10rpx;
+                }
+
             }
 
             .energyIcon{
@@ -399,8 +456,8 @@
                             justify-content: center;
                             
                             .icon{
-                                width: 36rpx;
-                                height: 45rpx;
+                                width: 34rpx;
+                                height: 40rpx;
                             }
 
                             .consumCount{

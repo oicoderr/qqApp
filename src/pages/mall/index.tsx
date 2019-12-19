@@ -1,10 +1,10 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
 import { debounce, throttle} from 'lodash'
-import { setStorage, getStorage } from '../../utils'
+import { setStorage, getStorage, unitReplacement } from '../../utils'
 import './index.scss'
 import GameLoading from '../../components/GameLoading'
-
+import createVideoAd from '../../service/createVideoAd'
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'
 
@@ -19,11 +19,13 @@ export class Login extends Component {
 	constructor(props) {
 		super(props);
 		// 节流函数
-		this.switchTab = throttle(this.switchTab, 1000);
+		this.DBswitchTab = throttle(this.DBswitchTab, 1000);
+		this.DBbuyProps = throttle(this.DBbuyProps, 1000);
+		this.DBseeAdsGetProps = throttle(this.DBseeAdsGetProps, 1000);
 		this.state = {
 			data:{
-				// 商城信息
 				/*
+					商城信息
 					consumType: (0.看广告;1.门票;2.金币;3.能量)
 				*/
 				list: []
@@ -31,6 +33,14 @@ export class Login extends Component {
 
 			local_data:{
 				isShowLoading: true,
+				gameUserInfo: {},
+				currencyChange: {
+					copper: '',
+					energy: '',
+					redEnvelope: '',
+				},
+				// 看广告领取免费道具卡id
+				freeAdsId: '',
 				backBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/backBtn.png',
 				mallTitle: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/mallTitle.png',
 				energyIcon: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/energyIcon.png',
@@ -63,12 +73,43 @@ export class Login extends Component {
 				bassist: [],
 			}
 		};
-		
+
 		this.msgProto = new MsgProto();
 		this.webSocket = App.globalData.webSocket;
 	}
 
-	componentWillMount () {}
+	componentWillMount () {
+		// 创建激励视频
+		this.videoAd= new createVideoAd();
+
+		// 监测广告: 看完发2003，未看完不发
+		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
+			let data = {
+				type: 5, 
+				value:'',	
+				param1: '', // 扩展参数暂无用
+				param2: this.state.local_data.freeAdsId, // 免费道具模版id
+			}
+			let adsRewards = this.msgProto.adsRewards(data);
+			let parentModule = this.msgProto.parentModule(adsRewards);
+
+			if(status.isEnded){
+				console.info('%c 看完广告，领取免费道具','font-size:14px;color:#0fdb24;');
+				this.webSocket.sendWebSocketMsg({
+					data: parentModule,
+					success(res) {console.info(res) },
+					fail(err) { console.info(err) }
+				});
+			}else{
+				Taro.showToast({
+					title: '领取失败',
+					icon: 'none',
+					duration: 1000
+				});
+				console.log('%c 未看完视频，不能领取免费道具哦','font-size:14px;color:#db2a0f;');
+			}
+		});
+	}
 
 	componentDidMount () {}
 
@@ -76,6 +117,26 @@ export class Login extends Component {
 
 	componentDidShow () {
 		let _this = this;
+		// 获取金币/能量，如果不存在就在gameUserInfo中取
+		getStorage('currencyChange',(res)=>{
+			this.setState((preState)=>{
+				preState.local_data.currencyChange = res;
+			})
+		});
+		// 获取金币 / 能量
+		getStorage('gameUserInfo',(res)=>{
+			console.info(res)
+			this.setState((preState)=>{
+				preState.local_data.gameUserInfo = res;
+				let data = {
+					copper: res.copper,
+					energy: res.energy,
+					redEnvelope: res.redEnvelope
+				};
+				preState.local_data.currencyChange = data;
+			})
+		});
+
 		// 请求商城信息, 默认请求道具商城
 		let getMall = this.msgProto.getMall(1);
 		let parentModule = this.msgProto.parentModule(getMall);
@@ -101,6 +162,19 @@ export class Login extends Component {
 				preState.local_data.isShowLoading = false;
 			});
 			this.classification(message[0]['data']['list']);
+		});
+
+		// 1010 货币发生变化
+		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
+			console.error('mall 收到1010货币发生变化');console.info(message);
+			clearInterval(message[1]);
+			let currencyChange = message[0]['data'];
+			this.setState((preState)=>{
+				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
+				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
+				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+			});
+			setStorage('currencyChange',currencyChange);
 		});
 	}
 
@@ -155,7 +229,7 @@ export class Login extends Component {
 					preState.local_data.bassist = bassist;
 					preState.local_data.drummer = drummer;
 				});
-				console.info('乐队各类 ===>', 'font-size: 14px; color:#1a71ff;');
+				console.info('%c 乐队各类 ===>', 'font-size: 14px; color:#1a71ff;');
 				console.info(leadSinger, guitarist, bassist, drummer);
 			}
 
@@ -167,15 +241,14 @@ export class Login extends Component {
 	}
 
 	// tab 切换根据data-type：1 道具 2 乐队
-	tabSelected (e){
+	DBswitchTab (e){
 		this.switchTab(e);
 
 		this.setState((preState)=>{
 			preState.local_data.isShowLoading = true;
 		})
 	}
-
-	switchTab = (e) =>{
+	switchTab(e){
 		let type = e.target.dataset.type;
 		let getMall = this.msgProto.getMall(type);
 		let parentModule = this.msgProto.parentModule(getMall);
@@ -205,21 +278,73 @@ export class Login extends Component {
 		})
 	}
 
-	// 获取道具模版id
+	// 免费获取道具模版id
+	DBseeAdsGetProps(e){
+		this.seeAdsGetProps(e);
+	}
 	seeAdsGetProps(e){
+		let _this = this;
 		let id = e.currentTarget.dataset.id;
+		let rewardCount = parseInt(e.currentTarget.dataset.rewardcount);
 
+		if(rewardCount > 0){
+			this.setState((preState)=>{
+				preState.local_data.freeAdsId = id;
+			},()=>{
+				_this.videoAd.openVideoAd();
+			})
+		}else{
+			Taro.showToast({
+				title: '免费次数已用完',
+				icon: 'none',
+				duration: 2000
+			})
+		}
 	}
 
+	// buyProps能量购买道具
+	DBbuyProps(e){
+		this.buyProps(e);
+	}
+	buyProps(e){
+		let id = e.currentTarget.dataset.id;
+		let data = {
+			'id': id,
+			// 暂单次单个购买
+			'count': 1,
+		}
+		let buyProps = this.msgProto.buyProps(data);
+		let parentModule = this.msgProto.parentModule(buyProps);
+		this.webSocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {
+				Taro.showToast({
+					title: '购买成功',
+					icon: 'none',
+					duration: 2000
+				})
+			},
+			fail(err){
+				Taro.showToast({
+					title: err.errMsg,
+					icon: 'none',
+					duration: 2000
+				})
+			}
+		});
+	}
 
 	render () {
-		const { isShowLoading, mallTitle, backBtn, propsText, bandText, freeTitle, freeTip, propsTitle, 
-			propsTip, leadSingerTitle, guitaristTitle, bassistTitle, drummerTitle, isTab, rewardText, energyIcon, ticketsIcon, goldIcon  } = this.state.local_data;
+		const { isShowLoading, mallTitle,  backBtn, propsText, bandText, freeTitle, freeTip, propsTitle, 
+			propsTip, leadSingerTitle, guitaristTitle, bassistTitle, drummerTitle, isTab, rewardText, 
+			energyIcon, ticketsIcon, goldIcon  } = this.state.local_data;
+		
+		const {copper, energy} = this.state.local_data.currencyChange
 		// 道具
 		const freePiece = this.state.local_data.freePiece;
 		const propsPiece = this.state.local_data.propsPiece;
 		const freePieceContent = freePiece.map((cur, index)=>{
-			return  <View onClick={this.seeAdsGetProps.bind(this)} data-id={cur.id} className={`item ${index%3== 1?'bothMargin':''}`}>
+			return  <View onClick={this.DBseeAdsGetProps.bind(this)} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg'>
 							<Image src={cur.icon} className='cardImg' />
 						</View>
@@ -233,7 +358,7 @@ export class Login extends Component {
 					</View>
 		});
 		const propsPieceContent = propsPiece.map((cur, index)=>{
-			return  <View className={`item ${index%3== 1?'bothMargin':''}`}>
+			return  <View onClick={this.DBbuyProps.bind(this)} data-id={cur.id} className={`item ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg'>
 							<Image src={cur.icon} className='cardImg' />
 						</View>
@@ -324,6 +449,14 @@ export class Login extends Component {
 						<View className='head'>
 							<View className='backBtnBox'>
 								<Image onClick={this.goBack.bind(this)} src={backBtn} className='backBtn' />
+								<View className='goldWrap'>
+									<Image src={goldIcon} className='goldIcon_' />
+									<View className='num goldNum'>{copper}</View>
+								</View>
+								<View className='energyWrap'>
+									<Image src={energyIcon} className='energyIcon_' />
+									<View className='num energyNum'>{energy}</View>
+								</View>
 							</View>
 						</View>
 						<View className='body'>
@@ -333,8 +466,8 @@ export class Login extends Component {
 
 							<View className='mallContent'>
 								<View className='tab'>
-									<View onClick={this.tabSelected.bind(this)} data-type='1' className={`btn ${isTab?'selectedBtn':''}`}>{propsText}</View>
-									<View onClick={this.tabSelected.bind(this)} data-type='2' className={`btn ${isTab?'':'selectedBtn'}`}>{bandText}</View>
+									<View onClick={this.DBswitchTab.bind(this)} data-type='1' className={`btn ${isTab?'selectedBtn':''}`}>{propsText}</View>
+									<View onClick={this.DBswitchTab.bind(this)} data-type='2' className={`btn ${isTab?'':'selectedBtn'}`}>{bandText}</View>
 								</View>
 								<ScrollView className='scrollview' scrollY scrollWithAnimation scrollTop='0'>
 									<View className={`box ${isTab?'':'hide'}`}>

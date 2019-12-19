@@ -206,6 +206,7 @@ export class Index extends Component {
 
 	componentDidShow () {
 		let _this = this;
+		console.error('componentDidShow')
 		// 更新金币/红包/能量-数量
 		getStorage('currencyChange',(res)=>{
 			if(res!=''){
@@ -213,8 +214,6 @@ export class Index extends Component {
 					preState.gameUserInfo.copper = unitReplacement(res.copper);
 					preState.gameUserInfo.energy = unitReplacement(res.energy);
 					preState.gameUserInfo.redEnvelope = unitReplacement(res.redEnvelope);
-				},()=>{
-					removeStorage('currencyChange');
 				})
 			}
 		});
