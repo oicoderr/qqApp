@@ -144,7 +144,7 @@ export class Login extends Component {
 						<View className='payBox'>
 							<View className='chargeIcon'>{cur.chargeName}</View>
 							<View onClick={this.buyTickets.bind(this)} data-chargeId={cur.chargeId} className='payBtn'>
-								<View className='btnBody'>{ `${cur.money}元购买`}</View>
+								<View className='btnBody'>{ `${cur.money / 100}元购买`}</View>
 							</View>
 						</View>
 					</View>
