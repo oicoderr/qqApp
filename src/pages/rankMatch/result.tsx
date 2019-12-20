@@ -227,7 +227,7 @@ export class Reasult extends Component {
 	componentDidShow () {
 		let _this = this;
 		if(App.globalData.webSocket === ''){
-			console.info('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.info('%c rankMatch-result 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.webSocket = App.globalData.webSocket;

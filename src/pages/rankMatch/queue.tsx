@@ -119,7 +119,7 @@ export class enterGame extends Component {
 		let _this = this;
 
 		if(App.globalData.webSocket === ''){
-			console.info('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.info('%c rankMatch-queue 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.webSocket = App.globalData.webSocket;
