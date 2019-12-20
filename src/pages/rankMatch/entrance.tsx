@@ -2,11 +2,9 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import './entrance.scss'
 import { getStorage } from '../../utils';
+import { createWebSocket } from '../../service/createWebSocket'
 import createVideoAd from '../../service/createVideoAd'
-import { websocketUrl } from '../../service/config'
 import MsgProto from '../../service/msgProto'
-import Websocket from '../../service/webSocket'
-import ReceiveMsg from '../../service/receivedMsg'
 
 const App = Taro.getApp()
 export class RankEntrance extends Component {
@@ -55,7 +53,6 @@ export class RankEntrance extends Component {
 				backBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/backBtn.png',
 			}
 		}
-		this.webSocket = App.globalData.webSocket;
 		this.msgProto = new MsgProto();
 	}
 	componentWillMount () {
@@ -132,23 +129,11 @@ export class RankEntrance extends Component {
 
 	componentDidShow () {
 		let _this = this;
-		// 判断是否已经创建了wss请求
 		if(App.globalData.webSocket === ''){
-			this.webSocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求
-				data: 'ws alive test',
-				success(data) {
-					Taro.showToast({
-						title: 'wss is ok',
-						mask: true,
-						icon: 'none',
-						duration: 2000,
-					})
-				},
-				fail(err) {
-					console.info('可以重连了:' + err.errMsg, 'color: red; font-size:14px;');
-					_this.createSocket();
-				}
-			})
+			console.info('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.webSocket = App.globalData.webSocket;
 		}
 	}
 
@@ -177,60 +162,6 @@ export class RankEntrance extends Component {
 	watchAdsGetReward(e){
 		// 开始播放激励视频
 		this.videoAd.openVideoAd();
-	}
-
-	// 主动断开重新new和联接，重新登录
-	createSocket(){
-		// 创建websocket对象
-		this.websocket = new Websocket({
-			// true代表启用心跳检测和断线重连
-			heartCheck: true,
-			isReconnection: true
-		});
-
-		// 监听websocket关闭状态
-		this.websocket.onSocketClosed({
-			url: websocketUrl,
-			success(res) { console.log(res) },
-			fail(err) { console.log(err) }
-		})
-
-		// 捕获websocket异常
-		this.websocket.getOnerror((err)=>{
-			console.error('捕获到了异常');console.info(err);
-			Taro.showToast({
-				title: err.errMsg,
-				icon: 'none',
-				duration: 2000
-			})
-		});
-
-		// 监听网络变化
-		this.websocket.onNetworkChange({
-			url: websocketUrl,
-			success(res) { console.log(res) },
-			fail(err) { console.log(err) }
-		})
-
-		// 监听服务器返回
-		this.websocket.onReceivedMsg(result => {
-			let message = JSON.parse(result);
-			let messageData = JSON.parse(message.data);
-			message.data = messageData;
-			console.log('%c 收到服务器内容：', 'background:#000;color:white;font-size:14px');console.info(message);
-			// 要进行的操作
-			new ReceiveMsg(message);
-		})
-		
-		this.websocket.initWebSocket({
-			url: websocketUrl,
-			success(res) { console.log('～建立连接成功！linkWebsocket～')},
-			fail(err) { console.log(err) }
-		})
-		
-		// 对外抛出websocket
-		App.globalData.webSocket = this.websocket;
-
 	}
 
 	// 返回上一页

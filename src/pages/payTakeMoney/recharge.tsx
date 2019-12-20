@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
-import { setStorage, getStorage, request } from '../../utils'
+import { getStorage } from '../../utils'
+import { createWebSocket } from '../../service/createWebSocket'
 import './recharge.scss'
 
 import emitter from '../../service/events'
@@ -30,7 +31,6 @@ export class Login extends Component {
 			}
 		};
 		this.msgProto = new MsgProto();
-		this.webSocket = App.globalData.webSocket;
 	}
 
 	componentWillMount () {}
@@ -81,6 +81,13 @@ export class Login extends Component {
 	componentWillUnmount () {}
 
 	componentDidShow () {
+		if(App.globalData.webSocket === ''){
+			console.info('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.webSocket = App.globalData.webSocket;
+		}
+
 		// 请求充值模版消息
 		let recharge = this.msgProto.recharge();
 		let parentModule = this.msgProto.parentModule(recharge);

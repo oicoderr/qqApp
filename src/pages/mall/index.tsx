@@ -2,6 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
 import throttle from 'lodash/throttle'
 import { setStorage, getStorage, unitReplacement } from '../../utils'
+import { createWebSocket } from '../../service/createWebSocket'
 import './index.scss'
 import GameLoading from '../../components/GameLoading'
 import createVideoAd from '../../service/createVideoAd'
@@ -75,7 +76,6 @@ export class Login extends Component {
 		};
 
 		this.msgProto = new MsgProto();
-		this.webSocket = App.globalData.webSocket;
 	}
 
 	componentWillMount () {
@@ -117,6 +117,14 @@ export class Login extends Component {
 
 	componentDidShow () {
 		let _this = this;
+
+		if(App.globalData.webSocket === ''){
+			console.info('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.webSocket = App.globalData.webSocket;
+		}
+
 		// 获取金币/能量，如果不存在就在gameUserInfo中取
 		getStorage('currencyChange',(res)=>{
 			this.setState((preState)=>{
