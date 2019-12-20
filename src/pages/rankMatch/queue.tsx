@@ -2,6 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { getStorage, buildURL } from '../../utils'
 import createVideoAd from '../../service/createVideoAd'
+import { createWebSocket } from '../../service/createWebSocket'
 import emitter from '../../service/events'
 import './queue.scss'
 

@@ -171,7 +171,6 @@ export class Reasult extends Component {
 
 	// 返回主页
 	goBack(){
-		this.clearLocalStorage();
 		Taro.redirectTo({
 			url: this.state.routers.indexPage
 		});
@@ -179,18 +178,9 @@ export class Reasult extends Component {
 
 	// 重玩返回入口页面
 	replay(){
-		this.clearLocalStorage();
 		Taro.redirectTo({
 			url: this.state.routers.entrancePage
 		});
-	}
-
-	// 清除本局游戏缓存
-	clearLocalStorage(){
-		removeStorage('PartyATeam');
-		removeStorage('PartyBTeam');
-		removeStorage('rankUserInfo');
-		removeStorage('rankResultInfo');
 	}
 
 	// 是否勾选观看广告

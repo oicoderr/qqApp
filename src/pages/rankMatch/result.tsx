@@ -2,6 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import emitter from '../../service/events';
 import createVideoAd from '../../service/createVideoAd'
+import { createWebSocket } from '../../service/createWebSocket'
 import './result.scss'
 
 import RankResultInfo from '../../components/rankResultInfoUi'
@@ -121,7 +122,7 @@ export class Reasult extends Component {
 
 		// 获取本局结果页数据
 		const params = this.$router.params;
-		console.info('获取排位赛结果数据 ==>');console.info(JSON.parse(params.item));
+		console.info('%c 获取排位赛结果数据 ==>','font-size:14px; color:#98ff1a;');console.info(JSON.parse(params.item));
 		const item = JSON.parse(params.item);
 		if(item){
 			this.setState((preState)=>{
@@ -129,7 +130,10 @@ export class Reasult extends Component {
 				preState.local_data.rankUserInfo = item.rankUserInfo;
 			},()=>{});
 			// 本局结果页数据发送给子组件rankResultInfoUi
-			emitter.emit('rankResultInfo', item.rankResultInfo);
+			let timer = setInterval(()=>{
+				emitter.emit('rankResultInfo', [item.rankResultInfo, timer]);
+			},20);
+			console.error('发射rankResultInfo');
 		}else{
 			Taro.showToast({
 				title: '未获得排位赛结果数据',
@@ -301,7 +305,6 @@ export class Reasult extends Component {
 
 	// 返回主页
 	goBack(){
-		this.clearLocalStorage();
 		Taro.redirectTo({
 			url: this.state.routers.indexPage
 		});

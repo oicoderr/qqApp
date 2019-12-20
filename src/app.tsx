@@ -20,7 +20,7 @@ class App extends Component {
 
 	config: Config = {
 		pages: [
-
+			
 			'pages/login/index',			  // app 登录
 			'pages/index/index',			  // 游戏登录
 			'pages/rankMatch/entrance', 	  // 排位赛入口
@@ -41,8 +41,8 @@ class App extends Component {
 
 			'pages/startWriteQuestion/index',
 			'pages/writeQuestion/index',
-			'pages/redEnvelopeConvert/index',
-			'pages/takeMoneyAnnal/index',
+			'pages/redEnvelopeConvert/index', // 提现
+			'pages/takeMoneyAnnal/index',	  // 提现记录
 			'pages/takeMoney/index',
 			
 		],
@@ -134,6 +134,7 @@ class App extends Component {
 			console.info('('+this.globalData.webSocket+')',1111);
 			console.error('卸载的当前路由 ==>');console.info(currentPage);
 		}
+		
 	}
 
 	/* 新版本检测升级 */

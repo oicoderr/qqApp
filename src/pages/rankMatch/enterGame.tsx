@@ -37,7 +37,7 @@ export class enterGame extends Component {
 					option3: '',
 					option4: '',
 					time: 10,
-					totalCount: 5 
+					totalCount: 5,
 				},
 				isSuccess: -1,
 
@@ -70,6 +70,14 @@ export class enterGame extends Component {
 					currContent:'',
 					currIndex: 0,
 					time: 10,
+				},
+				matchProps: {},			// 延迟卡，求助卡数量
+				usedPropsResult:{		// 使用道具结果	
+					delayCard: 1,
+					helpCard: 1,
+					time: 0,
+					result: 1,
+					errmsg: "",
 				},			
 				defultClass: '',	   	// 选项上层默认样式class 
 				defultBottomClass: '', 	// 选项下层默认样式class 
@@ -79,6 +87,8 @@ export class enterGame extends Component {
 				isShowLoading: true,	// 默认显示加载动画
 				delayCardBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/delayCardBtn.png',
 				helpCardBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/helpCardBtn.png',
+				disable_delayCardBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/disable_delayCardBtn.png',
+				disable_helpCardBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/disable_helpCardBtn.png',
 				countdown: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/rank-countdown.png',
 			}
 		}
@@ -146,11 +156,42 @@ export class enterGame extends Component {
 		// 隐藏答题遮罩
 		this.setState((preState)=>{
 			preState.local_data.isShowMask = false;
-		},()=>{
-			// console.info('%c' + this.state.local_data.isShowMask,'font-size:20px; color:pink;');
+		},()=>{ /* console.info('%c' + this.state.local_data.isShowMask,'font-size:20px; color:pink;');*/});
+		
+		// 请求道具：延迟卡，求助卡数量
+		this.getMatchProps();
+
+		// 1508 接受道具卡数量
+		this.eventEmitter = emitter.addListener('getMatchProps', (message) => {
+			clearInterval(message[1]);
+			console.info('%c 接收到比赛道具卡数量 ===>','font-size:14px;color:#f04e00;');
+			console.info( message[0]['data']);
+			this.setState((preState)=>{
+				let data = message[0]['data'];
+				preState.local_data.matchProps = data;
+			},()=>{})
+			
 		});
 
-		// 接受排位赛发题
+		// 1338 使用道具结果
+		this.eventEmitter = emitter.addListener('usedPropsResult', (message) => {
+			clearInterval(message[1]);
+			console.info('%c 接收到道具卡使用结果 ===>','font-size:14px;color:#f04e00;');
+			console.info( message[0]['data']);
+
+			let data = message[0]['data'];
+			this.setState((preState)=>{
+				preState.local_data.usedPropsResult = data;
+			},()=>{});
+			if(data.id == 2){
+				// 开始倒计时
+				clearInterval(this.state.data.timer);
+				console.error('时间：' + data.time);
+				this.getCountdown(data.time);
+			}
+		});
+
+		// 1306 排位赛发题
 		this.eventEmitter = emitter.addListener('getQuestion', (message) => {
 			clearInterval(message[1]);
 			// console.info('%c 接受到的题目及选项', 'color:#000; font-size:14px;'); console.log(message[0]['data']);
@@ -168,12 +209,13 @@ export class enterGame extends Component {
 			this.setState((preState)=>{
 				preState.data.curQuestion = message[0]['data'];
 				preState.local_data.curQuestion = this.resetQA(message[0]['data']);
+				preState.local_data.usedPropsResult = '';
 			},()=>{
 				// console.log('%c 处理数据时间 =======> '+  new Date().getSeconds() +'修改返回数据 =====>', 'color:pink;font-size:14px;');
 			});
 		});
 
-		// 接受正确答案信息
+		// 1308 接受正确答案信息
 		this.eventEmitter = emitter.addListener('getAnswer', (message) => {
 			clearInterval(message[1]);
 			let _this = this;
@@ -219,7 +261,7 @@ export class enterGame extends Component {
 			})
 		});
 
-		// 接受上一题基本信息 
+		// 1322 接受上一题基本信息 
 		this.eventEmitter = emitter.addListener('getPrevQAInfo', (message) => {
 			clearInterval(message[1]);
 			console.log('%c 上一题基本信息','font-size:14px;color:#A020F0;');
@@ -306,7 +348,7 @@ export class enterGame extends Component {
 		let _this = this;
 		clearInterval(this.state.data.timer);
 
-		// 关闭遮罩，可选择答案
+		// 隐藏遮罩，可选择答案
 		this.setState((preState)=>{
 			preState.local_data.isShowMask = false;
 		},()=>{});
@@ -364,10 +406,40 @@ export class enterGame extends Component {
 		});
 	}
 
+	// 请求道具数量
+	getMatchProps(){
+		let getMatchProps = this.msgProto.getMatchProps()
+		let parentModule = this.msgProto.parentModule(getMatchProps);
+		this.webSocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {},
+			fail(err) { console.log(err) }
+		});
+	}
+
+	// 使用道具
+	usedProps(e){
+		// id(1.求助卡;2.延时卡)
+		let id = e.currentTarget.dataset.id;
+		// 延迟卡增加的时间， 求助卡时间0
+		let time = e.currentTarget.dataset.status;
+		console.error('道具使用 ==>');
+		console.info('(id: ' + id + ')', '(status: ' + status + ')','(time: ' + time + ')');
+
+		let getMatchProps = this.msgProto.usedPropsMatch(id)
+		let parentModule = this.msgProto.parentModule(getMatchProps);
+		this.webSocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) { console.info(res)},
+			fail(err) { console.log(err) }
+		});
+	}
 	
 	render () {
 		const { defultClass, defultBottomClass, isShowMask, isShowLoading, selectedOptionIndex, countdown, scoreTeamA, 
-			scoreTeamB, selfScore, delayCardBtn, helpCardBtn, rankUserInfo, PartyATeam, PartyBTeam } = this.state.local_data;
+			scoreTeamB, selfScore, delayCardBtn, helpCardBtn, rankUserInfo, PartyATeam, PartyBTeam, 
+			matchProps, usedPropsResult, disable_delayCardBtn, disable_helpCardBtn, 
+		} = this.state.local_data;
 		const { currContent, currIndex, currQuestId, time, totalCount, options } = this.state.local_data.curQuestion;
 		const {blueScore, redScore, selfCamp} = this.state.data.prevQAInfo;
 
@@ -391,14 +463,21 @@ export class enterGame extends Component {
 		});
 
 		const Answer  = options.map((currentValue,index) => { // selectedOptionIndex 所选题的index
-			return  <View className={`optionWarp ${ selectedOptionIndex == index? defultBottomClass:'' }`}>
-						<View 
+			return  <View className={`optionWarp 
+						${ selectedOptionIndex == index? defultBottomClass:'' }
+						${ index == usedPropsResult.errorId1-1 || index == usedPropsResult.errorId2-1? 'flaseOptionBottom':'' }`}
+					>
+						<View
 							onClick={this.submitAnswer.bind(this)} 
-							className={`option ${ selectedOptionIndex == index? defultClass:'' }`}
+							className={`option 
+								${ selectedOptionIndex == index? defultClass:'' }
+								${ index == usedPropsResult.errorId1-1 || index == usedPropsResult.errorId2-1? 'falseOption':'' }`
+							}
 							data-curOptionIndex={index} // 当前题的index
 							data-currQuestId={currQuestId} 
 							data-quesIndex={currIndex} 
 							data-optionId={currentValue.optionId}
+						
 						>
 							<View className='optionMark'>{currentValue.key}</View>
 							<View className='optionContent'>{currentValue.value}</View>
@@ -445,14 +524,19 @@ export class enterGame extends Component {
 							{ Answer }
 						</View>
 						<View className='foot'>
-							<View className='cardBtn'>
-								<Image src={delayCardBtn} className='delayCardBtn'/>
-								<Text className='card-num'>{12}</Text>
+							<View onClick={this.usedProps.bind(this)} className='cardBtn'
+								data-id='2' data-time={usedPropsResult.time}>
+								<Image src={`${usedPropsResult.delayCard == 0? disable_delayCardBtn : delayCardBtn }`} 
+									className='delayCardBtn'/>
+								<Text className='card-num'>{matchProps.delayCount}</Text>
 							</View>
-							
-							<View className='cardBtn'>
-								<Image src={helpCardBtn} className='helpCardBtn'/>
-								<Text className='card-num'>{32}</Text>
+
+							<View onClick={this.usedProps.bind(this)}  className='cardBtn'
+								data-id='1' data-status={`${usedPropsResult.id == 1?usedPropsResult.helpCard:''}`} 
+								data-time={usedPropsResult.time}>
+								<Image src={`${usedPropsResult.helpCard == 0? disable_helpCardBtn : helpCardBtn }`}
+									className='helpCardBtn'/>
+								<Text className='card-num'>{matchProps.helpCount}</Text>
 							</View>
 						</View>
 					</View>

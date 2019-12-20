@@ -39,18 +39,20 @@ export default class RankResultInfo extends Component{
         
     }
 
-    componentWillMount () {}
-
-    componentDidMount() {
+    componentWillMount () {
         this.eventEmitter = emitter.addListener('rankResultInfo', (message) => {
-            console.info('%c 接受父组件rank-Result数据', 'font-size:14px;color:#db740f;' ); console.info(message);
+            clearInterval(message[1]);
+
+            console.info('%c 接受父组件rank-Result数据', 'font-size:16px;color:#db740f;' ); console.info(message);
             this.setState((preState)=>{
-                preState.data.rankResultInfo = message;
+                preState.data.rankResultInfo = message[0];
             },()=>{
-                this.successFailDraw(message.result);
+                this.successFailDraw(message[0].result);
             })
         });
     }
+
+    componentDidMount() {}
 
     componentWillUnmount () {}
 

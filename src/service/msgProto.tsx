@@ -212,8 +212,25 @@ export default class MsgProto{
         }
     }
 
+    /* --------------------------- 道具使用 ----------------------------- */
 
+    // 1509：请求延时卡和求助卡的数量
+    getMatchProps(){
+        return{
+            code: 1509,
+            data:{}
+        }
+    }
 
+    // 1337 比赛使用道具 id: 1.求助卡;2.延时卡
+    usedPropsMatch(val){
+        return{
+            code: 1337,
+            data:{
+                id: val
+            }
+        }
+    }
 
 
 

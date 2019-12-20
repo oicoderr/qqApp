@@ -156,6 +156,16 @@ export default class ReceiveMsg{
 					emitter.emit('getMall', [message, this.timerCount[24]]);
 				},20);
 				break;
+			case 1508:			// 延时卡和求助卡数量
+				this.timerCount[25] = setInterval(()=>{
+					emitter.emit('getMatchProps', [message, this.timerCount[25]]);
+				},20);
+				break;
+			case 1338:			// 比赛使用道具结果
+				this.timerCount[26] = setInterval(()=>{
+					emitter.emit('usedPropsResult', [message, this.timerCount[26]]);
+				},20);
+				break;
 		}
     }
 }
