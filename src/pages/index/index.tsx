@@ -9,10 +9,7 @@ import WeekCheckIn from '../../components/WeekCheckIn'
 import RedExchange from '../../components/RedExchange'
 import CommonToast from '../../components/CommonToast'
 import Drawer from '../../components/drawer'
-import { websocketUrl } from '../../service/config'
 import MsgProto from '../../service/msgProto'
-import Websocket from '../../service/webSocket'
-import ReceiveMsg from '../../service/receivedMsg'
 import { createWebSocket } from '../../service/createWebSocket'
 const App = Taro.getApp()
 
@@ -136,26 +133,6 @@ export class Index extends Component {
 			});
 		});
 
-		// 1002游戏登录状态
-		this.eventEmitter = emitter.once('loginGameStatus', (message) => {
-			console.info('%c 游戏登录状态： ', 'color: blue;font-size:14px;'); console.info(message);
-			// 清除消息转发定时器
-			clearInterval(message[1]);
-			// 消息本体
-			let loginDesc =  message[0]['data']['loginDesc'];
-			let loginResult = message[0]['data']['loginResult'];
-			if(loginDesc && loginResult){
-				console.info(loginDesc)
-			}else{
-				console.error(loginDesc);
-				Taro.showToast({
-					title: loginDesc,
-					icon: 'none',
-					duration: 2000,
-				});
-			}
-		});
-	
 		// 1004游戏登录成功返回基本信息
 		this.eventEmitter = emitter.once('loginGameInfo', (message) => {
 			console.info('%c 接受用户游戏基本信息==> ', 'color: blue;font-size:14px;'); console.info(message);
@@ -200,7 +177,7 @@ export class Index extends Component {
 
 	componentDidShow () {
 		let _this = this;
-
+		// 接受AppGlobalSocket
 		if(App.globalData.webSocket === ''){
 			console.info('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);

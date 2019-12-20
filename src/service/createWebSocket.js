@@ -6,6 +6,7 @@ const App = Taro.getApp();
 
 export const  createWebSocket = (that) =>{
     let _this = that;
+    console.log(that,1111999)
     console.log('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
     // 创建websocket对象
     that.websocket = new Websocket({
@@ -19,11 +20,6 @@ export const  createWebSocket = (that) =>{
         url: websocketUrl,
         success(res) {},
         fail(err) { console.error('当前websocket连接已关闭,错误信息为:' + JSON.stringify(err));}
-    });
-
-    // 捕获websocket异常
-    that.websocket.getOnerror((err)=>{
-        console.error('appjs捕获到websocket异常, ～开始重连～');console.info(err);
     });
 
     // 监听网络变化
@@ -47,8 +43,7 @@ export const  createWebSocket = (that) =>{
     that.websocket.initWebSocket({
         url: websocketUrl,
         success(res) { 
-            // console.log('～建立连接成功！可以onSocketOpened拉～');
-            // console.info(_this.websocket,999);
+            console.log('～建立连接成功！可以onSocketOpened拉～');
             // 开始登陆
             _this.websocket.onSocketOpened();
             // 对外抛出websocket

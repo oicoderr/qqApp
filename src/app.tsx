@@ -20,14 +20,14 @@ class App extends Component {
 
 	config: Config = {
 		pages: [
-			
+
 			'pages/login/index',			  // app 登录
 			'pages/index/index',			  // 游戏登录
 			'pages/rankMatch/entrance', 	  // 排位赛入口
 			'pages/rankMatch/queue',   	  	  // 排位赛队列
 			'pages/rankMatch/enterGame',      // 排位赛开始游戏
 			'pages/rankMatch/result', 	      // 排位赛结果
-			
+
 			'pages/prizeMatch/entrance',	  // 大奖赛入口
 			'pages/prizeMatch/queue',	  	  // 大奖赛队列
 			'pages/prizeMatch/enterGame',	  // 大奖赛开始游戏
@@ -35,16 +35,11 @@ class App extends Component {
 
 			'pages/payTakeMoney/takeMoney',	  // 提现
 			'pages/payTakeMoney/recharge', 	  // 充值
-
 			'pages/backpack/index', 	  	  // 背包
 			'pages/mall/index', 	  	  	  // 商城
 
-			'pages/startWriteQuestion/index',
-			'pages/writeQuestion/index',
-			'pages/redEnvelopeConvert/index', // 提现
+			'pages/startWriteQuestion/index', // 开始出题
 			'pages/takeMoneyAnnal/index',	  // 提现记录
-			'pages/takeMoney/index',
-			
 		],
 		window: {
 			backgroundTextStyle: 'light',
@@ -119,6 +114,31 @@ class App extends Component {
 			let currencyChange = message[0]['data'];
 			setStorage('currencyChange',currencyChange);
 		});
+
+		// 1002 游戏登录状态
+		this.eventEmitter = emitter.once('loginGameStatus', (message) => {
+			console.info('%c 游戏登录状态： ', 'color: blue;font-size:14px;'); console.info(message);
+			// 清除消息转发定时器
+			clearInterval(message[1]);
+			// 消息本体
+			let loginDesc =  message[0]['data']['loginDesc'];
+			let loginResult = message[0]['data']['loginResult'];
+			if(loginDesc && loginResult){
+				console.error('登陆成功！')
+				// Taro.showToast({
+				// 	title: loginDesc,
+				// 	icon: 'none',
+				// 	duration: 2000,
+				// });
+			}else{
+				console.error(loginDesc);
+				Taro.showToast({
+					title: loginDesc,
+					icon: 'none',
+					duration: 2000,
+				});
+			}
+		});
 	}
 
 	componentDidHide () {
@@ -131,7 +151,7 @@ class App extends Component {
 				this.websocket.closeWebSocket();
 				this.globalData.webSocket = '';
 			}
-			console.info('('+this.globalData.webSocket+')',1111);
+			console.info('('+this.globalData.webSocket+')');
 			console.error('卸载的当前路由 ==>');console.info(currentPage);
 		}
 		
@@ -223,7 +243,12 @@ class App extends Component {
 
 		// 捕获websocket异常
 		this.websocket.getOnerror((err)=>{
-			console.error('appjs捕获到websocket异常, ～开始重连～');console.info(err);
+			console.error('appjs捕获到websocket异常');console.info(err);
+			Taro.showToast({
+				title: err,
+				icon: 'none',
+				duration: 2000
+			})
 		});
 
 		// 监听网络变化
@@ -243,15 +268,20 @@ class App extends Component {
 			// 要进行的操作
 			new ReceiveMsg(message);
 		})
-		
+
 		this.websocket.initWebSocket({
 			url: websocketUrl,
 			success(res) { 
 				console.log('～建立连接成功！可以onSocketOpened拉～');
-				// 开始登陆
-				_this.websocket.onSocketOpened();
 				// 对外抛出websocket
 				_this.globalData.webSocket = _this.websocket;
+				// 通知AppGlobalSocket
+				let timer = setInterval(()=>{
+					console.info('AppGlobalSocket')
+					emitter.emit('AppGlobalSocket', [_this.websocket, timer]);
+				},20);
+				// 开始登陆
+				_this.websocket.onSocketOpened();
 			},
 			fail(err) { console.log(err) }
 		})

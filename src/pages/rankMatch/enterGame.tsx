@@ -424,7 +424,7 @@ export class enterGame extends Component {
 		// 延迟卡增加的时间， 求助卡时间0
 		let time = e.currentTarget.dataset.status;
 		console.error('道具使用 ==>');
-		console.info('(id: ' + id + ')', '(status: ' + status + ')','(time: ' + time + ')');
+		console.info('(id: ' + id + ')','(time: ' + time + ')');
 
 		let getMatchProps = this.msgProto.usedPropsMatch(id)
 		let parentModule = this.msgProto.parentModule(getMatchProps);

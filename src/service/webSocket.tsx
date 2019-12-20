@@ -101,7 +101,7 @@ export default class websocket {
 
 	onSocketOpened() {
 		Taro.onSocketOpen(res => {
-
+			let _this = this;
 			// 打开网络开关
 			this._netWork = true;
 			// 打开已登录开关
@@ -113,19 +113,14 @@ export default class websocket {
 			this.sendWebSocketMsg({
 				data: parentModule,
 				success(res) {
-					Taro.showToast({
-						title: '登录成功',
-						icon: 'none',
-						duration: 2000,
-					})
-					// console.info('%c 游戏登录成功','font-size:14px;color:pink;');
+					_this.loginGame = true;
 				},
 				fail(err){
 					Taro.showToast({
 						title: '登陆失败请重新登陆',
 						icon: 'none',
 						duration: 2000,
-					})
+					});
 					console.error('游戏登陆失败：' + err);
 				}
 			});
@@ -239,8 +234,9 @@ export default class websocket {
 	}
 
 	getOnerror(callBack){
-		Taro.onSocketError((err)=>{
-			if(callBack)callBack(err);
+		Taro.onSocketError((errMsg)=>{
+			console.info(errMsg,999)
+			if(callBack)callBack(errMsg);
 		})
 	}
 

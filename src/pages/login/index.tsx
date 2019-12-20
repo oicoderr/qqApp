@@ -39,20 +39,23 @@ export class Login extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {}
+	componentWillMount () {
+		// 接受AppGlobalSocket
+		this.eventEmitter = emitter.addListener('AppGlobalSocket', (message) => {
+			clearInterval(message[1]);
+			let socket = message[0];
+			App.globalData.webSocket = socket;
+			this.webSocket = socket;
+			console.info('%c 收到的App发来的webSocket', 'font-size:14px;color:#ffad1a');
+			console.info(this.webSocket);
+		});
+	}
 
 	componentDidMount () {}
 
 	componentWillUnmount () {}
 
-	componentDidShow () {
-		if(App.globalData.webSocket === ''){
-			console.info('%c Login 未找到Socket','font-size:14px;color:#ff6f1a;');
-			createWebSocket(this);
-		}else{
-			this.webSocket = App.globalData.webSocket;
-		}
-	}
+	componentDidShow () {}
 
 	componentDidHide () {}
 
@@ -64,7 +67,7 @@ export class Login extends Component {
 				userInfo = res.userInfo;
 				console.info('%c 授权的基本信息 ===>', 'font-size:14px;color:#31c200;background-color:#000;'); 
 				console.info(userInfo);
-
+				console.info(this.webSocket,990)
 				getStorage('userInfo',(value)=>{
 					for(let i in value){
 						userInfo[i] = value[i];
