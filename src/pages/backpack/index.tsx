@@ -1,6 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
+import Websocket from '../../service/webSocket'
 import { unitReplacement, setStorage, getStorage } from '../../utils'
+import { createWebSocket } from '../../service/createWebSocket'
 import './index.scss'
 
 import emitter from '../../service/events'
@@ -33,7 +35,6 @@ export class Login extends Component {
 			}
 		};
 		this.msgProto = new MsgProto();
-		this.webSocket = App.globalData.webSocket;
 	}
 
 	componentWillMount () {}
@@ -44,6 +45,13 @@ export class Login extends Component {
 
 	componentDidShow () {
 		let _this = this;
+		if(App.globalData.webSocket === ''){
+			console.info('%c backpack 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.webSocket = App.globalData.webSocket;
+		}
+
 		// 请求背包信息
 		let getBackpack = this.msgProto.getBackpack();
 		let parentModule = this.msgProto.parentModule(getBackpack);
@@ -123,6 +131,7 @@ export class Login extends Component {
 		});
 	}
 
+	
 	render () {
 		const { backpackTitle, backBtn, tipCard, tipHaveCard, usedBtn, isUsedSuccess } = this.state.local_data;
 		const list = this.state.data.list;

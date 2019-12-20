@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
-import { debounce, throttle} from 'lodash'
+import throttle from 'lodash/throttle'
 import { setStorage, getStorage, unitReplacement } from '../../utils'
 import './index.scss'
 import GameLoading from '../../components/GameLoading'

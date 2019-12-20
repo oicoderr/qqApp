@@ -1,6 +1,5 @@
 import Taro from '@tarojs/taro'
 import { baseUrl } from '../service/config'
-import App from '../app'
 
 export const promisify = (func, ctx) => {
   // 返回一个新的function

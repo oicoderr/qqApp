@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
-import { getStorage, setStorage, removeStorage, unitReplacement, buildURL } from '../../utils'
+import { getStorage, setStorage, unitReplacement, buildURL } from '../../utils'
 
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
@@ -13,7 +13,7 @@ import { websocketUrl } from '../../service/config'
 import MsgProto from '../../service/msgProto'
 import Websocket from '../../service/webSocket'
 import ReceiveMsg from '../../service/receivedMsg'
-
+import { createWebSocket } from '../../service/createWebSocket'
 const App = Taro.getApp()
 
 export class Index extends Component {
@@ -66,13 +66,11 @@ export class Index extends Component {
 
 		};
 		this.msgProto = new MsgProto();
-		this.webSocket = App.globalData.webSocket;
 	}
 
 	componentWillMount () {}
 
 	componentDidMount () {
-		
 		let _this = this;
 		// console.info(getCurrentTime(),'DidMount');
 		getStorage('gameUserInfo',(res)=>{
@@ -147,11 +145,7 @@ export class Index extends Component {
 			let loginDesc =  message[0]['data']['loginDesc'];
 			let loginResult = message[0]['data']['loginResult'];
 			if(loginDesc && loginResult){
-				Taro.showToast({
-					title: loginDesc,
-					icon: 'none',
-					duration: 2000,
-				});
+				console.info(loginDesc)
 			}else{
 				console.error(loginDesc);
 				Taro.showToast({
@@ -206,7 +200,14 @@ export class Index extends Component {
 
 	componentDidShow () {
 		let _this = this;
-		console.error('componentDidShow')
+
+		if(App.globalData.webSocket === ''){
+			console.info('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.webSocket = App.globalData.webSocket;
+		}
+
 		// 更新金币/红包/能量-数量
 		getStorage('currencyChange',(res)=>{
 			if(res!=''){
@@ -218,24 +219,6 @@ export class Index extends Component {
 			}
 		});
 
-		// 判断是否已经创建了wss请求
-		if(App.globalData.webSocket === ''){
-			this.webSocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求
-				data: {item: 'ws alive test'},
-				success(data) {
-					Taro.showToast({
-						title: 'wss is ok',
-						mask: true,
-						icon: 'none',
-						duration: 2000,
-					})
-				},
-				fail(err) {
-					console.info('可以重连了:' + err.errMsg, 'color: red; font-size:16px;');
-					_this.createSocket();
-				}
-			})
-		}
 // -------------------------- 游戏被杀死，重新进入游戏 --------------------------------------
 		// 1302 匹配ing杀死app，根据字段是否断线重连判断：isreconnection 1. 在匹配中杀死的
 		this.eventEmitter = emitter.addListener('enterMatch', (message) => {
@@ -326,59 +309,6 @@ export class Index extends Component {
 		emitter.removeAllListeners('getPrePay_id');
 		emitter.removeAllListeners('takeMoney');
 		emitter.removeAllListeners('getPrevQtakeMoneyStatusAInfo');
-	}
-
-	// 主动断开重新new和联接，重新登录
-	createSocket(){
-		// 创建websocket对象
-		this.websocket = new Websocket({
-			// true代表启用心跳检测和断线重连
-			heartCheck: true,
-			isReconnection: true
-		});
-
-		// 监听websocket关闭状态
-		this.websocket.onSocketClosed({
-			url: websocketUrl,
-			success(res) { console.log(res) },
-			fail(err) { console.log(err) }
-		})
-
-		// 捕获websocket异常
-		this.websocket.getOnerror((err)=>{
-			console.error('捕获到了异常');console.info(err);
-			Taro.showToast({
-				title: err.errMsg,
-				icon: 'none',
-				duration: 2000
-			})
-		});
-
-		// 监听网络变化
-		this.websocket.onNetworkChange({
-			url: websocketUrl,
-			success(res) { console.log(res) },
-			fail(err) { console.log(err) }
-		})
-
-		// 监听服务器返回
-		this.websocket.onReceivedMsg(result => {
-			let message = JSON.parse(result);
-			let messageData = JSON.parse(message.data);
-			message.data = messageData;
-			console.log('%c 收到服务器内容：', 'background:#000;color:white;font-size:14px');console.info(message);
-			// 要进行的操作
-			new ReceiveMsg(message);
-		})
-		
-		this.websocket.initWebSocket({
-			url: websocketUrl,
-			success(res) { console.log('～建立连接成功！linkWebsocket～')},
-			fail(err) { console.log(err) }
-		})
-		
-		// 对外抛出websocket
-		App.globalData.webSocket = this.websocket;
 	}
 
 	// 红包赛入口页

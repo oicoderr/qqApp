@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import 'taro-ui/dist/style/index.scss'
 import './utils/ald-stat'
-import { getNetworkStatusChange, setStorage, getStorage, loginRequest, getCurrentPageUrl } from './utils'
+import { setStorage, getStorage, loginRequest, getCurrentPageUrl } from './utils'
 import { Api } from './service/api'
 import './app.scss'
 import emitter from './service/events';
@@ -52,7 +52,7 @@ class App extends Component {
 			navigationBarTitleText: '音乐大作战',
 			navigationBarTextStyle: 'white',
 			navigationStyle: 'custom',
-		}
+		},
 	}
 
 	globalData = {
@@ -61,99 +61,44 @@ class App extends Component {
 	}
 
 	componentWillMount () {
+		let _this = this;
 		this.msgProto = new MsgProto();
-
 		// 监听内存情况
 		this.onMemoryWarning();
 		// 开始自动更新app
 		this.getUpdateManager();
 
-		console.log('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
-		// 创建websocket对象
-		this.websocket = new Websocket({
-			// true代表启用心跳检测和断线重连
-			heartCheck: true,
-			isReconnection: true
-		});
-
-		// 监听websocket关闭状态
-		this.websocket.onSocketClosed({
-			url: websocketUrl,
-			success(res) { console.log(res) },
-			fail(err) { console.log(err) }
-		})
-
-		// 捕获websocket异常
-		this.websocket.getOnerror((err)=>{
-			console.error('appjs捕获到websocket异常');console.info(err);
-			Taro.showToast({
-				title: err.errMsg,
-				icon: 'none',
-				duration: 2000
+		// 将code发后台，获取openid及accessToken
+		this.login((loginData)=>{
+			// app登录
+			loginRequest( loginData, (appLogin)=>{ // res: 返回openid，accessToken 
+				let userInfo = {};
+				// 获取缓存userInfo，如果没有授权信息, 授权后并保存缓存中，如果存在openid,跳转游戏登录
+				getStorage('userInfo',(res)=>{
+					if(!res.nickName || !res.avatarUrl ){
+						console.info('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
+						// 重新授权登录
+						Taro.showToast({
+							title: '请授权，解锁更多姿势～',
+							icon: 'none',
+							duration: 2000
+						});
+						userInfo = appLogin.data;
+						// 开始登陆
+						_this.createWebSocket();
+						setStorage('userInfo', userInfo);
+					}else{
+						// 跳转游戏主页
+						Taro.redirectTo({
+							url: '/pages/index/index'
+						});
+					}
+				});
 			})
 		});
-
-		// 监听网络变化
-		this.websocket.onNetworkChange({
-			url: websocketUrl,
-			success(res) { console.log(res) },
-			fail(err) { console.log(err) }
-		})
-
-		// 监听服务器返回
-		this.websocket.onReceivedMsg(result => {
-			let message = JSON.parse(result);
-			let messageData = JSON.parse(message.data);
-			message.data = messageData;
-			console.info('%c 收到服务器内容：', 'background:#000;color:white;font-size:14px');
-			console.info(message);
-			// 要进行的操作
-			new ReceiveMsg(message);
-		})
-		
-		this.websocket.initWebSocket({
-			url: websocketUrl,
-			success(res) { console.log('～建立连接成功！linkWebsocket～')},
-			fail(err) { console.log(err) }
-		})
-		
-		// 对外抛出websocket
-		this.globalData.webSocket = this.websocket;
 	}
 
-	componentDidMount () {
-		let _this = this;
-		// 有网络开始登录
-		getNetworkStatusChange(() => {
-			console.log('%c 有网络App开始登录～','background:#000;color:pink;font-size:14px');
-			// 将code发后台
-			_this.login((loginData)=>{
-				// app登录
-				loginRequest( loginData, (appLogin)=>{ // res: 返回openid，accessToken 
-					let userInfo = {};
-					// 获取缓存userInfo，如果没有授权信息, 授权后并保存缓存中，如果存在openid,跳转游戏登录
-					getStorage('userInfo',(res)=>{
-						if(!res.nickName || !res.avatarUrl ){
-							console.info('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
-							// 重新授权登录
-							Taro.showToast({
-								title: '请授权，解锁更多姿势～',
-								icon: 'none',
-								duration: 2000
-							});
-							userInfo = appLogin.data;
-							setStorage('userInfo', userInfo);
-						}else{
-							// 跳转游戏主页
-							Taro.redirectTo({
-								url: '/pages/index/index'
-							});
-						}
-					});
-				})
-			});
-		});
-	}
+	componentDidMount () {}
 
 	componentDidShow() {
 		// 监测1040 全局提示
@@ -180,15 +125,16 @@ class App extends Component {
 		let currentPage = getCurrentPageUrl();
 		// 支付页面会触发hide函数,将支付页面排除
 		if(currentPage != 'pages/payTakeMoney/recharge'){
-			console.error('～websocket 卸载了～');
-			this.websocket.closeWebSocket();
-			this.globalData.webSocket = '';
-			console.error('当前路由 ==>');
-			console.info(currentPage);
+			console.error('～人为卸载socket～');
+			if(this.globalData.webSocket){
+				this.websocket = this.globalData.webSocket;
+				this.websocket.closeWebSocket();
+				this.globalData.webSocket = '';
+			}
+			console.info('('+this.globalData.webSocket+')',1111);
+			console.error('卸载的当前路由 ==>');console.info(currentPage);
 		}
 	}
-
-	componentDidCatchError (err) {console.info(err,1)}
 
 	/* 新版本检测升级 */
 	getUpdateManager(){
@@ -249,7 +195,67 @@ class App extends Component {
 			console.error(res);
 		})
 	}
-	
+
+	// 创建网络连接
+	createWebSocket(){
+		let _this = this;
+		console.log('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
+		// 创建websocket对象
+		this.websocket = new Websocket({
+			// true代表启用心跳检测和断线重连
+			heartCheck: true,
+			isReconnection: true
+		});
+
+		// 监听websocket关闭状态
+		this.websocket.onSocketClosed({
+			url: websocketUrl,
+			success(res) {
+				Taro.showToast({
+					title: '与服务器断开连接',
+					icon: 'none',
+					duration: 2000
+				});
+			},
+			fail(err) { console.error('当前websocket连接已关闭,错误信息为:' + JSON.stringify(err));}
+		});
+
+		// 捕获websocket异常
+		this.websocket.getOnerror((err)=>{
+			console.error('appjs捕获到websocket异常, ～开始重连～');console.info(err);
+		});
+
+		// 监听网络变化
+		this.websocket.onNetworkChange({
+			url: websocketUrl,
+			success(res) { console.log(res) },
+			fail(err) { console.log(err) }
+		})
+
+		// 监听服务器返回
+		this.websocket.onReceivedMsg(result => {
+			let message = JSON.parse(result);
+			let messageData = JSON.parse(message.data);
+			message.data = messageData;
+			console.info('%c 收到服务器内容：', 'background:#000;color:white;font-size:14px');
+			console.info(message);
+			// 要进行的操作
+			new ReceiveMsg(message);
+		})
+		
+		this.websocket.initWebSocket({
+			url: websocketUrl,
+			success(res) { 
+				console.log('～建立连接成功！可以onSocketOpened拉～');
+				// 开始登陆
+				_this.websocket.onSocketOpened();
+				// 对外抛出websocket
+				_this.globalData.webSocket = _this.websocket;
+			},
+			fail(err) { console.log(err) }
+		})
+	}
+
 	// 在 App 类中的 render() 函数没有实际作用
 	// 请勿修改此函数
 	render () {

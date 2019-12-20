@@ -14,7 +14,7 @@ export default class websocket {
 		this._isLogin = false;
 		// 当前网络状态
 		this._netWork = true;
-		// 是否人为退出
+		// 是否人为退出, 不是人为退出
 		this._isClosed = false;
 		// 心跳检测频率
 		this._timeout = 3000;
@@ -24,7 +24,6 @@ export default class websocket {
 		// 心跳检测和断线重连开关，true为启用，false为关闭
 		this._heartCheck = heartCheck;
 		this._isReconnection = isReconnection;
-		this._onSocketOpened();
 		// 游戏是否登录
 		this.loginGame = false;	
 		// 实例化msg对象
@@ -32,13 +31,14 @@ export default class websocket {
 	}
 
 	// 心跳重置
-	_reset() {
+	reset() {
 		clearTimeout(this._timeoutObj);
+		// console.info('%c 心跳重置', 'font-size: 14px; color: #ffc41a;')
 		return this;
 	}
 
 	// 心跳开始
-	_start() {
+	start() {
 		let _this = this;
 		this._timeoutObj = setInterval(() => {
 			const HeartMessage =  this.msgProto.heartModule(new Date().getTime());
@@ -47,12 +47,11 @@ export default class websocket {
 				// 心跳发送的信息应由前后端商量后决定
 				data: parentModule,
 				success(res) {
-					// console.log(res)
-					// console.log("发送心跳成功");
+					// console.info("发送心跳成功"); console.log(info)
 				},
 				fail(err) {
-					console.log(err)
-					_this._reset()
+					// console.info('%c 发送心跳失败：','font-size:14px;color:#ff1a21;');console.info(err);
+					_this.reset();
 				}
 			});
 		}, this._timeout);
@@ -62,23 +61,22 @@ export default class websocket {
 	onSocketClosed(options) {
 		Taro.onSocketClose(err => {
 			console.error('当前websocket连接已关闭,错误信息为:' + JSON.stringify(err));
-
-			Taro.showToast({
-				title: '与服务器断开连接',
-				icon: 'none',
-				duration: 2000
-			});
-
 			// 停止心跳连接
 			if (this._heartCheck) {
-				this._reset();
+				this.reset();
 			}
 
 			// 关闭已登录开关
 			this._isLogin = false;
 
-			// 检测是否是用户自己退出小程序
-			if (!this._isClosed) { // 系统断开回来继续重连
+			Taro.showToast({
+				title: '与服务器断开连接',
+				icon: 'none',
+				duration: 2000
+			})
+
+			// 系统断开回来继续重连
+			if (!this._isClosed) { // 人为退出不重连
 				// 进行重连
 				if (this._isReconnection) {
 					this._reConnect(options);
@@ -101,9 +99,8 @@ export default class websocket {
 		})
 	}
 
-	_onSocketOpened() {
+	onSocketOpened() {
 		Taro.onSocketOpen(res => {
-			console.log('%c websocket已打开', 'background:#000;color:#0097f0;font-size:14px');
 
 			// 打开网络开关
 			this._netWork = true;
@@ -116,16 +113,26 @@ export default class websocket {
 			this.sendWebSocketMsg({
 				data: parentModule,
 				success(res) {
-					console.info('%c 游戏登录成功','font-size:14px;color:pink;');
+					Taro.showToast({
+						title: '登录成功',
+						icon: 'none',
+						duration: 2000,
+					})
+					// console.info('%c 游戏登录成功','font-size:14px;color:pink;');
 				},
 				fail(err){
-					console.info(err);
+					Taro.showToast({
+						title: '登陆失败请重新登陆',
+						icon: 'none',
+						duration: 2000,
+					})
+					console.error('游戏登陆失败：' + err);
 				}
 			});
 
 			// 发送心跳
 			if (this._heartCheck) {
-				this._reset()._start();
+				this.reset().start();
 			}
 
 		})
@@ -240,6 +247,7 @@ export default class websocket {
 	// 关闭websocket连接
 	closeWebSocket(){
 		Taro.closeSocket();
+		this._isLogin = false;
 		this._isClosed = true;
 	}
 }

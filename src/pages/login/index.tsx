@@ -1,8 +1,10 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Text, Image } from '@tarojs/components'
+import { View, Button } from '@tarojs/components'
+
 import { Api } from '../../service/api'
 import { baseUrl } from '../../service/config'
-import { setStorage, getStorage, request } from '../../utils'
+import { setStorage, getStorage } from '../../utils'
+import { createWebSocket } from '../../service/createWebSocket'
 import { PageScrollView } from '../../components/PageScrollView'
 import emitter from '../../service/events';
 import { websocketUrl } from '../../service/config'
@@ -34,7 +36,6 @@ export class Login extends Component {
 				body: '我是内容'
 			}
 		};
-		this.webSocket = App.globalData.webSocket;
 		this.msgProto = new MsgProto();
 	}
 
@@ -44,7 +45,14 @@ export class Login extends Component {
 
 	componentWillUnmount () {}
 
-	componentDidShow () {}
+	componentDidShow () {
+		if(App.globalData.webSocket === ''){
+			console.info('%c Login 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.webSocket = App.globalData.webSocket;
+		}
+	}
 
 	componentDidHide () {}
 
@@ -107,63 +115,7 @@ export class Login extends Component {
 			}
 		})
 	}
-
-	// 创建websocket
-	createWebSocket(){
-		let _this = this;
-		console.log('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
-
-		// 创建websocket对象
-		this.websocket = new Websocket({
-			// true代表启用心跳检测和断线重连
-			heartCheck: true,
-			isReconnection: true
-		});
-
-		// 监听websocket状态
-		this.websocket.onSocketClosed({
-			url: websocketUrl,
-			success(res) { console.log(res) },
-			fail(err) { console.log(err) }
-		})
-
-		// 捕获websocket异常
-		this.websocket.getOnerror((err)=>{
-			console.error('捕获到了异常');console.info(err);
-			Taro.showToast({
-				title: err.errMsg,
-				icon: 'none',
-				duration: 2000
-			})
-		});
-
-		// 监听网络变化
-		this.websocket.onNetworkChange({
-			url: websocketUrl,
-			success(res) { console.log(res) },
-			fail(err) { console.log(err) }
-		})
-
-		// 监听服务器返回
-		this.websocket.onReceivedMsg(result => {
-			let message = JSON.parse(result);
-			let messageData = JSON.parse(message.data);
-			message.data = messageData;
-			console.log('%c 收到服务器内容：', 'background:#000;color:white;font-size:14px');console.info(message);
-			// 要进行的操作
-			new ReceiveMsg(message);
-		})
-
-		this.websocket.initWebSocket({
-			url: websocketUrl,
-			success(res) { console.log(res)},
-			fail(err) { console.log(err) }
-		})
-		
-		// 对外抛出websocket
-		App.globalData.webSocket = this.websocket;
-	}
-
+	
 	render () {
 		return (
 			<View className='index'>
