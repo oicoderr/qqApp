@@ -84,7 +84,7 @@ export class TakeMoneyAnnal extends Component {
 	
 	// 滑动事件
 	onScroll(e){
-		// console.log(e.detail);
+		// console.info(e.detail);
 	}
 
 

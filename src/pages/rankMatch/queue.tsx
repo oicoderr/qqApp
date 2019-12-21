@@ -178,7 +178,7 @@ export class enterGame extends Component {
 				clearInterval(message[1]);
 				let goenterGame = this.state.routers.goenterGame;
 				console.info('所有队伍');
-				console.log(message[0]['data']);
+				console.info(message[0]['data']);
 				let PartyATeam = message[0]['data']['redPalyerOnInstance'];
 				let PartyBTeam = message[0]['data']['bluePalyerOnInstance'];
 				// 收到后台 ‘匹配成功后开始从新编队’
@@ -201,10 +201,10 @@ export class enterGame extends Component {
 		getStorage('gameUserInfo',(val)=>{
 			_this.setState((preState)=>{
 				console.info('%c 自己游戏基本信息 ==>','font-size:14px;color:#c500f0;');
-				console.log(preState);
+				console.info(preState);
 				preState.local_data.gameUserInfo = val;
 			},()=>{
-				console.log(_this.state.local_data.gameUserInfo.danDesc);
+				console.info(_this.state.local_data.gameUserInfo.danDesc);
 			});
 		})
 	}

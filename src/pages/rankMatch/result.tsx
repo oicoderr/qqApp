@@ -96,7 +96,7 @@ export class Reasult extends Component {
 							preState.local_data.isShowRankResult = false;
 						},()=>{});
 					},
-					fail(err) { console.log(err) }
+					fail(err) { console.info(err) }
 				});
 			}else{
 				let isSeeAds = this.msgProto.isSeeAds('');
@@ -115,7 +115,7 @@ export class Reasult extends Component {
 							preState.local_data.isShowRankResult = false;
 						},()=>{});
 					},
-					fail(err) { console.log(err) }
+					fail(err) { console.info(err) }
 				});
 			}
 		});
@@ -177,7 +177,7 @@ export class Reasult extends Component {
 							preState.local_data.isShowRankResult = false;
 						},()=>{});
 					},
-					fail(err) { console.log(err) }
+					fail(err) { console.info(err) }
 				});
 			}
 		});

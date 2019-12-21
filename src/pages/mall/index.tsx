@@ -106,7 +106,7 @@ export class Login extends Component {
 					icon: 'none',
 					duration: 1000
 				});
-				console.log('%c 未看完视频，不能领取免费道具哦','font-size:14px;color:#db2a0f;');
+				console.info('%c 未看完视频，不能领取免费道具哦','font-size:14px;color:#db2a0f;');
 			}
 		});
 	}

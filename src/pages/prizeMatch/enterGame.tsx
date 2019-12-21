@@ -353,7 +353,7 @@ export class enterGame extends Component {
 					preState.local_data.isShowMask = true;
 				},()=>{});
 			},
-			fail(err) { console.log(err) }
+			fail(err) { console.info(err) }
 		});
 	}
 
@@ -399,7 +399,7 @@ export class enterGame extends Component {
 					preState.local_data.isShowToast = false;
 				},()=>{console.info('选择 --> 取消复活')});
 			},
-			fail(err) { console.log(err) }
+			fail(err) { console.info(err) }
 		});
 	}
 

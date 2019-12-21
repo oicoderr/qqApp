@@ -112,10 +112,10 @@ export const setStorage = (key, value) => {
       //   showCancel: true, 
       //   success(res) {
       //     if (res.confirm) {
-      //       console.log('用户确定替换Storage-key：'+ key);
+      //       console.info('用户确定替换Storage-key：'+ key);
       //       Taro.setStorageSync(key, value);
       //     } else if (res.cancel) {
-      //       console.log('用户点击取消替换Storage-key：'+ key);
+      //       console.info('用户点击取消替换Storage-key：'+ key);
       //     }
       //   }
       // })
@@ -136,7 +136,7 @@ export const setStorage = (key, value) => {
 export const getStorage = (key, callback) => {
   try {
     const value = Taro.getStorageSync(key);
-    // console.log('%c 获取的Storage====> ' + key, 'font-size:14px;color:#8700d6;');console.info(value);
+    // console.info('%c 获取的Storage====> ' + key, 'font-size:14px;color:#8700d6;');console.info(value);
     if(callback)callback(value);
   } catch (err) {
     Taro.showToast({
@@ -153,10 +153,10 @@ export const removeStorage = (key) => {
   Taro.removeStorage({
     key: key,
     success(res){
-      console.log(res);
+      console.info(res);
     },
     fail(err){
-      console.log(err)
+      console.info(err)
     }
   });
 }

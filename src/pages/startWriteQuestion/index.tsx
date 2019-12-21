@@ -104,7 +104,7 @@ export class StartWriteQuestion extends Component {
 		let id = e.target.id;
 		let len = value.length;
 		let answers = this.state.local_data.answers;
-		console.log(answers[parseInt(id)]['minLength'])
+		console.info(answers[parseInt(id)]['minLength'])
 		switch (id){
 			case '0':
 				if(len < answers[parseInt(id)]['minLength']){

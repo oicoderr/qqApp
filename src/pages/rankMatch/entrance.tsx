@@ -90,11 +90,11 @@ export class RankEntrance extends Component {
 							preState.local_data.isShowRankResult = false;
 						},()=>{});
 					},
-					fail(err) { console.log(err) }
+					fail(err) { console.info(err) }
 				});
 				
 			}else{
-				console.log('%c 未看完视频，没有奖励啦','font-size:14px;color:#db2a0f;');
+				console.info('%c 未看完视频，没有奖励啦','font-size:14px;color:#db2a0f;');
 				this.webSocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
@@ -109,7 +109,7 @@ export class RankEntrance extends Component {
 							preState.local_data.isShowRankResult = false;
 						},()=>{});
 					},
-					fail(err) { console.log(err) }
+					fail(err) { console.info(err) }
 				});
 			}
 		});

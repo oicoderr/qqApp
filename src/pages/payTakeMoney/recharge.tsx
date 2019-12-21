@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
-import { getStorage } from '../../utils'
+import { unitReplacement, getStorage } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import './recharge.scss'
 
@@ -42,7 +42,7 @@ export class Login extends Component {
 			clearInterval(message[1]);
 			this.setState((preState)=>{
 				preState.data.chargeList = message[0]['data']['chargeList'];
-				preState.data.redEnvelope = message[0]['data']['redEnvelope'];
+				preState.data.redEnvelope = unitReplacement(message[0]['data']['redEnvelope']);
 			})
 		});
 
@@ -108,7 +108,7 @@ export class Login extends Component {
 
 	// 1903 购买门票
 	buyTickets(e){
-		console.log(e, 10);
+		console.info(e, 10);
 		let chargeid = e.currentTarget.dataset.chargeid;
 		let payStencil = this.msgProto.payStencil(chargeid);
 		let parentModule = this.msgProto.parentModule(payStencil);

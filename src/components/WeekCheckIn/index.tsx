@@ -71,7 +71,7 @@ export default class WeekCheckIn extends Component {
     }
 
     handleChange(value){
-        // console.log('是否同意炫耀一下 ====》' + value);
+        // console.info('是否同意炫耀一下 ====》' + value);
         this.setState((oldState) => {
             let data_ = this.state.data;
             this.state.data.shareChecked = !value;

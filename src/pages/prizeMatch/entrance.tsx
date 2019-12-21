@@ -93,10 +93,10 @@ export class RankEntrance extends Component {
 					success(res) {
 						// 允许进入匹配页 1302监测返回成功后跳转匹配页
 					},
-					fail(err) { console.log(err) }
+					fail(err) { console.info(err) }
 				});
 			}else{
-				console.log('%c 未看完视频，不能进入大进入大奖赛呦','font-size:14px;color:#db2a0f;');
+				console.info('%c 未看完视频，不能进入大进入大奖赛呦','font-size:14px;color:#db2a0f;');
 			}
 		});
 

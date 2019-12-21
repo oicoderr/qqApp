@@ -341,7 +341,7 @@ export class enterGame extends Component {
 	exitQueue(e){
 		let exitQueue = this.msgProto.exitQueue();
 		let parentModule = this.msgProto.parentModule(exitQueue);
-		console.log(this.websocket,1234)
+		console.info(this.websocket,1234)
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res){

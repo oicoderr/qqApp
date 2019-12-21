@@ -83,7 +83,7 @@ export class Index extends Component {
 			// this.setState({
 			// 	gender: message
 			// },()=>{
-			// 	console.log(this.state.gender);
+			// 	console.info(this.state.gender);
 			// })
 		});
 
@@ -92,7 +92,7 @@ export class Index extends Component {
 			// this.setState({
 			// 	gender: message
 			// },()=>{
-			// 	console.log(this.state.gender);
+			// 	console.info(this.state.gender);
 			// })
 		});
 
@@ -101,7 +101,7 @@ export class Index extends Component {
 			// this.setState({
 			// 	gender: message
 			// },()=>{
-			// 	console.log(this.state.gender);
+			// 	console.info(this.state.gender);
 			// })
 		});
 
@@ -110,7 +110,7 @@ export class Index extends Component {
 			// this.setState({
 			// 	gender: message
 			// },()=>{
-			// 	console.log(this.state.gender);
+			// 	console.info(this.state.gender);
 			// })
 		});
 		// <====================  other  ====================>

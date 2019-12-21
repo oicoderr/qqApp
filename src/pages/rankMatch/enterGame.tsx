@@ -213,7 +213,7 @@ export class enterGame extends Component {
 		// 1306 排位赛发题
 		this.eventEmitter = emitter.addListener('getQuestion', (message) => {
 			clearInterval(message[1]);
-			// console.info('%c 接受到的题目及选项', 'color:#000; font-size:14px;'); console.log(message[0]['data']);
+			// console.info('%c 接受到的题目及选项', 'color:#000; font-size:14px;'); console.info(message[0]['data']);
 			console.info('%c <========== 1306发题了 ==========>' + getCurrentTime(), 'font-size:14px;color:#f04e00;');
 			let time = message[0]['data']['time'];
 
@@ -249,7 +249,7 @@ export class enterGame extends Component {
 					time: 0,
 				};
 			},()=>{
-				// console.log('%c 处理数据时间 =======> '+  new Date().getSeconds() +'修改返回数据 =====>', 'color:pink;font-size:14px;');
+				// console.info('%c 处理数据时间 =======> '+  new Date().getSeconds() +'修改返回数据 =====>', 'color:pink;font-size:14px;');
 			});
 		});
 
@@ -257,7 +257,7 @@ export class enterGame extends Component {
 		this.eventEmitter = emitter.addListener('getAnswer', (message) => {
 			clearInterval(message[1]);
 			let _this = this;
-			// console.log('%c 已接受到答案', 'color:blue; font-size:12px;');
+			// console.info('%c 已接受到答案', 'color:blue; font-size:12px;');
 			let selectedOptionId = this.state.local_data.selectedOptionId;
 			this.setState((preState)=>{
 				preState.data.curAnswer = message[0]['data'];
@@ -302,7 +302,7 @@ export class enterGame extends Component {
 		// 1322 接受上一题基本信息 
 		this.eventEmitter = emitter.addListener('getPrevQAInfo', (message) => {
 			clearInterval(message[1]);
-			console.log('%c 上一题基本信息','font-size:14px;color:#A020F0;');
+			console.info('%c 上一题基本信息','font-size:14px;color:#A020F0;');
 			console.info(message[0]['data']);
 			this.setState((preState)=>{
 				preState.data.prevQAInfo = JSON.parse(JSON.stringify(message[0]['data']));
@@ -329,7 +329,7 @@ export class enterGame extends Component {
 				// 找到B队伍积分信息
 				list.map(function (cur, index) {
 					if( scoreTeamB.length > 0 && index < scoreTeamB.length && scoreTeamB[index]['roleId'] == cur['roleId']){
-						console.log(_this.state.local_data.scoreTeamB, 7777)
+						console.info(_this.state.local_data.scoreTeamB, 7777)
 						_this.state.local_data.scoreTeamB[index]['score'] = cur['currScore'];
 					}
 				});
@@ -440,7 +440,7 @@ export class enterGame extends Component {
 					preState.local_data.isShowMask = true;
 				},()=>{})
 			},
-			fail(err) { console.log(err) }
+			fail(err) { console.info(err) }
 		});
 	}
 
@@ -451,7 +451,7 @@ export class enterGame extends Component {
 		this.webSocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {},
-			fail(err) { console.log(err) }
+			fail(err) { console.info(err) }
 		});
 	}
 
@@ -472,7 +472,7 @@ export class enterGame extends Component {
 		this.webSocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) { console.info(res)},
-			fail(err) { console.log(err) }
+			fail(err) { console.info(err) }
 		});
 	}
 	

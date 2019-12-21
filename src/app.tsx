@@ -124,7 +124,7 @@ class App extends Component {
 			let loginDesc =  message[0]['data']['loginDesc'];
 			let loginResult = message[0]['data']['loginResult'];
 			if(loginDesc && loginResult){
-				console.error('登陆成功！')
+				console.info('%c 登陆成功！', 'font-size:14px;color:#20ff1f;background-color:#000000;')
 				// Taro.showToast({
 				// 	title: loginDesc,
 				// 	icon: 'none',
@@ -220,7 +220,7 @@ class App extends Component {
 	// 创建网络连接
 	createWebSocket(){
 		let _this = this;
-		console.log('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
+		console.info('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
 		// 创建websocket对象
 		this.websocket = new Websocket({
 			// true代表启用心跳检测和断线重连
@@ -254,8 +254,8 @@ class App extends Component {
 		// 监听网络变化
 		this.websocket.onNetworkChange({
 			url: websocketUrl,
-			success(res) { console.log(res) },
-			fail(err) { console.log(err) }
+			success(res) { console.info(res) },
+			fail(err) { console.info(err) }
 		})
 
 		// 监听服务器返回
@@ -272,7 +272,7 @@ class App extends Component {
 		this.websocket.initWebSocket({
 			url: websocketUrl,
 			success(res) { 
-				console.log('～建立连接成功！可以onSocketOpened拉～');
+				console.info('～建立连接成功！可以onSocketOpened拉～');
 				// 对外抛出websocket
 				_this.globalData.webSocket = _this.websocket;
 				// 通知AppGlobalSocket
@@ -283,7 +283,7 @@ class App extends Component {
 				// 开始登陆
 				_this.websocket.onSocketOpened();
 			},
-			fail(err) { console.log(err) }
+			fail(err) { console.info(err) }
 		})
 	}
 

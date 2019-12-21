@@ -15,7 +15,7 @@ export class PageScrollView extends Component {
     componentWillMount () {}
 
     componentDidMount = () => {
-        // console.log(this.props)
+        // console.info(this.props)
         if(this.props.ScrollViewData){
             let title = this.props.ScrollViewData.title;
             let body = this.props.ScrollViewData.body;
@@ -40,11 +40,11 @@ export class PageScrollView extends Component {
     componentDidHide () { }
 
     onScrollToUpper = (e) => {
-        console.log(e.detail);
+        console.info(e.detail);
     }
     
     onScroll(e){
-        console.log(e.detail);
+        console.info(e.detail);
     }
     // 发送子给父组件消息
     handleClick = (message) => {

@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
-import { getStorage } from '../../utils'
+import { unitReplacement, getStorage } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import './takeMoney.scss'
 
@@ -40,10 +40,10 @@ export class Login extends Component {
 		// 2102提现信息
 		this.eventEmitter = emitter.addListener('takeMoney', (message) => {
 			clearInterval(message[1]);
-			// console.log('收到2102');console.info(message[0]);
+			// console.info('收到2102');console.info(message[0]);
 			this.setState((preState)=>{
 				preState.data.list = message[0]['data']['list'];
-				preState.data.energy = message[0]['data']['energy'];
+				preState.data.energy = unitReplacement(message[0]['data']['energy']);
 			})
 		}); 
 

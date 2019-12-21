@@ -24,12 +24,12 @@ export default class createVideoAd {
             });
 
             this.videoAd.onLoad(() => {
-                console.log('激励视频 广告加载成功')
+                console.info('激励视频 广告加载成功')
             });
 
             //捕捉错误
             this.videoAd.onError(err => {
-                console.log('<======  视频播放失败 ======>');
+                console.info('<======  视频播放失败 ======>');
                 console.info(err);
                 Taro.showToast({
                     title: this.videoAdErrHandle(err),
@@ -57,7 +57,7 @@ export default class createVideoAd {
                 this.videoAd.load()
                 .then(() => this.videoAd.show())
                 .catch(err => {
-                    console.log('<======  视频播放失败2 ======>');
+                    console.info('<======  视频播放失败2 ======>');
                     console.info(err);
                     Taro.showToast({
                         title: this.videoAdErrHandle(err),

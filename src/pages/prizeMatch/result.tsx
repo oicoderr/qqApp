@@ -117,7 +117,7 @@ export class Reasult extends Component {
 							}
 						});
 					},
-					fail(err) { console.log(err) }
+					fail(err) { console.info(err) }
 				});
 			}else{
 				Taro.showToast({
