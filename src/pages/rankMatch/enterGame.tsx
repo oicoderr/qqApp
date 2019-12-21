@@ -72,6 +72,26 @@ export class enterGame extends Component {
 					time: 10,
 				},
 				matchProps: {},			// 延迟卡，求助卡数量
+				used_delayCardResult:{  // 延迟卡信息
+					delayCard: 1,
+					errmsg: "",
+					errorId1: -1,
+					errorId2: -1,
+					helpCard: 1,
+					id: 2,
+					result: 1,
+					time: 0,
+				},
+				used_helpCardResult: { // 求助卡信息
+					delayCard: 1,
+					errmsg: "",
+					errorId1: -1,
+					errorId2: -1,
+					helpCard: 1,
+					id: 1,
+					result: 1,
+					time: 0,
+				},
 				usedPropsResult:{		// 使用道具结果	
 					delayCard: 1,
 					helpCard: 1,
@@ -180,14 +200,19 @@ export class enterGame extends Component {
 			console.info( message[0]['data']);
 
 			let data = message[0]['data'];
-			this.setState((preState)=>{
-				preState.local_data.usedPropsResult = data;
-			},()=>{});
-			if(data.id == 2){
-				// 开始倒计时
-				clearInterval(this.state.data.timer);
-				console.error('时间：' + data.time);
-				this.getCountdown(data.time);
+			if(data.id == 1){
+				this.setState((preState)=>{
+					preState.local_data.used_helpCardResult = data;
+				},()=>{});
+			}else if(data.id == 2){
+				this.setState((preState)=>{
+					preState.local_data.used_delayCardResult = data;
+				},()=>{
+					// 开始倒计时
+					clearInterval(this.state.data.timer);
+					console.error('时间：' + data.time);
+					this.getCountdown(data.time);
+				});
 			}
 		});
 
@@ -209,7 +234,26 @@ export class enterGame extends Component {
 			this.setState((preState)=>{
 				preState.data.curQuestion = message[0]['data'];
 				preState.local_data.curQuestion = this.resetQA(message[0]['data']);
-				preState.local_data.usedPropsResult = '';
+				preState.local_data.used_delayCardResult = {
+					delayCard: 1,
+					errmsg: "",
+					errorId1: -1,
+					errorId2: -1,
+					helpCard: 1,
+					id: 2,
+					result: 1,
+					time: 0,
+				};
+				preState.local_data.used_helpCardResult = {
+					delayCard: 1,
+					errmsg: "",
+					errorId1: -1,
+					errorId2: -1,
+					helpCard: 1,
+					id: 1,
+					result: 1,
+					time: 0,
+				};
 			},()=>{
 				// console.log('%c 处理数据时间 =======> '+  new Date().getSeconds() +'修改返回数据 =====>', 'color:pink;font-size:14px;');
 			});
@@ -327,7 +371,7 @@ export class enterGame extends Component {
 	}
 
 	componentDidHide () {
-		console.info('~Hide了~');
+		console.info('rank-enterGame: ~DidHide拉~');
 		clearInterval(this.state.data.timer);
 	}
 	
@@ -421,10 +465,13 @@ export class enterGame extends Component {
 	usedProps(e){
 		// id(1.求助卡;2.延时卡)
 		let id = e.currentTarget.dataset.id;
+		// status 是否可用道具
+		let status = e.currentTarget.dataset.status;
 		// 延迟卡增加的时间， 求助卡时间0
-		let time = e.currentTarget.dataset.status;
+		let time = e.currentTarget.dataset.time;
+		
 		console.error('道具使用 ==>');
-		console.info('(id: ' + id + ')','(time: ' + time + ')');
+		console.info('(id: ' + id + ')','(status: ' + status + ')', '(time: ' + time + ')');
 
 		let getMatchProps = this.msgProto.usedPropsMatch(id)
 		let parentModule = this.msgProto.parentModule(getMatchProps);
@@ -438,7 +485,7 @@ export class enterGame extends Component {
 	render () {
 		const { defultClass, defultBottomClass, isShowMask, isShowLoading, selectedOptionIndex, countdown, scoreTeamA, 
 			scoreTeamB, selfScore, delayCardBtn, helpCardBtn, rankUserInfo, PartyATeam, PartyBTeam, 
-			matchProps, usedPropsResult, disable_delayCardBtn, disable_helpCardBtn, 
+			matchProps, used_delayCardResult, used_helpCardResult, disable_delayCardBtn, disable_helpCardBtn, 
 		} = this.state.local_data;
 		const { currContent, currIndex, currQuestId, time, totalCount, options } = this.state.local_data.curQuestion;
 		const {blueScore, redScore, selfCamp} = this.state.data.prevQAInfo;
@@ -463,22 +510,19 @@ export class enterGame extends Component {
 		});
 
 		const Answer  = options.map((currentValue,index) => { // selectedOptionIndex 所选题的index
-			return  <View className={`optionWarp 
+			return  <View onClick={this.submitAnswer.bind(this)} 
+						data-curOptionIndex={index} // 当前题的index
+						data-currQuestId={currQuestId}
+						data-quesIndex={currIndex}
+						data-optionId={currentValue.optionId}
+					className={`optionWarp
 						${ selectedOptionIndex == index? defultBottomClass:'' }
-						${ index == usedPropsResult.errorId1-1 || index == usedPropsResult.errorId2-1? 'flaseOptionBottom':'' }`}
+						${ index == used_helpCardResult.errorId1-1 || index == used_helpCardResult.errorId2-1? 'flaseOptionBottom':'' } `}
 					>
 						<View
-							onClick={this.submitAnswer.bind(this)} 
 							className={`option 
 								${ selectedOptionIndex == index? defultClass:'' }
-								${ index == usedPropsResult.errorId1-1 || index == usedPropsResult.errorId2-1? 'falseOption':'' }`
-							}
-							data-curOptionIndex={index} // 当前题的index
-							data-currQuestId={currQuestId} 
-							data-quesIndex={currIndex} 
-							data-optionId={currentValue.optionId}
-						
-						>
+								${ index == used_helpCardResult.errorId1-1 || index == used_helpCardResult.errorId2-1? 'falseOption':'' } `}>
 							<View className='optionMark'>{currentValue.key}</View>
 							<View className='optionContent'>{currentValue.value}</View>
 						</View>
@@ -525,16 +569,19 @@ export class enterGame extends Component {
 						</View>
 						<View className='foot'>
 							<View onClick={this.usedProps.bind(this)} className='cardBtn'
-								data-id='2' data-time={usedPropsResult.time}>
-								<Image src={`${usedPropsResult.delayCard == 0? disable_delayCardBtn : delayCardBtn }`} 
+								data-id={used_delayCardResult.id}
+								data-time={used_delayCardResult.time}
+								data-status={used_delayCardResult.delayCard} >
+								<Image src={`${used_delayCardResult.delayCard == 0? disable_delayCardBtn : delayCardBtn }`} 
 									className='delayCardBtn'/>
 								<Text className='card-num'>{matchProps.delayCount}</Text>
 							</View>
 
 							<View onClick={this.usedProps.bind(this)}  className='cardBtn'
-								data-id='1' data-status={`${usedPropsResult.id == 1?usedPropsResult.helpCard:''}`} 
-								data-time={usedPropsResult.time}>
-								<Image src={`${usedPropsResult.helpCard == 0? disable_helpCardBtn : helpCardBtn }`}
+								data-id={used_helpCardResult.id}
+								data-time={used_helpCardResult.time}
+								data-status={used_helpCardResult.helpCard} >
+								<Image src={`${used_helpCardResult.helpCard == 0? disable_helpCardBtn : helpCardBtn }`}
 									className='helpCardBtn'/>
 								<Text className='card-num'>{matchProps.helpCount}</Text>
 							</View>

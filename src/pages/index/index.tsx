@@ -286,6 +286,12 @@ export class Index extends Component {
 		emitter.removeAllListeners('getPrePay_id');
 		emitter.removeAllListeners('takeMoney');
 		emitter.removeAllListeners('getPrevQtakeMoneyStatusAInfo');
+		emitter.removeAllListeners('takeMoneyStatus');
+		emitter.removeAllListeners('getBackpack');
+		emitter.removeAllListeners('propsInfo');
+		emitter.removeAllListeners('getMall');
+		emitter.removeAllListeners('getMatchProps');
+		emitter.removeAllListeners('usedPropsResult');
 	}
 
 	// 红包赛入口页
