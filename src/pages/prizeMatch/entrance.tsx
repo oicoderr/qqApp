@@ -22,8 +22,8 @@ export class RankEntrance extends Component {
 		this.state = {
 			// 路由
 			routers:{
-				queue: '/pages/prizeMatch/queue',
-				index: '/pages/index/index',
+				queuePage: '/pages/prizeMatch/queue',
+				indexPage: '/pages/index/index',
 			},
 
 			// 后台返回数据
@@ -109,7 +109,7 @@ export class RankEntrance extends Component {
 			if(result){
 				// 跳转匹配页
 				Taro.reLaunch({
-					url: this.state.routers.queue,
+					url: this.state.routers.queuePage,
 					success(){
 						Taro.showToast({
 							title: '进入匹配队列',
@@ -173,8 +173,9 @@ export class RankEntrance extends Component {
 
 	// 返回上一页
 	goBack(){
-		Taro.navigateBack({
-			delta: 1
+		let indexPage = this.state.routers.indexPage;
+		Taro.navigateTo({
+			url: indexPage
 		});
 	}
 
