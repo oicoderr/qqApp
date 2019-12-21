@@ -152,6 +152,10 @@ export class enterGame extends Component {
 					console.error('匹配错误信息==> ');console.info(err);
 				}
 			});
+		}else{
+			_this.setState((preState)=>{
+				preState.local_data.isShowLoading = false;
+			});
 		}
 
 		// 1302 返回是否已进入匹配队列，判断不是断线重连开始进入匹配

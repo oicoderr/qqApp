@@ -219,7 +219,7 @@ export class Index extends Component {
 					case 3:
 						// 跳转排位赛匹配页
 						Taro.redirectTo({
-							url: this.state.routers.enterGamePage + '?isreconnection=1'
+							url: this.state.routers.rankQueue + '?isreconnection=1'
 						});
 						break;
 				}
