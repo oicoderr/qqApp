@@ -210,9 +210,10 @@
                 }
 
                 .scrollview{
-                    height: calc(100vh - 350rpx);
+                    height: calc(100vh - 230rpx);
                     position: relative;
-                    
+                    top: 20rpx;
+
                     .box{
                         width: 100%;
                         height: auto;
@@ -222,7 +223,6 @@
                         flex-wrap: wrap;
                         flex-direction: row;
                         justify-content: flex-start;
-                        padding-top: 20rpx;
 
                         .samePiece{
                             width: 100%;
@@ -413,10 +413,9 @@
                         .item_{
                             position: relative;
                             width: 200rpx;
-                            height: 300rpx;
+                            height: 340rpx;
                             background:rgba(0,0,0,.3);
                             border-radius: 20rpx;
-                            padding: 20rpx;
                             box-sizing: border-box;
                             overflow: hidden;
                             display: flex;
@@ -425,8 +424,8 @@
                             margin-bottom: 20rpx;
 
                             .cardBg_{
-                                width: 160rpx;
-                                height: 170rpx;
+                                width: 200rpx;
+                                height: 200rpx;
                                 box-sizing: border-box;
                                 display:flex;
                                 background:rgba(255,255,255,1);
@@ -435,8 +434,8 @@
                                 z-index: 10;
 
                                 .cardImg_{
-                                    width: 160rpx;
-                                    height: 170rpx;
+                                    width: 200rpx;
+                                    height: 200rpx;
                                     margin: auto;
                                     position: absolute;
                                     z-index: 11;
@@ -509,7 +508,7 @@
                         }
 
                         .name_{
-                            top: 205rpx !important;
+                            top: 225rpx !important;
                         }
 
                         .bothMargin{

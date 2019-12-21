@@ -108,48 +108,32 @@ export class Login extends Component {
 	classification(list){
 		let list_ = JSON.parse(JSON.stringify(list));
 		try{
-			// 道具类型
-			if(list_[0]['type'] == 1){
-				let freePiece = [], propsPiece = [];
-				list_.map((cur,index)=>{
-					if(cur.consumType == 0){ // 将0看广告获得道具放在道具类
-						freePiece.push(cur);
-					}else{
-						propsPiece.push(cur);
-					}
-				});
-				this.setState((preState)=>{
-					preState.local_data.freePiece = freePiece;
-					preState.local_data.propsPiece = propsPiece;
-				})
-			}else if(list_[0]['type'] == 2){ // 乐队类型 1主唱 2吉他手  3贝斯手 4鼓手
-				let leadSinger = [], guitarist = [], bassist = [], drummer = [];
-				list_.map((cur,index)=>{
-					switch(cur.musicIndex){
-						case 1:
-							leadSinger.push(cur);
-							break;
-						case 2:
-							guitarist.push(cur);
-							break;
-						case 3:
-							bassist.push(cur);
-							break;
-						case 4:
-							drummer.push(cur);
-							break;
-					}
-				});
-				this.setState((preState)=>{
-					preState.local_data.leadSinger = leadSinger;
-					preState.local_data.guitarist = guitarist;
-					preState.local_data.bassist = bassist;
-					preState.local_data.drummer = drummer;
-				});
-				console.info('%c 乐队各类 ===>', 'font-size: 14px; color:#1a71ff;');
-				console.info(leadSinger, guitarist, bassist, drummer);
-			}
-
+			// 乐队人物类型 1主唱 2吉他手  3贝斯手 4鼓手
+			let leadSinger = [], guitarist = [], bassist = [], drummer = [];
+			list_.map((cur,index)=>{
+				switch(cur.type){
+					case 1:
+						leadSinger.push(cur);
+						break;
+					case 2:
+						guitarist.push(cur);
+						break;
+					case 3:
+						bassist.push(cur);
+						break;
+					case 4:
+						drummer.push(cur);
+						break;
+				}
+			});
+			this.setState((preState)=>{
+				preState.local_data.leadSinger = leadSinger;
+				preState.local_data.guitarist = guitarist;
+				preState.local_data.bassist = bassist;
+				preState.local_data.drummer = drummer;
+			});
+			console.info('%c 乐队各类 ===>', 'font-size: 14px; color:#1a71ff;');
+			console.info(leadSinger, guitarist, bassist, drummer);
 		}catch(err){
 			//在这里处理错误
 			console.error('错误：' + err);
@@ -159,7 +143,7 @@ export class Login extends Component {
 
 	render () {
 		const { isShowLoading, orchestraTitleImg,  backBtn, propsText, bandText, freeTitle, freeTip, propsTitle, 
-			propsTip, leadSingerTitle, guitaristTitle, bassistTitle, drummerTitle, isTab, rewardText, 
+			propsTip, leadSingerTitle, guitaristTitle, bassistTitle, drummerTitle, rewardText, 
 			energyIcon, ticketsIcon, goldIcon  } = this.state.local_data;
 
 		// 乐队
