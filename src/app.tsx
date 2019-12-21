@@ -38,6 +38,8 @@ class App extends Component {
 			'pages/backpack/index', 	  	  // 背包
 			'pages/mall/index', 	  	  	  // 商城
 
+			'pages/selfOrchestra/index',	  // 我的乐队
+
 			'pages/startWriteQuestion/index', // 开始出题
 			'pages/takeMoneyAnnal/index',	  // 提现记录
 		],

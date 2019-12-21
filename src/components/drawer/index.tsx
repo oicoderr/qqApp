@@ -30,7 +30,7 @@ export default class Drawer extends Component{
                         title: '乐队',
                         x: -210,
                         y: -10,
-                        router: '',
+                        router: '/pages/selfOrchestra/index',
                     },{
                         title: '排行',
                         x: -110,

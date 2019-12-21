@@ -2,7 +2,7 @@
     display: none !important;
 }
 
-.mall{
+.selfOrchestra{
     position: absolute;
     top: 0;
     left: 0;
@@ -58,9 +58,9 @@
                 background-color: transparent;
                 position: absolute;
                 z-index: 99;
-        
+
                 .backBtn{
-                    width: 33rpx;
+                    width: 60rpx;
                     height: 54rpx;
                 }
 
@@ -76,7 +76,7 @@
 
                     .goldIcon_{
                         position:absolute;
-                        z-index:18;
+                        z-index: 18;
                         width: 52rpx;
                         height: 62rpx;
                     }

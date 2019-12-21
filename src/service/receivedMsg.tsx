@@ -166,6 +166,11 @@ export default class ReceiveMsg{
 					emitter.emit('usedPropsResult', [message, this.timerCount[26]]);
 				},20);
 				break;
+			case 1602:			// 我的乐队
+				this.timerCount[27] = setInterval(()=>{
+					emitter.emit('getSelfOrchestra', [message, this.timerCount[27]]);
+				},20);
+				break;
 		}
     }
 }

@@ -43,11 +43,12 @@ export class Login extends Component {
 		// 接受AppGlobalSocket
 		this.eventEmitter = emitter.addListener('AppGlobalSocket', (message) => {
 			clearInterval(message[1]);
+
+			console.info('%c 收到的App发来的webSocket', 'font-size:14px;color:#ffad1a');
+			console.info(message[0]);
 			let socket = message[0];
 			App.globalData.webSocket = socket;
 			this.webSocket = socket;
-			console.info('%c 收到的App发来的webSocket', 'font-size:14px;color:#ffad1a');
-			console.info(this.webSocket);
 		});
 	}
 
@@ -74,7 +75,6 @@ export class Login extends Component {
 					}
 				});
 				setStorage('userInfo', userInfo);
-
 				// 发送昵称，头像信息
 				let basicInfo_ = _this.msgProto.basicInfo(userInfo);
 				let parentModule = _this.msgProto.parentModule(basicInfo_);

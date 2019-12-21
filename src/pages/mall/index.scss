@@ -60,7 +60,7 @@
                 z-index: 99;
         
                 .backBtn{
-                    width: 33rpx;
+                    width: 60rpx;
                     height: 54rpx;
                 }
 
@@ -72,7 +72,7 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
-                    left: 60rpx;
+                    left: 20rpx;
 
                     .goldIcon_{
                         position:absolute;
@@ -91,7 +91,7 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
-                    left: 100rpx;
+                    left: 70rpx;
                     .energyIcon_{
                         position:absolute;
                         z-index:18;

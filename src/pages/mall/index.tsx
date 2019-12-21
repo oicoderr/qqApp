@@ -386,7 +386,7 @@ export class Login extends Component {
 		const bassist = this.state.local_data.bassist;
 		const drummer = this.state.local_data.drummer;
 		const leadSingerContent = leadSinger.map((cur, index)=>{
-			return  <View className={`item_ ${index%3== 1?'bothMargin':''}`}>
+			return  <View onClick={this.DBbuyProps.bind(this)} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
 						</View>
@@ -401,7 +401,7 @@ export class Login extends Component {
 					</View>
 		});
 		const guitaristContent = guitarist.map((cur, index)=>{
-			return  <View className={`item_ ${index%3== 1?'bothMargin':''}`}>
+			return  <View onClick={this.DBbuyProps.bind(this)} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
 						</View>
@@ -416,7 +416,7 @@ export class Login extends Component {
 					</View>
 		});
 		const bassistContent = bassist.map((cur, index)=>{
-			return  <View className={`item_ ${index%3== 1?'bothMargin':''}`}>
+			return  <View onClick={this.DBbuyProps.bind(this)} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
 						</View>
@@ -431,7 +431,7 @@ export class Login extends Component {
 					</View>
 		});
 		const drummerContent = drummer.map((cur, index)=>{
-			return  <View className={`item_ ${index%3== 1?'bothMargin':''}`}>
+			return  <View onClick={this.DBbuyProps.bind(this)} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
 						</View>
