@@ -117,7 +117,7 @@ class App extends Component {
 
 		// 1002 游戏登录状态
 		this.eventEmitter = emitter.once('loginGameStatus', (message) => {
-			console.info('%c 游戏登录状态： ', 'color: blue;font-size:14px;'); console.info(message);
+			// console.info('%c 游戏登录状态： ', 'color: blue;font-size:14px;'); console.info(message);
 			// 清除消息转发定时器
 			clearInterval(message[1]);
 			// 消息本体

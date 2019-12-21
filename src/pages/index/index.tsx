@@ -135,7 +135,7 @@ export class Index extends Component {
 
 		// 1004游戏登录成功返回基本信息
 		this.eventEmitter = emitter.once('loginGameInfo', (message) => {
-			console.info('%c 接受用户游戏基本信息==> ', 'color: blue;font-size:14px;'); console.info(message);
+			// console.info('%c 接受用户游戏基本信息==> ', 'color: blue;font-size:14px;'); console.info(message);
 			// 清除消息转发定时器
 			clearInterval(message[1]);
 			// 消息本体
@@ -269,6 +269,7 @@ export class Index extends Component {
 	}
 
 	componentDidHide () {
+		console.info('%c 主页DidHide，开始removeAllListeners','font-size:14px;background-color:#fff81a; color:#00000;');
 		emitter.removeAllListeners('enterMatch');
 		emitter.removeAllListeners('getBattleTeams');
 		emitter.removeAllListeners('getQuestion');
@@ -285,7 +286,6 @@ export class Index extends Component {
 		emitter.removeAllListeners('getRechargeMessage');
 		emitter.removeAllListeners('getPrePay_id');
 		emitter.removeAllListeners('takeMoney');
-		emitter.removeAllListeners('getPrevQtakeMoneyStatusAInfo');
 		emitter.removeAllListeners('takeMoneyStatus');
 		emitter.removeAllListeners('getBackpack');
 		emitter.removeAllListeners('propsInfo');

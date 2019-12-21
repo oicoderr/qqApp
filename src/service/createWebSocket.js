@@ -34,8 +34,8 @@ export const  createWebSocket = (that) =>{
         let message = JSON.parse(result);
         let messageData = JSON.parse(message.data);
         message.data = messageData;
-        console.info('%c 收到服务器内容：', 'background:#000;color:white;font-size:14px');
-        console.info(message);
+        console.info('%c 收到服务器内容：' + message['code'],'background:#000;color:white;font-size:14px');
+        console.info(message['code'] != 1102?message:message['code']);
         // 要进行的操作
         new ReceiveMsg(message);
     })

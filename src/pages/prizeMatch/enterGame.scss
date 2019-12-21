@@ -281,7 +281,7 @@
 
             // 选中状态
             .selectedOption{
-                border:8rpx solid rgba(254,183,39,1);
+                border:8rpx solid rgba(254,183,39,1) !important;
             }
 
             .optionPeople{
@@ -310,6 +310,7 @@
             .trueOptionBottom{
                 background-color: rgba(113, 170, 94, 1) !important;
             }
+
             .falseOption{
                 background-color: rgba(238, 134, 104, 1) !important;
                 color:rgba(255,255,255,1) !important;

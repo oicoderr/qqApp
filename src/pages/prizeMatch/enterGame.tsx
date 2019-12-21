@@ -57,6 +57,8 @@ export class enterGame extends Component {
 					time: 10,
 					totalCount:'',
 					list:[ 0, 0, 0, 0 ],
+					isSuccess: -1,
+					selfSelectId: -1,
 				},
 				selectedOptionIndex: -1,// 当前题index
 				selectedOptionId: '',	// 所选题optionId
@@ -68,6 +70,11 @@ export class enterGame extends Component {
 					waitreceivetime: 3,
 				},	
 				prizeMatchUserInfo:{},	// 大奖赛个人信息
+				isAnswerCorrect:{		// 玩家选择10s后显示当前答案是否正确
+					isSuccess: 0,
+					optionId: '',
+					questId: '',
+				},		
 				unit: '人',
 				dieInfo:{
 					toastTitle: '哎呦，答错了',
@@ -134,6 +141,9 @@ export class enterGame extends Component {
 				preState.local_data.curQuestion.receiveCount = 0;
 				// 清空所选答案人数
 				preState.local_data.curQuestion['list'] = [0,0,0,0];
+				// 清除用户所选答案状态
+				preState.local_data.curQuestion['isSuccess'] = -1;
+				preState.local_data.curQuestion['selfSelectId'] = -1;
 			},()=>{	/*console.info(_this.state.local_data.curQuestion);*/ });
 			// 开始倒计时
 			this.getCountdown(time);
@@ -146,8 +156,13 @@ export class enterGame extends Component {
 		// 1308 接受答案通知
 		this.eventEmitter = emitter.addListener('getAnswer', (message) => {
 			clearInterval(message[1]);
-			console.info('%c 已接受到答案', 'color:#1a9cff; font-size:14px;');
-			console.info(message[0]['data']);
+
+			this.setState((preState)=>{
+				preState.local_data.isAnswerCorrect = message[0]['data'];
+			},()=>{
+				console.info('%c 已接受到答案', 'color:#1a9cff; font-size:14px;');
+				console.info(message[0]['data']);
+			})
 		});
 
 		// 1312 服务器广播上道题的统计
@@ -169,6 +184,9 @@ export class enterGame extends Component {
 				// 清除选中样式
 				preState.local_data.curQuestion.correctOption = -1;
 				preState.local_data.selectedOptionIndex = -1;
+				// 显示用户是否选择正确，暂只有正确显示，错误不显示
+				preState.local_data.curQuestion['isSuccess'] = preState.local_data.isAnswerCorrect.isSuccess;
+				preState.local_data.curQuestion['selfSelectId'] = preState.local_data.isAnswerCorrect.optionId;
 			},()=>{
 				console.info('%c 最终的curQuestion =====>', 'font-size:14px;color:#1ae3ff;')
 				console.info(_this.state.local_data.curQuestion);
@@ -405,7 +423,7 @@ export class enterGame extends Component {
 		} = this.state.local_data;
 		// 当前题
 		const { currContent, currIndex, currQuestId, time, totalCount, options, answerErrorCount,
-			correctOption, currCount, dieCount, receiveCount, list,
+			correctOption, currCount, dieCount, receiveCount, list, selfSelectId, isSuccess,
 		} = this.state.local_data.curQuestion;
 
 		// 弹窗提示
@@ -417,16 +435,13 @@ export class enterGame extends Component {
 		const Answer  = options.map((currentValue,index) => { // selectedOptionIndex 所选题的index
 			return  <View className={`optionBox`}>
 						<View onClick={this.submitAnswer.bind(this)} 
-							className=
-							{`optionWarp 
-							${selectedOptionIndex == index?'selectedOption':''} 
-							${correctOption == currentValue.optionId?'trueOptionBottom':''}`}
+							className={`optionWarp ${selectedOptionIndex == index?'selectedOption':''} ${selfSelectId == currentValue.optionId && isSuccess?'trueOptionBottom':''}`}
 							data-curOptionIndex={index}
 							data-currQuestId={currQuestId}
 							data-quesIndex={currIndex} 
 							data-optionId={currentValue.optionId}
 						>
-							<View className={`option ${ correctOption == currentValue.optionId?'trueOption':''}`}>
+							<View className={`option ${ selfSelectId == currentValue.optionId && isSuccess?'trueOption':''}`}>
 								<View className='optionMark'>{currentValue.key}</View>
 								<View className='optionContent'>{currentValue.value}</View>
 							</View>
