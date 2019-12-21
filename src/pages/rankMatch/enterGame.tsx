@@ -82,7 +82,7 @@ export class enterGame extends Component {
 					result: 1,
 					time: 0,
 				},
-				used_helpCardResult: { // 求助卡信息
+				used_helpCardResult: {  // 求助卡信息
 					delayCard: 1,
 					errmsg: "",
 					errorId1: -1,
@@ -91,14 +91,7 @@ export class enterGame extends Component {
 					id: 1,
 					result: 1,
 					time: 0,
-				},
-				usedPropsResult:{		// 使用道具结果	
-					delayCard: 1,
-					helpCard: 1,
-					time: 0,
-					result: 1,
-					errmsg: "",
-				},			
+				},		
 				defultClass: '',	   	// 选项上层默认样式class 
 				defultBottomClass: '', 	// 选项下层默认样式class 
 				selectedOptionIndex: 0, // 当前题的index
