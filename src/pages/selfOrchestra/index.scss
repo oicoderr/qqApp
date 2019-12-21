@@ -1,0 +1,523 @@
+.hide{
+    display: none !important;
+}
+
+.mall{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.bgColor{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(97, 130, 242, 1);
+    position: relative;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+
+    .bgImg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/rank-texture-0001.png');
+        background-size: 750px 3000px;
+        background-repeat: no-repeat;
+        opacity: 1;
+        filter:alpha(opacity=1);
+    }
+
+    .content{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 50rpx 20rpx 20rpx 20rpx;
+        overflow: hidden;
+        box-sizing: border-box;
+        z-index: 2;
+
+        .head{
+            width: 100%;
+            height: 54rpx;
+            display: flex;
+            justify-content: left;
+            padding-bottom: 30rpx;
+
+            .backBtnBox{
+                width: 100%;
+                height: 54rpx;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                background-color: transparent;
+                position: absolute;
+                z-index: 99;
+        
+                .backBtn{
+                    width: 33rpx;
+                    height: 54rpx;
+                }
+
+                .goldWrap{
+                    position: relative;
+                    width: 140rpx;
+                    max-width: 200rpx;
+                    height: 62rpx;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    left: 60rpx;
+
+                    .goldIcon_{
+                        position:absolute;
+                        z-index:18;
+                        width: 52rpx;
+                        height: 62rpx;
+                    }
+                    
+                }
+
+                .energyWrap{
+                    position: relative;
+                    width: 140rpx;
+                    max-width: 200rpx;
+                    height: 62rpx;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    left: 100rpx;
+                    .energyIcon_{
+                        position:absolute;
+                        z-index:18;
+                        width: 45rpx;
+                        height: 60rpx;
+                    }
+                }
+
+                .num{
+                    position: absolute;
+                    height: 44rpx;
+                    z-index: 16;
+                    text-align: center;
+                    line-height: 42rpx;
+                    border: 2rpx solid rgba(48,48,48,1);
+                    background:rgba(0,0,0,.2);
+                    border-radius: 10rpx;
+                    font-size: 24rpx;
+                    font-weight: 600;
+                    color: rgba(255,255,255,1);
+                    padding: 0 20rpx 0 42rpx;
+                    box-sizing: border-box;
+                    margin: auto;
+                    left:14rpx;
+                    top:10rpx;
+                }
+
+            }
+
+            .energyIcon{
+                width: 64rpx;
+                height: 76rpx;
+                position: relative;
+                z-index: 4;
+                left: 86rpx;
+            }
+
+            .energyBox{
+                position: relative;
+                z-index: 3;
+                min-width: 120rpx;
+                max-width: 160rpx;
+                font-size: 28rpx;
+                height: 44rpx;
+                line-height: 24rpx;
+                font-weight:600;
+                color:rgba(255,255,255,1);
+                padding: 10rpx;
+                box-sizing: border-box;
+                overflow: hidden;
+                text-align: center;
+                border: 2rpx solid rgba(48,48,48,1);
+                border-radius: 10rpx;
+                background: rgba(30,30,30,.3);
+                margin: auto 0;
+                left: 62rpx;
+            }
+        }
+
+        .body{
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            box-sizing: border-box;
+            
+            .backpackTitleWrap{
+                width: 100%;
+                height: auto;
+                display: flex;
+                justify-content: center;
+
+                .backpackTitle{
+                    width: 426rpx;
+                    height: 60rpx;
+                }
+            }
+
+            .mallContent{
+                width: 100%;
+                height: calc(100vh - 205rpx);
+                box-sizing: border-box;
+                overflow: hidden;
+                background:rgba(0,0,0,.3);
+                border: 2rpx solid rgba(0,0,0,.3);
+                border-radius: 20rpx;
+                box-sizing: border-box;
+
+                .tab{
+                    width: 100%;
+                    height: 120rpx;
+                    padding: 32rpx 30rpx 20rpx 30rpx;
+                    box-sizing: border-box;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+
+                    .btn{
+                        width: 315rpx;
+                        height: 70rpx;
+                        text-align: center;
+                        line-height: 70rpx;
+                        background: rgba(255,255,255,1);
+                        border-radius: 20rpx;
+                        background:rgba(40,189,255,1);
+                        font-size: 30rpx;
+                        font-weight: 400;
+                        color:rgba(255,255,255,1);
+                        text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+                    }
+
+                    .selectedBtn{
+                        color: rgba(40, 189, 255, 1) !important;
+                        background:rgba(255,255,255,1) !important;
+                        text-shadow: none;
+                    }
+                }
+
+                .scrollview{
+                    height: calc(100vh - 350rpx);
+                    position: relative;
+                    
+                    .box{
+                        width: 100%;
+                        height: auto;
+                        box-sizing: border-box;
+                        overflow: hidden;
+                        display: flex;
+                        flex-wrap: wrap;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                        padding-top: 20rpx;
+
+                        .samePiece{
+                            width: 100%;
+                            height: auto;
+                            overflow: hidden;
+                            box-sizing: border-box;
+
+                            .bar{
+                                width: 100%;
+                                height: 60rpx;
+                                line-height: 60rpx;
+                                display: flex;
+                                padding: 0 30rpx 0 35rpx;
+                                box-sizing: border-box;
+                                display: flex;
+                                justify-content: space-between;
+                                flex-direction: row;
+
+                                .Title{
+                                    font-size: 30rpx;
+                                    height: 60rpx;
+                                    line-height: 60rpx;
+                                    font-weight: 600;
+                                    color:rgba(255,255,255,1);
+                                }
+                                .Tip{
+                                    font-size: 24rpx;
+                                    height: 60rpx;
+                                    line-height: 60rpx;
+                                    font-weight: 400;
+                                    color:rgba(255,255,255,1);
+                                }
+                            }
+
+                            // 免费道具横条 / 提示语
+                            .bar1{
+                                background-image: linear-gradient(to right, #ff315d , #ff977f ) !important;
+                            }
+                            .title1{
+                                text-shadow:0rpx 0rpx 10rpx rgba(136, 31, 50, 1) !important;
+                            }
+                            // 付费道具横条 / 提示语
+                            .bar2{
+                                background-image: linear-gradient(to right, #23b765 , #2cdb9f ) !important;
+                            }
+                            .title2{
+                                text-shadow:0rpx 0rpx 10rpx rgba(34, 128, 79, 1) !important;
+                            }
+
+                            // 主唱横条 / 提示语
+                            .bar3{
+                                background-image: linear-gradient(to right, #F11165 , #FF42FD ) !important;
+                            }
+                            .title3{
+                                text-shadow:0rpx 0rpx 10rpx rgba(155, 26, 69, 1) !important;
+                            }
+
+                            // 吉他手 / 提示语
+                            .bar4{
+                                background-image: linear-gradient(to right, #FFE372 , #FFBA27 ) !important;
+                            }
+                            .title4{
+                                text-shadow:0rpx 0rpx 10rpx rgba(127, 96, 25, 1) !important;
+                            }
+
+                            // 鼓手 / 提示语
+                            .bar5{
+                                background-image: linear-gradient(to right, #3276FF , #30DAFF ) !important;
+                            }
+                            .title5{
+                                text-shadow:0rpx 0rpx 10rpx rgba(24, 64, 129, 1) !important;
+                            }
+
+                            // 贝斯手 / 提示语
+                            .bar6{
+                                background-image: linear-gradient(to right, #23B765 , #2CDB9F ) !important;
+                            }
+                            .title6{
+                                text-shadow:0rpx 0rpx 10rpx rgba(18, 89, 53, 1) !important;
+                            }
+                        }
+
+                        // 主唱
+                        .leadSinger{
+                            width: 100%;
+                            height: 100%;
+                            overflow: hidden;
+                            box-sizing: border-box;
+
+                            .bar{
+                                width: 100%;
+                                height: 60rpx;
+                                line-height: 60rpx;
+                                display: flex;
+                                background-image: linear-gradient(to right, #F11165 , #FF42FD );
+                                padding: 0 30rpx 0 35rpx;
+                                box-sizing: border-box;
+                                display: flex;
+                                justify-content: space-between;
+                                flex-direction: row;
+
+                                .propsTitle{
+                                    font-size: 30rpx;
+                                    height: 60rpx;
+                                    line-height: 60rpx;
+                                    font-weight: 600;
+                                    color:rgba(255,255,255,1);
+                                    text-shadow:0rpx 0rpx 10rpx rgba(155, 26, 69, 1);
+                                }
+
+                                .propsTip{
+                                    font-size: 24rpx;
+                                    height: 60rpx;
+                                    line-height: 60rpx;
+                                    font-weight: 400;
+                                    color:rgba(255,255,255,1);
+                                }
+                            }
+                        }
+
+                        .main{
+                            width: 100%;
+                            height: auto;
+                            padding: 20rpx 30rpx;
+                            box-sizing: border-box;
+                            overflow: hidden;
+                            display: flex;
+                            flex-direction: row;
+                            flex-wrap: wrap;
+
+                            .rewardCount{
+                                position: absolute;
+                                bottom: 20rpx;
+                                width: 160rpx;
+                                height: 40rpx;
+                                line-height: 40rpx;
+                                padding-right: 10rpx;
+                                background: rgba(255, 255, 255, 1);
+                                border-radius: 10rpx;
+                                z-index: 12;
+                                font-size: 24rpx;
+                                font-weight: 600;
+                                text-align: center;
+                                box-sizing: border-box;
+                                overflow: hidden;
+                                display: flex;
+                                justify-content: space-between;
+                                flex-direction: row;
+
+                                .rewardText{
+                                    width: 110rpx;
+                                    height: 40rpx;
+                                    line-height: 40rpx;
+                                    padding: 0 6rpx;
+                                    box-sizing: border-box;
+                                    font-size: 24rpx;
+                                    font-weight: 400;
+                                    color:rgba(255,255,255,1);
+                                    background:rgba(255,89,128,1);
+                                    border: 2rpx solid rgba(255,255,255,1);
+                                    border-radius: 10rpx;
+                                }
+
+                                .rewardCountText{
+                                    font-size: 24rpx;
+                                    font-weight: 600;
+                                    color:rgba(0,0,16,1);
+                                    line-height: 40rpx;
+                                }
+                            }
+                        }
+
+                        .item{
+                            position: relative;
+                            width: 200rpx;
+                            height: 260rpx;
+                            background:rgba(0,0,0,.3);
+                            border-radius: 20rpx;
+                            padding: 20rpx;
+                            box-sizing: border-box;
+                            overflow: hidden;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            margin-bottom: 17rpx;
+                        }
+
+                        .item_{
+                            position: relative;
+                            width: 200rpx;
+                            height: 300rpx;
+                            background:rgba(0,0,0,.3);
+                            border-radius: 20rpx;
+                            padding: 20rpx;
+                            box-sizing: border-box;
+                            overflow: hidden;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            margin-bottom: 20rpx;
+
+                            .cardBg_{
+                                width: 160rpx;
+                                height: 170rpx;
+                                box-sizing: border-box;
+                                display:flex;
+                                background:rgba(255,255,255,1);
+                                border-radius: 20rpx;
+                                position: absolute;
+                                z-index: 10;
+
+                                .cardImg_{
+                                    width: 160rpx;
+                                    height: 170rpx;
+                                    margin: auto;
+                                    position: absolute;
+                                    z-index: 11;
+                                }
+                            }
+                        }
+
+
+                        .consumCountWrap{
+                            position: absolute;
+                            bottom: 14rpx;
+                            width: 160rpx;
+                            height: 45rpx;
+                            box-sizing: border-box;
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            
+                            .icon{
+                                width: 34rpx;
+                                height: 40rpx;
+                            }
+
+                            .consumCount{
+                                line-height: 45rpx;
+                                font-size: 24rpx;
+                                font-weight: 600;
+                                color:rgba(255,255,255,1);
+                                text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+                                margin-left: 8rpx;
+                            }
+                        }
+
+                        .cardBg{
+                            width: 160rpx;
+                            height: 120rpx;
+                            padding: 14rpx 24rpx;
+                            box-sizing: border-box;
+                            display:flex;
+                            background:rgba(255,255,255,1);
+                            border-radius: 20rpx;
+                            position: absolute;
+                            z-index: 10;
+
+                            .cardImg{
+                                width: 110rpx;
+                                height: 90rpx;
+                                margin: auto;
+                                position: absolute;
+                                z-index: 11;
+                            }
+                        }
+
+                        .name{
+                            position: absolute;
+                            top: 160rpx;
+                            left: 0;
+                            width: 200rpx;;
+                            height: 24rpx;
+                            line-height: 24rpx;
+                            box-sizing: border-box;
+                            font-size: 24rpx;
+                            font-weight: 600;
+                            color:rgba(255,255,255,1);
+                            text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+                            overflow: hidden;
+                            text-align: center;
+                            padding: 0 4rpx;
+                            box-sizing: border-box;
+                        }
+
+                        .name_{
+                            top: 205rpx !important;
+                        }
+
+                        .bothMargin{
+                            margin: 0 calc(100% - 625rpx);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

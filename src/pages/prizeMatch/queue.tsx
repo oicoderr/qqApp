@@ -6,13 +6,8 @@ import emitter from '../../service/events'
 import './queue.scss'
 
 import GameLoading from '../../components/GameLoading'
-import { websocketUrl } from '../../service/config'
 import MsgProto from '../../service/msgProto'
-import Websocket from '../../service/webSocket'
-import ReceiveMsg from '../../service/receivedMsg'
-
-const App = Taro.getApp()
-
+const App = Taro.getApp();
 
 export class enterGame extends Component {
 
@@ -244,6 +239,7 @@ export class enterGame extends Component {
 			createWebSocket(this);
 		}else{
 			this.webSocket = App.globalData.webSocket;
+			console.error(this.webSocket,999999)
 		}
 
 		// 切换匹配头像 1.5s切换一次
@@ -268,25 +264,6 @@ export class enterGame extends Component {
 			// console.info(this.state.local_data.selectedHead);
 			// console.info(this.state.local_data.selectedPosi);
 		});
-
-		// 判断是否已经创建了wss请求
-		if(App.globalData.webSocket === ''){
-			this.websocket.sendWebSocketMsg({//不管wss请求是否关闭，都会发送消息，如果发送失败说明没有ws请求
-				data: 'ws alive test',
-				success(data) {
-					Taro.showToast({
-						title: 'wss is ok',
-						mask: true,
-						icon: 'none',
-						duration: 2000,
-					})
-				},
-				fail(err) {
-					console.info('可以重连了:' + err.errMsg, 'color: red; font-size:14px;');
-					_this.createSocket();
-				}
-			})
-		}
 
 		// 是否断线重连
 		let isreconnection = this.state.local_data.isreconnection;
@@ -336,13 +313,11 @@ export class enterGame extends Component {
 		return prizeMatchUserInfo;
 	}
 
-	
 	// 退出排队
 	exitQueue(e){
 		let exitQueue = this.msgProto.exitQueue();
 		let parentModule = this.msgProto.parentModule(exitQueue);
-		console.info(this.websocket,1234)
-		this.websocket.sendWebSocketMsg({
+		this.webSocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res){
 				console.info('～发送退出请求成功～');

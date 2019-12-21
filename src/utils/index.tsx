@@ -226,6 +226,20 @@ export const getCurrentPageUrl = () => {
   var pages = Taro.getCurrentPages()         // 获取加载的页面
   var currentPage = pages[pages.length-1]    // 获取当前页面的对象
   var url = currentPage.route;               // 当前页面url
+  if (pages.length == 10) {
+    console.info('%c 当前currentPage ==>','font-size:16px;color:#ff581f;')
+    console.info(pages)
+    Taro.showToast({
+      title: "页面打开太多，请回退关闭几个页面",
+      icon: 'none',
+      duration: 2000
+    });
+    setTimeout(() => {
+      Taro.redirectTo({
+        url: '/pages/idnex/index'
+      })
+    }, 2000);
+  }
   return url
 }
 
@@ -396,3 +410,4 @@ export const getArrayItems = (arr, num)=> {
   }
   return return_array;
 }
+
