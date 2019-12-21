@@ -25,6 +25,7 @@ export class enterGame extends Component {
 			routers:{
 				resultPage: '/pages/rankMatch/result'
 			},
+
 			// 后台返回数据
 			data:{
 				timer:'', 				// 计时器
