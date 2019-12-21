@@ -91,6 +91,7 @@ export class Reasult extends Component {
 		// 下发视频监听事件
 		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
 			console.error('是否看完视频？' + status.isEnded);
+			let entrancePage = this.state.routers.entrancePage;
 			if(status.isEnded){
 				console.info('%c 正常播放结束，领取复活卡','font-size:14px;color:#0fdb24;');
 				let data_ = {
@@ -101,25 +102,35 @@ export class Reasult extends Component {
 				}
 				let adsRewards = this.msgProto.adsRewards(data_);
 				let parentModule = this.msgProto.parentModule(adsRewards);
-				let indexPage = this.state.routers.indexPage;
 				this.webSocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
 						Taro.showToast({
-							title: '成功获取奖励',
+							title: '奖励领取成功',
 							icon: 'none',
 							mask: true,
 							duration: 2000,
 							success(){
 								Taro.redirectTo({
-									url: indexPage
+									url: entrancePage
 								})
 							}
 						});
 					},
 					fail(err) { console.log(err) }
 				});
-			}else{console.info('%c 大奖赛结束未看广告','font-size:14px;color:#ff541a;')}
+			}else{
+				Taro.showToast({
+					title: '观看完整视频可获取完整奖励',
+					icon: 'none',
+					duration: 2000,
+					success(){
+						Taro.redirectTo({
+							url: entrancePage
+						})
+					}
+				})
+			}
 		});
 	}
 
@@ -128,7 +139,6 @@ export class Reasult extends Component {
 	componentWillUnmount () {}
 
 	componentDidShow () {
-
 		if(App.globalData.webSocket === ''){
 			console.info('%c prize-result 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
@@ -205,10 +215,9 @@ export class Reasult extends Component {
 
 	render () {
 		const { isShowLoading, gradeBar, getRewardTip, questionUnit, timeUnit,
-			energyIcon, confirmBtn, adsTip, checked, isShowRankResult, rankResultTitleUrl} 
-			= this.state.local_data;
+			energyIcon, confirmBtn, adsTip, checked } = this.state.local_data;
 
-		const { endtime, energy, rank, rankMsg, speedtime, successCount, totaltime} = this.state.data.prizeMatchReport;
+		const { endtime, energy, rank, rankMsg, speedtime, successCount} = this.state.data.prizeMatchReport;
 
 		return (
 			<View className='prizeMatchResult' catchtouchmove="ture">

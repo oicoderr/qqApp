@@ -132,6 +132,8 @@ export class enterGame extends Component {
 				preState.local_data.curQuestion.answerErrorCount = 0;
 				// 隐藏答复活人数提示
 				preState.local_data.curQuestion.receiveCount = 0;
+				// 清空所选答案人数
+				preState.local_data.curQuestion['list'] = [0,0,0,0];
 			},()=>{	/*console.info(_this.state.local_data.curQuestion);*/ });
 			// 开始倒计时
 			this.getCountdown(time);
