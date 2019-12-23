@@ -18,7 +18,7 @@ export class Login extends Component {
 
 	constructor(props) {
 		super(props);
-		
+
 		this.state = {
 			data:{
 				list: []
@@ -104,39 +104,46 @@ export class Login extends Component {
 
 	// 道具使用
 	usedCard(e){
-		let _this = this;
+		let count = e.currentTarget.dataset.count;
 		let id = e.currentTarget.dataset.id;
 		let data = {
 			'id': id,
 			'count': 1,
 		};
-		let usedProps = this.msgProto.usedProps(data);
-		let parentModule = this.msgProto.parentModule(usedProps);
-		this.websocket.sendWebSocketMsg({
-			data: parentModule,
-			success(res) {
-				Taro.showToast({
-					title: '使用成功',
-					icon: 'none',
-					duration: 2000
-				})
-			},
-			fail(err){
-				Taro.showToast({
-					title: err.errMsg,
-					icon: 'none',
-					duration: 2000
-				})
-			}
-		});
+		if(count > 0){
+			let usedProps = this.msgProto.usedProps(data);
+			let parentModule = this.msgProto.parentModule(usedProps);
+			this.websocket.sendWebSocketMsg({
+				data: parentModule,
+				success(res) {
+					Taro.showToast({
+						title: '使用成功',
+						icon: 'none',
+						duration: 2000
+					});
+				},
+				fail(err){
+					Taro.showToast({
+						title: err.errMsg,
+						icon: 'none',
+						duration: 2000
+					})
+				}
+			});
+		}else{
+			Taro.showToast({
+				title: '道具不足',
+				icon: 'none',
+				duration: 2000
+			});
+		}
 	}
 
-	
 	render () {
 		const { backpackTitle, backBtn, tipCard, tipHaveCard, usedBtn, isUsedSuccess } = this.state.local_data;
 		const list = this.state.data.list;
 		const content  = list.map((cur, index)=>{
-			return  <View className={`item ${index%3== 1?'bothMargin':''}`} data-type={cur.type}>
+			return  <View className={`item ${index%3== 1?'bothMargin':''}`} data-count={cur.count} data-type={cur.type}>
 						<View className='cardBg'>
 							<Image src={cur.icon} className='cardImg' />
 							<View className='haveNum'>{tipHaveCard} {cur.count}</View>

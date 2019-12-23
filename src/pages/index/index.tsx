@@ -285,6 +285,7 @@ export class Index extends Component {
 
 	componentDidHide () {
 		console.info('%c 主页DidHide，开始removeAllListeners','font-size:14px;background-color:#fff81a; color:#00000;');
+		emitter.removeAllListeners('currencyChange');
 		emitter.removeAllListeners('enterMatch');
 		emitter.removeAllListeners('getBattleTeams');
 		emitter.removeAllListeners('getQuestion');
@@ -307,6 +308,8 @@ export class Index extends Component {
 		emitter.removeAllListeners('getMall');
 		emitter.removeAllListeners('getMatchProps');
 		emitter.removeAllListeners('usedPropsResult');
+		emitter.removeAllListeners('getSelfOrchestra');
+		emitter.removeAllListeners('getWeekCheckIninfo');
 	}
 
 	// 红包赛入口页
