@@ -479,7 +479,7 @@ export class Login extends Component {
 								</View>
 								<ScrollView className='scrollview' scrollY scrollWithAnimation scrollTop='0'>
 									<View className={`box ${isTab?'':'hide'}`}>
-										<View className='samePiece'>
+										<View className={`samePiece ${freePiece.length > 0?'':'hide'}`}>
 											<View className='bar bar1'>
 												<Text className='Title title1'>{freeTitle}</Text>
 												<Text className='Tip'>{freeTip}</Text>
@@ -488,7 +488,7 @@ export class Login extends Component {
 												{freePieceContent}
 											</View>
 										</View>
-										<View className='samePiece'>
+										<View className={`samePiece ${propsPiece.length > 0?'':'hide'}`}>
 											<View className='bar bar2'>
 												<Text className='Title title2'>{propsTitle}</Text>
 												<Text className='Tip'>{propsTip}</Text>
@@ -501,7 +501,7 @@ export class Login extends Component {
 
 									<View className={`box ${isTab?'hide':''}`}>
 										{/* 主唱 */}
-										<View className='samePiece'>
+										<View className={`samePiece ${leadSinger.length > 0?'':'hide'}`}>
 											<View className='bar bar3'>
 												<Text className='Title title3'>{leadSingerTitle}</Text>
 											</View>
@@ -510,7 +510,7 @@ export class Login extends Component {
 											</View>
 										</View>
 										{/* 吉他手 */}
-										<View className='samePiece'>
+										<View className={`samePiece ${guitarist.length> 0?'':'hide'}`}>
 											<View className='bar bar4'>
 												<Text className='Title title4'>{guitaristTitle}</Text>
 											</View>
@@ -519,7 +519,7 @@ export class Login extends Component {
 											</View>
 										</View>
 										{/* 贝斯手  */}
-										<View className='samePiece'>
+										<View className={`samePiece ${bassist.length> 0?'':'hide'}`}>
 											<View className='bar bar6'>
 												<Text className='Title title6'>{bassistTitle}</Text>
 											</View>
@@ -528,7 +528,7 @@ export class Login extends Component {
 											</View>
 										</View>
 										{/* 鼓手 */}
-										<View className='samePiece'>
+										<View className={`samePiece ${drummer.length> 0?'':'hide'}`}>
 											<View className='bar bar5'>
 												<Text className='Title title5'>{drummerTitle}</Text>
 											</View>
