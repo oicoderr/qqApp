@@ -45,17 +45,17 @@ export class Login extends Component {
 
 	componentDidShow () {
 		let _this = this;
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c backpack 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
+			this.websocket = App.globalData.websocket;
 		}
 
 		// 请求背包信息
 		let getBackpack = this.msgProto.getBackpack();
 		let parentModule = this.msgProto.parentModule(getBackpack);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {console.info('请求背包信息Success')},
 			fail(err){
@@ -112,7 +112,7 @@ export class Login extends Component {
 		};
 		let usedProps = this.msgProto.usedProps(data);
 		let parentModule = this.msgProto.parentModule(usedProps);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {
 				Taro.showToast({

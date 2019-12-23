@@ -95,7 +95,7 @@ export class Login extends Component {
 
 			if(status.isEnded){
 				console.info('%c 看完广告，领取免费道具','font-size:14px;color:#0fdb24;');
-				this.webSocket.sendWebSocketMsg({
+				this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {console.info(res) },
 					fail(err) { console.info(err) }
@@ -118,11 +118,11 @@ export class Login extends Component {
 	componentDidShow () {
 		let _this = this;
 
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
+			this.websocket = App.globalData.websocket;
 		}
 
 		// 获取金币/能量，如果不存在就在gameUserInfo中取
@@ -148,7 +148,7 @@ export class Login extends Component {
 		// 请求商城信息, 默认请求道具商城
 		let getMall = this.msgProto.getMall(1);
 		let parentModule = this.msgProto.parentModule(getMall);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {console.info('请求商城信息Success')},
 			fail(err){
@@ -260,7 +260,7 @@ export class Login extends Component {
 		let type = e.target.dataset.type;
 		let getMall = this.msgProto.getMall(type);
 		let parentModule = this.msgProto.parentModule(getMall);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {console.info(type==1?'请求道具商城信息Success':'请求乐队商城信息Success')},
 			fail(err){
@@ -323,7 +323,7 @@ export class Login extends Component {
 		}
 		let buyProps = this.msgProto.buyProps(data);
 		let parentModule = this.msgProto.parentModule(buyProps);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {
 				Taro.showToast({

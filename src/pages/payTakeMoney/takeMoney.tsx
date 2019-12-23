@@ -71,17 +71,17 @@ export class Login extends Component {
 	componentWillUnmount () {}
 
 	componentDidShow () {
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c paTakeMoney-takeMoney 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
+			this.websocket = App.globalData.websocket;
 		}
 
 		// 请求提现信息
 		let takeMoneyInfo = this.msgProto.takeMoneyInfo();
 		let parentModule = this.msgProto.parentModule(takeMoneyInfo);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {console.info('请求提现信息Success')},
 			fail(err){
@@ -102,7 +102,7 @@ export class Login extends Component {
 		if(exchangecount > 0 && redid){
 			let takeMoney = this.msgProto.takeMoney(redid);
 			let parentModule = this.msgProto.parentModule(takeMoney);
-			this.webSocket.sendWebSocketMsg({
+			this.websocket.sendWebSocketMsg({
 				data: parentModule,
 				success(res) {console.info('请求提现Success')},
 				fail(err){

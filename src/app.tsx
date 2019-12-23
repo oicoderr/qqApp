@@ -53,7 +53,7 @@ class App extends Component {
 	}
 
 	globalData = {
-		webSocket: '',
+		websocket: '',
 		gameUserInfo: '',
 	}
 
@@ -148,12 +148,12 @@ class App extends Component {
 		// 支付页面会触发hide函数,将支付页面排除
 		if(currentPage != 'pages/payTakeMoney/recharge'){
 			console.error('～人为卸载socket～');
-			if(this.globalData.webSocket){
-				this.websocket = this.globalData.webSocket;
+			if(this.globalData.websocket){
+				this.websocket = this.globalData.websocket;
 				this.websocket.closeWebSocket();
-				this.globalData.webSocket = '';
+				this.globalData.websocket = '';
 			}
-			console.info('('+this.globalData.webSocket+')');
+			console.info('('+this.globalData.websocket+')');
 			console.error('卸载的当前路由 ==>');console.info(currentPage);
 		}
 		
@@ -276,7 +276,7 @@ class App extends Component {
 			success(res) { 
 				console.info('～建立连接成功！可以onSocketOpened拉～');
 				// 对外抛出websocket
-				_this.globalData.webSocket = _this.websocket;
+				_this.globalData.websocket = _this.websocket;
 				// 通知AppGlobalSocket
 				let timer = setInterval(()=>{
 					console.info('AppGlobalSocket')

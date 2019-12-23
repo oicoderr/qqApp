@@ -88,7 +88,7 @@ export class RankEntrance extends Component {
 
 			if(status.isEnded){
 				console.info('%c 看完广告，进入大奖赛','font-size:14px;color:#0fdb24;');
-				this.webSocket.sendWebSocketMsg({
+				this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
 						// 允许进入匹配页 1302监测返回成功后跳转匹配页
@@ -149,11 +149,11 @@ export class RankEntrance extends Component {
 
 	componentDidShow () {
 		let _this = this;
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c prize-entrance 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
+			this.websocket = App.globalData.websocket;
 		}
 
 		// 设置门票 / 能量
@@ -189,7 +189,7 @@ export class RankEntrance extends Component {
 		let data = {type: 2,useSpeedItem: 1,};
 		let matchingRequest = this.msgProto.matchingRequest(data)
 		let parentModule = this.msgProto.parentModule(matchingRequest);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) { console.info('%c 门票入场大奖赛匹配ing','font-size:14px;color:#e66900;')},
 			fail(err) {

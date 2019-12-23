@@ -61,17 +61,17 @@ export class Login extends Component {
 	componentDidShow () {
 		let _this = this;
 
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
+			this.websocket = App.globalData.websocket;
 		}
 
 		// 请求乐队基本信息
 		let selfOrchestra = this.msgProto.selfOrchestra();
 		let parentModule = this.msgProto.parentModule(selfOrchestra);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {console.info('请求我的乐队基本信息Success')},
 			fail(err){
@@ -154,7 +154,7 @@ export class Login extends Component {
 		if( id!= -1){
 			let usedOrchestra = this.msgProto.usedOrchestra(id);
 			let parentModule = this.msgProto.parentModule(usedOrchestra);
-			this.webSocket.sendWebSocketMsg({
+			this.websocket.sendWebSocketMsg({
 				data: parentModule,
 				success(res) {console.info('请求`使用乐队主页显示`Success')},
 				fail(err){

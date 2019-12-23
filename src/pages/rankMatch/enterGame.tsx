@@ -160,11 +160,11 @@ export class enterGame extends Component {
 	componentDidShow () {
 		let _this = this;
 
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c rankMatch-enterGame 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
+			this.websocket = App.globalData.websocket;
 		}
 
 		// 隐藏答题遮罩
@@ -432,7 +432,7 @@ export class enterGame extends Component {
 		},()=>{});
 
 		// console.info('%c 发送questId为：'+ currquestid +'， 答案optionId为： ' + optionId, 'font-size:14px;color:#FF4500;');
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {
 				// 显示遮罩，无法选题
@@ -448,7 +448,7 @@ export class enterGame extends Component {
 	getMatchProps(){
 		let getMatchProps = this.msgProto.getMatchProps()
 		let parentModule = this.msgProto.parentModule(getMatchProps);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {},
 			fail(err) { console.info(err) }
@@ -469,7 +469,7 @@ export class enterGame extends Component {
 
 		let getMatchProps = this.msgProto.usedPropsMatch(id)
 		let parentModule = this.msgProto.parentModule(getMatchProps);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) { console.info(res)},
 			fail(err) { console.info(err) }

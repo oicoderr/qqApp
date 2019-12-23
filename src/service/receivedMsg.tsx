@@ -171,6 +171,11 @@ export default class ReceiveMsg{
 					emitter.emit('getSelfOrchestra', [message, this.timerCount[27]]);
 				},20);
 				break;
+			case 1802:			// 回应签到基本信息
+				this.timerCount[28] = setInterval(()=>{
+					emitter.emit('getWeekCheckIninfo', [message, this.timerCount[28]]);
+				},20);
+				break;
 		}
     }
 }

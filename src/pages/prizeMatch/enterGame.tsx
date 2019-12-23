@@ -109,11 +109,11 @@ export class enterGame extends Component {
 	componentDidShow () {
 		let _this = this;
 
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c prize-enterGame  未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
+			this.websocket = App.globalData.websocket;
 		}
 
 		// 隐藏答题遮罩
@@ -345,7 +345,7 @@ export class enterGame extends Component {
 		},()=>{});
 
 		console.info('%c 发送questId为：'+ currquestid +'， 答案optionId为： ' + optionId, 'font-size:14px;color:#FF4500;');
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {
 				// 显示遮罩，无法选题
@@ -392,7 +392,7 @@ export class enterGame extends Component {
 		let data = 0;
 		let resurrect = this.msgProto.resurrect(data)
 		let parentModule = this.msgProto.parentModule(resurrect);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {
 				_this.setState((preState)=>{
@@ -409,7 +409,7 @@ export class enterGame extends Component {
 		let data = 1;
 		let resurrect = this.msgProto.resurrect(data)
 		let parentModule = this.msgProto.parentModule(resurrect);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) { console.info('选择 --> 确认复活')},
 			fail(err) { console.info(err) }

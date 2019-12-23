@@ -76,7 +76,7 @@ export class RankEntrance extends Component {
 			let parentModule_ = this.msgProto.parentModule(adsRewards);
 			if(status.isEnded){
 				console.info('%c 正常播放结束，下发奖励','font-size:14px;color:#0fdb24;');
-				this.webSocket.sendWebSocketMsg({
+				this.websocket.sendWebSocketMsg({
 					data: parentModule_,
 					success(res) {
 						Taro.showToast({
@@ -95,7 +95,7 @@ export class RankEntrance extends Component {
 				
 			}else{
 				console.info('%c 未看完视频，没有奖励啦','font-size:14px;color:#db2a0f;');
-				this.webSocket.sendWebSocketMsg({
+				this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
 						Taro.showToast({
@@ -129,11 +129,11 @@ export class RankEntrance extends Component {
 
 	componentDidShow () {
 		let _this = this;
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c rankMatch-entrance 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
+			this.websocket = App.globalData.websocket;
 		}
 	}
 

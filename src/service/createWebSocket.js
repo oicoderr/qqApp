@@ -48,7 +48,7 @@ export const  createWebSocket = (that) =>{
             // 开始登陆
             _this.websocket.onSocketOpened();
             // 对外抛出websocket
-            App.globalData.webSocket = _this.websocket;
+            App.globalData.websocket = _this.websocket;
         },
         fail(err) { console.info(err) }
     })

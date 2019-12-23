@@ -82,7 +82,7 @@ export class Reasult extends Component {
 				}
 				let adsRewards = this.msgProto.adsRewards(data_);
 				let parentModule = this.msgProto.parentModule(adsRewards);
-				this.webSocket.sendWebSocketMsg({
+				this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
 						Taro.showToast({
@@ -101,7 +101,7 @@ export class Reasult extends Component {
 			}else{
 				let isSeeAds = this.msgProto.isSeeAds('');
 				let parentModule = this.msgProto.parentModule(isSeeAds);
-				this.webSocket.sendWebSocketMsg({
+				this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
 						Taro.showToast({
@@ -163,7 +163,7 @@ export class Reasult extends Component {
 				console.error('～未勾选观看激励视频，无法播放视频～');
 				let isSeeAds = this.msgProto.isSeeAds('');
 				let parentModule = this.msgProto.parentModule(isSeeAds);
-				this.webSocket.sendWebSocketMsg({
+				this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
 						Taro.showToast({
@@ -230,11 +230,11 @@ export class Reasult extends Component {
 
 	componentDidShow () {
 		let _this = this;
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c rankMatch-result 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
+			this.websocket = App.globalData.websocket;
 		}
 	}
 

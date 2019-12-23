@@ -119,11 +119,11 @@ export class enterGame extends Component {
 	componentDidShow () {
 		let _this = this;
 
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c rankMatch-queue 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
+			this.websocket = App.globalData.websocket;
 		}
 
 		// 排位赛
@@ -134,7 +134,7 @@ export class enterGame extends Component {
 
 		// 请求开始匹配排位
 		if(!isreconnection){
-			this.webSocket.sendWebSocketMsg({
+			this.websocket.sendWebSocketMsg({
 				data: parentModule,
 				success(res) { 
 					console.info('%c 进入匹配ing','font-size:14px;color:#e66900;');

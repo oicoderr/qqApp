@@ -58,9 +58,11 @@ export class Index extends Component {
 				redEnvelope: 0, // 红包
 				energy: 0,		// 能量
 			},
-
+			// 签到组件显示
+			isShowWeekCheckIn: false,
 			personTheme: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/personTheme.png',
-
+			// 签到基本信息
+			weekCheckIninfo: {},
 		};
 		this.msgProto = new MsgProto();
 	}
@@ -77,33 +79,22 @@ export class Index extends Component {
 				})
 			}
 		});
-		
-		this.eventEmitter = emitter.addListener('closeToastMessage', (message) => {
-			console.warn('接受‘签到组件-关闭显示’发送的信息==>' + message);
-			// this.setState({
-			// 	gender: message
-			// },()=>{
-			// 	console.info(this.state.gender);
-			// })
-		});
 
-		this.eventEmitter = emitter.addListener('shareFlaunt', (message) => {
-			console.warn('接受‘签到组件-炫耀一下’发送的信息==>' + message);
-			// this.setState({
-			// 	gender: message
-			// },()=>{
-			// 	console.info(this.state.gender);
-			// })
+		// 签到关闭
+		this.eventEmitter = emitter.addListener('closeWeekCheckIn', (message) => {
+			console.info('接受‘签到组件-关闭显示’的信息==>' + message);
+			this.setState((preState)=>{
+				preState.isShowWeekCheckIn = false;
+			});
 		});
-
+		// 领取奖励
 		this.eventEmitter = emitter.addListener('curRewardStatus', (message) => {
-			console.warn('接受‘签到组件-奖励状态’发送的信息==>' + message);
-			// this.setState({
-			// 	gender: message
-			// },()=>{
-			// 	console.info(this.state.gender);
-			// })
+			console.info('接受‘签到组件-领取奖励` 信息==>' + message);
+			this.setState((preState)=>{
+
+			});
 		});
+
 
 		this.eventEmitter = emitter.addListener('RedEnvelopeConvert', (message) => {
 			console.warn( message, 111);
@@ -113,25 +104,7 @@ export class Index extends Component {
 			// 	console.info(this.state.gender);
 			// })
 		});
-		// <====================  other  ====================>
-		// 返回并设置性别
-		this.eventEmitter = emitter.once('genderMessage', (message) => {
-			console.info('%c 接受< 性别选择 >子组件发送的信息==> ' + message, 'font-size:14px; color: blue;');
-			let slectSex = _this.msgProto.gameSex(message);
-			let parentModule = _this.msgProto.parentModule(slectSex);
-			_this.webSocket.sendWebSocketMsg({
-				data: parentModule,
-				success(res) {
-					_this.setState((preState)=>{
-						preState.gameUserInfo.sex = message;
-						preState.userInfo.sex = message;
-					},()=>{})
-				},
-				fail(err){
-					console.error('性别发送失败');console.info(err);
-				}
-			});
-		});
+
 
 		// 1004游戏登录成功返回基本信息
 		this.eventEmitter = emitter.once('loginGameInfo', (message) => {
@@ -171,6 +144,20 @@ export class Index extends Component {
 				setStorage('gameUserInfo', gameUserInfo);
 			});
 		});
+
+		// 1802 回应签到基本信息 getWeekCheckIninfo
+		this.eventEmitter = emitter.addListener('getWeekCheckIninfo', (message) => {
+			clearInterval(message[1]);
+
+			console.info('～签到基本信息：～');console.info(message[0]['data']);
+			let weekCheckIninfo = message[0]['data']
+			emitter.emit('weekCheckIninfo_child', weekCheckIninfo);
+			// 显示签到组件
+			_this.setState((preState)=>{
+				preState.weekCheckIninfo = weekCheckIninfo;
+				preState.isShowWeekCheckIn = true;
+			},()=>{});
+		});
 	}
 
 	componentWillUnmount () {}
@@ -178,11 +165,11 @@ export class Index extends Component {
 	componentDidShow () {
 		let _this = this;
 		// 接受AppGlobalSocket
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
+			this.websocket = App.globalData.websocket;
 		}
 
 		// 更新金币/红包/能量-数量
@@ -196,6 +183,24 @@ export class Index extends Component {
 			}
 		});
 
+		// 返回并设置性别
+		this.eventEmitter = emitter.once('genderMessage', (message) => {
+			console.info('%c 接受< 性别选择 >子组件发送的信息==> ' + message, 'font-size:14px; color: blue;');
+			let slectSex = _this.msgProto.gameSex(message);
+			let parentModule = _this.msgProto.parentModule(slectSex);
+			_this.websocket.sendWebSocketMsg({
+				data: parentModule,
+				success(res) {
+					_this.setState((preState)=>{
+						preState.gameUserInfo.sex = message;
+						preState.userInfo.sex = message;
+					},()=>{})
+				},
+				fail(err){
+					console.error('性别发送失败');console.info(err);
+				}
+			});
+		});
 // -------------------------- 游戏被杀死，重新进入游戏 --------------------------------------
 		// 1302 匹配ing杀死app，根据字段是否断线重连判断：isreconnection 1. 在匹配中杀死的
 		this.eventEmitter = emitter.addListener('enterMatch', (message) => {
@@ -324,16 +329,31 @@ export class Index extends Component {
 		})
 	}
 
+	// 显示签到
+	weekCheckIn(){
+		console.info(this)
+		// 请求签到基本信息
+		let weekCheckIn = this.msgProto.weekCheckIn();
+		let parentModule = this.msgProto.parentModule(weekCheckIn);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {},
+			fail(err){
+				console.error('请求签到基本信息发送失败：');console.info(err);
+			}
+		});
+	}
+
 	render () {
 		const {redEnvelope, copper, sex } = this.state.gameUserInfo;
 		const personTheme = this.state.personTheme;
-
+		const isShowWeekCheckIn = this.state.isShowWeekCheckIn;
 		return (
 			<View className='index' catchtouchmove="ture">
 				{/* 左侧按钮list */}
 				< Drawer />
 
-				<View className='hide'>
+				<View className={`${isShowWeekCheckIn?'':'hide'}`}>
 					< WeekCheckIn />
 				</View>
 
@@ -375,7 +395,7 @@ export class Index extends Component {
 					{/* 右侧按钮list */}
 					<View className='rightListBtn'>
 						<View className='rightBtnIcon problemBtn'></View>
-						<View className='rightBtnIcon signInBtn'></View>
+						<View onClick={this.weekCheckIn.bind(this)} className='rightBtnIcon signInBtn'></View>
 						<View className='rightBtnIcon welfareBtn'></View>
 					</View>
 

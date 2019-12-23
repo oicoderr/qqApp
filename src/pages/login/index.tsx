@@ -47,8 +47,8 @@ export class Login extends Component {
 			console.info('%c 收到的App发来的webSocket', 'font-size:14px;color:#ffad1a');
 			console.info(message[0]);
 			let socket = message[0];
-			App.globalData.webSocket = socket;
-			this.webSocket = socket;
+			App.globalData.websocket = socket;
+			this.websocket = socket;
 		});
 	}
 
@@ -68,7 +68,7 @@ export class Login extends Component {
 				userInfo = res.userInfo;
 				console.info('%c 授权的基本信息 ===>', 'font-size:14px;color:#31c200;background-color:#000;'); 
 				console.info(userInfo);
-				console.info(this.webSocket,990)
+				console.info(this.websocket,990)
 				getStorage('userInfo',(value)=>{
 					for(let i in value){
 						userInfo[i] = value[i];
@@ -78,7 +78,7 @@ export class Login extends Component {
 				// 发送昵称，头像信息
 				let basicInfo_ = _this.msgProto.basicInfo(userInfo);
 				let parentModule = _this.msgProto.parentModule(basicInfo_);
-				_this.webSocket.sendWebSocketMsg({
+				_this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
 						console.info('发送用户头像，昵称Success');

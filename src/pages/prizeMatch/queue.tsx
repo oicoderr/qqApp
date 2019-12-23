@@ -234,12 +234,12 @@ export class enterGame extends Component {
 			})
 		},500);
 
-		if(App.globalData.webSocket === ''){
+		if(App.globalData.websocket === ''){
 			console.info('%c prize-queue 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
-			this.webSocket = App.globalData.webSocket;
-			console.error(this.webSocket,999999)
+			this.websocket = App.globalData.websocket;
+			console.error(this.websocket,999999)
 		}
 
 		// 切换匹配头像 1.5s切换一次
@@ -317,7 +317,7 @@ export class enterGame extends Component {
 	exitQueue(e){
 		let exitQueue = this.msgProto.exitQueue();
 		let parentModule = this.msgProto.parentModule(exitQueue);
-		this.webSocket.sendWebSocketMsg({
+		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res){
 				console.info('～发送退出请求成功～');
