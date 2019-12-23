@@ -18,6 +18,7 @@ export class Login extends Component {
 	constructor(props) {
 		super(props);
 		// 节流函数
+		this.DBreplaceOrchestra = throttle(this.DBreplaceOrchestra, 1000);
 		this.state = {
 			data:{
 				/*
@@ -31,6 +32,8 @@ export class Login extends Component {
 				isShowLoading: true,
 				backBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/backBtn.png',
 				orchestraTitleImg: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/orchestraTitleImg.png',
+				usingPrompt: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/usingBtn.png',
+				replaceBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/replaceBtn.png',
 				leadSingerTitle: '主唱',
 				guitaristTitle: '吉他手',
 				bassistTitle: '贝斯手',
@@ -141,10 +144,33 @@ export class Login extends Component {
 		
 	}
 
+	// 替换主页乐队显示
+	DBreplaceOrchestra(e){
+		this.replaceOrchestra(e);
+	}
+
+	replaceOrchestra(e){
+		let id = e.currentTarget.dataset.id;
+		if( id!= -1){
+			let usedOrchestra = this.msgProto.usedOrchestra(id);
+			let parentModule = this.msgProto.parentModule(usedOrchestra);
+			this.webSocket.sendWebSocketMsg({
+				data: parentModule,
+				success(res) {console.info('请求`使用乐队主页显示`Success')},
+				fail(err){
+					Taro.showToast({
+						title: err.errMsg,
+						icon: 'none',
+						duration: 2000
+					})
+				}
+			});
+		}
+	}
+
 	render () {
-		const { isShowLoading, orchestraTitleImg,  backBtn, propsText, bandText, freeTitle, freeTip, propsTitle, 
-			propsTip, leadSingerTitle, guitaristTitle, bassistTitle, drummerTitle, rewardText, 
-			energyIcon, ticketsIcon, goldIcon  } = this.state.local_data;
+		const { isShowLoading, orchestraTitleImg,  backBtn, usingPrompt, replaceBtn,
+			leadSingerTitle, guitaristTitle, bassistTitle, drummerTitle } = this.state.local_data;
 
 		// 乐队
 		const leadSinger = this.state.local_data.leadSinger;
@@ -158,11 +184,8 @@ export class Login extends Component {
 						</View>
 						<View className='name name_'>{cur.name}*{cur.count}</View>
 						
-						<View className='consumCountWrap'>
-							<Image src={`${cur.consumType==1?ticketsIcon:''}`} className= {`icon ticketsIcon ${cur.consumType==1?'':'hide'}`} />
-							<Image src={`${cur.consumType==2?goldIcon:''}`} className={`icon goldIcon ${cur.consumType==2?'':'hide'}`} />
-							<Image src={`${cur.consumType==3?energyIcon:''}`} className={`icon energyIcon ${cur.consumType==3?'':'hide'}`} />
-							<View className='consumCount'>{cur.consumCount}</View>
+						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
+							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
 						</View>
 					</View>
 		});
@@ -173,11 +196,8 @@ export class Login extends Component {
 						</View>
 						<View className='name name_'>{cur.name}*{cur.count}</View>
 						
-						<View className='consumCountWrap'>
-							<Image src={`${cur.consumType==1?ticketsIcon:''}`} className= {`icon ticketsIcon ${cur.consumType==1?'':'hide'}`} />
-							<Image src={`${cur.consumType==2?goldIcon:''}`} className={`icon goldIcon ${cur.consumType==2?'':'hide'}`} />
-							<Image src={`${cur.consumType==3?energyIcon:''}`} className={`icon energyIcon ${cur.consumType==3?'':'hide'}`} />
-							<View className='consumCount'>{cur.consumCount}</View>
+						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
+							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
 						</View>
 					</View>
 		});
@@ -188,11 +208,8 @@ export class Login extends Component {
 						</View>
 						<View className='name name_'>{cur.name}*{cur.count}</View>
 						
-						<View className='consumCountWrap'>
-							<Image src={`${cur.consumType==1?ticketsIcon:''}`} className= {`icon ticketsIcon ${cur.consumType==1?'':'hide'}`} />
-							<Image src={`${cur.consumType==2?goldIcon:''}`} className={`icon goldIcon ${cur.consumType==2?'':'hide'}`} />
-							<Image src={`${cur.consumType==3?energyIcon:''}`} className={`icon energyIcon ${cur.consumType==3?'':'hide'}`} />
-							<View className='consumCount'>{cur.consumCount}</View>
+						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
+							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
 						</View>
 					</View>
 		});
@@ -203,11 +220,8 @@ export class Login extends Component {
 						</View>
 						<View className='name name_'>{cur.name}*{cur.count}</View>
 						
-						<View className='consumCountWrap'>
-							<Image src={`${cur.consumType==1?ticketsIcon:''}`} className= {`icon ticketsIcon ${cur.consumType==1?'':'hide'}`} />
-							<Image src={`${cur.consumType==2?goldIcon:''}`} className={`icon goldIcon ${cur.consumType==2?'':'hide'}`} />
-							<Image src={`${cur.consumType==3?energyIcon:''}`} className={`icon energyIcon ${cur.consumType==3?'':'hide'}`} />
-							<View className='consumCount'>{cur.consumCount}</View>
+						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
+							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
 						</View>
 					</View>
 		});

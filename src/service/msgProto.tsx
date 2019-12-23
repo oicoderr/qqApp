@@ -240,6 +240,21 @@ export default class MsgProto{
             data:{}
         }
     }
+    // 1603 使用乐队人物(即再主界面显示的)
+    usedOrchestra(val){
+        return{
+            code: 1603,
+            data:{
+                id: val
+            }
+        }
+    }
+
+
+
+
+
+
 
 
     // 反序列化接受服务器返回信息
