@@ -1,0 +1,86 @@
+.messageToast{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1010;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    background-color: rgba(0,0,0,.6);
+    overflow: hidden;
+    padding: 0 20rpx 0 55rpx;
+
+    .content{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 680rpx;
+        height: 820rpx;
+        overflow: hidden;
+
+        .closeImgBtnWrap{
+            position:absolute;
+            height: 75rpx;
+            top: 35rpx;
+            right: 0;
+            z-index:999;
+
+            .closeImgBtn{
+                width: 75rpx;
+                height: 75rpx;
+            }
+        }
+
+        .box{
+            width: 640rpx;
+            height: 740rpx;
+            overflow: hidden;
+            box-sizing: border-box;
+            background-color: rgba(68, 125, 239, 1);
+            padding: 30rpx 20rpx;
+            border-radius: 20rpx;
+            position: relative;
+            top: 74rpx;
+        }
+
+        
+
+        .title{
+            height: 40rpx;
+            line-height: 40rpx;
+            font-size: 40rpx;
+            color: #FFFFFF;
+            font-weight: 600;
+            text-align: center;
+            padding-bottom: 30rpx;
+        }
+
+        .body{
+            font-size: 28rpx;
+            color: rgba(48, 48, 48, 1);
+            line-height: 32rpx;
+        }
+    }
+    .scrollview {
+        width: 600rpx;
+        height: 480rpx;
+        box-sizing: border-box;
+        border-radius: 20rpx;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 30rpx 20rpx;
+        margin-bottom: 40rpx;
+    }
+
+    .confirm{
+        width: 100%;
+        height: 94rpx;
+        text-align: center;
+
+        .confirmBtn{
+            width: 214rpx;
+            height: 94rpx;
+        }
+    }
+}

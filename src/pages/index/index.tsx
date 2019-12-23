@@ -6,7 +6,7 @@ import { getStorage, setStorage, unitReplacement, buildURL } from '../../utils'
 
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
-import CommonToast from '../../components/CommonToast'
+import MessageToast from '../../components/MessageToast'
 import Drawer from '../../components/drawer'
 import MsgProto from '../../service/msgProto'
 import { createWebSocket } from '../../service/createWebSocket'
@@ -364,11 +364,11 @@ export class Index extends Component {
 				< Drawer />
 				{/* 签到 */}
 				<View className={`${isShowWeekCheckIn?'':'hide'}`}>
-					< WeekCheckIn />
+					<WeekCheckIn />
 				</View>
 				{/* 全局提示 */}
-				<View className='hide'>
-					< CommonToast />
+				<View className=''>
+					<MessageToast />
 				</View>
 
 				<View className='bgColor'>
