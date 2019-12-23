@@ -9,7 +9,7 @@ import GameLoading from '../../components/GameLoading'
 import MsgProto from '../../service/msgProto'
 const App = Taro.getApp();
 
-export class enterGame extends Component {
+export class PrizeQueue extends Component {
 
 	config: Config = {
 		navigationBarTitleText: '大奖赛匹配ing',

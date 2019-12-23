@@ -10,7 +10,7 @@ import MsgProto from '../../service/msgProto'
 
 const App = Taro.getApp();
 
-export class Login extends Component {
+export class BackPack extends Component {
 	config: Config = {
 		navigationBarTitleText: '小书包',
 		navigationBarBackgroundColor: 'rgba(84, 135, 246, 1)',

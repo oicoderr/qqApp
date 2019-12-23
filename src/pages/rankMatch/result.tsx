@@ -10,7 +10,7 @@ import MsgProto from '../../service/msgProto'
 
 const App = Taro.getApp()
 
-export class Reasult extends Component {
+export class RankReasult extends Component {
 
 	config: Config = {
 		navigationBarTitleText: '排位赛～结果页～',

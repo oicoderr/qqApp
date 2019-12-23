@@ -9,7 +9,7 @@ import createVideoAd from '../../service/createVideoAd'
 import MsgProto from '../../service/msgProto'
 
 const App = Taro.getApp()
-export class RankEntrance extends Component {
+export class PrizeEntrance extends Component {
 
 	config: Config = {
 		navigationBarTitleText: '大奖赛入口',

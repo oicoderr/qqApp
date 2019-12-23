@@ -12,7 +12,7 @@ import MsgProto from '../../service/msgProto'
 const App = Taro.getApp()
 
 
-export class enterGame extends Component {
+export class RankQueue extends Component {
 	
 	config: Config = {
 		navigationBarTitleText: '排位赛',

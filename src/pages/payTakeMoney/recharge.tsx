@@ -9,7 +9,7 @@ import MsgProto from '../../service/msgProto'
 
 const App = Taro.getApp();
 
-export class Login extends Component {
+export class Recharge extends Component {
 	config: Config = {
 		navigationBarTitleText: '门票购买',
 		navigationBarBackgroundColor: 'rgba(84, 135, 246, 1)',

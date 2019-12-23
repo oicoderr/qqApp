@@ -4,7 +4,7 @@ import { Api } from '../../service/api'
 
 import './index.scss'
 
-export class StartWriteQuestion extends Component {
+export class WriteQuestion extends Component {
 
 	config: Config = {
 		navigationBarTitleText: '出题',

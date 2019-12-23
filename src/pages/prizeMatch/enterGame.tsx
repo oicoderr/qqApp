@@ -9,7 +9,7 @@ import MsgProto from '../../service/msgProto'
 
 const App = Taro.getApp()
 
-export class enterGame extends Component {
+export class PrizeEnterGame extends Component {
 
 	config: Config = {
 		navigationBarTitleText: '大奖赛游戏开始',

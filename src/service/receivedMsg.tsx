@@ -176,6 +176,11 @@ export default class ReceiveMsg{
 					emitter.emit('getWeekCheckIninfo', [message, this.timerCount[28]]);
 				},20);
 				break;
+			case 2202:			// 反馈结果
+				this.timerCount[29] = setInterval(()=>{
+					emitter.emit('getOpinionResult', [message, this.timerCount[29]]);
+				},20);
+				break;
 		}
     }
 }

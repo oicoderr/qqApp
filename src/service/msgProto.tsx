@@ -267,6 +267,21 @@ export default class MsgProto{
         }
     } 
 
+    /* --------------------------- 反馈 ----------------------------- */
+    // 2201 意见反馈
+    opinion(params){
+        const { content, contact } = params;
+        return{
+            code: 2201,
+            data:{
+                content: content,
+                contact: contact,
+            }
+        }
+    }
+
+
+
 
     // 反序列化接受服务器返回信息
     receivedMsg(str){

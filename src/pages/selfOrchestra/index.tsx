@@ -9,7 +9,7 @@ import MsgProto from '../../service/msgProto'
 
 const App = Taro.getApp();
 
-export class Login extends Component {
+export class SelfOrchestra extends Component {
 	config: Config = {
 		navigationBarTitleText: '我的乐队',
 		navigationBarBackgroundColor: 'rgba(84, 135, 246, 1)',

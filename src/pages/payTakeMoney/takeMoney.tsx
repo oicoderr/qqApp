@@ -9,7 +9,7 @@ import MsgProto from '../../service/msgProto'
 
 const App = Taro.getApp();
 
-export class Login extends Component {
+export class TakeMoney extends Component {
 	config: Config = {
 		navigationBarTitleText: '兑换中心',
 		navigationBarBackgroundColor: 'rgba(84, 135, 246, 1)',

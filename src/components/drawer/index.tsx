@@ -50,7 +50,7 @@ export default class Drawer extends Component{
                         title: '反馈',
                         x: -110,
                         y: -10,
-                        router: '',
+                        router: '/pages/opinion/index',
                     },{
                         title: '审题',
                         x: -10,

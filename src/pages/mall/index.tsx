@@ -11,7 +11,7 @@ import MsgProto from '../../service/msgProto'
 
 const App = Taro.getApp();
 
-export class Login extends Component {
+export class Mall extends Component {
 	config: Config = {
 		navigationBarTitleText: '商城',
 		navigationBarBackgroundColor: 'rgba(84, 135, 246, 1)',

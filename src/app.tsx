@@ -40,8 +40,9 @@ class App extends Component {
 
 			'pages/selfOrchestra/index',	  // 我的乐队
 
-			'pages/startWriteQuestion/index', // 开始出题
+			'pages/WriteQuestion/index', 	  // 开始出题
 			'pages/takeMoneyAnnal/index',	  // 提现记录
+			'pages/opinion/index',	  		  // 反馈意见
 		],
 		window: {
 			backgroundTextStyle: 'light',
