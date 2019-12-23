@@ -259,7 +259,13 @@ export default class MsgProto{
         }
     }
 
-
+    // 1803 客户端请求签到
+    signIn(){
+        return{
+            code: 1803,
+            data:{}
+        }
+    } 
 
 
     // 反序列化接受服务器返回信息

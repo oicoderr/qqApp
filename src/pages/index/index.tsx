@@ -6,7 +6,6 @@ import { getStorage, setStorage, unitReplacement, buildURL } from '../../utils'
 
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
-import RedExchange from '../../components/RedExchange'
 import CommonToast from '../../components/CommonToast'
 import Drawer from '../../components/drawer'
 import MsgProto from '../../service/msgProto'
@@ -63,6 +62,8 @@ export class Index extends Component {
 			personTheme: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/personTheme.png',
 			// 签到基本信息
 			weekCheckIninfo: {},
+			// 默认勾选了签到分享
+			isShareCheckedChange: true,
 		};
 		this.msgProto = new MsgProto();
 	}
@@ -87,14 +88,24 @@ export class Index extends Component {
 				preState.isShowWeekCheckIn = false;
 			});
 		});
+
 		// 领取奖励
 		this.eventEmitter = emitter.addListener('curRewardStatus', (message) => {
-			console.info('接受‘签到组件-领取奖励` 信息==>' + message);
+			console.info('接受‘签到组件-领取奖励` 信息==>'); console.info(message);
 			this.setState((preState)=>{
-
+				preState.isShareCheckedChange = message.shareCheckedChange;
+			});
+			// 开始签到
+			let signIn = this.msgProto.signIn();
+			let parentModule = this.msgProto.parentModule(signIn);
+			this.websocket.sendWebSocketMsg({
+				data: parentModule,
+				success(res) {},
+				fail(err){
+					console.error('请求我要签到发送失败：');console.info(err);
+				}
 			});
 		});
-
 
 		this.eventEmitter = emitter.addListener('RedEnvelopeConvert', (message) => {
 			console.warn( message, 111);
@@ -104,7 +115,6 @@ export class Index extends Component {
 			// 	console.info(this.state.gender);
 			// })
 		});
-
 
 		// 1004游戏登录成功返回基本信息
 		this.eventEmitter = emitter.once('loginGameInfo', (message) => {
@@ -352,15 +362,11 @@ export class Index extends Component {
 			<View className='index' catchtouchmove="ture">
 				{/* 左侧按钮list */}
 				< Drawer />
-
+				{/* 签到 */}
 				<View className={`${isShowWeekCheckIn?'':'hide'}`}>
 					< WeekCheckIn />
 				</View>
-
-				<View className='hide'>
-					< RedExchange />
-				</View>
-
+				{/* 全局提示 */}
 				<View className='hide'>
 					< CommonToast />
 				</View>

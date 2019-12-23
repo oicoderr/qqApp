@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image,  RadioGroup, Radio, Label } from '@tarojs/components'
+import { View, Image, Text, RadioGroup, Radio, Label } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
 
@@ -15,28 +15,30 @@ export default class WeekCheckIn extends Component {
                 isShowWeekCheckIn: false,
                 curRewardStatus: false,
                 closeImgBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/closeBtn.png',
+                calendarIcon: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/calendarIcon.png',
+                weekCheckIninfo: {},
                 list_day:[
                     {
-                        day: '第一天',
-                        coverImg: '',
+                        dayText: '第一天',
+                        class: 'goldIconImg',
                     },{
-                        day: '第二天',
-                        coverImg: ''
+                        dayText: '第二天',
+                        class: 'cardIconImg',
                     },{
-                        day: '第三天',
-                        coverImg: ''
+                        dayText: '第三天',
+                        class: 'goldIconImg',
                     },{
-                        day: '第四天',
-                        coverImg: ''
+                        dayText: '第四天',
+                        class: 'cardIconImg',
                     },{
-                        day: '第五天',
-                        coverImg: ''
+                        dayText: '第五天',
+                        class: 'goldIconImg',
                     },{
-                        day: '第六天',
-                        coverImg: ''
+                        dayText: '第六天',
+                        class: 'cardIconImg',
                     },{
-                        day: '第七天',
-                        coverImg: ''
+                        dayText: '第七天',
+                        class: 'boxIconImg',
                     }
                 ]
             },
@@ -56,7 +58,15 @@ export default class WeekCheckIn extends Component {
 			console.info('～接受父组件签到基本信息：～');console.info(message);
 			// 接受父组件签到基本信息
 			_this.setState((preState)=>{
-				preState.weekCheckIninfo = message;
+                preState.data.weekCheckIninfo = message;
+                let weekCheckIninfo = JSON.parse(JSON.stringify(message));
+                let list_day = preState.local_data.list_day;
+                let list = weekCheckIninfo.list;
+                list.map((cur, index)=>{
+                    cur.dayText = list_day[index]['dayText'];
+                    cur.class = list_day[index]['class'];
+                });
+                preState.local_data.weekCheckIninfo = weekCheckIninfo;
 			},()=>{});
 			
 		});
@@ -92,29 +102,40 @@ export default class WeekCheckIn extends Component {
             preState.local_data.curRewardStatus = !value;
             preState.local_data.isShowWeekCheckIn = false;
         },()=>{
-            emitter.emit('curRewardStatus', {receiveReward: 1, shareCheckedChange: this.state.local_data.shareChecked, isShowWeekCheckIn: this.state.local_data.isShowWeekCheckIn);
+            emitter.emit('curRewardStatus', {
+                // 领取当日奖励
+                receiveReward: 1, 
+                // 是否勾选炫耀分享
+                shareCheckedChange: this.state.local_data.shareChecked
+            });
         })
     }
 
     render() {
-        const list_day = this.state.local_data.list_day;
-        const signInDays = this.state.data.signInDays; // 签到天数
+        const { day } = this.state.local_data.weekCheckIninfo;
+        const list_day = this.state.local_data.weekCheckIninfo.list;
 
-        const { title, curRewardStatus, submitBtnText, shareChecked, shareText, isShowWeekCheckIn, closeImgBtn  } = this.state.local_data;
+        const { title, curRewardStatus, submitBtnText, shareChecked, shareText, isShowWeekCheckIn, 
+            closeImgBtn, calendarIcon  } = this.state.local_data;
 
 		const content = list_day.map((currentValue, index) => {
 			return <View className={`item ${index === 6?'itemBig':''}`}>
-                        <Image className={'checkInDays'} src={currentValue.coverImg}></Image>
-                        <View className={`tip ${index > (signInDays-1)?'hide':''}`}>已领取</View>
-                        <View className={`curDays ${index > (signInDays-1)?'OffsetTop':''}`}>{currentValue.day}</View>
+                        <View className={`checkInDays`}>
+                            <View className={`tipText ${index < day?'tipText':'hide'}`}>已领取</View>
+                            <Image className={`${currentValue.class}`} src={currentValue.icon}></Image>
+                            <View className={`${currentValue.type == 1?'goldNum':'hide'}`}>{currentValue.count}</View>
+                        </View>
+                        <View className={`curDays ${index == list_day.length-1?'OffsetWidth':''}`}>{currentValue.dayText}</View>
                     </View>
         });
         
         return (
             <View className='index'>
+                <View className='calendarIconWrap'>
+                    <Image src={calendarIcon} className='calendarIcon' />
+                </View>
                 <Image onClick={this.closeWeekCheckIn.bind(this,isShowWeekCheckIn)} src={closeImgBtn} className='closeImgBtn'></Image>
                 <View className='content'>
-                    
                     <View className='title'>{title}</View>
                     <View className='body'>
                         {content}
