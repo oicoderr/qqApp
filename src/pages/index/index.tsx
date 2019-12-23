@@ -361,13 +361,13 @@ export class Index extends Component {
 		return (
 			<View className='index' catchtouchmove="ture">
 				{/* 左侧按钮list */}
-				< Drawer />
+				<Drawer />
 				{/* 签到 */}
 				<View className={`${isShowWeekCheckIn?'':'hide'}`}>
 					<WeekCheckIn />
 				</View>
 				{/* 全局提示 */}
-				<View className=''>
+				<View className='hide'>
 					<MessageToast />
 				</View>
 
