@@ -3,7 +3,7 @@ import { View, Textarea, Text, Image, Input } from '@tarojs/components'
 import Websocket from '../../service/webSocket'
 import { unitReplacement, setStorage, getStorage } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
-import './index.scss'
+import './opinion.scss'
 
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'

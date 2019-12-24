@@ -35,14 +35,13 @@ class App extends Component {
 
 			'pages/payTakeMoney/takeMoney',	  // 提现
 			'pages/payTakeMoney/recharge', 	  // 充值
-			'pages/backpack/index', 	  	  // 背包
-			'pages/mall/index', 	  	  	  // 商城
-
-			'pages/selfOrchestra/index',	  // 我的乐队
 
 			'pages/WriteQuestion/index', 	  // 开始出题
 			'pages/takeMoneyAnnal/index',	  // 提现记录
-			'pages/opinion/index',	  		  // 反馈意见
+			'pages/toolbar/opinion',	  	  // 反馈意见
+			'pages/toolbar/backpack', 	  	  // 背包
+			'pages/toolbar/mall', 	  	  	  // 商城
+			'pages/toolbar/selfOrchestra',	  // 我的乐队
 		],
 		window: {
 			backgroundTextStyle: 'light',
