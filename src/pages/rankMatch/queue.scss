@@ -17,7 +17,23 @@
     top: 0;
     left: 0;
 
-    .bgImg{
+    .backBtnBox{
+        width: 100%;
+        height: 54rpx;
+        display: flex;
+        justify-content: space-between;
+        background-color: transparent;
+        padding: 50rpx 0 0 16rpx;
+        position: absolute;
+        z-index: 3;
+
+        .backBtn{
+            width: 60rpx;
+            height: 54rpx;
+        }
+    }
+
+    .bgImg{ 
         position: absolute;
         top: 0;
         left: 0;

@@ -28,7 +28,8 @@ export class RankQueue extends Component {
 		this.state = {
 			// 路由
 			routers:{
-				goenterGame: '/pages/rankMatch/enterGame'
+				goenterGame: '/pages/rankMatch/enterGame',
+				entrancePage: '/pages/rankMatch/entrance'
 			},
 
 			// 后台返回数据
@@ -68,6 +69,7 @@ export class RankQueue extends Component {
 				redTeamBg: 'https://oss.snmgame.com/v1.0.0/redTeamBg.png',
 				blueTeamBg: 'https://oss.snmgame.com/v1.0.0/blueTeam.png',
 				VS: 'https://oss.snmgame.com/v1.0.0/VS.png',
+				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 			}
 		}
 		this.msgProto = new MsgProto();
@@ -176,6 +178,23 @@ export class RankQueue extends Component {
 			}
 		});
 
+		// 1332 排位赛退出匹配状态
+		this.eventEmitter = emitter.once('exitQueueStatus', (message) => {
+			clearInterval(message[1]);
+
+			let entrancePage = this.state.routers.entrancePage;
+			Taro.redirectTo({
+				url: entrancePage,
+				success(){
+					Taro.showToast({
+						title: '匹配失败',
+						icon: 'none',
+						duration: 2000
+					})
+				}
+			});
+		});
+
 		// 匹配成功！获取对战队伍信息
 		if(!this.state.local_data.isIntheGame){
 			this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
@@ -259,8 +278,29 @@ export class RankQueue extends Component {
 		});
 	}
 
+	// 返回上一页
+	goBack(){
+		// 退出排位匹配
+		let exitQueue = this.msgProto.exitQueue()
+		let parentModule = this.msgProto.parentModule(exitQueue);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) { 
+				console.info('%c 请求`退出排位`匹配Success','font-size:14px;color:#e66900;');
+			},
+			fail(err) {
+				Taro.showToast({
+					title: err.errormsg,
+					icon: 'none',
+					duration: 2000
+				});
+			}
+		});
+	}
+
 	render () {
-		const { matchStatus, isShowLoading, redTeamBg, blueTeamBg, VS, PartyATeam, PartyBTeam } = this.state.local_data;
+		const { matchStatus, isShowLoading, redTeamBg, blueTeamBg, VS, PartyATeam, PartyBTeam, backBtn, 
+		} = this.state.local_data;
 		const { danDesc } = this.state.local_data.gameUserInfo;
 
 		const redContent = PartyATeam.map((currentValue) => {
@@ -289,6 +329,9 @@ export class RankQueue extends Component {
 
 				<View className='bgColor'>
 					<View className='bgImg'></View>
+					<View className='backBtnBox'>
+						<Image onClick={this.goBack.bind(this)} src={backBtn} className='backBtn' />
+					</View>
 					<View className='body'>
 						<View className='title'>{ matchStatus?'匹配中...':'匹配成功' }</View>
 						<View className='teams'>
