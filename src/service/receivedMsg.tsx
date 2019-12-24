@@ -181,6 +181,11 @@ export default class ReceiveMsg{
 					emitter.emit('getOpinionResult', [message, this.timerCount[29]]);
 				},20);
 				break;
+			case 1440:			// 大奖赛开放结果
+				this.timerCount[30] = setInterval(()=>{
+					emitter.emit('getIsPrizeOpen', [message, this.timerCount[30]]);
+				},20);
+				break;
 		}
     }
 }

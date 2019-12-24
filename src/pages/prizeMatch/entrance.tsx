@@ -28,7 +28,10 @@ export class PrizeEntrance extends Component {
 
 			// 后台返回数据
 			data:{
-
+				isOpen:{
+					type: 1,
+					value: '开放时间：上午8:00-次日凌晨2:00',
+				}
 			},
 
 			// 前台数据
@@ -141,6 +144,16 @@ export class PrizeEntrance extends Component {
 				},2000);
 			}
 		});
+
+		// 监听 1440： 大奖赛开放结果 
+		this.eventEmitter = emitter.once('getIsPrizeOpen', (message) => {
+			clearInterval(message[1]);
+
+			this.setState((preState)=>{
+				preState.data.isOpen = message[0]['data'];
+			})
+		});
+
 	}
 
 	componentDidMount () {}
@@ -162,6 +175,23 @@ export class PrizeEntrance extends Component {
 				preState.local_data.gameUserInfo = res;
 			})
 		});
+
+		// 请求大奖赛开放状态
+		let isOpenPrize = this.msgProto.isOpenPrize()
+		let parentModule = this.msgProto.parentModule(isOpenPrize);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) { console.info('%c 请求大奖赛开放状态Success','font-size:14px;color:#e66900;')},
+			fail(err) {
+				Taro.showToast({
+					title: err.errormsg,
+					icon: 'none',
+					duration: 2000
+				})
+				console.error('请求大奖赛开放状态失败==> ');console.info(err);
+			}
+		});
+
 	}
 
 
@@ -214,9 +244,9 @@ export class PrizeEntrance extends Component {
 
 		const { backBtn, entranceBg, ruleTitle, freeBtn, ticketsBtn, tipImg, adsTip, checked, 
 			StayTunedImg, quickenCardBg, directionsTitle, pendingText, surplusText, quickenTip, progress_item_blank,
-			progress_item, inviteBtn, receiveBtn
+			inviteBtn, receiveBtn
 		} = this.state.local_data;
-		
+		const {type, value} = this.state.data.isOpen;
 		const {energy, redEnvelope} = this.state.local_data.gameUserInfo;
 
 		return (
@@ -263,6 +293,7 @@ export class PrizeEntrance extends Component {
                                     </Label>
                                 </RadioGroup>
                             </View>
+							<View className={`mask ${type?'hide':''}`}>{value}</View>
 						</View>
 
 						<View className='StayTuned'>
