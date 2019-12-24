@@ -25,14 +25,17 @@ export class RankEntrance extends Component {
 
 			// 后台返回数据
 			data:{
-				season: 1,				 // 第几赛季
-				seasonTitleUrl: 'https://oss.snmgame.com/v1.0.0/seasonTitle.png',// 当前赛季img
-				segmentTitle: '国际巨星', // 段位称号
-				segmentTitleUrl: 'https://oss.snmgame.com/v1.0.0/segmentTitle.png',// 段位img
-				gloryUrl:'https://oss.snmgame.com/v1.0.0/glory.png', // 荣耀img	
-				haveStar: 1,			 // 拥有星星			
-				totalStar: 6,    		 // 总计星星
-				dan: 1,					 // 当前段位
+
+				gameUserInfo:{
+					season: 1,				 // 第几赛季
+					danDescIcon: 'https://oss.snmgame.com/v1.0.0/1levelTitle.png', 	   // 段位描述	
+					segmentTitle: '国际巨星', // 段位称号
+					segmentTitleUrl: 'https://oss.snmgame.com/v1.0.0/seasonTitle.png', // 当前赛季标示 
+					gloryUrl:'https://oss.snmgame.com/v1.0.0/glory.png', 			   // 荣耀img	
+					haveStar: 1,			 // 拥有星星			
+					totalStar: 6,    		 // 总计星星
+					dan: 1,					 // 当前段位
+				}
 			},
 
 			// 前台数据
@@ -117,10 +120,9 @@ export class RankEntrance extends Component {
 
 	// 设置玩家基本信息UI显示
 	componentDidMount () {
-		let _this = this;
 		getStorage('gameUserInfo',(res)=>{
 			this.setState((preState)=>{
-				preState.data = res;
+				preState.data.gameUserInfo = res;
 			})
 		});
 	}
@@ -172,9 +174,9 @@ export class RankEntrance extends Component {
 	}
 
 	render () {
-		const { dan, seasonTitleUrl, segmentTitleUrl, gloryUrl, totalStar, haveStar } = this.state.data;
+		const { dan, totalStar, haveStar, danDescIcon, gloryUrl, segmentTitleUrl } = this.state.data.gameUserInfo;
 		const { blankStar, shineStar, littileBg, rankAloneBtn,  rankTeamBtn, watchAdsBtn, rewardTip, backBtn} = this.state.local_data;
-		
+
 		// <==================  星星  ==================>
 		const starPosi = ['fisrtPosi','secondePosi', 'thirdPosi', 'fouthPosi', 'fifthPosi', 'sixthPosi', 'seventhPosi','eighthPosi'];
 		let totalStarArr = [], haveStarArr = this.sumHasStar(haveStar), contentTotalStar, contentHaveStar;
@@ -227,12 +229,12 @@ export class RankEntrance extends Component {
 
 					<View className='body'>
 						<View className='title'>
-							<Image src={seasonTitleUrl} className='titleImg' />
+							<Image src={segmentTitleUrl} className='titleImg' />
 						</View>
 						<View className='content'>
 							<Image src={littileBg} className='littleBg' />
 							<Image src={gloryUrl} className='gloryImg' />
-							<Image src={segmentTitleUrl} className='segmentTitleImg' />
+							<Image src={danDescIcon} className='segmentTitleImg' />
 							<View className={`stars ${dan < 8?'':'hide'}`}>
                                 {contentTotalStar}
                                 {contentHaveStar}
