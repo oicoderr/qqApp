@@ -1,0 +1,165 @@
+.messageToast{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1010;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    background-color: rgba(0,0,0,.6);
+    overflow: hidden;
+    padding: 0 20rpx 0 55rpx;
+
+    .content{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 680rpx;
+        height: 930rpx;
+        overflow: hidden;
+
+        .closeImgBtnWrap{
+            position:absolute;
+            height: 75rpx;
+            top: 0rpx;
+            right: 0;
+            z-index:999;
+
+            .closeImgBtn{
+                width: 75rpx;
+                height: 75rpx;
+            }
+        }
+
+        .box{
+            width: 640rpx;
+            height: 890rpx;
+            overflow: hidden;
+            box-sizing: border-box;
+            background-color: rgba(68, 125, 239, 1);
+            padding-top: 30rpx;
+            border-radius: 20rpx;
+            position: relative;
+            top: 35rpx;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .title{
+                width: 100%;
+                height: 40rpx;
+                line-height: 40rpx;
+                font-size: 40rpx;
+                font-weight: 600;
+                box-sizing: border-box;
+                overflow: hidden;
+                color:rgba(250,250,250,1);
+                text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
+                text-align: center;
+            }
+
+                .avatarWrap{
+                    position: absolute;
+                    width: 64px;
+                    height: 68px;
+                    background:rgba(220,220,220,1);
+                    border: 2px solid rgba(0,0,0,1);
+                    border-radius:50%;
+
+                    .avatar{
+                        width: 60px;
+                        height: 60px;
+                        border-radius: 50%;
+                        overflow: hidden;
+                        box-sizing: border-box;
+                        position: absolute;
+                        margin: 2rpx 2rpx;
+                    }
+                }
+
+            .road_line{
+                position: absolute;
+                top: 154rpx;
+                right: 106rpx;
+                width: 400rpx;
+                height: 640rpx;
+            }
+
+            .itemPosi{
+                position: absolute;
+                width: 200rpx;
+                height: 60rpx;
+            }
+
+            .rankItem{
+                width: 200rpx;
+                height: 60rpx;
+            }
+
+            .level1{
+                top: 762rpx;
+                left: 72rpx;
+            }
+
+            .level2{
+                top: 672rpx;
+                left: 97rpx;
+            }
+
+            .level3{
+                top: 580rpx;
+                left: 124rpx;
+            }
+
+            .level4{
+                top: 490rpx;
+                left: 150rpx;
+            }
+
+            .level5{
+                top: 396rpx;
+                left: 176rpx;
+            }
+
+            .level6{
+                top: 305rpx;
+                left: 200rpx;
+            }
+
+            .level7{
+                top: 212rpx;
+                left: 227rpx;
+            }
+
+            .level8{
+                top: 123rpx;
+                left: 263rpx;
+            }
+
+            .orchestraTitle{
+                font-size: 24rpx;
+                font-weight: 400;
+                color: rgba(255,255,255,1);
+                text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+                position: absolute;
+            }
+
+            .orchestraTitleItem1{
+                top: 690rpx;
+                left: 414rpx;
+            }
+
+            .orchestraTitleItem2{
+                top: 597rpx;
+                left: 436rpx;
+            }
+
+            .orchestraTitleItem3{
+                top: 507rpx;
+                left: 462rpx;
+            }
+        }
+
+    }
+}

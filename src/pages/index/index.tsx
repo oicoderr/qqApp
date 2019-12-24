@@ -7,6 +7,7 @@ import { getStorage, setStorage, unitReplacement, buildURL } from '../../utils'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
 import MessageToast from '../../components/MessageToast'
+import AdvanceRoadUi from '../../components/advanceRoadUi'
 import Drawer from '../../components/drawer'
 import MsgProto from '../../service/msgProto'
 import { createWebSocket } from '../../service/createWebSocket'
@@ -59,6 +60,8 @@ export class Index extends Component {
 			},
 			// 签到组件显示
 			isShowWeekCheckIn: false,
+			// 晋级之路
+			isShowAdvanceRoadUi: false,
 			personTheme: 'https://oss.snmgame.com/v1.0.0/personTheme.png',
 			// 签到基本信息
 			weekCheckIninfo: {},
@@ -167,6 +170,13 @@ export class Index extends Component {
 				preState.weekCheckIninfo = weekCheckIninfo;
 				preState.isShowWeekCheckIn = true;
 			},()=>{});
+		});
+
+		// 接受晋级之路组件发送的关闭信息
+		this.eventEmitter = emitter.addListener('closeAdvanceRoadToast', (message) => {
+			this.setState((preState)=>{
+				preState.isShowAdvanceRoadUi = false;
+			})
 		});
 	}
 
@@ -357,10 +367,22 @@ export class Index extends Component {
 		});
 	}
 
+	// 显示晋级之路
+	advanceRoad(){
+		let gameUserInfo = this.state.gameUserInfo;
+		let dan = gameUserInfo.dan;
+		// 晋级之路子组件发送当前段位
+		emitter.emit('current_dan', {'dan': dan});
+
+		this.setState((preState)=>{
+			preState.isShowAdvanceRoadUi = !preState.isShowAdvanceRoadUi;
+		});
+	}
 	render () {
 		const {redEnvelope, copper, sex } = this.state.gameUserInfo;
 		const personTheme = this.state.personTheme;
 		const isShowWeekCheckIn = this.state.isShowWeekCheckIn;
+		const isShowAdvanceRoadUi = this.state.isShowAdvanceRoadUi;
 		return (
 			<View className='index' catchtouchmove="ture">
 				{/* 左侧按钮list */}
@@ -368,6 +390,10 @@ export class Index extends Component {
 				{/* 签到 */}
 				<View className={`${isShowWeekCheckIn?'':'hide'}`}>
 					<WeekCheckIn />
+				</View>
+				{/* 晋级之路 */}
+				<View className={`${isShowAdvanceRoadUi?'':'hide'}`}>
+					<AdvanceRoadUi />
 				</View>
 				{/* 全局提示 */}
 				<View className='hide'>
@@ -380,7 +406,7 @@ export class Index extends Component {
 					</View>
 					<View className='bgImg'></View>
 					<View className='head'>
-						<View className='avatarWrap'>
+						<View onClick={this.advanceRoad.bind(this)} className='avatarWrap'>
 							<View className='avatar'>
 								<openData type="userAvatarUrl"></openData>
 							</View>
