@@ -49,8 +49,8 @@ export class RankEntrance extends Component {
 				rankTeamBtn: 'https://oss.snmgame.com/v1.0.0/rank-team-beginBtn.png',
 				// 观看广告按钮
 				watchAdsBtn: 'https://oss.snmgame.com/v1.0.0/watchAdsBtn.png',
-				rewardTip: '每天限领10次',
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
+				rewardTip: '每天限领10次',
 			}
 		}
 		this.msgProto = new MsgProto();
