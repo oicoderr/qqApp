@@ -7,7 +7,7 @@ import { getStorage, setStorage, unitReplacement, buildURL } from '../../utils'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
 import MessageToast from '../../components/MessageToast'
-import AdvanceRoadUi from '../../components/advanceRoadUi'
+import AdvanceRoadUi  from '../../components/advanceRoadUi'
 import Drawer from '../../components/drawer'
 import MsgProto from '../../service/msgProto'
 import { createWebSocket } from '../../service/createWebSocket'
@@ -158,7 +158,7 @@ export class Index extends Component {
 			});
 		});
 
-		// 1802 回应签到基本信息 getWeekCheckIninfo
+		// 1802 回应签到基本信息
 		this.eventEmitter = emitter.addListener('getWeekCheckIninfo', (message) => {
 			clearInterval(message[1]);
 
@@ -177,6 +177,13 @@ export class Index extends Component {
 			this.setState((preState)=>{
 				preState.isShowAdvanceRoadUi = false;
 			})
+		});
+		
+		// 1804 接受签到结果 
+		this.eventEmitter = emitter.addListener('checkInResult', (message) => {
+			clearInterval(message[1]);
+
+			console.info('%c 当日签到结果 ===>', 'font-size:14px;color:#ff1fec;');console.info(message[0]['data']);
 		});
 	}
 
@@ -320,6 +327,9 @@ export class Index extends Component {
 		emitter.removeAllListeners('usedPropsResult');
 		emitter.removeAllListeners('getSelfOrchestra');
 		emitter.removeAllListeners('getWeekCheckIninfo');
+		emitter.removeAllListeners('getOpinionResult');
+		emitter.removeAllListeners('getIsPrizeOpen');
+		emitter.removeAllListeners('checkInResult');
 	}
 
 	// 红包赛入口页
@@ -355,7 +365,7 @@ export class Index extends Component {
 	// 显示签到
 	weekCheckIn(){
 		console.info(this)
-		// 请求签到基本信息
+		// 1801 请求签到基本信息
 		let weekCheckIn = this.msgProto.weekCheckIn();
 		let parentModule = this.msgProto.parentModule(weekCheckIn);
 		this.websocket.sendWebSocketMsg({

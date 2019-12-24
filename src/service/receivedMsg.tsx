@@ -186,6 +186,11 @@ export default class ReceiveMsg{
 					emitter.emit('getIsPrizeOpen', [message, this.timerCount[30]]);
 				},20);
 				break;
+			case 1804: 			// 当天签到结果
+				this.timerCount[31] = setInterval(()=>{
+					emitter.emit('checkInResult', [message, this.timerCount[31]]);
+				},20);
+				break;
 		}
     }
 }
