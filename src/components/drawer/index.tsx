@@ -15,22 +15,22 @@ export default class Drawer extends Component{
                     {   title: '战绩',
                         x: -210,
                         y: -210,
-                        router: '/pages/index/index',
+                        router: '',
                     },{
                         title: '背包',
                         x: -10,
                         y: -10,
-                        router: '/pages/backpack/index',
+                        router: '/pages/toolbar/backpack',
                     },{
                         title: '商店',
                         x: -210,
                         y: -110,
-                        router: '/pages/mall/index',
+                        router: '/pages/toolbar/mall',
                     },{
                         title: '乐队',
                         x: -210,
                         y: -10,
-                        router: '/pages/selfOrchestra/index',
+                        router: '/pages/toolbar/selfOrchestra',
                     },{
                         title: '排行',
                         x: -110,
@@ -50,7 +50,7 @@ export default class Drawer extends Component{
                         title: '反馈',
                         x: -110,
                         y: -10,
-                        router: '/pages/opinion/index',
+                        router: '/pages/toolbar/opinion',
                     },{
                         title: '审题',
                         x: -10,

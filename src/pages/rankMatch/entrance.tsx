@@ -124,7 +124,7 @@ export class RankEntrance extends Component {
 			})
 		});
 	}
-	
+
 	componentWillUnmount () {}
 
 	componentDidShow () {
