@@ -25,8 +25,8 @@ export class Recharge extends Component {
 			},
 
 			local_data:{
-				backBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/backBtn.png',
-				ticketsIcon: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/ticketsIcon.png',
+				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
+				ticketsIcon: 'https://oss.snmgame.com/v1.0.0/ticketsIcon.png',
 				tips: 'Tips：每件商品都是需要QQ钱包支付的哟!!',
 			}
 		};

@@ -157,7 +157,7 @@ export class PrizeQueue extends Component {
 				isShowLoading: true,
 				isreconnection: 0,		// 断线重连
 				isIntheGame: false,		// 是否游戏中断线，默认不是
-				quitBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/quitBtn.png',
+				quitBtn: 'https://oss.snmgame.com/v1.0.0/quitBtn.png',
 			}
 		}
 		this.msgProto = new MsgProto();

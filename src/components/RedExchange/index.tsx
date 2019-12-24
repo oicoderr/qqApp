@@ -16,9 +16,9 @@ export default class RedExchange extends Component{
                 minLength: 1,
                 maxLength: 5,
                 curValue: 1, // 提交给后台的数量
-                addIcon: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/addIcon.png',
-                removeIcon: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/removeIcon.png',
-                closeImgBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/closeBtn.png'
+                addIcon: 'https://oss.snmgame.com/v1.0.0/addIcon.png',
+                removeIcon: 'https://oss.snmgame.com/v1.0.0/removeIcon.png',
+                closeImgBtn: 'https://oss.snmgame.com/v1.0.0/closeBtn.png'
             }
         }
     }

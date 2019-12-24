@@ -9,11 +9,11 @@ export default class GenderSelectionUi extends Component {
         this.state = {
             title: '请选定你的乐队主唱性别',
             remark: '（性别一旦确认无法更换）',
-            boyImg: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/personTheme.png',
-            girlImg: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/personTheme.png',
+            boyImg: 'https://oss.snmgame.com/v1.0.0/personTheme.png',
+            girlImg: 'https://oss.snmgame.com/v1.0.0/personTheme.png',
             gender: 0,
-            boyLogo: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/boyLogo.png',
-            girlLogo: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/girlLogo.png',
+            boyLogo: 'https://oss.snmgame.com/v1.0.0/boyLogo.png',
+            girlLogo: 'https://oss.snmgame.com/v1.0.0/girlLogo.png',
             isSlectGender: false // 女
         }
     }

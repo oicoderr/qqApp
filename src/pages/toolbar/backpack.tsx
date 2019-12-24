@@ -25,9 +25,9 @@ export class BackPack extends Component {
 			},
 
 			local_data:{
-				backBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/backBtn.png',
-				backpackTitle: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/backpackTitle.png',
-				usedBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/usedBtn.png',
+				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
+				backpackTitle: 'https://oss.snmgame.com/v1.0.0/backpackTitle.png',
+				usedBtn: 'https://oss.snmgame.com/v1.0.0/usedBtn.png',
 				tipHaveCard: '拥有',
 				tipCard: '局内道具',
 				// 是否成功使用道具

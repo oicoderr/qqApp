@@ -39,17 +39,17 @@ export class RankReasult extends Component {
 				rankUserInfo:{},
 				PartyATeam: [], 		// 红队 战报各玩家数据
 				PartyBTeam: [],			// 蓝队
-				resultBg: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/result-container.png',
-				scoreBg: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/rank-scoreBg.png',
-				goldIcon: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/goldIcon.png',
-				goBackBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/goBackBtn.png',
-				replayBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/replayBtn.png',
+				resultBg: 'https://oss.snmgame.com/v1.0.0/result-container.png',
+				scoreBg: 'https://oss.snmgame.com/v1.0.0/rank-scoreBg.png',
+				goldIcon: 'https://oss.snmgame.com/v1.0.0/goldIcon.png',
+				goBackBtn: 'https://oss.snmgame.com/v1.0.0/goBackBtn.png',
+				replayBtn: 'https://oss.snmgame.com/v1.0.0/replayBtn.png',
 
-				victoryTitleUrl:'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/victoryTitle.png',
-				failTitleUrl:'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/failTitle.png',
-				drawTitleUrl:'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/drawTitle.png',
-				rankResultTitleUrl: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/victoryTitle.png', // 显示输，赢，平横幅
-				personMvpUrl: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/personMvp.png', // 个人mvp-logo
+				victoryTitleUrl:'https://oss.snmgame.com/v1.0.0/victoryTitle.png',
+				failTitleUrl:'https://oss.snmgame.com/v1.0.0/failTitle.png',
+				drawTitleUrl:'https://oss.snmgame.com/v1.0.0/drawTitle.png',
+				rankResultTitleUrl: 'https://oss.snmgame.com/v1.0.0/victoryTitle.png', // 显示输，赢，平横幅
+				personMvpUrl: 'https://oss.snmgame.com/v1.0.0/personMvp.png', // 个人mvp-logo
 				leftGetAward: [],
 				rightGetAward: [],
 				selfRankBattleReport:{}, // 自己的rank战报

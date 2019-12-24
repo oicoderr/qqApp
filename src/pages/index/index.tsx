@@ -59,7 +59,7 @@ export class Index extends Component {
 			},
 			// 签到组件显示
 			isShowWeekCheckIn: false,
-			personTheme: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/personTheme.png',
+			personTheme: 'https://oss.snmgame.com/v1.0.0/personTheme.png',
 			// 签到基本信息
 			weekCheckIninfo: {},
 			// 默认勾选了签到分享

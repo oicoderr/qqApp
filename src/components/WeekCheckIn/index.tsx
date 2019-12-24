@@ -14,8 +14,8 @@ export default class WeekCheckIn extends Component {
                 shareChecked: true,
                 isShowWeekCheckIn: false,
                 curRewardStatus: false,
-                closeImgBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/closeBtn.png',
-                calendarIcon: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/calendarIcon.png',
+                closeImgBtn: 'https://oss.snmgame.com/v1.0.0/closeBtn.png',
+                calendarIcon: 'https://oss.snmgame.com/v1.0.0/calendarIcon.png',
                 weekCheckIninfo: {},
                 list_day:[
                     {

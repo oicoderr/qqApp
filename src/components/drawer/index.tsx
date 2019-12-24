@@ -77,7 +77,7 @@ export default class Drawer extends Component{
                     }
                 ]
             },
-            powerDrawer: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/powerDrawer.png',
+            powerDrawer: 'https://oss.snmgame.com/v1.0.0/powerDrawer.png',
         }
     }
 

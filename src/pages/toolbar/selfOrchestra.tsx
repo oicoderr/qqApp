@@ -30,10 +30,10 @@ export class SelfOrchestra extends Component {
 
 			local_data:{
 				isShowLoading: true,
-				backBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/backBtn.png',
-				orchestraTitleImg: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/orchestraTitleImg.png',
-				usingPrompt: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/usingBtn.png',
-				replaceBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/replaceBtn.png',
+				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
+				orchestraTitleImg: 'https://oss.snmgame.com/v1.0.0/orchestraTitleImg.png',
+				usingPrompt: 'https://oss.snmgame.com/v1.0.0/usingBtn.png',
+				replaceBtn: 'https://oss.snmgame.com/v1.0.0/replaceBtn.png',
 				leadSingerTitle: '主唱',
 				guitaristTitle: '吉他手',
 				bassistTitle: '贝斯手',

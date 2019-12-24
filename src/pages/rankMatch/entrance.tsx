@@ -26,10 +26,10 @@ export class RankEntrance extends Component {
 			// 后台返回数据
 			data:{
 				season: 1,				 // 第几赛季
-				seasonTitleUrl: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/seasonTitle.png',// 当前赛季img
+				seasonTitleUrl: 'https://oss.snmgame.com/v1.0.0/seasonTitle.png',// 当前赛季img
 				segmentTitle: '国际巨星', // 段位称号
-				segmentTitleUrl: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/segmentTitle.png',// 段位img
-				gloryUrl:'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/glory.png', // 荣耀img	
+				segmentTitleUrl: 'https://oss.snmgame.com/v1.0.0/segmentTitle.png',// 段位img
+				gloryUrl:'https://oss.snmgame.com/v1.0.0/glory.png', // 荣耀img	
 				haveStar: 1,			 // 拥有星星			
 				totalStar: 6,    		 // 总计星星
 				dan: 1,					 // 当前段位
@@ -38,19 +38,19 @@ export class RankEntrance extends Component {
 			// 前台数据
 			local_data:{
 				// 镂空星
-				blankStar: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/blankStar.png',
+				blankStar: 'https://oss.snmgame.com/v1.0.0/blankStar.png',
 				// 发光星
-				shineStar: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/shineStar.png',
+				shineStar: 'https://oss.snmgame.com/v1.0.0/shineStar.png',
 				// 蓝色小背景
-				littileBg: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/littile-bg.png',
+				littileBg: 'https://oss.snmgame.com/v1.0.0/littile-bg.png',
 				// 单排按钮
-				rankAloneBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/rank-onlone-beginBtn.png',
+				rankAloneBtn: 'https://oss.snmgame.com/v1.0.0/rank-onlone-beginBtn.png',
 				// 组排按钮
-				rankTeamBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/rank-team-beginBtn.png',
+				rankTeamBtn: 'https://oss.snmgame.com/v1.0.0/rank-team-beginBtn.png',
 				// 观看广告按钮
-				watchAdsBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/watchAdsBtn.png',
+				watchAdsBtn: 'https://oss.snmgame.com/v1.0.0/watchAdsBtn.png',
 				rewardTip: '每天限领10次',
-				backBtn: 'https://snm-qqapp-test.oss-cn-beijing.aliyuncs.com/qqApp-v1.0.0/backBtn.png',
+				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 			}
 		}
 		this.msgProto = new MsgProto();
