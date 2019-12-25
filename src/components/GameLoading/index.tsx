@@ -9,7 +9,7 @@ export default class GameLoading extends Component{
             // 默认组件数据
             local_data:{
                 loadingText: '正在加载中，请稍后...',
-                loadingGif: 'https://oss.snmgame.com/v1.0.0/LOAD.gif'
+                loadingGif: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/LOAD.gif'
             }
         }
     }

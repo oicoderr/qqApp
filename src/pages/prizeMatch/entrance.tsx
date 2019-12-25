@@ -53,17 +53,17 @@ export class PrizeEntrance extends Component {
 				adsTip: '每局比赛自动使用一张加速卡',
 				quickenTip: 'Tips: 邀请好友获取加速卡，减少每局答题总耗时。',
 				checked: true,     // 默认勾选观看广告
-				StayTunedImg: 'https://oss.snmgame.com/v1.0.0/StayTuned.png',
-				tipImg: 'https://oss.snmgame.com/v1.0.0/prizeMatch_FreeBtnTip.png',
-				freeBtn: 'https://oss.snmgame.com/v1.0.0/prizeMatch_FreeBtn.png',
-				ticketsBtn: 'https://oss.snmgame.com/v1.0.0/prizeMatch_ticketsBtn.png',
-				entranceBg: 'https://oss.snmgame.com/v1.0.0/prizeMatch_entranceBg.png',
-				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
-				quickenCardBg: 'https://oss.snmgame.com/v1.0.0/quickenCardBg.png',
-				progress_item_blank: 'https://oss.snmgame.com/v1.0.0/progress_item_blank.png',
-				progress_item: 'https://oss.snmgame.com/v1.0.0/progress_item.png',
-				receiveBtn: 'https://oss.snmgame.com/v1.0.0/receiveBtn.png',
-				inviteBtn: 'https://oss.snmgame.com/v1.0.0/inviteBtn.png',
+				StayTunedImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/StayTuned.png',
+				tipImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/prizeMatch_FreeBtnTip.png',
+				freeBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/prizeMatch_FreeBtn.png',
+				ticketsBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/prizeMatch_ticketsBtn.png',
+				entranceBg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/prizeMatch_entranceBg.png',
+				backBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/backBtn.png',
+				quickenCardBg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/quickenCardBg.png',
+				progress_item_blank: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/progress_item_blank.png',
+				progress_item: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/progress_item.png',
+				receiveBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/receiveBtn.png',
+				inviteBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/inviteBtn.png',
 			}
 
 		}

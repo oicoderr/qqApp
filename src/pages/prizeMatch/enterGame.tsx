@@ -43,7 +43,7 @@ export class PrizeEnterGame extends Component {
 			local_data:{
 				dieOutText: '已淘汰：',
 				surplusText: '剩余人数：',
-				countdownPrizeMatch: 'https://oss.snmgame.com/v1.0.0/countdownPrizeMatch.png',
+				countdownPrizeMatch: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/countdownPrizeMatch.png',
 				defultClass: '',	   	// 选项上层默认样式class 
 				defultBottomClass: '', 	// 选项下层默认样式class
 				isShowMask: false,		// 默认不显示遮罩

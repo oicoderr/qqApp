@@ -42,11 +42,11 @@ export class Mall extends Component {
 				},
 				// 看广告领取免费道具卡id
 				freeAdsId: '',
-				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
-				mallTitle: 'https://oss.snmgame.com/v1.0.0/mallTitle.png',
-				energyIcon: 'https://oss.snmgame.com/v1.0.0/energyIcon.png',
-				ticketsIcon: 'https://oss.snmgame.com/v1.0.0/ticketsIcon.png',
-				goldIcon: 'https://oss.snmgame.com/v1.0.0/goldIconOnline.png',
+				backBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/backBtn.png',
+				mallTitle: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/mallTitle.png',
+				energyIcon: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/energyIcon.png',
+				ticketsIcon: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/ticketsIcon.png',
+				goldIcon: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/goldIconOnline.png',
 				propsText: '道具卡',
 				bandText: '乐队',
 				// 可以免费获取的道具
@@ -325,13 +325,7 @@ export class Mall extends Component {
 		let parentModule = this.msgProto.parentModule(buyProps);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {
-				Taro.showToast({
-					title: '购买成功',
-					icon: 'none',
-					duration: 2000
-				})
-			},
+			success(res) {console.info('请求购买道具Success')},
 			fail(err){
 				Taro.showToast({
 					title: err.errMsg,

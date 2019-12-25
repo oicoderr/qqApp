@@ -62,7 +62,7 @@ export class Index extends Component {
 			isShowWeekCheckIn: false,
 			// 晋级之路
 			isShowAdvanceRoadUi: false,
-			personTheme: 'https://oss.snmgame.com/v1.0.0/personTheme.png',
+			personTheme: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/personTheme.png',
 			// 签到基本信息
 			weekCheckIninfo: {},
 			// 默认勾选了签到分享
