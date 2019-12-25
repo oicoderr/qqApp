@@ -1,9 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Image, Text, Button } from '@tarojs/components'
 import './entrance.scss'
 import emitter from '../../service/events';
 
-import { getStorage } from '../../utils';
+import { getStorage, onShareApp } from '../../utils';
 import { createWebSocket } from '../../service/createWebSocket'
 import createVideoAd from '../../service/createVideoAd'
 import MsgProto from '../../service/msgProto'
@@ -238,7 +238,63 @@ export class PrizeEntrance extends Component {
         this.setState((preState) => {
             preState.local_data.checked = !value;
         },()=>{});
-    }
+	}
+	
+	// 分享
+	onShareAppMessage(res) {
+		// 邀请者roleId
+		let roleId = this.state.local_data.gameUserInfo.roleId;
+		// 受邀请类型(1.组队;2.加速卡)
+		let param1 = 2;
+		let shareData = {
+			title: '酸柠檬',
+			path: '/pages/login/index',
+			imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
+			shareCallBack: (status)=>{},
+		};
+		// 按钮分享
+		if(res.from === 'button' && roleId){
+			console.info(' =====>按钮分享加速卡<=====');
+			shareData.title = '酸柠檬邀请你来给我助力加速卡～';
+			shareData.path = `/pages/login/index?param1=${param1}&inviterRoleId=${roleId}`,
+			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+			shareData.shareCallBack = (status)=>{
+				if(status.errMsg === "shareAppMessage:fail cancel"){
+					Taro.showToast({
+						title: '分享失败',
+						icon: 'none',
+						duration: 2000,
+					})
+				}else{
+					Taro.showToast({
+						title: '分享成功',
+						icon: 'none',
+						duration: 2000,
+					})
+				}
+			}
+		}else{ // 右上角分享App
+			shareData.title = '酸柠檬全局分享';
+			shareData.path = '/pages/login/index';
+			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+			shareData.shareCallBack = (status)=>{
+				if(status.errMsg === "shareAppMessage:fail cancel"){
+					Taro.showToast({
+						title: '分享失败',
+						icon: 'none',
+						duration: 2000,
+					})
+				}else{
+					Taro.showToast({
+						title: '分享成功',
+						icon: 'none',
+						duration: 2000,
+					})
+				}
+			}
+		}
+		return onShareApp(shareData);
+	}
 
 	render () {
 
@@ -255,7 +311,7 @@ export class PrizeEntrance extends Component {
 					<View className='bgImg'></View>
 					<View className='backBtnBox'>
 						<Image onClick={this.goBack.bind(this)} src={backBtn} className='backBtn' />
-						
+
 						{/* 门票bar */}
 						<View className='prizeMatchBar'>
 							<View className='board-same board'></View>
@@ -270,7 +326,6 @@ export class PrizeEntrance extends Component {
 							<View className='energyIcon'></View>
 							<Text className='num-same energyNum'>{energy}</Text>
 						</View>
-
 					</View>
 
 					<View className='body'>
@@ -318,6 +373,7 @@ export class PrizeEntrance extends Component {
 									<Image src={progress_item_blank} className='progress_item'/>
 									<Image src={progress_item_blank} className='progress_item'/>
 								</View>
+								<Button openType='share' >share</Button>
 								<View className='progress_btn'>
 									<Image src={inviteBtn} className='btn inviteBtn'/>
 									<Image src={receiveBtn} className='btn receiveBtn'/>

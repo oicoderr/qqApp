@@ -27,8 +27,6 @@ export default class HomeBand extends Component {
 			console.info('～接受父组件`我的乐队信息`：～','font-size:14px;color:#273df1;');console.info(message[0]['list']);
 
         });
-        
-
     }
 
     componentDidMount() {}
@@ -40,7 +38,6 @@ export default class HomeBand extends Component {
     componentDidHide () { }
 
     render() {
-        
         
         return (
             <View className='homeBand'>

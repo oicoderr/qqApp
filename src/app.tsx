@@ -59,6 +59,16 @@ class App extends Component {
 
 	componentWillMount () {
 		let _this = this;
+		const params = this.$router.params;
+		if(params.query){
+			let inviterRoleId = params.query.inviterRoleId;
+			let param1 = parseInt(params.query.param1);
+			let inviterInfo = {
+				'inviterRoleId': inviterRoleId,
+				'param1': param1,
+			}
+			setStorage('inviterInfo', inviterInfo);
+		}
 		this.msgProto = new MsgProto();
 		// 监听内存情况
 		this.onMemoryWarning();

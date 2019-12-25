@@ -7,7 +7,7 @@
 import Taro from '@tarojs/taro'
 import MsgProto from '../service/msgProto'
 import LoginGame from '../toolProto/getLoginGameInfo' // 游戏登录模块
-
+import { removeStorage } from '../utils/index'
 export default class websocket {
 	constructor({ heartCheck, isReconnection }) {
 		// 是否连接
@@ -106,14 +106,13 @@ export default class websocket {
 			this._netWork = true;
 			// 打开已登录开关
 			this._isLogin = true;
-
 			let loginModule = this.msgProto.loginModule(LoginGame.getLogin());
 			let parentModule = this.msgProto.parentModule(loginModule);
-
 			this.sendWebSocketMsg({
 				data: parentModule,
 				success(res) {
 					_this.loginGame = true;
+					removeStorage('inviterInfo');
 				},
 				fail(err){
 					Taro.showToast({

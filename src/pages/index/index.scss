@@ -209,18 +209,15 @@
 
 // 身体区域
 .body{
+    width: 100%;
+    height: 840rpx;
     position:absolute;
-    top: 230rpx; // 100rpx
+    top: 260rpx;
     left: 0;
     overflow: hidden;
     box-sizing: border;
     z-index: 4;
-    padding: 190rpx 143rpx 0 143rpx;
 
-    .personTheme{
-        width: 464rpx;
-        height: 619rpx;
-    }
 }
 
 // 底部

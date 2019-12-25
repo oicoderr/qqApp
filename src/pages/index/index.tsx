@@ -181,7 +181,7 @@ export class Index extends Component {
 				preState.isShowAdvanceRoadUi = false;
 			})
 		});
-		
+
 		// 1804 接受签到结果 
 		this.eventEmitter = emitter.addListener('checkInResult', (message) => {
 			clearInterval(message[1]);

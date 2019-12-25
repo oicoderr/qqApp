@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
-import { buildURL, getCurrentTime } from '../../utils'
+import { buildURL, getCurrentTime, onShareAppMessage } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import './enterGame.scss'
 import emitter from '../../service/events'
@@ -176,6 +176,8 @@ export class PrizeEnterGame extends Component {
 				preState.local_data.curQuestion['lastQuestId'] = JSON.parse(JSON.stringify(message[0]['data']['lastQuestId']));
 				// 复活时间
 				preState.local_data.curQuestion['waitreceivetime'] = JSON.parse(JSON.stringify(message[0]['data']['waitreceivetime']));
+				// 是否可以复活
+				preState.local_data.curQuestion['receive'] = JSON.parse(JSON.stringify(message[0]['data']['receive']));
 				// 在curQuestion中添加正确答案
 				preState.local_data.curQuestion['correctOption'] = JSON.parse(JSON.stringify(message[0]['data']['optionId']));
 				// 添加各答案答对/打错人数
@@ -198,15 +200,19 @@ export class PrizeEnterGame extends Component {
 				}else{	// 提示`是否复活`
 					// 复活倒计时开始
 					let time = _this.state.local_data.curQuestion.waitreceivetime;
-					clearInterval(_this.state.data.secondsTimer);
-					_this.resurrectionCountdown(time,()=>{
-						// 倒计时结束1.关闭弹窗
-						_this.setState((preState)=>{
-							preState.local_data.isShowToast = false;
-						},()=>{})
-					});
-					// 显示是否弹窗
-					_this.isResurrection();
+					// 是否可以复活状态
+					let receive = _this.state.local_data.curQuestion.receive;
+					if(receive){
+						clearInterval(_this.state.data.secondsTimer);
+						_this.resurrectionCountdown(time,()=>{
+							// 倒计时结束1.关闭弹窗
+							_this.setState((preState)=>{
+								preState.local_data.isShowToast = false;
+							},()=>{})
+						});
+						// 显示是否弹窗
+						_this.isResurrection();
+					}
 				}
 			})
 		});

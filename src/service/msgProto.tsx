@@ -14,7 +14,7 @@ export default class MsgProto{
     }
 
     loginModule(params){
-        const { openId, password, channel, roomid, device } = params;
+        const { openId, password, channel, roomid, device, param1, param2 } = params;
         return {
             'code': 1001,
             'data': {
@@ -22,7 +22,9 @@ export default class MsgProto{
                 'password': password,
                 'channel': channel,
                 'roomid': roomid,
-                'device': device
+                'device': device,
+                'param1': param1,
+                'param2': param2
             }
         }
     }

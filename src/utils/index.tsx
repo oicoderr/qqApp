@@ -386,7 +386,7 @@ export const buildURL = (url, query = {}, isSequence = true) => {
 }
 
 /* 随机数 */
-export const getArrayItems = (arr, num)=> {
+export const getArrayItems = (arr, num) => {
   //新建一个数组,将传入的数组复制过来,用于运算,而不要直接操作传入的数组;
   var temp_array = new Array();
   for (var index in arr) {
@@ -411,3 +411,21 @@ export const getArrayItems = (arr, num)=> {
   return return_array;
 }
 
+/* 大奖赛加速卡转发 */
+export const onShareApp = (params) =>{
+  const { title, path, imageUrl, callback} = params;
+  let defaultImageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+  return {
+    title: title,
+    path: path,
+    imageUrl: imageUrl || defaultImageUrl,
+    shareAppType: 'qq',
+    query: '',
+    success(res) {
+      callback(res);
+    },
+    fail(err){
+      callback(err);
+    }
+  }
+}
