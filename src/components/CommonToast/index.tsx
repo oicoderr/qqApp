@@ -18,7 +18,7 @@ export default class CommonToast extends Component{
             local_data:{
                 cancelBtnText: '取消',
                 confirmBtnText: '确认',
-                closeImgBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/closeBtn.png'
+                closeImgBtn: 'https://oss.snmgame.com/v1.0.0/closeBtn.png'
             }
         }
     }

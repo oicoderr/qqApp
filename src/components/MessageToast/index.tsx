@@ -9,8 +9,8 @@ export class MessageToast extends Component {
         this.state.data = {
             title: '我是提示',
             body: '我是内容',
-            confirmBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/confirmBtn.png',
-            closeImgBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/closeBtn.png',
+            confirmBtn: 'https://oss.snmgame.com/v1.0.0/confirmBtn.png',
+            closeImgBtn: 'https://oss.snmgame.com/v1.0.0/closeBtn.png',
         }
     }
 

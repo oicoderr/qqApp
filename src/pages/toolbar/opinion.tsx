@@ -37,10 +37,10 @@ export class Opinion extends Component {
 				tip3: '娑娜:',
 				tipQQ: '3438538225',
 				maxlength: 200,
-				qqIcon: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/qqIcon.png',
-				backBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/backBtn.png',
-				opinionTitleImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/opinionTitleImg.png',
-				submitBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/submitBtn.png',
+				qqIcon: 'https://oss.snmgame.com/v1.0.0/qqIcon.png',
+				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
+				opinionTitleImg: 'https://oss.snmgame.com/v1.0.0/opinionTitleImg.png',
+				submitBtn: 'https://oss.snmgame.com/v1.0.0/submitBtn.png',
 			}
 		};
 		this.msgProto = new MsgProto();

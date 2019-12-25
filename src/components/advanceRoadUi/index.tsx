@@ -8,8 +8,8 @@ export class MessageToast extends Component {
         super(props);
         this.state.data = {
             title: '晋级之路',
-            closeImgBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/closeBtn.png',
-            road_line: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/road_line.png',
+            closeImgBtn: 'https://oss.snmgame.com/v1.0.0/closeBtn.png',
+            road_line: 'https://oss.snmgame.com/v1.0.0/road_line.png',
             // 当前段位
             current_dan: 1,
             headPosi:[
@@ -53,42 +53,42 @@ export class MessageToast extends Component {
             ],
             list:[
                 {
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/1levelTitle.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/1levelTitle.png',
                     itemTitle: '音乐小白', 
                     class: 'level1',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/2levelTitle.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/2levelTitle.png',
                     itemTitle: '流浪歌手', 
                     class: 'level2',
                     orchestra: '解锁贝斯手',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/3levelTitle.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/3levelTitle.png',
                     itemTitle: '酒吧驻唱', 
                     class: 'level3',
                     orchestra: '解锁吉他手',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/4levelTitle.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/4levelTitle.png',
                     itemTitle: '网络红人', 
                     class: 'level4',
                     orchestra: '解锁鼓手',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/5levelTitle.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/5levelTitle.png',
                     itemTitle: '签约歌手', 
                     class: 'level5',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/6levelTitle.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/6levelTitle.png',
                     itemTitle: '国民偶像', 
                     class: 'level6',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/7levelTitle.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/7levelTitle.png',
                     itemTitle: '亚洲天王', 
                     class: 'level7',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/8levelTitle.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/8levelTitle.png',
                     itemTitle: '国际巨星',
                     class: 'level8',
                     orchestra:'',
@@ -96,42 +96,42 @@ export class MessageToast extends Component {
             ],
             list_mask:[
                 {
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/1levelTitle.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/1levelTitle.png',
                     itemTitle: '音乐小白', 
                     class: 'level1',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/2levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/2levelTitle_mask.png',
                     itemTitle: '流浪歌手', 
                     class: 'level2',
                     orchestra: '解锁贝斯手',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/3levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/3levelTitle_mask.png',
                     itemTitle: '酒吧驻唱', 
                     class: 'level3',
                     orchestra: '解锁吉他手',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/4levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/4levelTitle_mask.png',
                     itemTitle: '网络红人', 
                     class: 'level4',
                     orchestra: '解锁鼓手',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/5levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/5levelTitle_mask.png',
                     itemTitle: '签约歌手', 
                     class: 'level5',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/6levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/6levelTitle_mask.png',
                     itemTitle: '国民偶像', 
                     class: 'level6',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/7levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/7levelTitle_mask.png',
                     itemTitle: '亚洲天王', 
                     class: 'level7',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/8levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/8levelTitle_mask.png',
                     itemTitle: '国际巨星',
                     class: 'level8',
                     orchestra:'',
@@ -139,42 +139,42 @@ export class MessageToast extends Component {
             ],
             reusltList:[
                 {
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/1levelTitle.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/1levelTitle.png',
                     itemTitle: '音乐小白', 
                     class: 'level1',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/2levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/2levelTitle_mask.png',
                     itemTitle: '流浪歌手', 
                     class: 'level2',
                     orchestra: '解锁贝斯手',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/3levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/3levelTitle_mask.png',
                     itemTitle: '酒吧驻唱', 
                     class: 'level3',
                     orchestra: '解锁吉他手',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/4levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/4levelTitle_mask.png',
                     itemTitle: '网络红人', 
                     class: 'level4',
                     orchestra: '解锁鼓手',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/5levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/5levelTitle_mask.png',
                     itemTitle: '签约歌手', 
                     class: 'level5',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/6levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/6levelTitle_mask.png',
                     itemTitle: '国民偶像', 
                     class: 'level6',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/7levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/7levelTitle_mask.png',
                     itemTitle: '亚洲天王', 
                     class: 'level7',
                     orchestra:'',
                 },{
-                    itemImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/8levelTitle_mask.png',
+                    itemImg: 'https://oss.snmgame.com/v1.0.0/8levelTitle_mask.png',
                     itemTitle: '国际巨星',
                     class: 'level8',
                     orchestra:'',

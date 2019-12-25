@@ -16,21 +16,21 @@ export default class RankResultInfo extends Component{
                     danDesc: '',     // 段位描述
                     haveStar: 1,
                     totalStar: 4,
-                    gloryUrl: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/glory.png' // 段位的icon
+                    gloryUrl: 'https://oss.snmgame.com/v1.0.0/glory.png' // 段位的icon
                 }
             },
             
             // 默认组件数据
             local_data:{
-                successUrl: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/victoryTitle.png',
-                failUrl: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/failTitle.png',
-                drawUrl: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/drawTitle.png',
-                bgImg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/rankBg.png',
-                confirmBtnUrl: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/rankResultSureBtn.png',
+                successUrl: 'https://oss.snmgame.com/v1.0.0/victoryTitle.png',
+                failUrl: 'https://oss.snmgame.com/v1.0.0/failTitle.png',
+                drawUrl: 'https://oss.snmgame.com/v1.0.0/drawTitle.png',
+                bgImg: 'https://oss.snmgame.com/v1.0.0/rankBg.png',
+                confirmBtnUrl: 'https://oss.snmgame.com/v1.0.0/rankResultSureBtn.png',
                 // 镂空星
-				blankStar: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/blankStar.png',
+				blankStar: 'https://oss.snmgame.com/v1.0.0/blankStar.png',
 				// 发光星
-				shineStar: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/shineStar.png',
+				shineStar: 'https://oss.snmgame.com/v1.0.0/shineStar.png',
                 checked: true,     // 默认勾选观看广告
                 adsTip: '观看短片，获取额外金币',
                 rankResultUrl: '', // 对局胜负平结果

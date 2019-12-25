@@ -25,10 +25,10 @@ export class TakeMoney extends Component {
 			},
 
 			local_data:{
-				backBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/backBtn.png',
+				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				tips: 'Tips：现金红包存入QQ钱包！每件商品每日可以兑换一次哟！',
-				energyIcon: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/energyIcon.png',
-				energyLittleIcon: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/energyLittleIcon.png',
+				energyIcon: 'https://oss.snmgame.com/v1.0.0/energyIcon.png',
+				energyLittleIcon: 'https://oss.snmgame.com/v1.0.0/energyLittleIcon.png',
 			}
 		};
 		this.msgProto = new MsgProto();

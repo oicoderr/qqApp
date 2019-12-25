@@ -20,7 +20,7 @@
         z-index: 1;
         width: 100vw;
         height: 100vh;
-        background-image: url('https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/rank-texture-0001.png');
+        background-image: url('https://oss.snmgame.com/v1.0.0/rank-texture-0001.png');
         background-size: 750px 3000px;
         background-repeat: no-repeat;
         opacity: 1;
@@ -42,7 +42,7 @@
         height: 55px;
         width: 55px;
         overflow: hidden;       
-        background-image: url( https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/index-game-other-icon.png );
+        background-image: url( https://oss.snmgame.com/v1.0.0/index-game-other-icon.png );
         background-repeat: no-repeat;
         background-position: -0px -97px;
         background-size: 162px 154px;
@@ -76,7 +76,7 @@
     .icon-same{
         overflow: hidden;
         position: absolute;
-        background-image:url( https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/index-game-other-icon.png );
+        background-image:url( https://oss.snmgame.com/v1.0.0/index-game-other-icon.png );
         background-repeat: no-repeat;
         background-size: 162px 154px;
     }
@@ -198,7 +198,7 @@
     }
 
     .rightBtnIcon{
-        background-image:url( https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/index-game-import-icon0.png );
+        background-image:url( https://oss.snmgame.com/v1.0.0/index-game-import-icon0.png );
         background-repeat: no-repeat;
         background-size: 525px 500px;
         margin-bottom: 20px;
@@ -234,12 +234,12 @@
     overflow: hidden;
     z-index: 3;
     display: flex;
-    background-image: url('https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/btnBg.png');
+    background-image: url('https://oss.snmgame.com/v1.0.0/btnBg.png');
     background-repeat: no-repeat;
     background-size: 750px 360px;
 
     .sameBtn{    
-        background-image:url( https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/index-game-import-icon0.png );
+        background-image:url( https://oss.snmgame.com/v1.0.0/index-game-import-icon0.png );
         background-repeat: no-repeat;
         background-size: 525px 500px;
         position: absolute;

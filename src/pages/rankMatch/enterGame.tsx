@@ -99,11 +99,11 @@ export class RankEnterGame extends Component {
 				selectedOptionId: '',	// 用户所选optionId
 				isShowMask: false,		// 默认不显示遮罩
 				isShowLoading: true,	// 默认显示加载动画
-				delayCardBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/delayCardBtn.png',
-				helpCardBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/helpCardBtn.png',
-				disable_delayCardBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/disable_delayCardBtn.png',
-				disable_helpCardBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/disable_helpCardBtn.png',
-				countdown: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/rank-countdown.png',
+				delayCardBtn: 'https://oss.snmgame.com/v1.0.0/delayCardBtn.png',
+				helpCardBtn: 'https://oss.snmgame.com/v1.0.0/helpCardBtn.png',
+				disable_delayCardBtn: 'https://oss.snmgame.com/v1.0.0/disable_delayCardBtn.png',
+				disable_helpCardBtn: 'https://oss.snmgame.com/v1.0.0/disable_helpCardBtn.png',
+				countdown: 'https://oss.snmgame.com/v1.0.0/rank-countdown.png',
 			}
 		}
 		this.msgProto = new MsgProto();

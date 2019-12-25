@@ -47,18 +47,18 @@ export class PrizeReasult extends Component {
 				isShowRankResult: true,
 
 				// 名次横幅
-				firstBar: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/firstBar.png',
-				secondBar: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/secondBar.png',
-				thirdBar: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/thirdBar.png',
-				thanThreeBar: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/4-10Bar.png',
-				thanTenBar: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/11Bar.png',
-				confirmBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/confirmBtn.png',
+				firstBar: 'https://oss.snmgame.com/v1.0.0/firstBar.png',
+				secondBar: 'https://oss.snmgame.com/v1.0.0/secondBar.png',
+				thirdBar: 'https://oss.snmgame.com/v1.0.0/thirdBar.png',
+				thanThreeBar: 'https://oss.snmgame.com/v1.0.0/4-10Bar.png',
+				thanTenBar: 'https://oss.snmgame.com/v1.0.0/11Bar.png',
+				confirmBtn: 'https://oss.snmgame.com/v1.0.0/confirmBtn.png',
 				// 当前玩家名次
-				gradeBar: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/11Bar.png',
+				gradeBar: 'https://oss.snmgame.com/v1.0.0/11Bar.png',
 				getRewardTip: '奖励已存入当前账户',
 				questionUnit: '题',
 				timeUnit: '秒',
-				energyIcon: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/energyLittleIcon.png',
+				energyIcon: 'https://oss.snmgame.com/v1.0.0/energyLittleIcon.png',
 				adsTip: '观看短片，获取1张复活卡',
 				checked:  true,
 			}

@@ -8,6 +8,7 @@ import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
 import MessageToast from '../../components/MessageToast'
 import AdvanceRoadUi  from '../../components/advanceRoadUi'
+import HomeBandUi  from '../../components/HomeBandUi'
 import Drawer from '../../components/drawer'
 import MsgProto from '../../service/msgProto'
 import { createWebSocket } from '../../service/createWebSocket'
@@ -62,11 +63,13 @@ export class Index extends Component {
 			isShowWeekCheckIn: false,
 			// 晋级之路
 			isShowAdvanceRoadUi: false,
-			personTheme: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/personTheme.png',
+			personTheme: 'https://oss.snmgame.com/v1.0.0/personTheme.png',
 			// 签到基本信息
 			weekCheckIninfo: {},
 			// 默认勾选了签到分享
 			isShareCheckedChange: true,
+			// 我的乐队信息
+			selfOrchestra:{},
 		};
 		this.msgProto = new MsgProto();
 	}
@@ -184,6 +187,20 @@ export class Index extends Component {
 			clearInterval(message[1]);
 
 			console.info('%c 当日签到结果 ===>', 'font-size:14px;color:#ff1fec;');console.info(message[0]['data']);
+		});
+
+		// 1602 接受我的乐队信息 -> 发送子组件`我的乐队信息`
+		this.eventEmitter = emitter.addListener('getSelfOrchestra', (message) => {
+			clearInterval(message[1]);
+
+			let selfOrchestra = message[0]['data'];
+			this.setState((preState)=>{
+				preState.selfOrchestra = selfOrchestra;
+			});
+			let timer = setInterval(()=>{
+				emitter.emit('selfOrchestra', [selfOrchestra, timer]);
+			},20);
+			console.info('%c 我的乐队信息 ===>', 'font-size:14px;color:#ff1fec;');console.info(message[0]['data']);
 		});
 	}
 
@@ -445,7 +462,8 @@ export class Index extends Component {
 					</View>
 
 					<View className='body'>
-						<Image src={ personTheme } className='personTheme'></Image>
+						{/* <Image src={ personTheme } className='personTheme'></Image> */}
+						<HomeBandUi />
 					</View>
 
 					<View className='foot'>

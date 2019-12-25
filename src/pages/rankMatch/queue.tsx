@@ -66,10 +66,10 @@ export class RankQueue extends Component {
 				matchStatus: true,
 				isShowLoading: true,	// 加载动画，默认开启
 				isreconnection: 0,		// 是否断线重连，默认0 fasle
-				redTeamBg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/redTeamBg.png',
-				blueTeamBg: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/blueTeam.png',
-				VS: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/VS.png',
-				backBtn: 'https://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/backBtn.png',
+				redTeamBg: 'https://oss.snmgame.com/v1.0.0/redTeamBg.png',
+				blueTeamBg: 'https://oss.snmgame.com/v1.0.0/blueTeam.png',
+				VS: 'https://oss.snmgame.com/v1.0.0/VS.png',
+				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 			}
 		}
 		this.msgProto = new MsgProto();
