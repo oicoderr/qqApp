@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Text, RadioGroup, Radio, Label } from '@tarojs/components'
+import { View, Image, Text, RadioGroup, Radio, Label, Button } from '@tarojs/components'
 import emitter from '../../service/events';
+import { onShareApp } from '../../utils'
 import './index.scss'
 
 export default class WeekCheckIn extends Component {
@@ -54,7 +55,6 @@ export default class WeekCheckIn extends Component {
         let _this = this;
         // 接受签到基本数据
         this.eventEmitter = emitter.addListener('weekCheckIninfo_child', (message) => {
-
 			console.info('～接受父组件签到基本信息：～');console.info(message);
 			// 接受父组件签到基本信息
 			_this.setState((preState)=>{
@@ -68,7 +68,6 @@ export default class WeekCheckIn extends Component {
                 });
                 preState.local_data.weekCheckIninfo = weekCheckIninfo;
 			},()=>{});
-			
 		});
     }
 
@@ -111,6 +110,31 @@ export default class WeekCheckIn extends Component {
         })
     }
 
+    // 签到分享，右上角分享
+	onShareAppMessage(res) {
+		let shareData = {
+            title: '明星、热点、八卦知多少？一试便知！',
+            path: '/pages/login/index',
+            imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
+            callback: (status)=>{
+                if(status.errMsg === "shareAppMessage:fail cancel"){
+                    Taro.showToast({
+                        title: '分享失败',
+                        icon: 'none',
+                        duration: 2000,
+                    })
+                }else{
+                    Taro.showToast({
+                        title: '分享成功',
+                        icon: 'none',
+                        duration: 2000,
+                    })
+                }
+            },
+        };
+        return onShareApp(shareData);
+    }
+
     render() {
         const { day } = this.state.local_data.weekCheckIninfo;
         const list_day = this.state.local_data.weekCheckIninfo.list;
@@ -128,7 +152,7 @@ export default class WeekCheckIn extends Component {
                         <View className={`curDays ${index == list_day.length-1?'OffsetWidth':''}`}>{currentValue.dayText}</View>
                     </View>
         });
-        
+
         return (
             <View className='index'>
                 <View className='calendarIconWrap'>
@@ -143,9 +167,9 @@ export default class WeekCheckIn extends Component {
 
                     <View className='submitBtnBox'>
                         <View className='submitBtn'>
-                            <View onClick={this.receiveAward.bind(this,curRewardStatus)} className='submitBtn_'>
+                            <Button openType='share' onClick={this.receiveAward.bind(this,curRewardStatus)} className='submitBtn_'>
                                 {submitBtnText}
-                            </View>
+                            </Button>
                         </View>
                     </View>
                     

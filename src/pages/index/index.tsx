@@ -184,7 +184,13 @@ export class Index extends Component {
 			_this.setState((preState)=>{
 				preState.weekCheckIninfo = weekCheckIninfo;
 				preState.isShowWeekCheckIn = true;
-			},()=>{});
+			},()=>{
+				// 是否勾选`炫耀一下`
+				let isShareCheckedChange = _this.state.isShareCheckedChange;
+				if(isShareCheckedChange){
+
+				}
+			});
 		});
 
 		// 接受晋级之路组件发送的关闭信息
@@ -230,7 +236,39 @@ export class Index extends Component {
 		});
 	}
 
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		console.info('%c 主页WillUnmount，开始removeAllListeners','font-size:14px;background-color:#fff81a; color:#00000;');
+		emitter.removeAllListeners('currencyChange');
+		emitter.removeAllListeners('enterMatch');
+		emitter.removeAllListeners('getBattleTeams');
+		emitter.removeAllListeners('getQuestion');
+		emitter.removeAllListeners('getAnswer');
+		emitter.removeAllListeners('getRenascenceInfo');
+		emitter.removeAllListeners('getResurrectResult');
+		emitter.removeAllListeners('getPrizeMatchReport');
+		emitter.removeAllListeners('getPrevQAInfo');
+		emitter.removeAllListeners('getRankResultInfo');
+		emitter.removeAllListeners('getRankBattleReport');
+		emitter.removeAllListeners('exitQueueStatus');
+		emitter.removeAllListeners('getTeamSituation');
+		emitter.removeAllListeners('getPrizePrevQAInfo');
+		emitter.removeAllListeners('getRechargeMessage');
+		emitter.removeAllListeners('getPrePay_id');
+		emitter.removeAllListeners('takeMoney');
+		emitter.removeAllListeners('takeMoneyStatus');
+		emitter.removeAllListeners('getBackpack');
+		emitter.removeAllListeners('propsInfo');
+		emitter.removeAllListeners('getMall');
+		emitter.removeAllListeners('getMatchProps');
+		emitter.removeAllListeners('usedPropsResult');
+		emitter.removeAllListeners('getSelfOrchestra');
+		emitter.removeAllListeners('getWeekCheckIninfo');
+		emitter.removeAllListeners('getOpinionResult');
+		emitter.removeAllListeners('getIsPrizeOpen');
+		emitter.removeAllListeners('checkInResult');
+		emitter.removeAllListeners('quickenCardHelpResult');
+		emitter.removeAllListeners('getGameDescription');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -346,39 +384,7 @@ export class Index extends Component {
 // -------------------------- 游戏被杀死，重新进入游戏 End-----------------------------------
 	}
 
-	componentDidHide () {
-		console.info('%c 主页DidHide，开始removeAllListeners','font-size:14px;background-color:#fff81a; color:#00000;');
-		emitter.removeAllListeners('currencyChange');
-		emitter.removeAllListeners('enterMatch');
-		emitter.removeAllListeners('getBattleTeams');
-		emitter.removeAllListeners('getQuestion');
-		emitter.removeAllListeners('getAnswer');
-		emitter.removeAllListeners('getRenascenceInfo');
-		emitter.removeAllListeners('getResurrectResult');
-		emitter.removeAllListeners('getPrizeMatchReport');
-		emitter.removeAllListeners('getPrevQAInfo');
-		emitter.removeAllListeners('getRankResultInfo');
-		emitter.removeAllListeners('getRankBattleReport');
-		emitter.removeAllListeners('exitQueueStatus');
-		emitter.removeAllListeners('getTeamSituation');
-		emitter.removeAllListeners('getPrizePrevQAInfo');
-		emitter.removeAllListeners('getRechargeMessage');
-		emitter.removeAllListeners('getPrePay_id');
-		emitter.removeAllListeners('takeMoney');
-		emitter.removeAllListeners('takeMoneyStatus');
-		emitter.removeAllListeners('getBackpack');
-		emitter.removeAllListeners('propsInfo');
-		emitter.removeAllListeners('getMall');
-		emitter.removeAllListeners('getMatchProps');
-		emitter.removeAllListeners('usedPropsResult');
-		emitter.removeAllListeners('getSelfOrchestra');
-		emitter.removeAllListeners('getWeekCheckIninfo');
-		emitter.removeAllListeners('getOpinionResult');
-		emitter.removeAllListeners('getIsPrizeOpen');
-		emitter.removeAllListeners('checkInResult');
-		emitter.removeAllListeners('quickenCardHelpResult');
-		emitter.removeAllListeners('getGameDescription');
-	}
+	componentDidHide () {}
 
 	// 红包赛入口页
 	goPrizeMatchBtn(){
@@ -425,6 +431,8 @@ export class Index extends Component {
 		});
 	}
 
+
+
 	// 显示晋级之路
 	advanceRoad(){
 		let gameUserInfo = this.state.gameUserInfo;
@@ -436,6 +444,7 @@ export class Index extends Component {
 			preState.isShowAdvanceRoadUi = !preState.isShowAdvanceRoadUi;
 		});
 	}
+	
 	render () {
 		const { sex } = this.state.gameUserInfo;
 		const { redEnvelope, copper, energy } = this.state.currencyChange;
