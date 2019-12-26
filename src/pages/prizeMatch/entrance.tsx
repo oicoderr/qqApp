@@ -31,7 +31,12 @@ export class PrizeEntrance extends Component {
 				isOpen:{
 					type: 1,
 					value: '开放时间：上午8:00-次日凌晨2:00',
-				}
+				},
+				quickenCardHelpResult:{
+					overCount: 0,
+					speedItemCount: 0,
+					currSpeedItemCount: 0,
+				},
 			},
 
 			// 前台数据
@@ -75,7 +80,7 @@ export class PrizeEntrance extends Component {
 		// 创建激励视频
 		this.videoAd= new createVideoAd();
 
-		// 监测广告: 看完发2003，未看完不发
+		// 监听广告: 看完发2003，未看完不发
 		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
 			let checked = this.state.local_data.checked;
 			let data = {
@@ -103,7 +108,7 @@ export class PrizeEntrance extends Component {
 			}
 		});
 
-		// 监测1302: 是否允许进入匹配
+		// 监听1302: 是否允许进入匹配
 		this.eventEmitter = emitter.once('enterMatch', (message) => {
 			clearInterval(message[1]);
 			let isreconnection = message[0]['data']['isreconnection'];
@@ -154,6 +159,16 @@ export class PrizeEntrance extends Component {
 			})
 		});
 
+		// 监听 1506  好友助力加速卡结果
+		this.eventEmitter = emitter.once('quickenCardHelpResult', (message) => {
+			clearInterval(message[1]);
+
+			this.setState((preState)=>{
+				preState.data.quickenCardHelpResult = message[0]['data'];
+			},()=>{
+				console.info(_this.state.data.quickenCardHelpResult,190);
+			});
+		});
 	}
 
 	componentDidMount () {}
@@ -192,6 +207,21 @@ export class PrizeEntrance extends Component {
 			}
 		});
 
+		// 请求邀请好友领取物品情况
+		let quickenCardHelp = this.msgProto.quickenCardHelp()
+		let parentModule_ = this.msgProto.parentModule(quickenCardHelp);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule_,
+			success(res) { console.info('%c 请求邀请好友领取物品情况Success','font-size:14px;color:#e66900;')},
+			fail(err) {
+				Taro.showToast({
+					title: err.errormsg,
+					icon: 'none',
+					duration: 2000
+				})
+				console.error('请求邀请好友领取物品情况失败==> ');console.info(err);
+			}
+		});
 	}
 
 
@@ -246,6 +276,11 @@ export class PrizeEntrance extends Component {
 		let roleId = this.state.local_data.gameUserInfo.roleId;
 		// 受邀请类型(1.组队;2.加速卡)
 		let param1 = 2;
+		// 控制分享菜单展示的平台
+		Taro.showShareMenu({
+			// 'qzone', 'wechatFriends', 'wechatMoment'
+			showShareItems: ['qq'] 
+		})
 		let shareData = {
 			title: '酸柠檬',
 			path: '/pages/login/index',
@@ -255,7 +290,7 @@ export class PrizeEntrance extends Component {
 		// 按钮分享
 		if(res.from === 'button' && roleId){
 			console.info(' =====>按钮分享加速卡<=====');
-			shareData.title = '酸柠檬邀请你来给我助力加速卡～';
+			shareData.title = '迎接音乐大考验，组建Wuli梦想乐队！';
 			shareData.path = `/pages/login/index?param1=${param1}&inviterRoleId=${roleId}`,
 			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
 			shareData.shareCallBack = (status)=>{
@@ -274,7 +309,7 @@ export class PrizeEntrance extends Component {
 				}
 			}
 		}else{ // 右上角分享App
-			shareData.title = '酸柠檬全局分享';
+			shareData.title = '明星、热点、八卦知多少？一试便知！';
 			shareData.path = '/pages/login/index';
 			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
 			shareData.shareCallBack = (status)=>{

@@ -191,6 +191,11 @@ export default class ReceiveMsg{
 					emitter.emit('checkInResult', [message, this.timerCount[31]]);
 				},20);
 				break;
+			case 1506:			// 主力加速卡结果
+				this.timerCount[32] = setInterval(()=>{
+					emitter.emit('quickenCardHelpResult', [message, this.timerCount[32]]);
+				},20);
+				break;
 		}
     }
 }

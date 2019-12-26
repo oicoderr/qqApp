@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import 'taro-ui/dist/style/index.scss'
 import './utils/ald-stat'
-import { setStorage, getStorage, loginRequest, getCurrentPageUrl } from './utils'
+import { setStorage, getStorage, onShareApp, loginRequest, getCurrentPageUrl } from './utils'
 import { Api } from './service/api'
 import './app.scss'
 import emitter from './service/events';
@@ -151,6 +151,78 @@ class App extends Component {
 				});
 			}
 		});
+
+		//
+		// 分享
+		Taro.useShareAppMessage(() => ({
+			title: '转发标题',
+			imageUrl: '',
+			success(res){
+				console.info(res,99)
+			},
+			fail(err){
+				console.info(err)
+			}
+		}));
+		// Taro.onShareAppMessage(res) {
+		// // 邀请者roleId
+		// let roleId = this.state.local_data.gameUserInfo.roleId;
+		// // 受邀请类型(1.组队;2.加速卡)
+		// let param1 = 2;
+		// // 控制分享菜单展示的平台
+		// Taro.showShareMenu({
+		// 	// 'qzone', 'wechatFriends', 'wechatMoment'
+		// 	showShareItems: ['qq'] 
+		// })
+		// let shareData = {
+		// 	title: '酸柠檬',
+		// 	path: '/pages/login/index',
+		// 	imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
+		// 	shareCallBack: (status)=>{},
+		// };
+		// // 按钮分享
+		// if(res.from === 'button' && roleId){
+		// 	console.info(' =====>按钮分享加速卡<=====');
+		// 	shareData.title = '迎接音乐大考验，组建Wuli梦想乐队！';
+		// 	shareData.path = `/pages/login/index?param1=${param1}&inviterRoleId=${roleId}`,
+		// 	shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+		// 	shareData.shareCallBack = (status)=>{
+		// 		if(status.errMsg === "shareAppMessage:fail cancel"){
+		// 			Taro.showToast({
+		// 				title: '分享失败',
+		// 				icon: 'none',
+		// 				duration: 2000,
+		// 			})
+		// 		}else{
+		// 			Taro.showToast({
+		// 				title: '分享成功',
+		// 				icon: 'none',
+		// 				duration: 2000,
+		// 			})
+		// 		}
+		// 	}
+		// }else{ // 右上角分享App
+		// 	shareData.title = '明星、热点、八卦知多少？一试便知！';
+		// 	shareData.path = '/pages/login/index';
+		// 	shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+		// 	shareData.shareCallBack = (status)=>{
+		// 		if(status.errMsg === "shareAppMessage:fail cancel"){
+		// 			Taro.showToast({
+		// 				title: '分享失败',
+		// 				icon: 'none',
+		// 				duration: 2000,
+		// 			})
+		// 		}else{
+		// 			Taro.showToast({
+		// 				title: '分享成功',
+		// 				icon: 'none',
+		// 				duration: 2000,
+		// 			})
+		// 		}
+		// 	}
+		// }
+		// return onShareApp(shareData);
+		// }
 	}
 
 	componentDidHide () {
@@ -168,6 +240,8 @@ class App extends Component {
 		}
 		
 	}
+
+	
 
 	/* 新版本检测升级 */
 	getUpdateManager(){
