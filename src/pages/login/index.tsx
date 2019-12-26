@@ -6,6 +6,7 @@ import { setStorage, getStorage, showShareMenuItem } from '../../utils'
 import { UserAgreement } from '../../utils/UserAgreement'
 import MessageToast from '../../components/MessageToast'
 import MsgProto from '../../service/msgProto'
+import { createWebSocket } from '../../service/createWebSocket'
 import './index.scss'
 
 const App = Taro.getApp();
@@ -66,6 +67,13 @@ export class Login extends Component {
 	componentDidShow () {
 		// 显示分享
 		showShareMenuItem();
+
+		if(App.globalData.websocket === ''){
+			console.info('%c rankMatch-enterGame 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.websocket = App.globalData.websocket;
+		}
 	}
 
 	componentDidHide () {}

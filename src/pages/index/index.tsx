@@ -202,6 +202,17 @@ export class Index extends Component {
 			},20);
 			console.info('%c 我的乐队信息 ===>', 'font-size:14px;color:#ff1fec;');console.info(message[0]['data']);
 		});
+
+		// 1010 货币发生变化直接更新（签到奖励等需要直接更新前台）
+		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
+			clearInterval(message[1]);
+			let currencyChange = message[0]['data'];
+			this.setState((preState)=>{
+				preState.gameUserInfo.copper = unitReplacement(currencyChange.copper);
+				preState.gameUserInfo.energy = unitReplacement(currencyChange.energy);
+				preState.gameUserInfo.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+			})
+		});
 	}
 
 	componentWillUnmount () {}
