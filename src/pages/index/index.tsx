@@ -6,7 +6,7 @@ import { getStorage, setStorage, unitReplacement, buildURL, showShareMenuItem } 
 
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
-import MessageToast from '../../components/MessageToast'
+import { MessageToast } from '../../components/MessageToast'
 import AdvanceRoadUi  from '../../components/advanceRoadUi'
 import HomeBandUi  from '../../components/HomeBandUi'
 import Drawer from '../../components/drawer'
