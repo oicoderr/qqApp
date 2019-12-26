@@ -298,6 +298,13 @@ export default class MsgProto{
         }
     }
 
+    // 1507 领取好友助力加速卡
+    quickenCardGet(){
+        return{
+            code: 1507,
+            data:{}
+        }
+    }
 
     // 反序列化接受服务器返回信息
     receivedMsg(str){

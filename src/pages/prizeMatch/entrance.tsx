@@ -67,8 +67,6 @@ export class PrizeEntrance extends Component {
 				quickenCardBg: 'https://oss.snmgame.com/v1.0.0/quickenCardBg.png',
 				progress_item_blank: 'https://oss.snmgame.com/v1.0.0/progress_item_blank.png',
 				progress_item: 'https://oss.snmgame.com/v1.0.0/progress_item.png',
-				receiveBtn: 'https://oss.snmgame.com/v1.0.0/receiveBtn.png',
-				inviteBtn: 'https://oss.snmgame.com/v1.0.0/inviteBtn.png',
 			}
 
 		}
@@ -328,14 +326,33 @@ export class PrizeEntrance extends Component {
 		return onShareApp(shareData);
 	}
 
+	// 领取加速卡
+	getQuickenCard(){
+		// quickenCardGet
+		let quickenCardGet = this.msgProto.quickenCardGet()
+		let parentModule = this.msgProto.parentModule(quickenCardGet);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) { console.info('%c 请求领取加速卡Success','font-size:14px;color:#e66900;')},
+			fail(err) {
+				Taro.showToast({
+					title: err.errormsg,
+					icon: 'none',
+					duration: 2000
+				})
+				console.error('请求领取加速卡失败==> ');console.info(err);
+			}
+		});
+	}
+
 	render () {
 
 		const { backBtn, entranceBg, ruleTitle, freeBtn, ticketsBtn, tipImg, adsTip, checked, 
-			StayTunedImg, quickenCardBg, directionsTitle, pendingText, surplusText, quickenTip, progress_item_blank,
-			inviteBtn, receiveBtn
-		} = this.state.local_data;
+			StayTunedImg, quickenCardBg, directionsTitle, pendingText, surplusText, quickenTip, 
+			progress_item_blank, progress_item, } = this.state.local_data;
 		const {type, value} = this.state.data.isOpen;
 		const {energy, redEnvelope} = this.state.local_data.gameUserInfo;
+		const {overCount, speedItemCount, currSpeedItemCount} = this.state.data.quickenCardHelpResult;
 
 		return (
 			<View className='entrance' catchtouchmove="ture">
@@ -393,22 +410,26 @@ export class PrizeEntrance extends Component {
 							<Image src={quickenCardBg} className='quickenCardBg'/>
 							<View className='title'>
 								<View className='num'>
-									{pendingText}<Text decode={true}>{'999'}&ensp;</Text>张 
-									{surplusText}<Text decode={true}>{'999'}&ensp;</Text>张 
+									{pendingText}<Text decode={true}>{speedItemCount}&ensp;</Text>张 
+									{surplusText}<Text decode={true}>{currSpeedItemCount}&ensp;</Text>张 
 								</View>
 								<View className='directions'>{directionsTitle}</View>
 							</View>
 
 							<View className='progress'>
 								<View className='progress_list'>
-									<Image src={progress_item_blank} className='progress_item'/>
-									<Image src={progress_item_blank} className='progress_item'/>
-									<Image src={progress_item_blank} className='progress_item'/>
+									<Image src={overCount>0?progress_item:progress_item_blank} className='progress_item'/>
+									<Image src={overCount>1?progress_item:progress_item_blank} className='progress_item'/>
+									<Image src={overCount>2?progress_item:progress_item_blank} className='progress_item'/>
 								</View>
-								<Button openType='share' >share</Button>
+
 								<View className='progress_btn'>
-									<Image src={inviteBtn} className='btn inviteBtn'/>
-									<Image src={receiveBtn} className='btn receiveBtn'/>
+									<View className='inviteBtnWrap'>
+										<Button openType='share' className='inviteBtn'>邀请</Button>
+									</View>
+									<View onClick={this.getQuickenCard.bind(this)} className='receiveBtnWrap'>
+										<View className='receiveBtn'>领取</View>
+									</View>
 								</View>
 							</View>
 							<View className='tips'>{quickenTip}</View>
