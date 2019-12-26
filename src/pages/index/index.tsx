@@ -218,13 +218,15 @@ export class Index extends Component {
 		// 1010 货币发生变化直接更新（签到奖励等需要直接更新前台）
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('收到1010货币发生变化');console.info(message);
+			console.error('主页收到1010货币发生变化');console.info(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState)=>{
 				preState.currencyChange.copper = unitReplacement(currencyChange.copper);
 				preState.currencyChange.energy = unitReplacement(currencyChange.energy);
 				preState.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
-			})
+			},()=>{
+				setStorage('currencyChange', _this.state.currencyChange);
+			});
 		});
 	}
 
