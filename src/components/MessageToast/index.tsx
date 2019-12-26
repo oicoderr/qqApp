@@ -8,8 +8,6 @@ export class MessageToast extends Component {
         super(props);
         this.state = {
             data:{
-                title: '提示',
-                body: '内容',
                 confirmBtn: 'https://oss.snmgame.com/v1.0.0/confirmBtn.png',
                 closeImgBtn: 'https://oss.snmgame.com/v1.0.0/closeBtn.png',
             },
@@ -22,8 +20,7 @@ export class MessageToast extends Component {
     componentDidMount = () => {
         // 接受各种提示说明
 		this.eventEmitter = emitter.addListener('messageToast', (message) => {
-            console.info(message['type'],11111);
-            if(message['type'] === undefined){
+            if(message['type'] == undefined){
                 let title = message.title;
                 let bodyList = message.body.list;
                 this.setState((preState)=>{
@@ -67,7 +64,6 @@ export class MessageToast extends Component {
     render() {
         const scrollTop = 0
         const Threshold = 20
-        const { userAgreement_data } = this.state;
         const { title, body, confirmBtn, closeImgBtn } = this.state.data;
         const {Headline, list} = this.state.userAgreement_data;
         const content = list.map((cur)=>{
@@ -83,7 +79,7 @@ export class MessageToast extends Component {
                         <Image src={closeImgBtn} className='closeImgBtn' />
                     </View>
                     <View className='box'>
-                        <View className='title'>{this.state.userAgreement_data!=[]?Headline:title}</View>
+                        <View className='title'>{body?title:Headline}</View>
                         <ScrollView
                             className='scrollview'
                             scrollY
@@ -92,8 +88,8 @@ export class MessageToast extends Component {
                             lowerThreshold={Threshold}
                             upperThreshold={Threshold}
                         >
-                            <Text className={`body ${userAgreement_data!=[]?'hide':''}`} decode={true}>{body}</Text>
-                            <View className={`userAgreement ${userAgreement_data!=[]?'':'hide'}`}>
+                            <Text className={`body ${body?'':'hide'}`} decode={true}>{body}</Text>
+                            <View className={`userAgreement ${body?'hide':''}`}>
                                 {content}
                             </View>
                         </ScrollView>
