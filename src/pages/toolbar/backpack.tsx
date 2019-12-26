@@ -106,6 +106,7 @@ export class BackPack extends Component {
 	usedCard(e){
 		let count = e.currentTarget.dataset.count;
 		let id = e.currentTarget.dataset.id;
+		console.info(count, id, 999999);
 		let data = {
 			'id': id,
 			'count': 1,
@@ -151,7 +152,7 @@ export class BackPack extends Component {
 						<View className='name'>{cur.name}</View>
 						<View className={`isUsed`}>
 							<View className={`tipCard ${cur.type?'hide':''}`}>{tipCard}</View>
-							<Image onClick={this.usedCard.bind(this)} data-id={cur.id} data-name={cur.name} data-type={cur.type} src={usedBtn} className={`usedBtn ${cur.type?'':'hide'}`} />
+							<Image onClick={this.usedCard.bind(this)} data-id={cur.id} data-count={cur.count} data-name={cur.name} data-type={cur.type} src={usedBtn} className={`usedBtn ${cur.type?'':'hide'}`} />
 						</View>
 					</View>
 		});
