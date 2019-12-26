@@ -24,6 +24,7 @@ export class Mall extends Component {
 		this.DBswitchTab = throttle(this.DBswitchTab, 1000);
 		this.DBbuyProps = throttle(this.DBbuyProps, 1000);
 		this.DBseeAdsGetProps = throttle(this.DBseeAdsGetProps, 1000);
+		this.DBgetQuickenCard = throttle(this.DBgetQuickenCard, 1000);
 		this.state = {
 			data:{
 				/*
@@ -382,6 +383,9 @@ export class Mall extends Component {
 	}
 
 	// 请求说明
+	DBgetQuickenCard(e){
+		this.description(e);
+	}
 	description(e){
 		// 类型 type (1.金币助力;2.大奖赛规则;3.大奖赛加速卡说明;4.商城限免说明, 5.道具卡使用说明)
 		let type = e.currentTarget.dataset.type;
@@ -544,7 +548,7 @@ export class Mall extends Component {
 										<View className={`samePiece ${freePiece.length > 0?'':'hide'}`}>
 											<View className='bar bar1'>
 												<Text className='Title title1'>{freeTitle}</Text>
-												<Text onClick={this.description.bind(this)} data-type='4' className='Tip'>{freeTip}</Text>
+												<Text onClick={this.DBgetQuickenCard.bind(this)} data-type='4' className='Tip'>{freeTip}</Text>
 											</View>
 											<View className='main'>
 												{freePieceContent}
@@ -553,7 +557,7 @@ export class Mall extends Component {
 										<View className={`samePiece ${propsPiece.length > 0?'':'hide'}`}>
 											<View className='bar bar2'>
 												<Text className='Title title2'>{propsTitle}</Text>
-												<Text onClick={this.description.bind(this)} data-type='5' className='Tip'>{propsTip}</Text>
+												<Text onClick={this.DBgetQuickenCard.bind(this)} data-type='5' className='Tip'>{propsTip}</Text>
 											</View>
 											<View className='main'>
 												{propsPieceContent}

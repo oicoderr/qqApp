@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text, Button } from '@tarojs/components'
 import './entrance.scss'
 import emitter from '../../service/events';
-
+import throttle from 'lodash/throttle'
 import { getStorage, onShareApp, showShareMenuItem } from '../../utils';
 import { createWebSocket } from '../../service/createWebSocket'
 import MessageToast from '../../components/MessageToast'
@@ -20,6 +20,8 @@ export class PrizeEntrance extends Component {
 
 	constructor(props) {
 		super(props);
+		// 节流函数
+		this.DBdescription = throttle(this.DBdescription, 1000);
 		this.state = {
 			// 路由
 			routers:{
@@ -390,6 +392,9 @@ export class PrizeEntrance extends Component {
 	}
 
 	// 请求说明
+	DBdescription(e){
+		this.description(e);
+	}
 	description(e){
 		// 类型 type (1.金币助力;2.大奖赛规则;3.大奖赛加速卡说明;4.商城限免说明, 5.道具卡使用说明)
 		let type = e.currentTarget.dataset.type;
@@ -407,7 +412,6 @@ export class PrizeEntrance extends Component {
 			}
 		});
 	}
-
 
 	render () {
 		const { backBtn, entranceBg, ruleTitle, freeBtn, ticketsBtn, tipImg, adsTip, checked, 
@@ -446,7 +450,7 @@ export class PrizeEntrance extends Component {
 					<View className='body'>
 						<View className='Entrance'>
 							<Image src={entranceBg} className='bg'/>
-							<View onClick={this.description.bind(this)} data-type='2' className='title'>{ruleTitle}</View>
+							<View onClick={this.DBdescription.bind(this)} data-type='2' className='title'>{ruleTitle}</View>
 							<Image src={tipImg} className='tip'/>
 							<View className='items'>
 								<Image onClick={this.freeAdmission.bind(this)} src={freeBtn} className='btn freeBtn'/>
@@ -479,7 +483,7 @@ export class PrizeEntrance extends Component {
 									{pendingText}<Text decode={true}>{speedItemCount}&ensp;</Text>张 
 									{surplusText}<Text decode={true}>{currSpeedItemCount}&ensp;</Text>张 
 								</View>
-								<View onClick={this.description.bind(this)} data-type='3' className='directions'>{directionsTitle}</View>
+								<View onClick={this.DBdescription.bind(this)} data-type='3' className='directions'>{directionsTitle}</View>
 							</View>
 
 							<View className='progress'>
