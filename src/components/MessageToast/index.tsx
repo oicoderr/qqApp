@@ -6,11 +6,14 @@ import './index.scss'
 export class MessageToast extends Component {
     constructor(props) {
         super(props);
-        this.state.data = {
-            title: '提示',
-            body: '内容',
-            confirmBtn: 'https://oss.snmgame.com/v1.0.0/confirmBtn.png',
-            closeImgBtn: 'https://oss.snmgame.com/v1.0.0/closeBtn.png',
+        this.state = {
+            data:{
+                title: '提示',
+                body: '内容',
+                confirmBtn: 'https://oss.snmgame.com/v1.0.0/confirmBtn.png',
+                closeImgBtn: 'https://oss.snmgame.com/v1.0.0/closeBtn.png',
+            },
+            userAgreement_data:[],
         }
     }
 
@@ -19,16 +22,24 @@ export class MessageToast extends Component {
     componentDidMount = () => {
         // 接受各种提示说明
 		this.eventEmitter = emitter.addListener('messageToast', (message) => {
-            let title = message.title;
-            let body = message.body.list;
-            this.setState((preState)=>{
-                preState.data.title = title;
-                let content: string = '';
-                for(let i = 0; i < body.length; i++){
-                    content += body[i] + '\n';
-                }
-                preState.data.body = content;
-            });
+            console.info(message['type'],11111);
+            if(message['type'] === undefined){
+                let title = message.title;
+                let bodyList = message.body.list;
+                this.setState((preState)=>{
+                    preState.data.title = title;
+                    let content: string = '';
+                    for(let i = 0; i < bodyList.length; i++){
+                        content += bodyList[i] + '\n';
+                    }
+                    preState.data.body = content;
+                });
+                
+            }else{
+                this.setState((preState)=>{
+                    preState.userAgreement_data = message;
+                });
+            }
 		});
     }
 
@@ -36,7 +47,7 @@ export class MessageToast extends Component {
 
     componentDidShow () {}
 
-    componentDidHide () { }
+    componentDidHide () {}
 
     // 关闭弹窗
     cancel(e){
@@ -56,7 +67,15 @@ export class MessageToast extends Component {
     render() {
         const scrollTop = 0
         const Threshold = 20
+        const { userAgreement_data } = this.state;
         const { title, body, confirmBtn, closeImgBtn } = this.state.data;
+        const {Headline, list} = this.state.userAgreement_data;
+        const content = list.map((cur)=>{
+            return  <View className='item'>
+                        <View className='title' decode={true}>{cur.title}</View>
+                        <Text className='body' decode={true}>{cur.body}</Text>
+                    </View>
+        })
         return (
             <View className='messageToast'>
                 <View className='content'>
@@ -64,7 +83,7 @@ export class MessageToast extends Component {
                         <Image src={closeImgBtn} className='closeImgBtn' />
                     </View>
                     <View className='box'>
-                        <View className='title'>{title}</View>
+                        <View className='title'>{this.state.userAgreement_data!=[]?Headline:title}</View>
                         <ScrollView
                             className='scrollview'
                             scrollY
@@ -73,7 +92,10 @@ export class MessageToast extends Component {
                             lowerThreshold={Threshold}
                             upperThreshold={Threshold}
                         >
-                            <Text className='body' decode={true}>{body}</Text>
+                            <Text className={`body ${userAgreement_data!=[]?'hide':''}`} decode={true}>{body}</Text>
+                            <View className={`userAgreement ${userAgreement_data!=[]?'':'hide'}`}>
+                                {content}
+                            </View>
                         </ScrollView>
                         <View className='confirm'>
                             <Image onClick={this.confirm.bind(this)} src={confirmBtn} className='confirmBtn' />

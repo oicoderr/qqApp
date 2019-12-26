@@ -1,9 +1,13 @@
+.hide{
+    display: none;
+}
+
 .messageToast{
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
-    z-index: 1010;
+    z-index: 1200;
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
@@ -44,8 +48,6 @@
             top: 74rpx;
         }
 
-        
-
         .title{
             height: 40rpx;
             line-height: 40rpx;
@@ -81,6 +83,23 @@
         .confirmBtn{
             width: 214rpx;
             height: 94rpx;
+        }
+    }
+
+    .userAgreement{
+
+        .item{
+            margin-bottom: 40rpx;
+        }
+
+        .title{
+            height: 28rpx;
+            line-height: 28rpx;
+            font-size: 28rpx;
+            color: rgba(0,0,0,1);
+            font-weight: 600;
+            text-align: left;
+            padding-bottom: 20rpx;
         }
     }
 }

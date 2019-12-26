@@ -1,18 +1,13 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
-
-import { Api } from '../../service/api'
-import { baseUrl } from '../../service/config'
-import { setStorage, getStorage, showShareMenuItem } from '../../utils'
-import { createWebSocket } from '../../service/createWebSocket'
-import { PageScrollView } from '../../components/PageScrollView'
 import emitter from '../../service/events';
-import { websocketUrl } from '../../service/config'
+import throttle from 'lodash/throttle'
+import { setStorage, getStorage, showShareMenuItem } from '../../utils'
+import { UserAgreement } from '../../utils/UserAgreement'
+import MessageToast from '../../components/MessageToast'
 import MsgProto from '../../service/msgProto'
 import './index.scss'
 
-import Websocket from '../../service/webSocket'
-import ReceiveMsg from '../../service/receivedMsg'
 const App = Taro.getApp();
 
 export class Login extends Component {
@@ -23,18 +18,23 @@ export class Login extends Component {
 
 	constructor(props) {
 		super(props);
-		
+		// 节流函数
+		this.DBdescription = throttle(this.DBdescription, 1000);
 		this.state = {
 
 			routers:{
 				indexPage: '/pages/index/index'
 			},
-			
-			isAgreeNotice: false, // 已同意用户须知, 已打开
-			ScrollViewData:{
-				title: 'Title',
-				body: '我是内容'
+
+			data:{
+				
+			},
+
+			local_data:{
+				isAgreeNotice: false, 	// 已同意用户须知, 已打开
+				isShowDirections: false,
 			}
+			
 		};
 		this.msgProto = new MsgProto();
 	}
@@ -49,6 +49,13 @@ export class Login extends Component {
 			let socket = message[0];
 			App.globalData.websocket = socket;
 			this.websocket = socket;
+		});
+
+		// 监听 子组件MessageToast 关闭弹窗消息 
+		this.eventEmitter = emitter.addListener('closeMessageToast', (message) => {
+			this.setState((preState)=>{
+				preState.local_data.isShowDirections = false;
+			})
 		});
 	}
 
@@ -121,11 +128,26 @@ export class Login extends Component {
 			}
 		})
 	}
-	
+	// 用户说明
+	DBdescription(){
+		this.description();
+	}
+	description(){
+		// 发送用户协议
+		emitter.emit('messageToast', UserAgreement);
+		this.setState((preState)=>{
+			preState.local_data.isShowDirections = true;
+		})
+	}
 	render () {
+		const { isShowDirections } = this.state.local_data;
 		return (
-			<View className='index'>
+			<View className='login'>
+				<View className={isShowDirections?'':'hide'}>
+					<MessageToast />
+				</View>
 				<Button openType='getUserInfo' onGetUserInfo={this.getUserInfo} >app登录</Button>
+				<View onClick={this.DBdescription.bind(this)}>用户协议</View>
 			</View>
 		)
 	}
