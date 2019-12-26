@@ -1,7 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import './entrance.scss'
-import { getStorage } from '../../utils';
+import emitter from '../../service/events';
+import { getStorage, setStorage, unitReplacement } from '../../utils';
 import { createWebSocket } from '../../service/createWebSocket'
 import createVideoAd from '../../service/createVideoAd'
 import MsgProto from '../../service/msgProto'
@@ -25,7 +26,6 @@ export class RankEntrance extends Component {
 
 			// 后台返回数据
 			data:{
-
 				gameUserInfo:{
 					season: 1,				 // 第几赛季
 					danDescIcon: 'https://oss.snmgame.com/v1.0.0/1levelTitle.png', 	   // 段位描述	
@@ -54,6 +54,12 @@ export class RankEntrance extends Component {
 				watchAdsBtn: 'https://oss.snmgame.com/v1.0.0/watchAdsBtn.png',
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				rewardTip: '每天限领10次',
+				// 货币
+				currencyChange:{
+					energy: 0,
+					copper: 1234,
+					redEnvelope: 0,
+				},
 			}
 		}
 		this.msgProto = new MsgProto();
@@ -115,6 +121,20 @@ export class RankEntrance extends Component {
 					fail(err) { console.info(err) }
 				});
 			}
+		});
+
+		// 1010 货币发生变化
+		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
+			clearInterval(message[1]);
+			console.error('排位赛入口页面观看广告->收到1010货币发生变化');console.info(message);
+			let currencyChange = message[0]['data'];
+			this.setState((preState)=>{
+				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
+				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
+				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+			},()=>{
+				setStorage('currencyChange',_this.state.local_data.currencyChange);
+			});
 		});
 	}
 

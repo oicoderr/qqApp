@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import { removeStorage,  } from '../../utils'
+import { setStorage, unitReplacement } from '../../utils';
 import './result.scss'
 import { createWebSocket } from '../../service/createWebSocket'
 import GameLoading from '../../components/GameLoading'
@@ -61,6 +61,12 @@ export class PrizeReasult extends Component {
 				energyIcon: 'https://oss.snmgame.com/v1.0.0/energyLittleIcon.png',
 				adsTip: '观看短片，获取1张复活卡',
 				checked:  true,
+				// 货币
+				currencyChange:{
+					energy: 0,
+					copper: 1234,
+					redEnvelope: 0,
+				},
 			}
 		}
 		this.msgProto = new MsgProto();
@@ -131,6 +137,20 @@ export class PrizeReasult extends Component {
 					}
 				})
 			}
+		});
+
+		// 1010 货币发生变化
+		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
+			clearInterval(message[1]);
+			console.error('排位赛结果观看广告->收到1010货币发生变化');console.info(message);
+			let currencyChange = message[0]['data'];
+			this.setState((preState)=>{
+				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
+				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
+				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+			},()=>{
+				setStorage('currencyChange',_this.state.local_data.currencyChange);
+			});
 		});
 	}
 

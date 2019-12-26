@@ -3,7 +3,7 @@ import { View, Image, Text, Button } from '@tarojs/components'
 import './entrance.scss'
 import emitter from '../../service/events';
 import throttle from 'lodash/throttle'
-import { getStorage, onShareApp, showShareMenuItem } from '../../utils';
+import { getStorage, setStorage, onShareApp, showShareMenuItem, unitReplacement } from '../../utils';
 import { createWebSocket } from '../../service/createWebSocket'
 import MessageToast from '../../components/MessageToast'
 import createVideoAd from '../../service/createVideoAd'
@@ -51,10 +51,16 @@ export class PrizeEntrance extends Component {
 					level: 1,
 					imgurl: '',
 					nickName: '',
-					sex: '-1',  	// 默认性别空
-					copper: 1234,	// 金币 
-					redEnvelope: 0, // 红包
-					energy: 0,		// 能量
+					sex: '-1',  	
+					copper: 1234,	
+					redEnvelope: 0,
+					energy: 0,
+				},
+				// 货币
+				currencyChange:{
+					energy: 0,
+					copper: 1234,
+					redEnvelope: 0,
 				},
 				isShowDirections: false,
 				ruleTitle: '赛事规则',
@@ -213,6 +219,19 @@ export class PrizeEntrance extends Component {
 				preState.local_data.isShowDirections = false;
 			})
 		});
+
+		// 1010 货币发生变化
+		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
+			clearInterval(message[1]);
+			console.error('大奖赛入口->收到1010货币发生变化');console.info(message);
+			let currencyChange = message[0]['data'];
+			this.setState((preState)=>{
+				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
+				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
+				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+			});
+			setStorage('currencyChange', currencyChange);
+		});
 	}
 
 	componentDidMount () {}
@@ -230,7 +249,7 @@ export class PrizeEntrance extends Component {
 			this.websocket = App.globalData.websocket;
 		}
 
-		// 设置门票 / 能量
+		// 获取个人游戏信息
 		getStorage('gameUserInfo',(res)=>{
 			_this.setState((preState)=>{
 				preState.local_data.gameUserInfo = res;
@@ -268,10 +287,23 @@ export class PrizeEntrance extends Component {
 				console.error('请求邀请好友领取物品情况失败==> ');console.info(err);
 			}
 		});
+
+		// 更新金币/红包/能量-数量
+		getStorage('currencyChange',(res)=>{
+			if(res!=''){
+				_this.setState((preState)=>{
+					preState.local_data.currencyChange.copper = res.copper;
+					preState.local_data.currencyChange.energy = res.energy;
+					preState.local_data.currencyChange.redEnvelope = res.redEnvelope;
+				},()=>{})
+			}
+		});
 	}
 
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('closeMessageToast');
+	}
 
 	watchAdsGetReward(e){
 		this.videoAd.openVideoAd();
@@ -418,7 +450,7 @@ export class PrizeEntrance extends Component {
 			StayTunedImg, quickenCardBg, directionsTitle, pendingText, surplusText, quickenTip, 
 			progress_item_blank, progress_item, isShowDirections} = this.state.local_data;
 		const {type, value} = this.state.data.isOpen;
-		const {energy, redEnvelope} = this.state.local_data.gameUserInfo;
+		const {energy, redEnvelope} = this.state.local_data.currencyChange;
 		const {overCount, speedItemCount, currSpeedItemCount} = this.state.data.quickenCardHelpResult;
 
 		return (

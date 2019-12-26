@@ -122,14 +122,6 @@ class App extends Component {
 			});
 		});
 
-		// 1010 货币发生变化
-		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
-			console.error('收到1010货币发生变化');console.info(message);
-			clearInterval(message[1]);
-			let currencyChange = message[0]['data'];
-			setStorage('currencyChange',currencyChange);
-		});
-
 		// 1002 游戏登录状态
 		this.eventEmitter = emitter.once('loginGameStatus', (message) => {
 			// console.info('%c 游戏登录状态： ', 'color: blue;font-size:14px;'); console.info(message);

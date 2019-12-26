@@ -59,6 +59,7 @@ export class Index extends Component {
 				redEnvelope: 0, // 红包
 				energy: 0,		// 能量
 			},
+
 			// 签到组件显示
 			isShowWeekCheckIn: false,
 			// 晋级之路
@@ -70,6 +71,12 @@ export class Index extends Component {
 			isShareCheckedChange: true,
 			// 我的乐队信息
 			selfOrchestra:{},
+			// 货币
+			currencyChange:{
+				energy: 0,
+				copper: 1234,
+				redEnvelope: 0,
+			}
 		};
 		this.msgProto = new MsgProto();
 	}
@@ -130,13 +137,18 @@ export class Index extends Component {
 			// 消息本体
 			_this.setState((preState)=>{
 				let gameUserInfo = JSON.parse(JSON.stringify(message[0]['data']));
-				gameUserInfo['copper'] = unitReplacement(gameUserInfo['copper']);
-				gameUserInfo['redEnvelope'] = unitReplacement(gameUserInfo['redEnvelope']);
-				gameUserInfo['energy'] = unitReplacement(gameUserInfo['energy']);
+				preState.gameUserInfo['copper'] = unitReplacement(gameUserInfo['copper']);
+				preState.gameUserInfo['redEnvelope'] = unitReplacement(gameUserInfo['redEnvelope']);
+				preState.gameUserInfo['energy'] = unitReplacement(gameUserInfo['energy']);
+				preState.currencyChange['copper'] = unitReplacement(gameUserInfo['copper']);
+				preState.currencyChange['redEnvelope'] = unitReplacement(gameUserInfo['redEnvelope']);
+				preState.currencyChange['energy'] = unitReplacement(gameUserInfo['energy']);
 				preState.gameUserInfo = gameUserInfo;
 				// 设置roleId
 				preState.userInfo.roleId = gameUserInfo.roleId;
 				setStorage('gameUserInfo', gameUserInfo);
+				// 将游戏个人信息中的货币抽出,保存缓存
+				setStorage('currencyChange', preState.currencyChange);
 			});
 		});
 
@@ -206,11 +218,12 @@ export class Index extends Component {
 		// 1010 货币发生变化直接更新（签到奖励等需要直接更新前台）
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
+			console.error('收到1010货币发生变化');console.info(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState)=>{
-				preState.gameUserInfo.copper = unitReplacement(currencyChange.copper);
-				preState.gameUserInfo.energy = unitReplacement(currencyChange.energy);
-				preState.gameUserInfo.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+				preState.currencyChange.copper = unitReplacement(currencyChange.copper);
+				preState.currencyChange.energy = unitReplacement(currencyChange.energy);
+				preState.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
 			})
 		});
 	}
@@ -234,10 +247,10 @@ export class Index extends Component {
 		getStorage('currencyChange',(res)=>{
 			if(res!=''){
 				_this.setState((preState)=>{
-					preState.gameUserInfo.copper = unitReplacement(res.copper);
-					preState.gameUserInfo.energy = unitReplacement(res.energy);
-					preState.gameUserInfo.redEnvelope = unitReplacement(res.redEnvelope);
-				})
+					preState.currencyChange.copper = res.copper;
+					preState.currencyChange.energy = res.energy;
+					preState.currencyChange.redEnvelope = res.redEnvelope;
+				},()=>{})
 			}
 		});
 
@@ -361,6 +374,8 @@ export class Index extends Component {
 		emitter.removeAllListeners('getOpinionResult');
 		emitter.removeAllListeners('getIsPrizeOpen');
 		emitter.removeAllListeners('checkInResult');
+		emitter.removeAllListeners('quickenCardHelpResult');
+		emitter.removeAllListeners('getGameDescription');
 	}
 
 	// 红包赛入口页
@@ -420,8 +435,8 @@ export class Index extends Component {
 		});
 	}
 	render () {
-		const {redEnvelope, copper, sex } = this.state.gameUserInfo;
-		const personTheme = this.state.personTheme;
+		const { sex } = this.state.gameUserInfo;
+		const { redEnvelope, copper, energy } = this.state.currencyChange;
 		const isShowWeekCheckIn = this.state.isShowWeekCheckIn;
 		const isShowAdvanceRoadUi = this.state.isShowAdvanceRoadUi;
 		return (

@@ -239,7 +239,6 @@ export class PrizeQueue extends Component {
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
-			console.error(this.websocket,999999)
 		}
 
 		// 切换匹配头像 1.5s切换一次

@@ -3,6 +3,7 @@ import { View, Image, Text } from '@tarojs/components'
 import emitter from '../../service/events';
 import createVideoAd from '../../service/createVideoAd'
 import { createWebSocket } from '../../service/createWebSocket'
+import { setStorage, unitReplacement } from '../../utils';
 import './result.scss'
 
 import RankResultInfo from '../../components/rankResultInfoUi'
@@ -58,7 +59,13 @@ export class RankReasult extends Component {
 					PartyATeam:[],
 					PartyBTeam:[],
 					rewardAds: 100,		 // 战报页看广告奖励金币
-				},	 
+				},
+				// 货币
+				currencyChange:{
+					energy: 0,
+					copper: 1234,
+					redEnvelope: 0,
+				},
 			}
 		}
 		this.msgProto = new MsgProto();
@@ -142,6 +149,20 @@ export class RankReasult extends Component {
 				duration: 2000
 			})
 		}
+
+		// 1010 货币发生变化
+		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
+			clearInterval(message[1]);
+			console.error('排位赛结果观看广告->收到1010货币发生变化');console.info(message);
+			let currencyChange = message[0]['data'];
+			this.setState((preState)=>{
+				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
+				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
+				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+			},()=>{
+				setStorage('currencyChange',_this.state.local_data.currencyChange);
+			});
+		});
 	}
 
 	componentDidMount () {

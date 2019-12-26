@@ -38,7 +38,7 @@ export class Mall extends Component {
 				isShowLoading: true,
 				gameUserInfo: {},
 				currencyChange: {
-					copper: '',
+					copper: '1234',
 					energy: '',
 					redEnvelope: '',
 				},
@@ -177,20 +177,6 @@ export class Mall extends Component {
 			})
 		});
 
-		// 获取金币 / 能量
-		getStorage('gameUserInfo',(res)=>{
-			console.info(res)
-			this.setState((preState)=>{
-				preState.local_data.gameUserInfo = res;
-				let data = {
-					copper: res.copper,
-					energy: res.energy,
-					redEnvelope: res.redEnvelope
-				};
-				preState.local_data.currencyChange = data;
-			})
-		});
-
 		// 请求商城信息, 默认请求道具商城
 		let getMall = this.msgProto.getMall(1);
 		let parentModule = this.msgProto.parentModule(getMall);
@@ -227,12 +213,16 @@ export class Mall extends Component {
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
 				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
 				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+			},()=>{
+				setStorage('currencyChange',_this.state.local_data.currencyChange);
 			});
-			setStorage('currencyChange',currencyChange);
+			
 		});
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('closeMessageToast');
+	}
 
 	// 返回上一页
 	goBack(){
