@@ -7,8 +7,8 @@ export class MessageToast extends Component {
     constructor(props) {
         super(props);
         this.state.data = {
-            title: '我是提示',
-            body: '我是内容',
+            title: '提示',
+            body: '内容',
             confirmBtn: 'https://oss.snmgame.com/v1.0.0/confirmBtn.png',
             closeImgBtn: 'https://oss.snmgame.com/v1.0.0/closeBtn.png',
         }
@@ -18,12 +18,16 @@ export class MessageToast extends Component {
 
     componentDidMount = () => {
         // 接受各种提示说明
-		this.eventEmitter = emitter.once('messageToast', (message) => {
+		this.eventEmitter = emitter.addListener('messageToast', (message) => {
             let title = message.title;
-            let body = message.body;
+            let body = message.body.list;
             this.setState((preState)=>{
                 preState.data.title = title;
-                preState.data.body = body;
+                let content: string = '';
+                for(let i = 0; i < body.length; i++){
+                    content += body[i] + '\n';
+                }
+                preState.data.body = content;
             });
 		});
     }
@@ -46,7 +50,7 @@ export class MessageToast extends Component {
 
     // 父组件发送关闭弹窗消息
     closeToast(){
-        emitter.emit('closeMessageToast', {closeMessageToast: 1});
+        emitter.emit('closeMessageToast', {closeMessageToast: 1 });
     }
 
     render() {
@@ -69,7 +73,7 @@ export class MessageToast extends Component {
                             lowerThreshold={Threshold}
                             upperThreshold={Threshold}
                         >
-                            <Text className='body'>{body}</Text>
+                            <Text className='body' decode={true}>{body}</Text>
                         </ScrollView>
                         <View className='confirm'>
                             <Image onClick={this.confirm.bind(this)} src={confirmBtn} className='confirmBtn' />

@@ -306,6 +306,23 @@ export default class MsgProto{
         }
     }
 
+    /* --------------------------- 请求说明 ----------------------------- */
+    // 2401：玩法说明 类型(1.金币助力;2.大奖赛规则;3.大奖赛加速卡说明;4.商城限免说明)
+    gameDescription(val){
+        return{
+            code: 2401,
+            data:{
+                type: val
+            }
+        }
+    }
+
+
+
+
+
+
+
     // 反序列化接受服务器返回信息
     receivedMsg(str){
         return decodeURIComponent( this.buf2str((str)))

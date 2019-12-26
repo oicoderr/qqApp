@@ -5,6 +5,7 @@ import emitter from '../../service/events';
 
 import { getStorage, onShareApp, showShareMenuItem } from '../../utils';
 import { createWebSocket } from '../../service/createWebSocket'
+import MessageToast from '../../components/MessageToast'
 import createVideoAd from '../../service/createVideoAd'
 import MsgProto from '../../service/msgProto'
 
@@ -37,6 +38,8 @@ export class PrizeEntrance extends Component {
 					speedItemCount: 0,
 					currSpeedItemCount: 0,
 				},
+				// 玩法说明
+				gameDescription:[],
 			},
 
 			// 前台数据
@@ -51,6 +54,7 @@ export class PrizeEntrance extends Component {
 					redEnvelope: 0, // 红包
 					energy: 0,		// 能量
 				},
+				isShowDirections: false,
 				ruleTitle: '赛事规则',
 				directionsTitle: '说明',
 				pendingText: '待领取：',
@@ -107,7 +111,7 @@ export class PrizeEntrance extends Component {
 		});
 
 		// 监听1302: 是否允许进入匹配
-		this.eventEmitter = emitter.once('enterMatch', (message) => {
+		this.eventEmitter = emitter.addListener('enterMatch', (message) => {
 			clearInterval(message[1]);
 			let isreconnection = message[0]['data']['isreconnection'];
 			let result = message[0]['data']['result'];
@@ -149,7 +153,7 @@ export class PrizeEntrance extends Component {
 		});
 
 		// 监听 1440： 大奖赛开放结果 
-		this.eventEmitter = emitter.once('getIsPrizeOpen', (message) => {
+		this.eventEmitter = emitter.addListener('getIsPrizeOpen', (message) => {
 			clearInterval(message[1]);
 
 			this.setState((preState)=>{
@@ -158,14 +162,54 @@ export class PrizeEntrance extends Component {
 		});
 
 		// 监听 1506  好友助力加速卡结果
-		this.eventEmitter = emitter.once('quickenCardHelpResult', (message) => {
+		this.eventEmitter = emitter.addListener('quickenCardHelpResult', (message) => {
 			clearInterval(message[1]);
 
 			this.setState((preState)=>{
 				preState.data.quickenCardHelpResult = message[0]['data'];
-			},()=>{
-				console.info(_this.state.data.quickenCardHelpResult,190);
 			});
+		});
+
+		// 监听 2402 玩法说明回复
+		this.eventEmitter = emitter.addListener('getGameDescription', (message) => {
+			clearInterval(message[1]);
+
+			let gameDescription = message[0]['data'];
+			let type = message[0]['data']['type'];
+			this.setState((preState)=>{
+				preState.data.gameDescription = gameDescription;
+				preState.local_data.isShowDirections = true;
+			},()=>{});
+			// 发送子组件messageToast
+			let messageToast_data = {
+				title: '说明',
+				body: gameDescription
+			};
+			switch (type){
+				case 1:
+					messageToast_data['title'] = '金币助力';
+					break;
+				case 2:
+					messageToast_data['title'] = '大奖赛规则';
+					break;
+				case 3:
+					messageToast_data['title'] = '大奖赛加速卡说明';
+					break;
+				case 4:
+					messageToast_data['title'] = '商城限免说明';
+					break;
+				case 5:
+					messageToast_data['title'] = '道具卡使用说明';
+					break;
+			}
+			emitter.emit('messageToast', messageToast_data);
+		});
+
+		// 监听 子组件MessageToast 关闭弹窗消息 
+		this.eventEmitter = emitter.addListener('closeMessageToast', (message) => {
+			this.setState((preState)=>{
+				preState.local_data.isShowDirections = false;
+			})
 		});
 	}
 
@@ -269,7 +313,7 @@ export class PrizeEntrance extends Component {
             preState.local_data.checked = !value;
         },()=>{});
 	}
-	
+
 	// 分享
 	onShareAppMessage(res) {
 		// 邀请者roleId
@@ -345,17 +389,39 @@ export class PrizeEntrance extends Component {
 		});
 	}
 
-	render () {
+	// 请求说明
+	description(e){
+		// 类型 type (1.金币助力;2.大奖赛规则;3.大奖赛加速卡说明;4.商城限免说明, 5.道具卡使用说明)
+		let type = e.currentTarget.dataset.type;
+		let gameDescription = this.msgProto.gameDescription(type);
+		let parentModule = this.msgProto.parentModule(gameDescription);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {},
+			fail(err) {
+				Taro.showToast({
+					title: err.errormsg,
+					icon: 'none',
+					duration: 2000
+				})
+			}
+		});
+	}
 
+
+	render () {
 		const { backBtn, entranceBg, ruleTitle, freeBtn, ticketsBtn, tipImg, adsTip, checked, 
 			StayTunedImg, quickenCardBg, directionsTitle, pendingText, surplusText, quickenTip, 
-			progress_item_blank, progress_item, } = this.state.local_data;
+			progress_item_blank, progress_item, isShowDirections} = this.state.local_data;
 		const {type, value} = this.state.data.isOpen;
 		const {energy, redEnvelope} = this.state.local_data.gameUserInfo;
 		const {overCount, speedItemCount, currSpeedItemCount} = this.state.data.quickenCardHelpResult;
 
 		return (
 			<View className='entrance' catchtouchmove="ture">
+				<View className={isShowDirections?'':'hide'}>
+					<MessageToast />
+				</View>
 				<View className='bgColor'>
 					<View className='bgImg'></View>
 					<View className='backBtnBox'>
@@ -380,7 +446,7 @@ export class PrizeEntrance extends Component {
 					<View className='body'>
 						<View className='Entrance'>
 							<Image src={entranceBg} className='bg'/>
-							<View className='title'>{ruleTitle}</View>
+							<View onClick={this.description.bind(this)} data-type='2' className='title'>{ruleTitle}</View>
 							<Image src={tipImg} className='tip'/>
 							<View className='items'>
 								<Image onClick={this.freeAdmission.bind(this)} src={freeBtn} className='btn freeBtn'/>
@@ -413,7 +479,7 @@ export class PrizeEntrance extends Component {
 									{pendingText}<Text decode={true}>{speedItemCount}&ensp;</Text>张 
 									{surplusText}<Text decode={true}>{currSpeedItemCount}&ensp;</Text>张 
 								</View>
-								<View className='directions'>{directionsTitle}</View>
+								<View onClick={this.description.bind(this)} data-type='3' className='directions'>{directionsTitle}</View>
 							</View>
 
 							<View className='progress'>

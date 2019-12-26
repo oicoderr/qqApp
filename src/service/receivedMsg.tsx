@@ -196,6 +196,11 @@ export default class ReceiveMsg{
 					emitter.emit('quickenCardHelpResult', [message, this.timerCount[32]]);
 				},20);
 				break;
+			case 2402:			// 玩法说明回
+				this.timerCount[33] = setInterval(()=>{
+					emitter.emit('getGameDescription', [message, this.timerCount[33]]);
+				},20);
+				break;
 		}
     }
 }

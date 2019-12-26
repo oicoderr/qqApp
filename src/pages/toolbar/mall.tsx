@@ -5,6 +5,7 @@ import { setStorage, getStorage, unitReplacement } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import './mall.scss'
 import GameLoading from '../../components/GameLoading'
+import MessageToast from '../../components/MessageToast'
 import createVideoAd from '../../service/createVideoAd'
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'
@@ -40,6 +41,7 @@ export class Mall extends Component {
 					energy: '',
 					redEnvelope: '',
 				},
+				isShowDirections: false,
 				// 看广告领取免费道具卡id
 				freeAdsId: '',
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
@@ -82,7 +84,7 @@ export class Mall extends Component {
 		// 创建激励视频
 		this.videoAd= new createVideoAd();
 
-		// 监测广告: 看完发2003，未看完不发
+		// 监听广告: 看完发2003，未看完不发
 		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
 			let data = {
 				type: 5, 
@@ -109,6 +111,48 @@ export class Mall extends Component {
 				console.info('%c 未看完视频，不能领取免费道具哦','font-size:14px;color:#db2a0f;');
 			}
 		});
+
+		// 监听 2402 玩法说明回复
+		this.eventEmitter = emitter.addListener('getGameDescription', (message) => {
+			clearInterval(message[1]);
+
+			let gameDescription = message[0]['data'];
+			let type = message[0]['data']['type'];
+			this.setState((preState)=>{
+				preState.data.gameDescription = gameDescription;
+				preState.local_data.isShowDirections = true;
+			},()=>{});
+			// 发送子组件messageToast
+			let messageToast_data = {
+				title: '说明',
+				body: gameDescription
+			};
+			switch (type){
+				case 1:
+					messageToast_data['title'] = '金币助力';
+					break;
+				case 2:
+					messageToast_data['title'] = '大奖赛规则';
+					break;
+				case 3:
+					messageToast_data['title'] = '大奖赛加速卡说明';
+					break;
+				case 4:
+					messageToast_data['title'] = '商城限免说明';
+					break;
+				case 5:
+					messageToast_data['title'] = '道具卡使用说明';
+					break;
+			}
+			emitter.emit('messageToast', messageToast_data);
+		});
+
+		// 监听 子组件MessageToast 关闭弹窗消息 
+		this.eventEmitter = emitter.addListener('closeMessageToast', (message) => {
+			this.setState((preState)=>{
+				preState.local_data.isShowDirections = false;
+			})
+		});
 	}
 
 	componentDidMount () {}
@@ -131,6 +175,7 @@ export class Mall extends Component {
 				preState.local_data.currencyChange = res;
 			})
 		});
+
 		// 获取金币 / 能量
 		getStorage('gameUserInfo',(res)=>{
 			console.info(res)
@@ -336,10 +381,29 @@ export class Mall extends Component {
 		});
 	}
 
+	// 请求说明
+	description(e){
+		// 类型 type (1.金币助力;2.大奖赛规则;3.大奖赛加速卡说明;4.商城限免说明, 5.道具卡使用说明)
+		let type = e.currentTarget.dataset.type;
+		let gameDescription = this.msgProto.gameDescription(type);
+		let parentModule = this.msgProto.parentModule(gameDescription);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {},
+			fail(err) {
+				Taro.showToast({
+					title: err.errormsg,
+					icon: 'none',
+					duration: 2000
+				})
+			}
+		});
+	}
+
 	render () {
 		const { isShowLoading, mallTitle,  backBtn, propsText, bandText, freeTitle, freeTip, propsTitle, 
 			propsTip, leadSingerTitle, guitaristTitle, bassistTitle, drummerTitle, isTab, rewardText, 
-			energyIcon, ticketsIcon, goldIcon  } = this.state.local_data;
+			energyIcon, ticketsIcon, goldIcon, isShowDirections,  } = this.state.local_data;
 		
 		const {copper, energy} = this.state.local_data.currencyChange
 		// 道具
@@ -445,6 +509,10 @@ export class Mall extends Component {
 				<View className={`${isShowLoading?'':'hide'}`}>
 					< GameLoading />
 				</View>
+				<View className={`${isShowDirections?'':'hide'}`}>
+					<MessageToast />
+				</View>
+
 				<View className='bgColor'>
 					<View className='bgImg'></View>
 					<View className='content'>
@@ -476,7 +544,7 @@ export class Mall extends Component {
 										<View className={`samePiece ${freePiece.length > 0?'':'hide'}`}>
 											<View className='bar bar1'>
 												<Text className='Title title1'>{freeTitle}</Text>
-												<Text className='Tip'>{freeTip}</Text>
+												<Text onClick={this.description.bind(this)} data-type='4' className='Tip'>{freeTip}</Text>
 											</View>
 											<View className='main'>
 												{freePieceContent}
@@ -485,7 +553,7 @@ export class Mall extends Component {
 										<View className={`samePiece ${propsPiece.length > 0?'':'hide'}`}>
 											<View className='bar bar2'>
 												<Text className='Title title2'>{propsTitle}</Text>
-												<Text className='Tip'>{propsTip}</Text>
+												<Text onClick={this.description.bind(this)} data-type='5' className='Tip'>{propsTip}</Text>
 											</View>
 											<View className='main'>
 												{propsPieceContent}
