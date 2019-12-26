@@ -429,3 +429,30 @@ export const onShareApp = (params) =>{
     }
   }
 }
+
+/* 隐藏分享转发平台 */
+export const hideShareMenu = () =>{
+  Taro.hideShareMenu({
+    // 'qq', 'qzone', 'wechatFriends', 'wechatMoment'
+    hideShareItems: ['qq', 'qzone', 'wechatFriends', 'wechatMoment'],
+    success(res){
+      console.info('～隐藏分享成功～');
+    },
+    fail(err){
+      console.info('～隐藏分享失败～：' + err);
+    }
+  })
+}
+
+/* 显示分享转发平台：qq */
+export const showShareMenuItem = () =>{
+  Taro.hideShareMenu({
+    showShareItems: ['qq'],
+    success(res){
+      console.info('～显示分享qq成功～');
+    },
+    fail(err){
+      console.info('～显示分享失败～：' + err);
+    }
+  })
+}

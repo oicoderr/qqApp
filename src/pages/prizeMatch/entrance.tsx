@@ -3,7 +3,7 @@ import { View, Image, Text, Button } from '@tarojs/components'
 import './entrance.scss'
 import emitter from '../../service/events';
 
-import { getStorage, onShareApp } from '../../utils';
+import { getStorage, onShareApp, showShareMenuItem } from '../../utils';
 import { createWebSocket } from '../../service/createWebSocket'
 import createVideoAd from '../../service/createVideoAd'
 import MsgProto from '../../service/msgProto'
@@ -177,6 +177,8 @@ export class PrizeEntrance extends Component {
 
 	componentDidShow () {
 		let _this = this;
+		// 显示分享
+		showShareMenuItem();
 		if(App.globalData.websocket === ''){
 			console.info('%c prize-entrance 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
@@ -276,11 +278,6 @@ export class PrizeEntrance extends Component {
 		let roleId = this.state.local_data.gameUserInfo.roleId;
 		// 受邀请类型(1.组队;2.加速卡)
 		let param1 = 2;
-		// 控制分享菜单展示的平台
-		Taro.showShareMenu({
-			// 'qzone', 'wechatFriends', 'wechatMoment'
-			showShareItems: ['qq'] 
-		})
 		let shareData = {
 			title: '酸柠檬',
 			path: '/pages/login/index',

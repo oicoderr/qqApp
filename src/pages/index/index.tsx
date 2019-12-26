@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
-import { getStorage, setStorage, unitReplacement, buildURL } from '../../utils'
+import { getStorage, setStorage, unitReplacement, buildURL, showShareMenuItem } from '../../utils'
 
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
@@ -208,6 +208,9 @@ export class Index extends Component {
 
 	componentDidShow () {
 		let _this = this;
+		// 显示分享
+		showShareMenuItem();
+
 		// 接受AppGlobalSocket
 		if(App.globalData.websocket === ''){
 			console.info('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');

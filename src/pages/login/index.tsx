@@ -3,7 +3,7 @@ import { View, Button } from '@tarojs/components'
 
 import { Api } from '../../service/api'
 import { baseUrl } from '../../service/config'
-import { setStorage, getStorage } from '../../utils'
+import { setStorage, getStorage, showShareMenuItem } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import { PageScrollView } from '../../components/PageScrollView'
 import emitter from '../../service/events';
@@ -56,7 +56,10 @@ export class Login extends Component {
 
 	componentWillUnmount () {}
 
-	componentDidShow () {}
+	componentDidShow () {
+		// 显示分享
+		showShareMenuItem();
+	}
 
 	componentDidHide () {}
 
