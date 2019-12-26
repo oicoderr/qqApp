@@ -53,19 +53,7 @@ export class BackPack extends Component {
 		}
 
 		// 请求背包信息
-		let getBackpack = this.msgProto.getBackpack();
-		let parentModule = this.msgProto.parentModule(getBackpack);
-		this.websocket.sendWebSocketMsg({
-			data: parentModule,
-			success(res) {console.info('请求背包信息Success')},
-			fail(err){
-				Taro.showToast({
-					title: err.errMsg,
-					icon: 'none',
-					duration: 2000
-				})
-			}
-		});
+		this.getBackPack();
 
 		// 1502 监听背包
 		this.eventEmitter = emitter.addListener('getBackpack', (message) => {
@@ -87,9 +75,13 @@ export class BackPack extends Component {
 				if(cur.id == curPropsId){
 					_this.setState((preState)=>{
 						preState.data.list[index].count = curPropsCount;
-					})
+					});
 				}
-			})
+			});
+			// 如果请求的是宝箱，再请求背包数据
+			if(curPropsId == 6){
+				this.getBackPack();
+			}
 		});
 	}
 
@@ -106,7 +98,6 @@ export class BackPack extends Component {
 	usedCard(e){
 		let count = e.currentTarget.dataset.count;
 		let id = e.currentTarget.dataset.id;
-		console.info(count, id, 999999);
 		let data = {
 			'id': id,
 			'count': 1,
@@ -138,6 +129,23 @@ export class BackPack extends Component {
 				duration: 2000
 			});
 		}
+	}
+
+	// 请求背包信息
+	getBackPack(){
+		let getBackpack = this.msgProto.getBackpack();
+		let parentModule = this.msgProto.parentModule(getBackpack);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {console.info('请求背包信息Success')},
+			fail(err){
+				Taro.showToast({
+					title: err.errMsg,
+					icon: 'none',
+					duration: 2000
+				})
+			}
+		});
 	}
 
 	render () {
