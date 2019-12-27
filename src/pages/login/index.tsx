@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button } from '@tarojs/components'
+import { View, Button, Image, Text, RadioGroup, Radio, Label  } from '@tarojs/components'
 import emitter from '../../service/events';
 import throttle from 'lodash/throttle'
 import { setStorage, getStorage, showShareMenuItem } from '../../utils'
@@ -34,6 +34,10 @@ export class Login extends Component {
 			local_data:{
 				isAgreeNotice: false, 	// 已同意用户须知, 已打开
 				isShowDirections: false,
+				logo: 'https://oss.snmgame.com/v1.0.0/logo.png',
+				loginBtn: 'https://oss.snmgame.com/v1.0.0/loginBtn.png',
+				tip0:'同意',
+				tip: '《音乐大作战用户使用须知》',
 			}
 			
 		};
@@ -76,7 +80,10 @@ export class Login extends Component {
 		}
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('closeMessageToast');
+		emitter.removeAllListeners('AppGlobalSocket');
+	}
 
 	getUserInfo(){
 		let _this = this;
@@ -115,8 +122,13 @@ export class Login extends Component {
 				});
 			},
 			fail(err){
-				console.info('获取个人信息失败 ===>');
-				console.error(err);
+				if(err.errMsg === 'getUserInfo:fail scope unauthorized'){
+					Taro.showToast({
+						title: '请授权，解锁更多姿势',
+						icon: 'none',
+						duration: 2000
+					})
+				}
 				Taro.getSetting({
 					success(res) {
 						if (res.authSetting['scope.userInfo']) { // 如果已经授权，可以直接调用 getUserInfo 获取头像昵称
@@ -148,14 +160,30 @@ export class Login extends Component {
 		})
 	}
 	render () {
-		const { isShowDirections } = this.state.local_data;
+		const { isShowDirections, tip0, tip, logo, loginBtn } = this.state.local_data;
 		return (
 			<View className='login'>
 				<View className={isShowDirections?'':'hide'}>
 					<MessageToast />
 				</View>
-				<Button openType='getUserInfo' onGetUserInfo={this.getUserInfo} >app登录</Button>
-				<View onClick={this.DBdescription.bind(this)}>用户协议</View>
+
+				<View className='bgColor'>
+					<View className='bgImg'></View>
+					<Image src={logo} className='logo' />
+					<View className='loginBtnWrap'>
+						<Image src={loginBtn} className='loginBtnImg' />
+						<Button className='loginBtn' openType='getUserInfo' onGetUserInfo={this.getUserInfo} ></Button>
+					</View>
+					<View className='agreeInfo'>
+						<RadioGroup onClick={this.DBdescription.bind(this)} className='checkBox'>
+							<Label className='label' for='1' key='1'>
+								<Radio className='radio_' value={tip} checked={true}>
+									<View className='tip'><Text>{tip0}</Text>{tip}</View>
+								</Radio>
+							</Label>
+						</RadioGroup>
+					</View>
+				</View>
 			</View>
 		)
 	}

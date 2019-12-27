@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Image, Text, RadioGroup, Radio, Label  } from '@tarojs/components'
 import { setStorage, unitReplacement } from '../../utils';
 import './result.scss'
 import { createWebSocket } from '../../service/createWebSocket'

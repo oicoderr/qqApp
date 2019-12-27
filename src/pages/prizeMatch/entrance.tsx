@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text, Button } from '@tarojs/components'
+import { View, Image, Text, Button, RadioGroup, Radio, Label } from '@tarojs/components'
 import './entrance.scss'
 import emitter from '../../service/events';
 import throttle from 'lodash/throttle'

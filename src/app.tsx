@@ -85,11 +85,11 @@ class App extends Component {
 					if(!res.nickName || !res.avatarUrl ){
 						console.info('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
 						// 重新授权登录
-						Taro.showToast({
-							title: '请授权，解锁更多姿势～',
-							icon: 'none',
-							duration: 2000
-						});
+						// Taro.showToast({
+						// 	title: '请授权，解锁更多姿势～',
+						// 	icon: 'none',
+						// 	duration: 2000
+						// });
 						userInfo = appLogin.data;
 						// 开始登陆
 						_this.createWebSocket();
