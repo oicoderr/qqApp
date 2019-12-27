@@ -36,7 +36,18 @@ export class TakeMoney extends Component {
 
 	componentWillMount () {}
 
-	componentDidMount () {
+	componentDidMount () {}
+
+	componentWillUnmount () {}
+
+	componentDidShow () {
+		if(App.globalData.websocket === ''){
+			console.info('%c paTakeMoney-takeMoney 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.websocket = App.globalData.websocket;
+		}
+
 		// 2102提现信息
 		this.eventEmitter = emitter.addListener('takeMoney', (message) => {
 			clearInterval(message[1]);
@@ -66,17 +77,6 @@ export class TakeMoney extends Component {
 				})
 			}
 		});
-	}
-
-	componentWillUnmount () {}
-
-	componentDidShow () {
-		if(App.globalData.websocket === ''){
-			console.info('%c paTakeMoney-takeMoney 未找到Socket','font-size:14px;color:#ff6f1a;');
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-		}
 
 		// 请求提现信息
 		let takeMoneyInfo = this.msgProto.takeMoneyInfo();
@@ -94,7 +94,10 @@ export class TakeMoney extends Component {
 		})
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('takeMoney');
+		emitter.removeAllListeners('takeMoneyStatus');
+	}
 
 	// 开始能量兑换现金，提现
 	takeMoney(e){

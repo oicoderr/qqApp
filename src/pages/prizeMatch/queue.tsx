@@ -163,7 +163,9 @@ export class PrizeQueue extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {
+	componentWillMount () {}
+
+	componentDidMount () {
 		let _this = this;
 		this.getGameUserInfo();
 
@@ -180,51 +182,13 @@ export class PrizeQueue extends Component {
 				preState.local_data.isreconnection = 0;
 			});
 		}
-
-		// 1332 玩家离开大奖赛匹配队列 
-		this.eventEmitter = emitter.once('exitQueueStatus', (message) => {
-			clearInterval(message[1]);
-			console.info('%c 玩家离开大奖赛匹配队列','font-size:14px;color:#ff641a;');
-			let entrancePage = this.state.routers.entrancePage;
-			Taro.redirectTo({
-				url: entrancePage
-			})
-		});
-
-		// 1334 当前队伍情况
-		this.eventEmitter = emitter.addListener('getTeamSituation', (message) => {
-			clearInterval(message[1]);
-			console.info('接受当前队伍情况 ====>');console.info(message[0]);
-			let curTeamInfo = message[0]['data'];
-			this.setState((preState)=>{
-				preState.data.curTeamInfo = curTeamInfo;
-			})
-		});
-
-		// 1304 服务器通知客户端角色进入比赛房间
-		this.eventEmitter = emitter.once('getBattleTeams', (message) => {
-			clearInterval(message[1]);
-			console.info('接受当前所有参赛玩家信息 ====>');console.info(message[0]['data']);
-			// 设置自己大奖赛游戏信息
-			let prizeMatchUserInfo = this.getPrizeMatchUserInfo(message[0]['data']['redPalyerOnInstance']);
-			let enterGame = this.state.routers.enterGame;
-			// 所有参赛总人数
-			let countPeople = message[0]['data']['redPalyerOnInstance'].length;
-			Taro.redirectTo({
-				url: buildURL(enterGame,{item: {
-					'prizeMatchUserInfo': prizeMatchUserInfo,
-					'count': countPeople
-				}})
-			})
-		});
 	}
-
-	componentDidMount () {}
 	
 	componentWillUnmount () {}
 
 	componentDidShow () {
 		let _this = this;
+
 		// 关闭加载动画
 		let timerOut = setTimeout(()=>{
 			_this.setState((preState)=>{
@@ -285,9 +249,50 @@ export class PrizeQueue extends Component {
 				}
 			});
 		}
+
+		// 1332 玩家离开大奖赛匹配队列 
+		this.eventEmitter = emitter.addListener('exitQueueStatus', (message) => {
+			clearInterval(message[1]);
+			console.info('%c 玩家离开大奖赛匹配队列','font-size:14px;color:#ff641a;');
+			let entrancePage = this.state.routers.entrancePage;
+			Taro.redirectTo({
+				url: entrancePage
+			})
+		});
+
+		// 1334 当前队伍情况
+		this.eventEmitter = emitter.addListener('getTeamSituation', (message) => {
+			clearInterval(message[1]);
+			console.info('接受当前队伍情况 ====>');console.info(message[0]);
+			let curTeamInfo = message[0]['data'];
+			this.setState((preState)=>{
+				preState.data.curTeamInfo = curTeamInfo;
+			})
+		});
+
+		// 1304 服务器通知客户端角色进入比赛房间
+		this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
+			clearInterval(message[1]);
+			console.info('接受当前所有参赛玩家信息 ====>');console.info(message[0]['data']);
+			// 设置自己大奖赛游戏信息
+			let prizeMatchUserInfo = this.getPrizeMatchUserInfo(message[0]['data']['redPalyerOnInstance']);
+			let enterGame = this.state.routers.enterGame;
+			// 所有参赛总人数
+			let countPeople = message[0]['data']['redPalyerOnInstance'].length;
+			Taro.redirectTo({
+				url: buildURL(enterGame,{item: {
+					'prizeMatchUserInfo': prizeMatchUserInfo,
+					'count': countPeople
+				}})
+			})
+		});
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('exitQueueStatus');
+		emitter.removeAllListeners('getTeamSituation');
+		emitter.removeAllListeners('getBattleTeams');
+	}
 
 	// 获取游戏自己基本个人信息
 	getGameUserInfo(){

@@ -149,6 +149,20 @@ export class RankReasult extends Component {
 				duration: 2000
 			})
 		}
+	}
+
+	componentDidMount () {}
+	
+	componentWillUnmount () {}
+
+	componentDidShow () {
+		let _this = this;
+		if(App.globalData.websocket === ''){
+			console.info('%c rankMatch-result 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.websocket = App.globalData.websocket;
+		}
 
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
@@ -163,15 +177,11 @@ export class RankReasult extends Component {
 				setStorage('currencyChange',_this.state.local_data.currencyChange);
 			});
 		});
-	}
-
-	componentDidMount () {
-		let _this = this;		
 
 		// 接受子组件 ==> 返回是否勾选播放激励视频状态
 		this.eventEmitter = emitter.addListener('isCheckPlayVideo', (message) => {
-            console.info('%c 接受子组件 `rankResultInfoUi` 返回是否勾选播放激励视频状态','color:#3c3c3c;fon-size:14px;'); console.info(message);
-            if(message){
+			console.info('%c 接受子组件 `rankResultInfoUi` 返回是否勾选播放激励视频状态','color:#3c3c3c;fon-size:14px;'); console.info(message);
+			if(message){
 				console.info('%c ～ 开始播放激励视频 ～',' font-size: 14px; color: #c200be;');
 				// 开始播放激励广告
 				this.videoAd.openVideoAd();
@@ -206,7 +216,7 @@ export class RankReasult extends Component {
 		// 接受排位赛结果战报
 		this.eventEmitter = emitter.addListener('getRankBattleReport', (message) => {
 			clearInterval(message[1]);
-            console.info('%c 接受排位赛结果战报','color:#3c3c3c;fon-size:14px;background-color:#BBFFFF;'); console.info(message[0]['data']);
+			console.info('%c 接受排位赛结果战报','color:#3c3c3c;fon-size:14px;background-color:#BBFFFF;'); console.info(message[0]['data']);
 			// 设置输赢平横幅
 			this.successFailDraw(message[0]['data']['result']);
 			// 奖项列表
@@ -246,20 +256,12 @@ export class RankReasult extends Component {
 			},()=>{});
 		});
 	}
-	
-	componentWillUnmount () {}
 
-	componentDidShow () {
-		let _this = this;
-		if(App.globalData.websocket === ''){
-			console.info('%c rankMatch-result 未找到Socket','font-size:14px;color:#ff6f1a;');
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-		}
+	componentDidHide () {
+		emitter.removeAllListeners('currencyChange');
+		emitter.removeAllListeners('isCheckPlayVideo');
+		emitter.removeAllListeners('getRankBattleReport');
 	}
-
-	componentDidHide () {}
 
 	// 重新编队
 	reForm(data){

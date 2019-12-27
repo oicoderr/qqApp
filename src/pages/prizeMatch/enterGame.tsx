@@ -281,8 +281,13 @@ export class PrizeEnterGame extends Component {
 	}
 
 	componentDidHide () {
-		console.info('~Hide了~');
 		clearInterval(this.state.data.timer);
+		emitter.removeAllListeners('getQuestion');
+		emitter.removeAllListeners('getAnswer');
+		emitter.removeAllListeners('getPrizePrevQAInfo');
+		emitter.removeAllListeners('getResurrectResult');
+		emitter.removeAllListeners('getPrizeMatchReport');
+		emitter.removeAllListeners('getRenascenceInfo');
 	}
 	
 	// 接受到的问题答案数据放入数组, 同时设置答案optionId

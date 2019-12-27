@@ -85,7 +85,10 @@ export class BackPack extends Component {
 		});
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('getBackpack');
+		emitter.removeAllListeners('propsInfo');
+	}
 
 	// 返回上一页
 	goBack(){

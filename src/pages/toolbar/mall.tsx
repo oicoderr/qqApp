@@ -113,6 +113,70 @@ export class Mall extends Component {
 				console.info('%c 未看完视频，不能领取免费道具哦','font-size:14px;color:#db2a0f;');
 			}
 		});
+	}
+
+	componentDidMount () {}
+
+	componentWillUnmount () {}
+
+	componentDidShow () {
+		let _this = this;
+
+		if(App.globalData.websocket === ''){
+			console.info('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.websocket = App.globalData.websocket;
+		}
+
+		// 获取金币/能量，如果不存在就在gameUserInfo中取
+		getStorage('currencyChange',(res)=>{
+			this.setState((preState)=>{
+				preState.local_data.currencyChange = res;
+			})
+		});
+
+		// 请求商城信息, 默认请求道具商城
+		let getMall = this.msgProto.getMall(1);
+		let parentModule = this.msgProto.parentModule(getMall);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {console.info('请求商城信息Success')},
+			fail(err){
+				Taro.showToast({
+					title: err.errMsg,
+					icon: 'none',
+					duration: 2000
+				})
+			}
+		});
+
+		// 监听 1702 监听服务器回复商城当天已免费领取情况 
+		this.eventEmitter = emitter.addListener('getMall', (message) => {
+			clearInterval(message[1]);
+			console.info('商城信息：');
+			console.info(message[0]['data']);
+			this.setState((preState)=>{
+				preState.data.list = message[0]['data']['list'];
+				preState.local_data.isShowLoading = false;
+			});
+			this.classification(message[0]['data']['list']);
+		});
+
+		// 监听 1010 货币发生变化
+		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
+			console.error('mall 收到1010货币发生变化');console.info(message);
+			clearInterval(message[1]);
+			let currencyChange = message[0]['data'];
+			this.setState((preState)=>{
+				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
+				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
+				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+			},()=>{
+				setStorage('currencyChange',_this.state.local_data.currencyChange);
+			});
+			
+		});
 
 		// 监听 2402 玩法说明回复
 		this.eventEmitter = emitter.addListener('getGameDescription', (message) => {
@@ -157,71 +221,10 @@ export class Mall extends Component {
 		});
 	}
 
-	componentDidMount () {}
-
-	componentWillUnmount () {}
-
-	componentDidShow () {
-		let _this = this;
-
-		if(App.globalData.websocket === ''){
-			console.info('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-		}
-
-		// 获取金币/能量，如果不存在就在gameUserInfo中取
-		getStorage('currencyChange',(res)=>{
-			this.setState((preState)=>{
-				preState.local_data.currencyChange = res;
-			})
-		});
-
-		// 请求商城信息, 默认请求道具商城
-		let getMall = this.msgProto.getMall(1);
-		let parentModule = this.msgProto.parentModule(getMall);
-		this.websocket.sendWebSocketMsg({
-			data: parentModule,
-			success(res) {console.info('请求商城信息Success')},
-			fail(err){
-				Taro.showToast({
-					title: err.errMsg,
-					icon: 'none',
-					duration: 2000
-				})
-			}
-		});
-
-		// 1702 监听服务器回复商城当天已免费领取情况 
-		this.eventEmitter = emitter.addListener('getMall', (message) => {
-			clearInterval(message[1]);
-			console.info('商城信息：');
-			console.info(message[0]['data']);
-			this.setState((preState)=>{
-				preState.data.list = message[0]['data']['list'];
-				preState.local_data.isShowLoading = false;
-			});
-			this.classification(message[0]['data']['list']);
-		});
-
-		// 1010 货币发生变化
-		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
-			console.error('mall 收到1010货币发生变化');console.info(message);
-			clearInterval(message[1]);
-			let currencyChange = message[0]['data'];
-			this.setState((preState)=>{
-				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
-				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
-				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
-			},()=>{
-				setStorage('currencyChange',_this.state.local_data.currencyChange);
-			});
-			
-		});
-	}
-
 	componentDidHide () {
+		emitter.removeAllListeners('getMall');
+		emitter.removeAllListeners('currencyChange');
+		emitter.removeAllListeners('getGameDescription');
 		emitter.removeAllListeners('closeMessageToast');
 	}
 

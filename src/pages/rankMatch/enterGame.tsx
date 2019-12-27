@@ -365,8 +365,13 @@ export class RankEnterGame extends Component {
 	}
 
 	componentDidHide () {
-		console.info('rank-enterGame: ~DidHide拉~');
 		clearInterval(this.state.data.timer);
+		emitter.removeAllListeners('getMatchProps');
+		emitter.removeAllListeners('usedPropsResult');
+		emitter.removeAllListeners('getQuestion');
+		emitter.removeAllListeners('getPrevQAInfo');
+		emitter.removeAllListeners('getRankResultInfo');
+		emitter.removeAllListeners('getAnswer');
 	}
 	
 	// 接受到的问题答案数据放入数组, 同时设置答案optionId

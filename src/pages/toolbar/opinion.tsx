@@ -85,7 +85,9 @@ export class Opinion extends Component {
 		});
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('getOpinionResult');
+	}
 
 	// 返回上一页
 	goBack(){

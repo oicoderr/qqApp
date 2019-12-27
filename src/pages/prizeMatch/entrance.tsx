@@ -118,6 +118,30 @@ export class PrizeEntrance extends Component {
 			}
 		});
 
+	}
+
+	componentDidMount () {}
+
+	componentWillUnmount () {}
+
+	componentDidShow () {
+		let _this = this;
+		// 显示分享
+		showShareMenuItem();
+		if(App.globalData.websocket === ''){
+			console.info('%c prize-entrance 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.websocket = App.globalData.websocket;
+		}
+
+		// 获取个人游戏信息
+		getStorage('gameUserInfo',(res)=>{
+			_this.setState((preState)=>{
+				preState.local_data.gameUserInfo = res;
+			})
+		});
+
 		// 监听1302: 是否允许进入匹配
 		this.eventEmitter = emitter.addListener('enterMatch', (message) => {
 			clearInterval(message[1]);
@@ -232,29 +256,6 @@ export class PrizeEntrance extends Component {
 			});
 			setStorage('currencyChange', currencyChange);
 		});
-	}
-
-	componentDidMount () {}
-
-	componentWillUnmount () {}
-
-	componentDidShow () {
-		let _this = this;
-		// 显示分享
-		showShareMenuItem();
-		if(App.globalData.websocket === ''){
-			console.info('%c prize-entrance 未找到Socket','font-size:14px;color:#ff6f1a;');
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-		}
-
-		// 获取个人游戏信息
-		getStorage('gameUserInfo',(res)=>{
-			_this.setState((preState)=>{
-				preState.local_data.gameUserInfo = res;
-			})
-		});
 
 		// 请求大奖赛开放状态
 		let isOpenPrize = this.msgProto.isOpenPrize()
@@ -302,7 +303,12 @@ export class PrizeEntrance extends Component {
 
 
 	componentDidHide () {
+		emitter.removeAllListeners('enterMatch');
+		emitter.removeAllListeners('getIsPrizeOpen');
+		emitter.removeAllListeners('quickenCardHelpResult');
+		emitter.removeAllListeners('getGameDescription');
 		emitter.removeAllListeners('closeMessageToast');
+		emitter.removeAllListeners('currencyChange');
 	}
 
 	watchAdsGetReward(e){

@@ -216,7 +216,10 @@ export class RankQueue extends Component {
 		}
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('enterMatch');
+		emitter.removeAllListeners('exitQueueStatus');
+	}
 
 	// 获取游戏自己基本个人信息
 	getGameUserInfo(){

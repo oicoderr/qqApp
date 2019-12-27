@@ -35,10 +35,22 @@ export class Recharge extends Component {
 
 	componentWillMount () {}
 
-	componentDidMount () {
+	componentDidMount () {}
+		
+
+	componentWillUnmount () {}
+
+	componentDidShow () {
 		let _this = this;
+		if(App.globalData.websocket === ''){
+			console.info('%c paTakeMoney-recharge 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.websocket = App.globalData.websocket;
+		}
+		
 		// 接受1902充值模版消息
-		this.eventEmitter = emitter.once('getRechargeMessage', (message) => {
+		this.eventEmitter = emitter.addListener('getRechargeMessage', (message) => {
 			clearInterval(message[1]);
 			this.setState((preState)=>{
 				preState.data.chargeList = message[0]['data']['chargeList'];
@@ -76,17 +88,6 @@ export class Recharge extends Component {
 				}
 			})
 		});
-	}
-
-	componentWillUnmount () {}
-
-	componentDidShow () {
-		if(App.globalData.websocket === ''){
-			console.info('%c paTakeMoney-recharge 未找到Socket','font-size:14px;color:#ff6f1a;');
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-		}
 
 		// 请求充值模版消息
 		let recharge = this.msgProto.recharge();
@@ -104,7 +105,10 @@ export class Recharge extends Component {
 		})
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('getRechargeMessage');
+		emitter.removeAllListeners('getPrePay_id');
+	}
 
 	// 1903 购买门票
 	buyTickets(e){

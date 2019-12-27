@@ -1,5 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text, RadioGroup, Radio, Label  } from '@tarojs/components'
+import emitter from '../../service/events'
 import { setStorage, unitReplacement } from '../../utils';
 import './result.scss'
 import { createWebSocket } from '../../service/createWebSocket'
@@ -139,10 +140,26 @@ export class PrizeReasult extends Component {
 			}
 		});
 
+	}
+
+	componentDidMount () {}
+	
+	componentWillUnmount () {}
+
+	componentDidShow () {
+		let _this = this;
+
+		if(App.globalData.websocket === ''){
+			console.info('%c prize-result 未找到Socket','font-size:14px;color:#ff6f1a;');
+			createWebSocket(this);
+		}else{
+			this.websocket = App.globalData.websocket;
+		}
+
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('排位赛结果观看广告->收到1010货币发生变化');console.info(message);
+			console.error('收到1010货币发生变化, 排位赛结果观看广告->');console.info(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState)=>{
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
@@ -154,20 +171,9 @@ export class PrizeReasult extends Component {
 		});
 	}
 
-	componentDidMount () {}
-	
-	componentWillUnmount () {}
-
-	componentDidShow () {
-		if(App.globalData.websocket === ''){
-			console.info('%c prize-result 未找到Socket','font-size:14px;color:#ff6f1a;');
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-		}
+	componentDidHide () {
+		emitter.removeAllListeners('currencyChange');
 	}
-
-	componentDidHide () {}
 
 	// 显示名次横幅图片
 	ranking(rank){

@@ -123,20 +123,6 @@ export class RankEntrance extends Component {
 				});
 			}
 		});
-
-		// 1010 货币发生变化
-		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
-			clearInterval(message[1]);
-			console.error('排位赛入口页面观看广告->收到1010货币发生变化');console.info(message);
-			let currencyChange = message[0]['data'];
-			this.setState((preState)=>{
-				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
-				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
-				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
-			},()=>{
-				setStorage('currencyChange',_this.state.local_data.currencyChange);
-			});
-		});
 	}
 
 	// 设置玩家基本信息UI显示
@@ -158,10 +144,26 @@ export class RankEntrance extends Component {
 		}else{
 			this.websocket = App.globalData.websocket;
 		}
+
+		// 1010 货币发生变化
+		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
+			clearInterval(message[1]);
+			console.error('收到1010货币发生变化,排位赛入口页面观看广告->');console.info(message);
+			let currencyChange = message[0]['data'];
+			this.setState((preState)=>{
+				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
+				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
+				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+			},()=>{
+				setStorage('currencyChange',_this.state.local_data.currencyChange);
+			});
+		});
 	}
 
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('currencyChange');
+	}
 	
 	// 计算拥有多少星转数组
 	sumHasStar(len){
