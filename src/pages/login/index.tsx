@@ -93,7 +93,6 @@ export class Login extends Component {
 				userInfo = res.userInfo;
 				console.info('%c 授权的基本信息 ===>', 'font-size:14px;color:#31c200;background-color:#000;'); 
 				console.info(userInfo);
-				console.info(this.websocket,990)
 				getStorage('userInfo',(value)=>{
 					for(let i in value){
 						userInfo[i] = value[i];

@@ -121,6 +121,7 @@ export class Opinion extends Component {
 			content: contentVal,
 			contact: contactVal,
 		};
+
 		if(contentVal.length > 9){
 			let opinion = this.msgProto.opinion(data);
 			let parentModule = this.msgProto.parentModule(opinion);
@@ -142,7 +143,6 @@ export class Opinion extends Component {
 				duration: 2000
 			})
 		}
-		
 	}
 
 	// 复制QQ好

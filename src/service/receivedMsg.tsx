@@ -22,7 +22,7 @@ export default class ReceiveMsg{
 		};
 		switch(message['code']){
 			case 1002:  		// 服务器返回登录结果
-				console.info('%c 1002返回时间：' + getCurrentTime(), 'font-size:14px;color:blue;');
+				// console.info('%c 1002返回时间：' + getCurrentTime(), 'font-size:14px;color:blue;');
 				this.timerCount[0] = setInterval(()=>{
 					emitter.emit('loginGameStatus', [message, _this.timerCount[0] ]);
 				},20);

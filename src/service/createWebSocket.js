@@ -5,10 +5,9 @@ import { websocketUrl } from '../service/config'
 const App = Taro.getApp();
 
 export const  createWebSocket = (that) =>{
-    let _this = that;
-    
-    console.info('当前大对象 ==>');console.info(that)
-    console.info('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
+    let _this = that;    
+    // console.info('当前大对象 ==>');console.info(that)
+    // console.info('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
     // 创建websocket对象
     that.websocket = new Websocket({
         // true代表启用心跳检测和断线重连
