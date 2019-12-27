@@ -522,4 +522,5 @@ export const removeEmitter = () =>{
   emitter.removeAllListeners('checkInResult');
   emitter.removeAllListeners('quickenCardHelpResult');
   emitter.removeAllListeners('getGameDescription');
+  emitter.removeAllListeners('getGoldHelp');
 }
