@@ -62,7 +62,6 @@ export class GoldHelp extends Component {
 	componentWillUnmount () {}
 
 	componentDidShow () {
-		let _this = this;
 
 		if(App.globalData.websocket === ''){
 			console.info('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
@@ -142,8 +141,10 @@ export class GoldHelp extends Component {
 	}
 
 	componentDidHide () {
-		let _this = this;
-		clearInterval(_this.state.local_data.timer);
+		clearInterval(this.state.local_data.timer);
+		emitter.removeAllListeners('getGameDescription');
+		emitter.removeAllListeners('getGoldHelp');
+		emitter.removeAllListeners('closeMessageToast');
 	}
 
 	// 请求说明
