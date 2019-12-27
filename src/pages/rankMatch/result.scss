@@ -40,7 +40,7 @@
 
             .container{
                 width: 710rpx;
-                height: 640rpx;
+                height: 670rpx;
                 background:rgba(30,30,30,.3);
                 border-radius: 20rpx;
                 box-sizing: border-box;
@@ -164,6 +164,8 @@
 
                 .nickName{
                     max-width: 180rpx;
+                    height: 30rpx;
+                    line-height: 30rpx;
                     box-sizing: border-box;
                     padding: 0 9rpx;
                     overflow: hidden;
@@ -267,8 +269,8 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                margin-bottom: 15rpx
-                ;
+                margin-bottom: 15rpx;
+
                 .btn{
                     width: 214rpx;
                     height: 94rpx;
