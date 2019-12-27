@@ -21,7 +21,8 @@ export class RankEntrance extends Component {
 		this.state = {
 			// 路由
 			routers:{
-				queue: '/pages/rankMatch/queue',
+				queuePage: '/pages/rankMatch/queue',
+				indexPage: '/pages/index/index',
 			},
 
 			// 后台返回数据
@@ -174,9 +175,9 @@ export class RankEntrance extends Component {
 	// 跳转匹配页
 	goMatchRank(){
 		console.info('～跳转匹配～');
-		let queue = this.state.routers.queue;
+		let queuePage = this.state.routers.queuePage;
 		Taro.navigateTo({
-			url: queue
+			url: queuePage
 		})
 	}
 
@@ -188,8 +189,9 @@ export class RankEntrance extends Component {
 
 	// 返回上一页
 	goBack(){
-		Taro.navigateBack({
-			delta: 1
+		let indexPage = this.state.routers.indexPage;
+		Taro.navigateTo({
+			url: indexPage
 		});
 	}
 
