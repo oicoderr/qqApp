@@ -31,7 +31,8 @@ export class Mall extends Component {
 					商城信息
 					consumType: (0.看广告;1.门票;2.金币;3.能量)
 				*/
-				list: []
+				list: [],
+				gameDescription: [],
 			},
 
 			local_data:{

@@ -33,7 +33,8 @@ export class Index extends Component {
 				prizeMatchEnterGame: '/pages/prizeMatch/enterGame',
 				/* 断线重连 End*/
 				goTakeMoneyPage: '/pages/payTakeMoney/takeMoney',
-				goPayTicketsPage: '/pages/payTakeMoney/recharge'
+				goPayTicketsPage: '/pages/payTakeMoney/recharge',
+				goldHelpPage: '/pages/activity/goldHelp',
 			},
 
 			userInfo:{
@@ -403,8 +404,6 @@ export class Index extends Component {
 		});
 	}
 
-
-
 	// 显示晋级之路
 	advanceRoad(){
 		let gameUserInfo = this.state.gameUserInfo;
@@ -416,7 +415,15 @@ export class Index extends Component {
 			preState.isShowAdvanceRoadUi = !preState.isShowAdvanceRoadUi;
 		});
 	}
-	
+
+	// 跳转金币助力
+	goldHelp(){
+		let goldHelpPage = this.state.routers.goldHelpPage;
+		Taro.navigateTo({
+			url: goldHelpPage
+		})
+	}
+
 	render () {
 		const { sex } = this.state.gameUserInfo;
 		const { redEnvelope, copper, energy } = this.state.currencyChange;
@@ -455,7 +462,7 @@ export class Index extends Component {
 							<View className='board-same board'></View>
 							<View className='icon-same goldIcon'></View>
 							<Text className='num-same goldNum'>{copper}</Text>
-							<View className='addIcon-same addIcon' ></View>
+							<View onClick={this.goldHelp.bind(this)} className='addIcon-same addIcon' ></View>
 						</View>
 						<View className='redEnvelopeWrap'>
 							<View className='board-same board'></View>

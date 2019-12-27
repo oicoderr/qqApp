@@ -35,7 +35,7 @@ class App extends Component {
 
 			'pages/payTakeMoney/takeMoney',	  // 提现
 			'pages/payTakeMoney/recharge', 	  // 充值
-
+			'pages/activity/goldHelp',		  // 金币助力
 			'pages/WriteQuestion/index', 	  // 开始出题
 			'pages/takeMoneyAnnal/index',	  // 提现记录
 			'pages/toolbar/opinion',	  	  // 反馈意见
@@ -161,7 +161,6 @@ class App extends Component {
 			console.info('('+this.globalData.websocket+')');
 			console.error('卸载的当前路由 ==>');console.info(currentPage);
 		}
-		
 	}
 
 	/* 新版本检测升级 */

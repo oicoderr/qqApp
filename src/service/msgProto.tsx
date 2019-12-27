@@ -316,8 +316,21 @@ export default class MsgProto{
         }
     }
 
+    // 1511 请求金币助力信息
+    goldHelpInfo(){
+        return{
+            code: 1511,
+            data:{}
+        }
+    }
 
-
+    // 1513 领取金币助力的金币
+    receiveGoldHelp(){
+        return{
+            code: 1513,
+            data:{}
+        }
+    }
 
 
 
