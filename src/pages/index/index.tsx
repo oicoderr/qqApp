@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
-import { getStorage, setStorage, unitReplacement, buildURL, showShareMenuItem } from '../../utils'
+import { getStorage, setStorage, removeEmitter, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem } from '../../utils'
 
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
@@ -85,7 +85,6 @@ export class Index extends Component {
 
 	componentDidMount () {
 		let _this = this;
-		// console.info(getCurrentTime(),'DidMount');
 		getStorage('gameUserInfo',(res)=>{
 			if(res!==''){
 				_this.setState((preState)=>{
@@ -93,187 +92,16 @@ export class Index extends Component {
 				})
 			}
 		});
-
-		// 签到关闭
-		this.eventEmitter = emitter.addListener('closeWeekCheckIn', (message) => {
-			console.info('接受‘签到组件-关闭显示’的信息==>' + message);
-			this.setState((preState)=>{
-				preState.isShowWeekCheckIn = false;
-			});
-		});
-
-		// 领取奖励
-		this.eventEmitter = emitter.addListener('curRewardStatus', (message) => {
-			console.info('接受‘签到组件-领取奖励` 信息==>'); console.info(message);
-			this.setState((preState)=>{
-				preState.isShareCheckedChange = message.shareCheckedChange;
-			});
-			// 开始签到
-			let signIn = this.msgProto.signIn();
-			let parentModule = this.msgProto.parentModule(signIn);
-			this.websocket.sendWebSocketMsg({
-				data: parentModule,
-				success(res) {},
-				fail(err){
-					console.error('请求我要签到发送失败：');console.info(err);
-				}
-			});
-		});
-
-		this.eventEmitter = emitter.addListener('RedEnvelopeConvert', (message) => {
-			console.warn( message, 111);
-			// this.setState({
-			// 	gender: message
-			// },()=>{
-			// 	console.info(this.state.gender);
-			// })
-		});
-
-		// 1004游戏登录成功返回基本信息
-		this.eventEmitter = emitter.once('loginGameInfo', (message) => {
-			// console.info('%c 接受用户游戏基本信息==> ', 'color: blue;font-size:14px;'); console.info(message);
-			// 清除消息转发定时器
-			clearInterval(message[1]);
-			// 消息本体
-			_this.setState((preState)=>{
-				let gameUserInfo = JSON.parse(JSON.stringify(message[0]['data']));
-				preState.gameUserInfo['copper'] = unitReplacement(gameUserInfo['copper']);
-				preState.gameUserInfo['redEnvelope'] = unitReplacement(gameUserInfo['redEnvelope']);
-				preState.gameUserInfo['energy'] = unitReplacement(gameUserInfo['energy']);
-				preState.currencyChange['copper'] = unitReplacement(gameUserInfo['copper']);
-				preState.currencyChange['redEnvelope'] = unitReplacement(gameUserInfo['redEnvelope']);
-				preState.currencyChange['energy'] = unitReplacement(gameUserInfo['energy']);
-				preState.gameUserInfo = gameUserInfo;
-				// 设置roleId
-				preState.userInfo.roleId = gameUserInfo.roleId;
-				setStorage('gameUserInfo', gameUserInfo);
-				// 将游戏个人信息中的货币抽出,保存缓存
-				setStorage('currencyChange', preState.currencyChange);
-			});
-		});
-
-		// 1006游戏性别设置状态 setSex
-		this.eventEmitter = emitter.once('setSex', (message) => {
-			console.info('%c 设置性别状态==> ', 'color: blue;font-size:14px;'); console.info(message);
-			// 清除消息转发定时器
-			clearInterval(message[1]);
-
-			// 消息本体
-			_this.setState((preState)=>{
-				let gameUserInfo = {};
-				getStorage('gameUserInfo',(res)=>{
-					for(let x in res){
-						gameUserInfo[x] = res[x];
-					}
-					gameUserInfo['sex'] = message[0]['data']['value'];
-					preState.userInfo.sex = message[0]['data']['value']; // 设置本地，未设置缓存
-				})
-				preState.gameUserInfo = gameUserInfo;
-				setStorage('gameUserInfo', gameUserInfo);
-			});
-		});
-
-		// 1802 回应签到基本信息
-		this.eventEmitter = emitter.addListener('getWeekCheckIninfo', (message) => {
-			clearInterval(message[1]);
-
-			console.info('～签到基本信息：～');console.info(message[0]['data']);
-			let weekCheckIninfo = message[0]['data']
-			emitter.emit('weekCheckIninfo_child', weekCheckIninfo);
-			// 显示签到组件
-			_this.setState((preState)=>{
-				preState.weekCheckIninfo = weekCheckIninfo;
-				preState.isShowWeekCheckIn = true;
-			},()=>{
-				// 是否勾选`炫耀一下`
-				let isShareCheckedChange = _this.state.isShareCheckedChange;
-				if(isShareCheckedChange){
-
-				}
-			});
-		});
-
-		// 接受晋级之路组件发送的关闭信息
-		this.eventEmitter = emitter.addListener('closeAdvanceRoadToast', (message) => {
-			this.setState((preState)=>{
-				preState.isShowAdvanceRoadUi = false;
-			})
-		});
-
-		// 1804 接受签到结果 
-		this.eventEmitter = emitter.addListener('checkInResult', (message) => {
-			clearInterval(message[1]);
-
-			console.info('%c 当日签到结果 ===>', 'font-size:14px;color:#ff1fec;');console.info(message[0]['data']);
-		});
-
-		// 1602 接受我的乐队信息 -> 发送子组件`我的乐队信息`
-		this.eventEmitter = emitter.addListener('getSelfOrchestra', (message) => {
-			clearInterval(message[1]);
-
-			let selfOrchestra = message[0]['data'];
-			this.setState((preState)=>{
-				preState.selfOrchestra = selfOrchestra;
-			});
-			let timer = setInterval(()=>{
-				emitter.emit('selfOrchestra', [selfOrchestra, timer]);
-			},20);
-			console.info('%c 我的乐队信息 ===>', 'font-size:14px;color:#ff1fec;');console.info(message[0]['data']);
-		});
-
-		// 1010 货币发生变化直接更新（签到奖励等需要直接更新前台）
-		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
-			clearInterval(message[1]);
-			console.error('主页收到1010货币发生变化');console.info(message);
-			let currencyChange = message[0]['data'];
-			this.setState((preState)=>{
-				preState.currencyChange.copper = unitReplacement(currencyChange.copper);
-				preState.currencyChange.energy = unitReplacement(currencyChange.energy);
-				preState.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
-			},()=>{
-				setStorage('currencyChange', _this.state.currencyChange);
-			});
-		});
 	}
 
-	componentWillUnmount () {
-		console.info('%c 主页WillUnmount，开始removeAllListeners','font-size:14px;background-color:#fff81a; color:#00000;');
-		emitter.removeAllListeners('currencyChange');
-		emitter.removeAllListeners('enterMatch');
-		emitter.removeAllListeners('getBattleTeams');
-		emitter.removeAllListeners('getQuestion');
-		emitter.removeAllListeners('getAnswer');
-		emitter.removeAllListeners('getRenascenceInfo');
-		emitter.removeAllListeners('getResurrectResult');
-		emitter.removeAllListeners('getPrizeMatchReport');
-		emitter.removeAllListeners('getPrevQAInfo');
-		emitter.removeAllListeners('getRankResultInfo');
-		emitter.removeAllListeners('getRankBattleReport');
-		emitter.removeAllListeners('exitQueueStatus');
-		emitter.removeAllListeners('getTeamSituation');
-		emitter.removeAllListeners('getPrizePrevQAInfo');
-		emitter.removeAllListeners('getRechargeMessage');
-		emitter.removeAllListeners('getPrePay_id');
-		emitter.removeAllListeners('takeMoney');
-		emitter.removeAllListeners('takeMoneyStatus');
-		emitter.removeAllListeners('getBackpack');
-		emitter.removeAllListeners('propsInfo');
-		emitter.removeAllListeners('getMall');
-		emitter.removeAllListeners('getMatchProps');
-		emitter.removeAllListeners('usedPropsResult');
-		emitter.removeAllListeners('getSelfOrchestra');
-		emitter.removeAllListeners('getWeekCheckIninfo');
-		emitter.removeAllListeners('getOpinionResult');
-		emitter.removeAllListeners('getIsPrizeOpen');
-		emitter.removeAllListeners('checkInResult');
-		emitter.removeAllListeners('quickenCardHelpResult');
-		emitter.removeAllListeners('getGameDescription');
-	}
+	componentWillUnmount () {}
 
 	componentDidShow () {
 		let _this = this;
 		// 显示分享
 		showShareMenuItem();
+		// 页面超出提示,返回当前页面URL
+		let currentPageUrl = getCurrentPageUrl();
 
 		// 接受AppGlobalSocket
 		if(App.globalData.websocket === ''){
@@ -382,9 +210,153 @@ export class Index extends Component {
 			}
 		});
 // -------------------------- 游戏被杀死，重新进入游戏 End-----------------------------------
+
+		// 1802 回应签到基本信息
+		this.eventEmitter = emitter.addListener('getWeekCheckIninfo', (message) => {
+			clearInterval(message[1]);
+
+			console.info('～签到基本信息：～');console.info(message[0]['data']);
+			let weekCheckIninfo = message[0]['data']
+			emitter.emit('weekCheckIninfo_child', weekCheckIninfo);
+			// 显示签到组件
+			_this.setState((preState)=>{
+				preState.weekCheckIninfo = weekCheckIninfo;
+				preState.isShowWeekCheckIn = true;
+			},()=>{
+				// 是否勾选`炫耀一下`
+				let isShareCheckedChange = _this.state.isShareCheckedChange;
+				if(isShareCheckedChange){
+
+				}
+			});
+		});
+
+		// 签到关闭
+		this.eventEmitter = emitter.addListener('closeWeekCheckIn', (message) => {
+			console.info('接受‘签到组件-关闭显示’的信息==>' + message);
+			this.setState((preState)=>{
+				preState.isShowWeekCheckIn = false;
+			});
+		});
+
+		// 领取奖励
+		this.eventEmitter = emitter.addListener('curRewardStatus', (message) => {
+			console.info('接受‘签到组件-领取奖励` 信息==>'); console.info(message);
+			this.setState((preState)=>{
+				preState.isShareCheckedChange = message.shareCheckedChange;
+			});
+			// 开始签到
+			let signIn = this.msgProto.signIn();
+			let parentModule = this.msgProto.parentModule(signIn);
+			this.websocket.sendWebSocketMsg({
+				data: parentModule,
+				success(res) {},
+				fail(err){
+					console.error('请求我要签到发送失败：');console.info(err);
+				}
+			});
+		});
+
+		this.eventEmitter = emitter.addListener('RedEnvelopeConvert', (message) => {
+			console.warn( message, 111);
+			// this.setState({
+			// 	gender: message
+			// },()=>{
+			// 	console.info(this.state.gender);
+			// })
+		});
+
+		// 1004游戏登录成功返回基本信息
+		this.eventEmitter = emitter.once('loginGameInfo', (message) => {
+			// console.info('%c 接受用户游戏基本信息==> ', 'color: blue;font-size:14px;'); console.info(message);
+			// 清除消息转发定时器
+			clearInterval(message[1]);
+			// 消息本体
+			_this.setState((preState)=>{
+				let gameUserInfo = JSON.parse(JSON.stringify(message[0]['data']));
+				preState.gameUserInfo['copper'] = unitReplacement(gameUserInfo['copper']);
+				preState.gameUserInfo['redEnvelope'] = unitReplacement(gameUserInfo['redEnvelope']);
+				preState.gameUserInfo['energy'] = unitReplacement(gameUserInfo['energy']);
+				preState.currencyChange['copper'] = unitReplacement(gameUserInfo['copper']);
+				preState.currencyChange['redEnvelope'] = unitReplacement(gameUserInfo['redEnvelope']);
+				preState.currencyChange['energy'] = unitReplacement(gameUserInfo['energy']);
+				preState.gameUserInfo = gameUserInfo;
+				// 设置roleId
+				preState.userInfo.roleId = gameUserInfo.roleId;
+				setStorage('gameUserInfo', gameUserInfo);
+				// 将游戏个人信息中的货币抽出,保存缓存
+				setStorage('currencyChange', preState.currencyChange);
+			});
+		});
+
+		// 1006游戏性别设置状态 setSex
+		this.eventEmitter = emitter.once('setSex', (message) => {
+			console.info('%c 设置性别状态==> ', 'color: blue;font-size:14px;'); console.info(message);
+			// 清除消息转发定时器
+			clearInterval(message[1]);
+
+			// 消息本体
+			_this.setState((preState)=>{
+				let gameUserInfo = {};
+				getStorage('gameUserInfo',(res)=>{
+					for(let x in res){
+						gameUserInfo[x] = res[x];
+					}
+					gameUserInfo['sex'] = message[0]['data']['value'];
+					preState.userInfo.sex = message[0]['data']['value']; // 设置本地，未设置缓存
+				})
+				preState.gameUserInfo = gameUserInfo;
+				setStorage('gameUserInfo', gameUserInfo);
+			});
+		});
+
+		// 接受晋级之路组件发送的关闭信息
+		this.eventEmitter = emitter.addListener('closeAdvanceRoadToast', (message) => {
+			this.setState((preState)=>{
+				preState.isShowAdvanceRoadUi = false;
+			})
+		});
+
+		// 1804 接受签到结果 
+		this.eventEmitter = emitter.addListener('checkInResult', (message) => {
+			clearInterval(message[1]);
+
+			console.info('%c 当日签到结果 ===>', 'font-size:14px;color:#ff1fec;');console.info(message[0]['data']);
+		});
+
+		// 1602 接受我的乐队信息 -> 发送子组件`我的乐队信息`
+		this.eventEmitter = emitter.addListener('getSelfOrchestra', (message) => {
+			clearInterval(message[1]);
+
+			let selfOrchestra = message[0]['data'];
+			this.setState((preState)=>{
+				preState.selfOrchestra = selfOrchestra;
+			});
+			let timer = setInterval(()=>{
+				emitter.emit('selfOrchestra', [selfOrchestra, timer]);
+			},20);
+			console.info('%c 我的乐队信息 ===>', 'font-size:14px;color:#ff1fec;');console.info(message[0]['data']);
+		});
+
+		// 1010 货币发生变化直接更新（签到奖励等需要直接更新前台）
+		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
+			clearInterval(message[1]);
+			console.error('主页收到1010货币发生变化');console.info(message);
+			let currencyChange = message[0]['data'];
+			this.setState((preState)=>{
+				preState.currencyChange.copper = unitReplacement(currencyChange.copper);
+				preState.currencyChange.energy = unitReplacement(currencyChange.energy);
+				preState.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+			},()=>{
+				setStorage('currencyChange', _this.state.currencyChange);
+			});
+		});
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		console.info('%c 主页DidHide，开始removeAllListeners','font-size:14px;background-color:#fff81a; color:#00000;');
+		removeEmitter();
+	}
 
 	// 红包赛入口页
 	goPrizeMatchBtn(){
@@ -498,7 +470,7 @@ export class Index extends Component {
 					<View className='rightListBtn'>
 						<View className='rightBtnIcon problemBtn'></View>
 						<View onClick={this.weekCheckIn.bind(this)} className='rightBtnIcon signInBtn'></View>
-						<View className='rightBtnIcon welfareBtn'></View>
+						<View className='hide rightBtnIcon welfareBtn'></View>
 					</View>
 
 					<View className='body'>

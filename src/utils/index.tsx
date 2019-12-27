@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import { baseUrl } from '../service/config'
-
+import emitter from '../service/events';
 export const promisify = (func, ctx) => {
   // 返回一个新的function
   return function () {
@@ -455,4 +455,38 @@ export const showShareMenuItem = () =>{
       console.info('～显示分享失败～：' + err);
     }
   })
+}
+
+/* clear removeEmitter */
+export const removeEmitter = () =>{
+  emitter.removeAllListeners('currencyChange');
+  emitter.removeAllListeners('enterMatch');
+  emitter.removeAllListeners('getBattleTeams');
+  emitter.removeAllListeners('getQuestion');
+  emitter.removeAllListeners('getAnswer');
+  emitter.removeAllListeners('getRenascenceInfo');
+  emitter.removeAllListeners('getResurrectResult');
+  emitter.removeAllListeners('getPrizeMatchReport');
+  emitter.removeAllListeners('getPrevQAInfo');
+  emitter.removeAllListeners('getRankResultInfo');
+  emitter.removeAllListeners('getRankBattleReport');
+  emitter.removeAllListeners('exitQueueStatus');
+  emitter.removeAllListeners('getTeamSituation');
+  emitter.removeAllListeners('getPrizePrevQAInfo');
+  emitter.removeAllListeners('getRechargeMessage');
+  emitter.removeAllListeners('getPrePay_id');
+  emitter.removeAllListeners('takeMoney');
+  emitter.removeAllListeners('takeMoneyStatus');
+  emitter.removeAllListeners('getBackpack');
+  emitter.removeAllListeners('propsInfo');
+  emitter.removeAllListeners('getMall');
+  emitter.removeAllListeners('getMatchProps');
+  emitter.removeAllListeners('usedPropsResult');
+  emitter.removeAllListeners('getSelfOrchestra');
+  emitter.removeAllListeners('getWeekCheckIninfo');
+  emitter.removeAllListeners('getOpinionResult');
+  emitter.removeAllListeners('getIsPrizeOpen');
+  emitter.removeAllListeners('checkInResult');
+  emitter.removeAllListeners('quickenCardHelpResult');
+  emitter.removeAllListeners('getGameDescription');
 }
