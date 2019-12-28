@@ -1,7 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Textarea, Text, Image, Input } from '@tarojs/components'
-import Websocket from '../../service/webSocket'
-import { unitReplacement, setStorage, getStorage } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import './opinion.scss'
 
@@ -53,7 +51,7 @@ export class Opinion extends Component {
 	componentWillUnmount () {}
 
 	componentDidShow () {
-		let _this = this;
+
 		if(App.globalData.websocket === ''){
 			console.log('%c backpack 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);

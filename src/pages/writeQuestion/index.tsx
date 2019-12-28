@@ -1,7 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Textarea } from '@tarojs/components'
-import { Api } from '../../service/api'
-
 import './index.scss'
 
 export class WriteQuestion extends Component {

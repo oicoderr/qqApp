@@ -1,4 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope */
 import { Component } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
 import emitter from '../../service/events';

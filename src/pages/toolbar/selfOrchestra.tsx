@@ -59,7 +59,6 @@ export class SelfOrchestra extends Component {
 	componentWillUnmount () {}
 
 	componentDidShow () {
-		let _this = this;
 
 		if(App.globalData.websocket === ''){
 			console.log('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');

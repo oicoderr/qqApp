@@ -1,10 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
-import Websocket from '../../service/webSocket'
-import { unitReplacement, setStorage, getStorage } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import './backpack.scss'
-
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'
 

@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
 import { getStorage, setStorage, removeEmitter, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem } from '../../utils'
@@ -7,8 +7,8 @@ import { getStorage, setStorage, removeEmitter, getCurrentPageUrl, unitReplaceme
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
 import { MessageToast } from '../../components/MessageToast'
-import AdvanceRoadUi  from '../../components/advanceRoadUi'
-import HomeBandUi  from '../../components/HomeBandUi'
+import AdvanceRoadUi from '../../components/advanceRoadUi'
+import HomeBandUi from '../../components/HomeBandUi'
 import Drawer from '../../components/drawer'
 import MsgProto from '../../service/msgProto'
 import { createWebSocket } from '../../service/createWebSocket'
@@ -23,7 +23,7 @@ export class Index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			routers:{
+			routers: {
 				/* 断线重连 */
 				rankQueue: '/pages/rankMatch/queue',
 				rankGameEntrance: '/pages/rankMatch/entrance',
@@ -37,7 +37,7 @@ export class Index extends Component {
 				goldHelpPage: '/pages/activity/goldHelp',
 			},
 
-			userInfo:{
+			userInfo: {
 				"nickName": "",
 				"avatarUrl": "",
 				"gender": 1,
@@ -50,7 +50,7 @@ export class Index extends Component {
 				"session_key": "",
 			},
 
-			gameUserInfo:{
+			gameUserInfo: {
 				roleId: -1,
 				level: 1,
 				imgurl: '',
@@ -71,9 +71,9 @@ export class Index extends Component {
 			// 默认勾选了签到分享
 			isShareCheckedChange: true,
 			// 我的乐队信息
-			selfOrchestra:{},
+			selfOrchestra: {},
 			// 货币
-			currencyChange:{
+			currencyChange: {
 				energy: 0,
 				copper: 1234,
 				redEnvelope: 0,
@@ -82,22 +82,22 @@ export class Index extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {}
+	componentWillMount() { }
 
-	componentDidMount () {
+	componentDidMount() {
 		let _this = this;
-		getStorage('gameUserInfo',(res)=>{
-			if(res!==''){
-				_this.setState((preState)=>{
+		getStorage('gameUserInfo', (res) => {
+			if (res !== '') {
+				_this.setState((preState) => {
 					preState.gameUserInfo = res;
 				})
 			}
 		});
 	}
 
-	componentWillUnmount () {}
+	componentWillUnmount() { }
 
-	componentDidShow () {
+	componentDidShow() {
 		let _this = this;
 
 		// 显示分享
@@ -106,21 +106,21 @@ export class Index extends Component {
 		let currentPageUrl = getCurrentPageUrl();
 
 		// 接受AppGlobalSocket
-		if(App.globalData.websocket === ''){
-			console.log('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');
+		if (App.globalData.websocket === '') {
+			console.log('%c indexPAge 未找到Socket', 'font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
-		}else{
+		} else {
 			this.websocket = App.globalData.websocket;
 		}
 
 		// 更新金币/红包/能量-数量
-		getStorage('currencyChange',(res)=>{
-			if(res!=''){
-				_this.setState((preState)=>{
+		getStorage('currencyChange', (res) => {
+			if (res != '') {
+				_this.setState((preState) => {
 					preState.currencyChange.copper = res.copper;
 					preState.currencyChange.energy = res.energy;
 					preState.currencyChange.redEnvelope = res.redEnvelope;
-				},()=>{})
+				}, () => { })
 			}
 		});
 
@@ -132,28 +132,28 @@ export class Index extends Component {
 			_this.websocket.sendWebSocketMsg({
 				data: parentModule,
 				success(res) {
-					_this.setState((preState)=>{
+					_this.setState((preState) => {
 						preState.gameUserInfo.sex = message;
 						preState.userInfo.sex = message;
-					},()=>{})
+					}, () => { })
 				},
-				fail(err){
-					console.error('性别发送失败');console.log(err);
+				fail(err) {
+					console.error('性别发送失败'); console.log(err);
 				}
 			});
 		});
-// -------------------------- 游戏被杀死，重新进入游戏 --------------------------------------
+		// -------------------------- 游戏被杀死，重新进入游戏 --------------------------------------
 		// 1302 匹配ing杀死app，根据字段是否断线重连判断：isreconnection 1. 在匹配中杀死的
 		this.eventEmitter = emitter.addListener('enterMatch', (message) => {
 			clearInterval(message[1]);
 
 			let isreconnection = message[0]['data']['isreconnection'];
 			let result = message[0]['data']['result'];
-			let type =  message[0]['data']['type']; // 1.好友赛；2.大奖赛；3.排位赛
-			console.log('%c 队列ing杀死app，开始进入队列','font-size:14px;color:#ffa61a;');
+			let type = message[0]['data']['type']; // 1.好友赛；2.大奖赛；3.排位赛
+			console.log('%c 队列ing杀死app，开始进入队列', 'font-size:14px;color:#ffa61a;');
 			// 开启断线重连并进入匹配队列
-			if(isreconnection && result){
-				switch(type){
+			if (isreconnection && result) {
+				switch (type) {
 					case 1:
 
 						break;
@@ -181,19 +181,19 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
 			clearInterval(message[1]);
 
-			console.error('～游戏中杀死app～');console.log(message[0]['data']);
+			console.error('～游戏中杀死app～'); console.log(message[0]['data']);
 			// 排位赛杀死的
-			let isreconnection_ = message[0]['data']['isreconnection']; 
+			let isreconnection_ = message[0]['data']['isreconnection'];
 			// 大奖赛杀死的
 			let isreconnection = message[0]['data']['redPalyerOnInstance'][0]['isreconnection'];
 			// 在游戏中杀死的
-			if(isreconnection_ === 1 || isreconnection === 1){
+			if (isreconnection_ === 1 || isreconnection === 1) {
 				console.error('游戏中杀死游戏退出，进来的玩家');
 				// 比赛类型 1.好友赛；2.大奖赛；3.排位赛；
 				let type = message[0]['data']['redPalyerOnInstance'][0]['type'];
-				switch(type){
+				switch (type) {
 					case 1:
-	
+
 						break;
 					case 2:
 						Taro.redirectTo({
@@ -203,31 +203,31 @@ export class Index extends Component {
 					case 3:
 						// 排位赛游戏中退出跳转到队列页，因为队伍处理在队列页面
 						Taro.redirectTo({
-							url: buildURL(_this.state.routers.rankQueue,{item: message[0]['data']})
+							url: buildURL(_this.state.routers.rankQueue, { item: message[0]['data'] })
 						});
 						break;
 				}
-			}else{
-				console.log('%c ～正常进入比赛玩家～','font-size:14px; color:#ffc61a;');
+			} else {
+				console.log('%c ～正常进入比赛玩家～', 'font-size:14px; color:#ffc61a;');
 			}
 		});
-// -------------------------- 游戏被杀死，重新进入游戏 End-----------------------------------
+		// -------------------------- 游戏被杀死，重新进入游戏 End-----------------------------------
 
 		// 1802 回应签到基本信息
 		this.eventEmitter = emitter.addListener('getWeekCheckIninfo', (message) => {
 			clearInterval(message[1]);
 
-			console.log('～签到基本信息：～');console.log(message[0]['data']);
+			console.log('～签到基本信息：～'); console.log(message[0]['data']);
 			let weekCheckIninfo = message[0]['data']
 			emitter.emit('weekCheckIninfo_child', weekCheckIninfo);
 			// 显示签到组件
-			_this.setState((preState)=>{
+			_this.setState((preState) => {
 				preState.weekCheckIninfo = weekCheckIninfo;
 				preState.isShowWeekCheckIn = true;
-			},()=>{
+			}, () => {
 				// 是否勾选`炫耀一下`
 				let isShareCheckedChange = _this.state.isShareCheckedChange;
-				if(isShareCheckedChange){
+				if (isShareCheckedChange) {
 
 				}
 			});
@@ -236,7 +236,7 @@ export class Index extends Component {
 		// 签到关闭
 		this.eventEmitter = emitter.addListener('closeWeekCheckIn', (message) => {
 			console.log('接受‘签到组件-关闭显示’的信息==>' + message);
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.isShowWeekCheckIn = false;
 			});
 		});
@@ -244,7 +244,7 @@ export class Index extends Component {
 		// 领取奖励
 		this.eventEmitter = emitter.addListener('curRewardStatus', (message) => {
 			console.log('接受‘签到组件-领取奖励` 信息==>'); console.log(message);
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.isShareCheckedChange = message.shareCheckedChange;
 			});
 			// 开始签到
@@ -252,15 +252,15 @@ export class Index extends Component {
 			let parentModule = this.msgProto.parentModule(signIn);
 			this.websocket.sendWebSocketMsg({
 				data: parentModule,
-				success(res) {},
-				fail(err){
-					console.error('请求我要签到发送失败：');console.log(err);
+				success(res) { },
+				fail(err) {
+					console.error('请求我要签到发送失败：'); console.log(err);
 				}
 			});
 		});
 
 		this.eventEmitter = emitter.addListener('RedEnvelopeConvert', (message) => {
-			console.warn( message, 111);
+			console.warn(message, 111);
 			// this.setState({
 			// 	gender: message
 			// },()=>{
@@ -274,7 +274,7 @@ export class Index extends Component {
 			// 清除消息转发定时器
 			clearInterval(message[1]);
 			// 消息本体
-			_this.setState((preState)=>{
+			_this.setState((preState) => {
 				let gameUserInfo = JSON.parse(JSON.stringify(message[0]['data']));
 				preState.gameUserInfo['copper'] = unitReplacement(gameUserInfo['copper']);
 				preState.gameUserInfo['redEnvelope'] = unitReplacement(gameUserInfo['redEnvelope']);
@@ -298,10 +298,10 @@ export class Index extends Component {
 			clearInterval(message[1]);
 
 			// 消息本体
-			_this.setState((preState)=>{
+			_this.setState((preState) => {
 				let gameUserInfo = {};
-				getStorage('gameUserInfo',(res)=>{
-					for(let x in res){
+				getStorage('gameUserInfo', (res) => {
+					for (let x in res) {
 						gameUserInfo[x] = res[x];
 					}
 					gameUserInfo['sex'] = message[0]['data']['value'];
@@ -314,7 +314,7 @@ export class Index extends Component {
 
 		// 接受晋级之路组件发送的关闭信息
 		this.eventEmitter = emitter.addListener('closeAdvanceRoadToast', (message) => {
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.isShowAdvanceRoadUi = false;
 			})
 		});
@@ -323,7 +323,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('checkInResult', (message) => {
 			clearInterval(message[1]);
 
-			console.log('%c 当日签到结果 ===>', 'font-size:14px;color:#ff1fec;');console.log(message[0]['data']);
+			console.log('%c 当日签到结果 ===>', 'font-size:14px;color:#ff1fec;'); console.log(message[0]['data']);
 		});
 
 		// 1602 接受我的乐队信息 -> 发送子组件`我的乐队信息`
@@ -331,37 +331,37 @@ export class Index extends Component {
 			clearInterval(message[1]);
 
 			let selfOrchestra = message[0]['data'];
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.selfOrchestra = selfOrchestra;
 			});
-			let timer = setInterval(()=>{
+			let timer = setInterval(() => {
 				emitter.emit('selfOrchestra', [selfOrchestra, timer]);
-			},20);
-			console.log('%c 我的乐队信息 ===>', 'font-size:14px;color:#ff1fec;');console.log(message[0]['data']);
+			}, 20);
+			console.log('%c 我的乐队信息 ===>', 'font-size:14px;color:#ff1fec;'); console.log(message[0]['data']);
 		});
 
 		// 1010 货币发生变化直接更新（签到奖励等需要直接更新前台）
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('主页收到1010货币发生变化');console.log(message);
+			console.error('主页收到1010货币发生变化'); console.log(message);
 			let currencyChange = message[0]['data'];
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.currencyChange.copper = unitReplacement(currencyChange.copper);
 				preState.currencyChange.energy = unitReplacement(currencyChange.energy);
 				preState.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
-			},()=>{
+			}, () => {
 				setStorage('currencyChange', _this.state.currencyChange);
 			});
 		});
 	}
 
-	componentDidHide () {
-		console.log('%c 主页DidHide，开始removeAllListeners','font-size:14px;background-color:#fff81a; color:#00000;');
+	componentDidHide() {
+		console.log('%c 主页DidHide，开始removeAllListeners', 'font-size:14px;background-color:#fff81a; color:#00000;');
 		removeEmitter();
 	}
 
 	// 红包赛入口页
-	goPrizeMatchBtn(){
+	goPrizeMatchBtn() {
 		let prizeMatch = this.state.routers.prizeMatch;
 		Taro.navigateTo({
 			url: prizeMatch
@@ -369,7 +369,7 @@ export class Index extends Component {
 	}
 
 	// 跳转排位赛入口页
-	rankEntrance(){
+	rankEntrance() {
 		let rankGameEntrance = this.state.routers.rankGameEntrance;
 		Taro.navigateTo({
 			url: rankGameEntrance
@@ -377,55 +377,55 @@ export class Index extends Component {
 	}
 
 	// 跳转提现页
-	goTakeMoney(){
+	goTakeMoney() {
 		Taro.navigateTo({
 			url: this.state.routers.goTakeMoneyPage
 		})
 	}
 
 	// 跳转门票购买页
-	goPayTickets(){
+	goPayTickets() {
 		Taro.navigateTo({
 			url: this.state.routers.goPayTicketsPage
 		})
 	}
 
 	// 显示签到
-	weekCheckIn(){
+	weekCheckIn() {
 		console.log(this)
 		// 1801 请求签到基本信息
 		let weekCheckIn = this.msgProto.weekCheckIn();
 		let parentModule = this.msgProto.parentModule(weekCheckIn);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {},
-			fail(err){
-				console.error('请求签到基本信息发送失败：');console.log(err);
+			success(res) { },
+			fail(err) {
+				console.error('请求签到基本信息发送失败：'); console.log(err);
 			}
 		});
 	}
 
 	// 显示晋级之路
-	advanceRoad(){
+	advanceRoad() {
 		let gameUserInfo = this.state.gameUserInfo;
 		let dan = gameUserInfo.dan;
 		// 晋级之路子组件发送当前段位
-		emitter.emit('current_dan', {'dan': dan});
+		emitter.emit('current_dan', { 'dan': dan });
 
-		this.setState((preState)=>{
+		this.setState((preState) => {
 			preState.isShowAdvanceRoadUi = !preState.isShowAdvanceRoadUi;
 		});
 	}
 
 	// 跳转金币助力
-	goldHelp(){
+	goldHelp() {
 		let goldHelpPage = this.state.routers.goldHelpPage;
 		Taro.navigateTo({
 			url: goldHelpPage
 		})
 	}
 
-	render () {
+	render() {
 		const { sex } = this.state.gameUserInfo;
 		const { redEnvelope, copper, energy } = this.state.currencyChange;
 		const isShowWeekCheckIn = this.state.isShowWeekCheckIn;
@@ -435,11 +435,11 @@ export class Index extends Component {
 				{/* 左侧按钮list */}
 				<Drawer />
 				{/* 签到 */}
-				<View className={`${isShowWeekCheckIn?'':'hide'}`}>
+				<View className={`${isShowWeekCheckIn ? '' : 'hide'}`}>
 					<WeekCheckIn />
 				</View>
 				{/* 晋级之路 */}
-				<View className={`${isShowAdvanceRoadUi?'':'hide'}`}>
+				<View className={`${isShowAdvanceRoadUi ? '' : 'hide'}`}>
 					<AdvanceRoadUi />
 				</View>
 				{/* 全局提示 */}
@@ -448,7 +448,7 @@ export class Index extends Component {
 				</View>
 
 				<View className='bgColor'>
-					<View className={`genderSlection ${ sex === -1?'':'hide'} `} > 
+					<View className={`genderSlection ${sex === -1 ? '' : 'hide'} `} >
 						<GenderSelectionUi />
 					</View>
 					<View className='bgImg'></View>
@@ -458,7 +458,7 @@ export class Index extends Component {
 								<openData type="userAvatarUrl"></openData>
 							</View>
 						</View>
-						
+
 						<View className='goldsWrap'>
 							<View className='board-same board'></View>
 							<View className='icon-same goldIcon'></View>

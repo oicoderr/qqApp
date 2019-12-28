@@ -1,4 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope */
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
 import emitter from '../../service/events';
@@ -87,7 +86,7 @@ export default class HomeBand extends Component {
 
     return  <View className="homeBand">
               <View onClick={this.leadSingerBox.bind(this)}className={`leadSingerBox ${staticBand?'':'hide'}`}>
-                <Image src={staticBand} className='guitarist'/>
+                <Image src={staticBand} className='leadSinger'/>
                 <Image src={light} className='leadLight'/>
                 <Image src={stage} className='leadStage'/>
               </View>

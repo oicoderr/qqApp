@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
-import { buildURL, getCurrentTime, onShareAppMessage } from '../../utils'
+import { buildURL, getCurrentTime } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import './enterGame.scss'
 import emitter from '../../service/events'

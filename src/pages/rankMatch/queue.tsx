@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
-import { getStorage, buildURL, getArrayItems } from '../../utils'
+import { View, Image } from '@tarojs/components'
+import { getStorage, buildURL } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import emitter from '../../service/events'
 import './queue.scss'

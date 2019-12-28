@@ -1,7 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
-import { Api } from '../../service/api'
-
 import './index.scss'
 
 export class TakeMoneyAnnal extends Component {

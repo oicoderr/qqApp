@@ -3,7 +3,6 @@ import { View, ScrollView, Image } from '@tarojs/components'
 import { unitReplacement, getStorage } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import './takeMoney.scss'
-
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'
 

@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-key */
-/* eslint-disable react/react-in-jsx-scope */
 import Taro, { Component } from '@tarojs/taro';
 import { View, ScrollView, Text, Image } from '@tarojs/components';
 import emitter from '../../service/events';

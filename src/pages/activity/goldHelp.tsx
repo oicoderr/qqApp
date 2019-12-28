@@ -24,26 +24,26 @@ export class GoldHelp extends Component {
 		this.DBgetQuickenCard = throttle(this.DBgetQuickenCard, 1000);
 		this.state = {
 
-			data:{
+			data: {
 				gameDescription: [],
 				// 金币助力信息
-				getGoldHelpInfo:{},
+				getGoldHelpInfo: {},
 			},
 
-			local_data:{
+			local_data: {
 				timer: '',
 				isShowDirections: false,
 				isShowGameLoading: true,
 				// 倒计时时间h,m,s
-				countdown:{},
+				countdown: {},
 				currencyChange: {},
-				gameUserInfo:{
+				gameUserInfo: {
 					roleId: -1,
 					level: 1,
 					imgurl: '',
 					nickName: '',
-					sex: '-1',  	
-					copper: 1234,	
+					sex: '-1',
+					copper: 1234,
 					redEnvelope: 0,
 					energy: 0,
 				},
@@ -65,31 +65,31 @@ export class GoldHelp extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {}
+	componentWillMount() { }
 
-	componentDidMount () {}
+	componentDidMount() { }
 
-	componentWillUnmount () {}
+	componentWillUnmount() { }
 
-	componentDidShow () {
+	componentDidShow() {
 
-		if(App.globalData.websocket === ''){
-			console.log('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
+		if (App.globalData.websocket === '') {
+			console.log('%c mall 未找到Socket', 'font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
-		}else{
+		} else {
 			this.websocket = App.globalData.websocket;
 		}
 
 		// 获取个人游戏信息
-		getStorage('gameUserInfo',(res)=>{
-			_this.setState((preState)=>{
+		getStorage('gameUserInfo', (res) => {
+			_this.setState((preState) => {
 				preState.local_data.gameUserInfo = res;
 			})
 		});
 
 		// 获取金币/能量
-		getStorage('currencyChange',(res)=>{
-			this.setState((preState)=>{
+		getStorage('currencyChange', (res) => {
+			this.setState((preState) => {
 				preState.local_data.currencyChange = res;
 			})
 		});
@@ -103,17 +103,17 @@ export class GoldHelp extends Component {
 
 			let gameDescription = message[0]['data'];
 			let type = message[0]['data']['type'];
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.data.gameDescription = gameDescription;
 				preState.local_data.isShowDirections = true;
-			},()=>{});
+			}, () => { });
 
 			// 发送子组件messageToast
 			let messageToast_data = {
 				title: '说明',
 				body: gameDescription
 			};
-			switch (type){
+			switch (type) {
 				case 1:
 					messageToast_data['title'] = '金币助力';
 					break;
@@ -138,11 +138,11 @@ export class GoldHelp extends Component {
 			clearInterval(message[1]);
 
 			let getGoldHelpInfo = message[0]['data'];
-			console.log('%c 收到1512 金币助力信息', 'background-color: #000; color:#fff;font-size:14px;');console.log(getGoldHelpInfo);
+			console.log('%c 收到1512 金币助力信息', 'background-color: #000; color:#fff;font-size:14px;'); console.log(getGoldHelpInfo);
 			// 开始倒计时
 			let maxtime = formatSeconds(getGoldHelpInfo.cd);
 			this.timeDown(maxtime);
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.data.getGoldHelpInfo = getGoldHelpInfo;
 				preState.local_data.isShowGameLoading = false;
 			});
@@ -150,13 +150,13 @@ export class GoldHelp extends Component {
 
 		// 监听 子组件MessageToast 关闭弹窗消息 
 		this.eventEmitter = emitter.addListener('closeMessageToast', (message) => {
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.local_data.isShowDirections = false;
 			})
 		});
 	}
 
-	componentDidHide () {
+	componentDidHide() {
 		clearInterval(this.state.local_data.timer);
 		emitter.removeAllListeners('getGameDescription');
 		emitter.removeAllListeners('getGoldHelp');
@@ -164,17 +164,17 @@ export class GoldHelp extends Component {
 	}
 
 	// 请求说明
-	DBgetQuickenCard(e){
+	DBgetQuickenCard(e) {
 		this.description(e);
 	}
-	description(e){
+	description(e) {
 		// 类型 type (1.金币助力;2.大奖赛规则;3.大奖赛加速卡说明;4.商城限免说明, 5.道具卡使用说明)
 		let type = e.currentTarget.dataset.type;
 		let gameDescription = this.msgProto.gameDescription(type);
 		let parentModule = this.msgProto.parentModule(gameDescription);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {},
+			success(res) { },
 			fail(err) {
 				Taro.showToast({
 					title: err.errormsg,
@@ -186,12 +186,12 @@ export class GoldHelp extends Component {
 	}
 
 	// 请求金币助力信息
-	goldHelpInfo(){
+	goldHelpInfo() {
 		let goldHelpInfo = this.msgProto.goldHelpInfo();
 		let parentModule = this.msgProto.parentModule(goldHelpInfo);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {},
+			success(res) { },
 			fail(err) {
 				Taro.showToast({
 					title: err.errormsg,
@@ -203,7 +203,7 @@ export class GoldHelp extends Component {
 	}
 
 	// 返回上一页
-	goBack(){
+	goBack() {
 		Taro.navigateBack({
 			delta: 1
 		});
@@ -212,35 +212,35 @@ export class GoldHelp extends Component {
 	// 倒计时
 	timeDown(maxtime) {
 		let _this = this;
-		var h = maxtime.substring(0,2);
-		var m = maxtime.substring(3,5);
-		var s = maxtime.substring(6,8);
-		if(h =='00' && m=='00' && s=='00'){
+		var h = maxtime.substring(0, 2);
+		var m = maxtime.substring(3, 5);
+		var s = maxtime.substring(6, 8);
+		if (h == '00' && m == '00' && s == '00') {
 			clearInterval(_this.state.local_data.timer);
-			_this.setState((preState)=>{
+			_this.setState((preState) => {
 				preState.local_data.countdown.hour = h;
 				preState.local_data.countdown.minutes = m;
 				preState.local_data.countdown.seconds = s;
 			});
 			return;
-		}else{
+		} else {
 			//进行倒计时显示
-			this.state.local_data.timer = setInterval(function(){
+			this.state.local_data.timer = setInterval(function () {
 				--s;
-				if(s < 0){
+				if (s < 0) {
 					--m;
-					s=59;
+					s = 59;
 				}
-				if( m < 0){
+				if (m < 0) {
 					--h;
-					m=59
+					m = 59
 				}
-				if( h < 0){
-					s=0;
-					m=0;
+				if (h < 0) {
+					s = 0;
+					m = 0;
 				}
 				// 判断当时分秒小于10时补0
-				function checkTime(i){
+				function checkTime(i) {
 					if (i < 10 && i > -1) {
 						i = '0' + i
 					}
@@ -248,22 +248,22 @@ export class GoldHelp extends Component {
 				}
 				s = checkTime(s);
 				m = checkTime(m);
-				_this.setState((preState)=>{
+				_this.setState((preState) => {
 					preState.local_data.countdown.hour = h;
 					preState.local_data.countdown.minutes = m;
 					preState.local_data.countdown.seconds = s;
 				});
-			},1000);
+			}, 1000);
 		}
 	}
 
 	// 领取金币助力
-	receiveGoldHelp(){
+	receiveGoldHelp() {
 		let receiveGoldHelp = this.msgProto.receiveGoldHelp();
 		let parentModule = this.msgProto.parentModule(receiveGoldHelp);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {},
+			success(res) { },
 			fail(err) {
 				Taro.showToast({
 					title: err.errormsg,
@@ -284,22 +284,22 @@ export class GoldHelp extends Component {
 			title: '酸柠檬',
 			path: '/pages/login/index',
 			imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
-			callback: (status)=>{},
+			callback: (status) => { },
 		};
 		// 按钮分享
-		if(res.from === 'button' && roleId){
+		if (res.from === 'button' && roleId) {
 			console.log(' =====>按钮分享加速卡<=====');
 			shareData.title = '迎接音乐大考验，组建Wuli梦想乐队！';
 			shareData.path = `/pages/login/index?param1=${param1}&inviterRoleId=${roleId}`,
-			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
-			shareData.shareCallBack = (status)=>{
-				if(status.errMsg === "shareAppMessage:fail cancel"){
+				shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+			shareData.shareCallBack = (status) => {
+				if (status.errMsg === "shareAppMessage:fail cancel") {
 					Taro.showToast({
 						title: '分享失败',
 						icon: 'none',
 						duration: 2000,
 					})
-				}else{
+				} else {
 					Taro.showToast({
 						title: '分享成功',
 						icon: 'none',
@@ -307,18 +307,18 @@ export class GoldHelp extends Component {
 					})
 				}
 			}
-		}else{ // 右上角分享App
+		} else { // 右上角分享App
 			shareData.title = '明星、热点、八卦知多少？一试便知！';
 			shareData.path = '/pages/login/index';
 			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
-			shareData.shareCallBack = (status)=>{
-				if(status.errMsg === "shareAppMessage:fail cancel"){
+			shareData.shareCallBack = (status) => {
+				if (status.errMsg === "shareAppMessage:fail cancel") {
 					Taro.showToast({
 						title: '分享失败',
 						icon: 'none',
 						duration: 2000,
 					})
-				}else{
+				} else {
 					Taro.showToast({
 						title: '分享成功',
 						icon: 'none',
@@ -329,34 +329,34 @@ export class GoldHelp extends Component {
 		}
 		return onShareApp(shareData);
 	}
-	render () {
-		const { backBtn, goldIcon, goldIconOverlay, addIcon, gold_help_bg, baseGoldTxt, 
-			isShowDirections, howPlayTip, inviteTxt0, inviteTxt1, inviteTxt2, countdownTxt, 
-			receiveBtn,isShowGameLoading,} = this.state.local_data;
-		const { bonus, cd, icon, currCopper, list} = this.state.data.getGoldHelpInfo;
+	render() {
+		const { backBtn, goldIcon, goldIconOverlay, addIcon, gold_help_bg, baseGoldTxt,
+			isShowDirections, howPlayTip, inviteTxt0, inviteTxt1, inviteTxt2, countdownTxt,
+			receiveBtn, isShowGameLoading, } = this.state.local_data;
+		const { bonus, cd, icon, currCopper, list } = this.state.data.getGoldHelpInfo;
 		const { hour, minutes, seconds } = this.state.local_data.countdown;
-		const {copper, energy, redEnvelope} = this.state.local_data.currencyChange;
-		const content = list.map((cur,index)=>{
-			return  <View className={`item ${index%2?'marginLeft':''}`}>
-						<Image src={cur} className='headUrl'/>
-						<View className='golgNum'>
-							<Image src={goldIconOverlay} className='goldIconOverlay' />
-							<View className='num'>
-								<View className='addSymbol'>
-									+<Text className='bonus'>{bonus}%</Text>
-								</View>
-								<View className='baseGoldTxt'>{baseGoldTxt}</View>
-							</View>
+		const { copper } = this.state.local_data.currencyChange;
+		const content = list.map((cur, index) => {
+			return <View className={`item ${index % 2 ? 'marginLeft' : ''}`}>
+				<Image src={cur} className='headUrl' />
+				<View className='golgNum'>
+					<Image src={goldIconOverlay} className='goldIconOverlay' />
+					<View className='num'>
+						<View className='addSymbol'>
+							+<Text className='bonus'>{bonus}%</Text>
 						</View>
+						<View className='baseGoldTxt'>{baseGoldTxt}</View>
 					</View>
+				</View>
+			</View>
 		})
 
 		return (
 			<View className='golgHelp'>
-				<View className={isShowDirections?'':'hide'}>
+				<View className={isShowDirections ? '' : 'hide'}>
 					<MessageToast />
 				</View>
-				<View className={isShowGameLoading?'':'hide'}>
+				<View className={isShowGameLoading ? '' : 'hide'}>
 					<GameLoading />
 				</View>
 				<View className='bgColor'>
@@ -376,7 +376,7 @@ export class GoldHelp extends Component {
 							<View className='gold_help_box'>
 								<Image src={gold_help_bg} className='gold_help_bg'></Image>
 								<View onClick={this.DBgetQuickenCard.bind(this)} data-type='1' className='howPlayTip'>{howPlayTip}</View>
-								<ScrollView  className='scrollview' scrollY scrollWithAnimation>
+								<ScrollView className='scrollview' scrollY scrollWithAnimation>
 									<View className='itemBox'>
 										{content}
 									</View>
