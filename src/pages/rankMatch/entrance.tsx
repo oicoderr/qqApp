@@ -125,7 +125,6 @@ export class RankEntrance extends Component {
 		});
 	}
 
-	
 	componentDidMount () {}
 
 	componentWillUnmount () {}
@@ -138,6 +137,7 @@ export class RankEntrance extends Component {
 		}else{
 			this.websocket = App.globalData.websocket;
 		}
+
 		// 设置玩家基本信息UI显示
 		console.info()
 		getStorage('gameUserInfo',(res)=>{
