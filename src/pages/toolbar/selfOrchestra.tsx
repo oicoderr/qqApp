@@ -182,8 +182,8 @@ export class SelfOrchestra extends Component {
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
 						</View>
-						<View className='name name_'>{cur.name}*{cur.count}</View>
-						
+						<View className='name name_'>{cur.name}</View>
+
 						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
 							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
 						</View>
@@ -194,8 +194,8 @@ export class SelfOrchestra extends Component {
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
 						</View>
-						<View className='name name_'>{cur.name}*{cur.count}</View>
-						
+						<View className='name name_'>{cur.name}</View>
+
 						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
 							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
 						</View>
@@ -206,8 +206,8 @@ export class SelfOrchestra extends Component {
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
 						</View>
-						<View className='name name_'>{cur.name}*{cur.count}</View>
-						
+						<View className='name name_'>{cur.name}</View>
+
 						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
 							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
 						</View>
@@ -218,8 +218,8 @@ export class SelfOrchestra extends Component {
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
 						</View>
-						<View className='name name_'>{cur.name}*{cur.count}</View>
-						
+						<View className='name name_'>{cur.name}</View>
+
 						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
 							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
 						</View>
