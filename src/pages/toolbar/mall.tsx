@@ -64,10 +64,11 @@ export class Mall extends Component {
 				// 默认打开道具商城
 				isTab: true,
 				rewardText: '今日限免',
-				leadSingerTitle: '主唱',
-				guitaristTitle: '吉他手',
-				bassistTitle: '贝斯手',
-				drummerTitle: '鼓手',
+				leadSingerTitle: '灵魂主唱',
+				guitaristTitle: '劲爆吉他手',
+				bassistTitle: '沉稳贝斯手',
+				drummerTitle: '炸裂鼓手',
+				unlockTip: '待解锁',
 				// 主唱
 				leadSinger:[],
 				// 吉他手
@@ -401,7 +402,7 @@ export class Mall extends Component {
 	render () {
 		const { isShowLoading, mallTitle,  backBtn, propsText, bandText, freeTitle, freeTip, propsTitle, 
 			propsTip, leadSingerTitle, guitaristTitle, bassistTitle, drummerTitle, isTab, rewardText, 
-			energyIcon, ticketsIcon, goldIcon, isShowDirections,  } = this.state.local_data;
+			energyIcon, ticketsIcon, goldIcon, isShowDirections, unlockTip } = this.state.local_data;
 		
 		const {copper, energy} = this.state.local_data.currencyChange
 		// 道具
@@ -442,24 +443,30 @@ export class Mall extends Component {
 		const bassist = this.state.local_data.bassist;
 		const drummer = this.state.local_data.drummer;
 		const leadSingerContent = leadSinger.map((cur, index)=>{
-			return  <View onClick={this.DBbuyProps.bind(this)} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
-						<View className='cardBg_'>
-							<Image src={cur.icon} className='cardImg_' />
-						</View>
-						<View className='name name_'>{cur.name}*{cur.count}</View>
-						
-						<View className='consumCountWrap'>
-							<Image src={`${cur.consumType==1?ticketsIcon:''}`} className= {`icon ticketsIcon ${cur.consumType==1?'':'hide'}`} />
-							<Image src={`${cur.consumType==2?goldIcon:''}`} className={`icon goldIcon ${cur.consumType==2?'':'hide'}`} />
-							<Image src={`${cur.consumType==3?energyIcon:''}`} className={`icon energyIcon ${cur.consumType==3?'':'hide'}`} />
-							<View className='consumCount'>{cur.consumCount}</View>
-						</View>
-					</View>
+			return  <View onClick={this.DBbuyProps.bind(this)} data-isUnLock={cur.isUnLock} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
+								<View className='cardBg_'>
+									<Image src={cur.icon} className='cardImg_' />
+									<View className={cur.isunlock?'hide':'isunlock'}>
+										<View className='unlockTip'>{unlockTip}</View>
+									</View>
+								</View>
+								<View className='name name_'>{cur.name}*{cur.count}</View>
+
+								<View className='consumCountWrap'>
+									<Image src={`${cur.consumType==1?ticketsIcon:''}`} className= {`icon ticketsIcon ${cur.consumType==1?'':'hide'}`} />
+									<Image src={`${cur.consumType==2?goldIcon:''}`} className={`icon goldIcon ${cur.consumType==2?'':'hide'}`} />
+									<Image src={`${cur.consumType==3?energyIcon:''}`} className={`icon energyIcon ${cur.consumType==3?'':'hide'}`} />
+									<View className='consumCount'>{cur.consumCount}</View>
+								</View>
+							</View>
 		});
 		const guitaristContent = guitarist.map((cur, index)=>{
-			return  <View onClick={this.DBbuyProps.bind(this)} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
+			return  <View onClick={this.DBbuyProps.bind(this)} data-isUnLock={cur.isUnLock} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
+							<View className={cur.isunlock?'hide':'isunlock'}>
+								<View className='unlockTip'>{unlockTip}</View>
+							</View>
 						</View>
 						<View className='name name_'>{cur.name}*{cur.count}</View>
 						
@@ -472,9 +479,12 @@ export class Mall extends Component {
 					</View>
 		});
 		const bassistContent = bassist.map((cur, index)=>{
-			return  <View onClick={this.DBbuyProps.bind(this)} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
+			return  <View onClick={this.DBbuyProps.bind(this)} data-isUnLock={cur.isUnLock} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
+							<View className={cur.isunlock?'hide':'isunlock'}>
+								<View className='unlockTip'>{unlockTip}</View>
+							</View>
 						</View>
 						<View className='name name_'>{cur.name}*{cur.count}</View>
 						
@@ -487,9 +497,12 @@ export class Mall extends Component {
 					</View>
 		});
 		const drummerContent = drummer.map((cur, index)=>{
-			return  <View onClick={this.DBbuyProps.bind(this)} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
+			return  <View onClick={this.DBbuyProps.bind(this)} data-isUnLock={cur.isUnLock} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
+							<View className={cur.isunlock?'hide':'isunlock'}>
+								<View className='unlockTip'>{unlockTip}</View>
+							</View>
 						</View>
 						<View className='name name_'>{cur.name}*{cur.count}</View>
 						

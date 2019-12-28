@@ -441,6 +441,33 @@
                                     position: absolute;
                                     z-index: 11;
                                 }
+
+                                .isunlock{
+                                    width: 160rpx;
+                                    height: 160rpx;
+                                    background: rgba(0,0,0,.6);
+                                    border: 2rpx solid rgba(0,0,0,1);
+                                    border-radius: 20rpx;
+                                    margin: auto;
+                                    position: absolute;
+                                    z-index: 12;
+
+                                    .unlockTip{
+                                        width: 100rpx;
+                                        height: 32rpx;
+                                        line-height: 32rpx;
+                                        text-align: center;
+                                        background:rgba(0,0,0,.6);
+                                        border-radius: 16rpx;
+                                        font-size: 24rpx;
+                                        font-weight: 400;
+                                        color:rgba(255,255,255,1);
+                                        position: absolute;
+                                        bottom: 14rpx;
+                                        left: 50%;
+                                        transform: translateX(-50%);
+                                    }
+                                }
                             }
                         }
 
