@@ -210,14 +210,13 @@
 // 身体区域
 .body{
     width: 100%;
-    height: 840rpx;
+    height: 880rpx;
     position:absolute;
-    top: 260rpx;
+    bottom: 240rpx;
     left: 0;
     overflow: hidden;
     box-sizing: border;
-    z-index: 4;
-
+    z-index: 96;
 }
 
 // 底部
