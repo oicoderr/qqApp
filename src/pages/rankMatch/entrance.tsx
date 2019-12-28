@@ -125,14 +125,8 @@ export class RankEntrance extends Component {
 		});
 	}
 
-	// 设置玩家基本信息UI显示
-	componentDidMount () {
-		getStorage('gameUserInfo',(res)=>{
-			this.setState((preState)=>{
-				preState.data.gameUserInfo = res;
-			})
-		});
-	}
+	
+	componentDidMount () {}
 
 	componentWillUnmount () {}
 
@@ -144,6 +138,12 @@ export class RankEntrance extends Component {
 		}else{
 			this.websocket = App.globalData.websocket;
 		}
+		// 设置玩家基本信息UI显示
+		getStorage('gameUserInfo',(res)=>{
+			this.setState((preState)=>{
+				preState.data.gameUserInfo = res;
+			})
+		});
 
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
