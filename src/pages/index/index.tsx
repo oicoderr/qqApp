@@ -465,7 +465,7 @@ export class Index extends Component {
 							<Text className='num-same goldNum'>{copper}</Text>
 							<View onClick={this.goldHelp.bind(this)} className='addIcon-same addIcon' ></View>
 						</View>
-						<View className='redEnvelopeWrap'>
+						<View className='redEnvelopeWrap hide'>
 							<View className='board-same board'></View>
 							<View className='icon-same envelopeIcon' ></View>
 							<Text className='num-same envelopeNum'>{redEnvelope}</Text>

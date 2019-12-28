@@ -99,7 +99,6 @@ export default class HomeBand extends Component {
         });
       }
     }
-    console.info(this.state.local_data, '123123123123')
   }
 
   render() {

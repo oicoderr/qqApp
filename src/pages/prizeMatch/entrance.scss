@@ -84,7 +84,7 @@
             overflow: hidden;
             position: absolute;
             top: 42rpx;
-            left: 362rpx;;
+            left: 100rpx; // 362rpx;
     
             .board{
                 top: 10rpx;
@@ -232,6 +232,21 @@
                     width: 320rpx;
                     height: 150rpx;
                 }
+            }
+
+            .mask_{
+                position: absolute;
+                top: 0;
+                right: 26rpx;
+                width: 320rpx;
+                height: 150rpx;
+                background-color: rgba(0,0,0,.8);
+                border-radius: 20rpx;
+                font-size: 30rpx;
+                color: rgba(255,255,255,1);
+                font-weight: 400;
+                text-align: center;
+                line-height: 150rpx;
             }
 
             .seeAdsStatus{

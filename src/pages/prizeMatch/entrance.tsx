@@ -69,6 +69,7 @@ export class PrizeEntrance extends Component {
 				surplusText:'剩余：',
 				adsTip: '每局比赛自动使用一张加速卡',
 				quickenTip: 'Tips: 邀请好友获取加速卡，减少每局答题总耗时。',
+				mask_tip: '即将开放',
 				checked: true,     // 默认勾选观看广告
 				StayTunedImg: 'https://oss.snmgame.com/v1.0.0/StayTuned.png',
 				tipImg: 'https://oss.snmgame.com/v1.0.0/prizeMatch_FreeBtnTip.png',
@@ -301,7 +302,6 @@ export class PrizeEntrance extends Component {
 		});
 	}
 
-
 	componentDidHide () {
 		emitter.removeAllListeners('enterMatch');
 		emitter.removeAllListeners('getIsPrizeOpen');
@@ -454,7 +454,7 @@ export class PrizeEntrance extends Component {
 	render () {
 		const { backBtn, entranceBg, ruleTitle, freeBtn, ticketsBtn, tipImg, adsTip, checked, 
 			StayTunedImg, quickenCardBg, directionsTitle, pendingText, surplusText, quickenTip, 
-			progress_item_blank, progress_item, isShowDirections} = this.state.local_data;
+			progress_item_blank, progress_item, isShowDirections, mask_tip} = this.state.local_data;
 		const {type, value} = this.state.data.isOpen;
 		const {energy, redEnvelope} = this.state.local_data.currencyChange;
 		const {overCount, speedItemCount, currSpeedItemCount} = this.state.data.quickenCardHelpResult;
@@ -470,7 +470,7 @@ export class PrizeEntrance extends Component {
 						<Image onClick={this.goBack.bind(this)} src={backBtn} className='backBtn' />
 
 						{/* 门票bar */}
-						<View className='prizeMatchBar'>
+						<View className='prizeMatchBar hide'>
 							<View className='board-same board'></View>
 							<View className='icon-same ticketsIcon' ></View>
 							<Text className='num-same ticketsNum'>{redEnvelope}</Text>
@@ -493,6 +493,7 @@ export class PrizeEntrance extends Component {
 							<View className='items'>
 								<Image onClick={this.freeAdmission.bind(this)} src={freeBtn} className='btn freeBtn'/>
 								<Image onClick={this.payAdmission.bind(this)} src={ticketsBtn} className='btn ticketsBtn'/>
+		<View className='mask_'>{mask_tip}</View>
 							</View>
 							<View className='seeAdsStatus'>
 								<RadioGroup className='checkBox'>
