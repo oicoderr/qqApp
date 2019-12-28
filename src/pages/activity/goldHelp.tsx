@@ -1,9 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text, ScrollView } from '@tarojs/components'
+import { View, Image, Text, Button, ScrollView } from '@tarojs/components'
 import './goldHelp.scss'
 import emitter from '../../service/events'
 import throttle from 'lodash/throttle'
-import { getStorage, formatSeconds } from '../../utils'
+import { getStorage, formatSeconds, onShareApp } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import GameLoading from '../../components/GameLoading'
 import MessageToast from '../../components/MessageToast'
@@ -37,6 +37,16 @@ export class GoldHelp extends Component {
 				// 倒计时时间h,m,s
 				countdown:{},
 				currencyChange: {},
+				gameUserInfo:{
+					roleId: -1,
+					level: 1,
+					imgurl: '',
+					nickName: '',
+					sex: '-1',  	
+					copper: 1234,	
+					redEnvelope: 0,
+					energy: 0,
+				},
 				howPlayTip: '玩法说明',
 				baseGoldTxt: '基础金币',
 				inviteTxt0: '邀请好友助力',
@@ -70,10 +80,16 @@ export class GoldHelp extends Component {
 			this.websocket = App.globalData.websocket;
 		}
 
+		// 获取个人游戏信息
+		getStorage('gameUserInfo',(res)=>{
+			_this.setState((preState)=>{
+				preState.local_data.gameUserInfo = res;
+			})
+		});
+
 		// 获取金币/能量
 		getStorage('currencyChange',(res)=>{
 			this.setState((preState)=>{
-				console.log(res,1111223)
 				preState.local_data.currencyChange = res;
 			})
 		});
@@ -258,6 +274,61 @@ export class GoldHelp extends Component {
 		});
 	}
 
+	// 分享
+	onShareAppMessage(res) {
+		// 邀请者roleId
+		let roleId = this.state.local_data.gameUserInfo.roleId;
+		// 受邀请类型(1.组队;2.加速卡)
+		let param1 = 2;
+		let shareData = {
+			title: '酸柠檬',
+			path: '/pages/login/index',
+			imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
+			callback: (status)=>{},
+		};
+		// 按钮分享
+		if(res.from === 'button' && roleId){
+			console.log(' =====>按钮分享加速卡<=====');
+			shareData.title = '迎接音乐大考验，组建Wuli梦想乐队！';
+			shareData.path = `/pages/login/index?param1=${param1}&inviterRoleId=${roleId}`,
+			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+			shareData.shareCallBack = (status)=>{
+				if(status.errMsg === "shareAppMessage:fail cancel"){
+					Taro.showToast({
+						title: '分享失败',
+						icon: 'none',
+						duration: 2000,
+					})
+				}else{
+					Taro.showToast({
+						title: '分享成功',
+						icon: 'none',
+						duration: 2000,
+					})
+				}
+			}
+		}else{ // 右上角分享App
+			shareData.title = '明星、热点、八卦知多少？一试便知！';
+			shareData.path = '/pages/login/index';
+			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+			shareData.shareCallBack = (status)=>{
+				if(status.errMsg === "shareAppMessage:fail cancel"){
+					Taro.showToast({
+						title: '分享失败',
+						icon: 'none',
+						duration: 2000,
+					})
+				}else{
+					Taro.showToast({
+						title: '分享成功',
+						icon: 'none',
+						duration: 2000,
+					})
+				}
+			}
+		}
+		return onShareApp(shareData);
+	}
 	render () {
 		const { backBtn, goldIcon, goldIconOverlay, addIcon, gold_help_bg, baseGoldTxt, 
 			isShowDirections, howPlayTip, inviteTxt0, inviteTxt1, inviteTxt2, countdownTxt, 
@@ -313,6 +384,7 @@ export class GoldHelp extends Component {
 								<View className='inviteBox'>
 									<View className='inviteWrap'>
 										<Image src={addIcon} className='addIcon'></Image>
+										<Button openType='share' className='inviteBtn'></Button>
 										<View className='inviteTxtBox'>
 											<View className='inviteTxt0'>{inviteTxt0}</View>
 											<View className='inviteTxt1'>{inviteTxt1}</View>

@@ -324,7 +324,7 @@ export class PrizeEntrance extends Component {
 	}
 
 	// 开始看广告 -> 免费入场
-    freeAdmission(e){
+	freeAdmission(e){
 		this.videoAd.openVideoAd();
 	}
 
@@ -364,7 +364,7 @@ export class PrizeEntrance extends Component {
 			title: '酸柠檬',
 			path: '/pages/login/index',
 			imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
-			shareCallBack: (status)=>{},
+			callback: (status)=>{},
 		};
 		// 按钮分享
 		if(res.from === 'button' && roleId){
@@ -495,16 +495,16 @@ export class PrizeEntrance extends Component {
 								<Image onClick={this.payAdmission.bind(this)} src={ticketsBtn} className='btn ticketsBtn'/>
 							</View>
 							<View className='seeAdsStatus'>
-                                <RadioGroup className='checkBox'>
-                                    <Label className='share_label' for='1' key='1'>
-                                        <Radio className='radio_' value={adsTip} 
-                                            onClick={this.checkedChange.bind(this,checked)} 
-                                            checked={checked}>
-                                            <View className='adsTip'>{adsTip}</View>
-                                        </Radio>
-                                    </Label>
-                                </RadioGroup>
-                            </View>
+								<RadioGroup className='checkBox'>
+									<Label className='share_label' for='1' key='1'>
+										<Radio className='radio_' value={adsTip} 
+											onClick={this.checkedChange.bind(this,checked)} 
+											checked={checked}>
+											<View className='adsTip'>{adsTip}</View>
+										</Radio>
+									</Label>
+								</RadioGroup>
+						</View>
 							<View className={`mask ${type?'hide':''}`}>{value}</View>
 						</View>
 

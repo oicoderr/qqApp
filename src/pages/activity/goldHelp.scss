@@ -244,6 +244,13 @@
                             margin-right: 10rpx;
                         }
 
+                        .inviteBtn{
+                            position: absolute;
+                            width: 92rpx;
+                            height: 92rpx;
+                            opacity: 0;
+                        }
+
                         .inviteTxtBox{
                             padding: 13rpx 0;
                             box-sizing: border-box;

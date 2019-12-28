@@ -36,7 +36,6 @@ export class Recharge extends Component {
 	componentWillMount () {}
 
 	componentDidMount () {}
-		
 
 	componentWillUnmount () {}
 
@@ -140,6 +139,7 @@ export class Recharge extends Component {
 		const { ticketsIcon, tips, backBtn } = this.state.local_data;
 		const { redEnvelope } = this.state.data;
 		const chargeList = this.state.data.chargeList;
+
 		const content  = chargeList.map((cur)=>{
 			return  <View className='item'>
 						<View className='ticketsBg'>
