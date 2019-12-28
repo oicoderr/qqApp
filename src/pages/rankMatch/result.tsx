@@ -3,7 +3,7 @@ import { View, Image, Text } from '@tarojs/components'
 import emitter from '../../service/events';
 import createVideoAd from '../../service/createVideoAd'
 import { createWebSocket } from '../../service/createWebSocket'
-import { setStorage, unitReplacement } from '../../utils';
+import { setStorage, getStorage, unitReplacement } from '../../utils';
 import './result.scss'
 
 import RankResultInfo from '../../components/rankResultInfoUi'
@@ -38,6 +38,7 @@ export class RankReasult extends Component {
 			local_data:{
 				isShowRankResult: true,
 				rankUserInfo:{},
+				gameUserInfo:{},
 				PartyATeam: [], 		// 红队 战报各玩家数据
 				PartyBTeam: [],			// 蓝队
 				resultBg: 'https://oss.snmgame.com/v1.0.0/result-container.png',
@@ -135,7 +136,20 @@ export class RankReasult extends Component {
 			this.setState((preState)=>{
 				preState.local_data.rankResultInfo = item.rankResultInfo;
 				preState.local_data.rankUserInfo = item.rankUserInfo;
-			},()=>{});
+			},()=>{
+				// 将当前段位信息存储gameUserInfo中
+				getStorage('getStorage',(res)=>{
+					let rankResultInfo = _this.state.local_data.rankResultInfo
+					this.state.local_data.gameUserInfo = res;
+					this.state.local_data.gameUserInfo.dan = rankResultInfo.dan;
+					this.state.local_data.gameUserInfo.haveStar = rankResultInfo.haveStar;
+					this.state.local_data.gameUserInfo.totalStar = rankResultInfo.totalStar;
+					this.state.local_data.gameUserInfo.segmentTitle = rankResultInfo.segmentTitle;
+					this.state.local_data.gameUserInfo.gloryUrl = rankResultInfo.gloryUrl;
+					setStorage('gameUserInfo',_this.state.local_data.gameUserInfo);
+				})
+			});
+			
 			// 本局结果页数据发送给子组件rankResultInfoUi
 			let timer = setInterval(()=>{
 				emitter.emit('rankResultInfo', [item.rankResultInfo, timer]);
