@@ -253,7 +253,7 @@ export class PrizeQueue extends Component {
 			clearInterval(message[1]);
 			console.log('%c 玩家离开大奖赛匹配队列','font-size:14px;color:#ff641a;');
 			let entrancePage = this.state.routers.entrancePage;
-			Taro.redirectTo({
+			Taro.reLaunch({
 				url: entrancePage,
 				success(){
 					clearInterval(_this.state.local_data.timer);
@@ -280,7 +280,7 @@ export class PrizeQueue extends Component {
 			let enterGame = this.state.routers.enterGame;
 			// 所有参赛总人数
 			let countPeople = message[0]['data']['redPalyerOnInstance'].length;
-			Taro.redirectTo({
+			Taro.reLaunch({
 				url: buildURL(enterGame,{item: {
 					'prizeMatchUserInfo': prizeMatchUserInfo,
 					'count': countPeople

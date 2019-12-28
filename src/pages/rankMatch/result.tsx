@@ -328,14 +328,14 @@ export class RankReasult extends Component {
 
 	// 返回主页
 	goBack(){
-		Taro.redirectTo({
+		Taro.reLaunch({
 			url: this.state.routers.indexPage
 		});
 	}
 
 	// 重玩返回入口页面
 	replay(){
-		Taro.redirectTo({
+		Taro.reLaunch({
 			url: this.state.routers.entrancePage
 		});
 	}

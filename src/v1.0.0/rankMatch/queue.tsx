@@ -183,7 +183,7 @@ export class RankQueue extends Component {
 			clearInterval(message[1]);
 
 			let entrancePage = this.state.routers.entrancePage;
-			Taro.redirectTo({
+			Taro.reLaunch({
 				url: entrancePage,
 				success(){
 					Taro.showToast({
@@ -208,7 +208,7 @@ export class RankQueue extends Component {
 				_this.afreshFormation(PartyATeam, PartyBTeam, (data)=>{
 					console.error('正常data ===>')
 					console.log(data);
-					Taro.redirectTo({
+					Taro.reLaunch({
 						url: buildURL(goenterGame,{item:data}),
 					});
 				});

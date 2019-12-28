@@ -118,7 +118,7 @@ export class PrizeReasult extends Component {
 							mask: true,
 							duration: 2000,
 							success(){
-								Taro.redirectTo({
+								Taro.reLaunch({
 									url: entrancePage
 								})
 							}
@@ -132,7 +132,7 @@ export class PrizeReasult extends Component {
 					icon: 'none',
 					duration: 2000,
 					success(){
-						Taro.redirectTo({
+						Taro.reLaunch({
 							url: entrancePage
 						})
 					}
@@ -207,14 +207,14 @@ export class PrizeReasult extends Component {
 
 	// 返回主页
 	goBack(){
-		Taro.redirectTo({
+		Taro.reLaunch({
 			url: this.state.routers.indexPage
 		});
 	}
 
 	// 重玩返回入口页面
 	replay(){
-		Taro.redirectTo({
+		Taro.reLaunch({
 			url: this.state.routers.entrancePage
 		});
 	}
@@ -233,7 +233,7 @@ export class PrizeReasult extends Component {
 		}else{
 			console.log('%c 未勾选观看广告','font-size:14px;color:#ff1aca;')
 			let indexPage = this.state.routers.indexPage;
-			Taro.redirectTo({
+			Taro.reLaunch({
 				url: indexPage
 			})
 		}

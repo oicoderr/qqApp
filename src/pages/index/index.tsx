@@ -158,13 +158,13 @@ export class Index extends Component {
 
 						break;
 					case 2:
-						Taro.redirectTo({
+						Taro.reLaunch({
 							url: this.state.routers.prizeMatchQueue + '?isreconnection=1'
 						});
 						break;
 					case 3:
 						// 跳转排位赛匹配页
-						Taro.redirectTo({
+						Taro.reLaunch({
 							url: this.state.routers.rankQueue + '?isreconnection=1'
 						});
 						break;
@@ -196,13 +196,13 @@ export class Index extends Component {
 
 						break;
 					case 2:
-						Taro.redirectTo({
+						Taro.reLaunch({
 							url: _this.state.routers.prizeMatchEnterGame
 						});
 						break;
 					case 3:
 						// 排位赛游戏中退出跳转到队列页，因为队伍处理在队列页面
-						Taro.redirectTo({
+						Taro.reLaunch({
 							url: buildURL(_this.state.routers.rankQueue, { item: message[0]['data'] })
 						});
 						break;

@@ -60,8 +60,9 @@ class App extends Component {
 	componentWillMount () {
 		let _this = this;
 
-		console.log = () => {}
-    console.log('console.log失效了');
+		// console.log = () => {}
+		// console.error = () => {}
+    // console.log('console.log失效了');
 
 		const params = this.$router.params;
 		if(params.query){
@@ -100,7 +101,7 @@ class App extends Component {
 						setStorage('userInfo', userInfo);
 					}else{
 						// 跳转游戏主页
-						Taro.redirectTo({
+						Taro.reLaunch({
 							url: '/pages/index/index'
 						});
 					}

@@ -318,7 +318,7 @@ export class PrizeQueue extends Component {
 			clearInterval(message[1]);
 
 			let entrancePage = this.state.routers.entrancePage;
-			Taro.redirectTo({
+			Taro.reLaunch({
 				url: entrancePage,
 				success(){
 					Taro.showToast({
@@ -344,7 +344,7 @@ export class PrizeQueue extends Component {
 				let PartyBTeam = message[0]['data']['bluePalyerOnInstance'];
 				// 收到后台 ‘匹配成功后开始从新编队’
 				_this.afreshFormation(PartyATeam, PartyBTeam, (data)=>{
-					Taro.redirectTo({
+					Taro.reLaunch({
 						url: buildURL(goenterGame,{item:data}),
 					});
 				});

@@ -235,7 +235,7 @@ export const getCurrentPageUrl = () => {
       duration: 2000
     });
     setTimeout(() => {
-      Taro.redirectTo({
+      Taro.reLaunch({
         url: '/pages/idnex/index'
       })
     }, 2000);

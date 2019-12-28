@@ -253,7 +253,7 @@ export class PrizeEnterGame extends Component {
 				preState.local_data.curQuestion.correctOption = -1;
 				preState.local_data.selectedOptionIndex = -1;
 			},()=>{
-				Taro.redirectTo({
+				Taro.reLaunch({
 					url: buildURL(_this.state.routers.resultPage,{item: message[0]['data']})
 				})
 			});

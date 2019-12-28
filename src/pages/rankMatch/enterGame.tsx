@@ -352,7 +352,7 @@ export class RankEnterGame extends Component {
 				preState.data.rankResultInfo = message[0]['data'];
 			},()=>{
 				// 跳转结果页
-				Taro.redirectTo({
+				Taro.reLaunch({
 					url: buildURL(_this.state.routers.resultPage, {
 						item:{
 							'rankResultInfo': message[0]['data'],
