@@ -61,19 +61,19 @@ export default class HomeBand extends Component {
       if(elicitPart[i]['type'] == 1 && elicitPart[i]['status']){
         this.setState((preState)=>{
           preState.local_data.leadSinger = elicitPart[i];
-        })
+        });
       }else if(elicitPart[i]['type'] == 2 && elicitPart[i]['status']){
         this.setState((preState)=>{
           preState.local_data.leadSinger = elicitPart[i];
-        })
+        });
       }else if(elicitPart[i]['type'] == 3 && elicitPart[i]['status']){
         this.setState((preState)=>{
           preState.local_data.bassist = elicitPart[i];
-        })
+        });
       }else if(elicitPart[i]['type'] == 4 && elicitPart[i]['status']){
         this.setState((preState)=>{
           preState.local_data.drummer = elicitPart[i];
-        })
+        });
       }
     }
     console.info(this.state.local_data, '123123123123')
