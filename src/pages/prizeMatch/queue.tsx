@@ -205,7 +205,7 @@ export class PrizeQueue extends Component {
 			this.websocket = App.globalData.websocket;
 		}
 
-		// 切换匹配头像 1.5s切换一次
+		// 切换匹配头像 1s切换一次
 		this.setState((preState)=>{
 			let headImgPosi = preState.local_data.headImgPosi;
 			let headPosi = preState.local_data.headPosi;
@@ -221,11 +221,9 @@ export class PrizeQueue extends Component {
 					preState.local_data.selectedHead = getArrayItems(headImgPosi,6);
 					preState.local_data.selectedPosi = getArrayItems(headPosi,6);
 				},()=>{
-					if(index>3)clearInterval(_this.state.local_data.timer);
+					if(index>99)clearInterval(_this.state.local_data.timer);
 				})
-			},1500);
-			// console.log(this.state.local_data.selectedHead);
-			// console.log(this.state.local_data.selectedPosi);
+			},1000);
 		});
 
 		// 是否断线重连
@@ -256,7 +254,10 @@ export class PrizeQueue extends Component {
 			console.log('%c 玩家离开大奖赛匹配队列','font-size:14px;color:#ff641a;');
 			let entrancePage = this.state.routers.entrancePage;
 			Taro.redirectTo({
-				url: entrancePage
+				url: entrancePage,
+				success(){
+					clearInterval(_this.state.local_data.timer);
+				}
 			})
 		});
 
@@ -283,12 +284,16 @@ export class PrizeQueue extends Component {
 				url: buildURL(enterGame,{item: {
 					'prizeMatchUserInfo': prizeMatchUserInfo,
 					'count': countPeople
-				}})
+				}}),
+				success(){
+					clearInterval(_this.state.local_data.timer);
+				}
 			})
 		});
 	}
 
 	componentDidHide () {
+		clearInterval(this.state.local_data.timer);
 		emitter.removeAllListeners('exitQueueStatus');
 		emitter.removeAllListeners('getTeamSituation');
 		emitter.removeAllListeners('getBattleTeams');
