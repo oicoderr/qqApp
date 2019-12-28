@@ -60,8 +60,8 @@ class App extends Component {
 	componentWillMount () {
 		let _this = this;
 
-		console.log = () => {}
-    console.log('console.log失效了');
+		// console.log = () => {}
+    // console.log('console.log失效了');
 
 		const params = this.$router.params;
 		if(params.query){

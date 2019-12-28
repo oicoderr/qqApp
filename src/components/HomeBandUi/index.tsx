@@ -13,17 +13,17 @@ export default class HomeBand extends Component {
       },
 
       local_data: {
-           // 主唱
-          leadSinger:{},
+        // 主唱
+        leadSinger:{},
 
-          // 吉他手
-          guitarist:{},
+        // 吉他手
+        guitarist:{},
 
-          // 贝斯手
-          bassist:{},
+        // 贝斯手
+        bassist:{},
 
-          // 鼓手
-          drummer:{}
+        // 鼓手
+        drummer:{}
       },
       
       // 未使用人物默认主图代替
@@ -49,11 +49,16 @@ export default class HomeBand extends Component {
           light: '', 
         }
       }
-		};
+    }
 	}
 
-  componentWillMount() {
-    let _this = this;
+  componentWillMount() {}
+
+  componentDidMount() {}
+
+  componentWillUnmount() {}
+
+  componentDidShow() {
     // 接受签到基本数据
     this.eventEmitter = emitter.addListener('selfOrchestra', message => {
       clearInterval(message[1]);
@@ -67,12 +72,6 @@ export default class HomeBand extends Component {
       this.elicitPart(list);
     });
   }
-
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
-  componentDidShow() {}
 
   componentDidHide() {}
 

@@ -212,7 +212,7 @@ export class Index extends Component {
 			}
 		});
 		// -------------------------- 游戏被杀死，重新进入游戏 End-----------------------------------
-
+		
 		// 1802 回应签到基本信息
 		this.eventEmitter = emitter.addListener('getWeekCheckIninfo', (message) => {
 			clearInterval(message[1]);
@@ -353,6 +353,9 @@ export class Index extends Component {
 				setStorage('currencyChange', _this.state.currencyChange);
 			});
 		});
+
+		// 1601 请求乐队基本信息
+		this.getSelfOrchestra();
 	}
 
 	componentDidHide() {
@@ -423,6 +426,23 @@ export class Index extends Component {
 		Taro.navigateTo({
 			url: goldHelpPage
 		})
+	}
+
+	// 请求乐队基本信息
+	getSelfOrchestra(){
+		let selfOrchestra = this.msgProto.selfOrchestra();
+		let parentModule = this.msgProto.parentModule(selfOrchestra);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {console.log('请求我的乐队基本信息Success')},
+			fail(err){
+				// Taro.showToast({
+				// 	title: err.errMsg,
+				// 	icon: 'none',
+				// 	duration: 2000
+				// })
+			}
+		});
 	}
 
 	render() {

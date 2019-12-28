@@ -69,6 +69,7 @@ export class PrizeQueue extends Component {
 				PartyBTeam:[],
 				matchStatus: true,
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
+				v3Img: 'https://oss.snmgame.com/v1.0.0/3v3.png',
 			}
 		}
 		this.msgProto = new MsgProto();
@@ -300,7 +301,7 @@ export class PrizeQueue extends Component {
 	}
 
 	render () {
-		const { isShowLoading, quitBtn, selectedHead, selectedPosi } = this.state.local_data;
+		const { isShowLoading, quitBtn, selectedHead, selectedPosi, v3Img } = this.state.local_data;
 		const { curTeamInfo } = this.state.data;
 		const headImg = selectedPosi.map((cur,index)=>{
 			return  <View className='headImg headSize' style={`background-position: ${selectedHead[index].x}rpx ${selectedHead[index].y}rpx; top: ${cur.y}rpx;left: ${cur.x}rpx`}></View>
@@ -333,7 +334,10 @@ export class PrizeQueue extends Component {
 									</View>
 								</View>
 							</View>	
-							<View className='queuePeopleNum'>当前人数: {curTeamInfo['currCount']}/{curTeamInfo['maxCount']}</View>
+							{/* <View className='queuePeopleNum'>当前人数: {curTeamInfo['currCount']}/{curTeamInfo['maxCount']}</View> */}
+							<View className="v3">
+								<Image src={v3Img} className='v3Img' />
+							</View>
 							{/* 头像 */}
 							{headImg}
 						</View>

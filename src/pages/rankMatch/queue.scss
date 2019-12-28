@@ -116,6 +116,19 @@
                 text-align: center;
                 padding-top: 52rpx;
             }
+
+            .v3{
+                width: 100%;
+                height: 60rpx;
+                display: flex;
+                justify-content: center;
+                padding: 50rpx 0;
+
+                .v3Img{
+                    width: 202rpx;
+                    height: 60rpx;
+                }
+            }
         }
 
         .status{
