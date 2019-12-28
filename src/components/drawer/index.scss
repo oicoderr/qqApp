@@ -1,166 +1,166 @@
-.hide{
-    display: none;
+.hide {
+  display: none;
 }
 
 /*mask*/
 .drawer_screen {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    background: #000;
-    opacity: 0.6;
-    overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: #000;
+  opacity: 0.6;
+  overflow: hidden;
 }
-.animateStart{
-    transform: translateX(360rpx);
-    animation-duration: .5s;
-    transition-timing-function: linear;
-    transition-delay: 0s;
-}
-
-.animateBack{
-    transform: translateX(0rpx);
-    animation-duration: .5s;
-    transition-timing-function: linear;
-    transition-delay: 0s;
+.animateStart {
+  transform: translateX(360rpx);
+  animation-duration: 0.5s;
+  transition-timing-function: linear;
+  transition-delay: 0s;
 }
 
-.rotateBtn{
-    transform: rotate(180deg);
+.animateBack {
+  transform: translateX(0rpx);
+  animation-duration: 0.5s;
+  transition-timing-function: linear;
+  transition-delay: 0s;
+}
+
+.rotateBtn {
+  transform: rotate(180deg);
 }
 
 /*content*/
 .drawer_attr_box {
-    width: 410rpx;
-    overflow: hidden;
-    position: fixed;
-    top: 400rpx;
-    left: -360rpx;
-    z-index: 1001;
-    display: flex;
-    justify-content: space-between;
+  width: 410rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 400rpx;
+  left: -360rpx;
+  z-index: 1001;
+  display: flex;
+  justify-content: space-between;
 
-    .btn {
-        width: 48rpx;
-        height: 620rpx;
-        position: relative;
-        z-index: 1004;
+  .btn {
+    width: 48rpx;
+    height: 620rpx;
+    position: relative;
+    z-index: 1004;
 
-        .powerDrawerBtn{
-            width: 100%;
-            height: 95rpx;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-        }
+    .powerDrawerBtn {
+      width: 100%;
+      height: 95rpx;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
     }
+  }
 }
 
-.drawer_contentWrap{
-    width:360rpx;
-    height:620rpx;
-    padding: 6rpx;
-    background-color: rgba(0,0,0,.3);
-    border-radius: 0rpx 20rpx 20rpx 0rpx;
-    box-sizing: border-box;
+.drawer_contentWrap {
+  width: 360rpx;
+  height: 620rpx;
+  padding: 6rpx;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 0rpx 20rpx 20rpx 0rpx;
+  box-sizing: border-box;
 }
 
 .drawer_content {
+  width: 100%;
+  height: 100%;
+  background: rgba(61, 115, 230, 1);
+  border-radius: 0rpx 20rpx 20rpx 0rpx;
+  box-sizing: border-box;
+  overflow-x: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .drawer_body {
     width: 100%;
-    height: 100%;
-    background: rgba(61,115,230,1);
-    border-radius: 0rpx 20rpx 20rpx 0rpx;
-    box-sizing: border-box;
-    overflow-x: scroll;
+    height: 470rpx;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
+    padding: 34rpx 36rpx 44rpx 22rpx;
+    box-sizing: border-box;
+    flex-wrap: wrap;
 
-    .drawer_body{
-        width: 100%;
-        height: 470rpx;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 34rpx 36rpx 44rpx 22rpx;
-        box-sizing: border-box;
-        flex-wrap: wrap;
+    .item {
+      width: 80rpx;
+      height: 118rpx;
+      margin-bottom: 30rpx;
 
-        .item{
-            width: 80rpx;
-            height: 118rpx;
-            margin-bottom: 30rpx;
+      .itemBg {
+        width: 80rpx;
+        height: 80rpx;
+        background-repeat: no-repeat;
+        margin-bottom: 8rpx;
+        background-image: url(https://oss.snmgame.com/v1.0.0/icon-box0.png);
+        background-size: 380rpx 300rpx;
+      }
 
-            .itemBg{
-                width: 80rpx;
-                height: 80rpx;
-                background-repeat: no-repeat;
-                margin-bottom: 8rpx;
-                background-image: url(https://oss.snmgame.com/v1.0.0/icon-box0.png);
-                background-size: 380rpx 300rpx;
-            }
-
-            .title{
-                font-size: 24rpx;
-                font-weight: 400;
-                color:rgba(255,255,255,1);
-                text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
-                text-align: center;
-                height: 24rpx;
-                line-height: 24rpx;
-            }
-        }
+      .title {
+        font-size: 24rpx;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+        text-align: center;
+        height: 24rpx;
+        line-height: 24rpx;
+      }
     }
+  }
 
-    .drawer_setting{
-        width: 100%;
-        height: 130rpx;
-        box-sizing: border-box;
-        background:rgba(43,81,162,1);
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        box-sizing: border-box;
-        flex-wrap: wrap;
-        padding: 15rpx 46rpx 34rpx 28rpx;
+  .drawer_setting {
+    width: 100%;
+    height: 130rpx;
+    box-sizing: border-box;
+    background: rgba(43, 81, 162, 1);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    padding: 15rpx 46rpx 34rpx 28rpx;
 
-        .item{
-            width: 60px;
-            height: 118px;
+    .item {
+      width: 60px;
+      height: 118px;
 
-            .settingItemBg{
-                width: 60rpx;
-                height: 60rpx;
-                background-repeat: no-repeat;
-                margin-bottom: 8rpx;
-                background-image: url(https://oss.snmgame.com/v1.0.0/icon-box0.png);
-                background-size: 380px 300px;
-            }
+      .settingItemBg {
+        width: 60rpx;
+        height: 60rpx;
+        background-repeat: no-repeat;
+        margin-bottom: 8rpx;
+        background-image: url(https://oss.snmgame.com/v1.0.0/icon-box0.png);
+        background-size: 380px 300px;
+      }
 
-            .title{
-                width:60rpx;
-                text-align: center;
-                font-size: 24rpx;
-                font-weight: 400;
-                color:rgba(255,255,255,1);
-                text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
-                text-align: center;
-                height: 24rpx;
-                line-height: 24rpx;
-            }
-        }
+      .title {
+        width: 60rpx;
+        text-align: center;
+        font-size: 24rpx;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+        text-align: center;
+        height: 24rpx;
+        line-height: 24rpx;
+      }
     }
+  }
 }
 
-.drawer_title{
-    padding: 20rpx;
-    font: 42rpx "microsoft yahei";
-    text-align: center;
+.drawer_title {
+  padding: 20rpx;
+  font: 42rpx 'microsoft yahei';
+  text-align: center;
 }
 
-.line{
-    border-bottom: 1px solid #f8f8f8;
+.line {
+  border-bottom: 1px solid #f8f8f8;
 }

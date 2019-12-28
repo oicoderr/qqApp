@@ -1,17 +1,15 @@
-
-.hide{
-    display: none;
+.hide {
+  display: none;
 }
-.index{
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(27, 27, 27, .6);
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 1008;
-    padding: 230rpx 54.5rpx 0 54.5rpx;
-    box-sizing: border-box;
-    
+.index {
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(27, 27, 27, 0.6);
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	z-index: 1008;
+	padding: 230rpx 54.5rpx 0 54.5rpx;
+	box-sizing: border-box;
 }
