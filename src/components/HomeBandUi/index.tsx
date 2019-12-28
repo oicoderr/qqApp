@@ -24,7 +24,31 @@ export default class HomeBand extends Component {
 
           // 鼓手
           drummer:{}
-			},
+      },
+      
+      // 未使用人物默认主图代替
+      default_data: {
+        // 吉他手
+        guitarist_:{
+          staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/guitar-shadow-1.png',
+          stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/guitar-stage-shadow-1.png', 
+          light: '',
+        },
+
+        // 贝斯手
+        bassist_:{
+          staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/bass-shadow-1.png',
+          stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/bass-stage-shadow-1.png', 
+          light: '', 
+        },
+
+        // 鼓手
+        drummer_:{
+          staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/drum-shadow-1.png',
+          stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/drum-stage-shadow-1.png', 
+          light: '', 
+        }
+      }
 		};
 	}
 
@@ -84,27 +108,53 @@ export default class HomeBand extends Component {
     const bassist = this.state.local_data.bassist;
     const drummer = this.state.local_data.drummer;
 
+    // 默认空缺主人物
+    const {guitarist_, bassist_, drummer_} = this.state.default_data;
+
     return  <View className="homeBand">
-              <View onClick={this.leadSingerBox.bind(this)}className={`leadSingerBox ${staticBand?'':'hide'}`}>
+              <View className={`leadSingerBox ${type?'':'hide'}`}>
                 <Image src={staticBand} className='leadSinger'/>
                 <Image src={light} className='leadLight'/>
                 <Image src={stage} className='leadStage'/>
               </View>
-              <View onClick={this.guitaristBox.bind(this)} className={`guitaristBox  ${guitarist.type?'':'hide'}`}>
+
+              <View className={`guitaristBox ${guitarist.type?'':'hide'}`}>
                 <Image src={guitarist.staticBand} className='guitarist'/>
                 <Image src={guitarist.light} className='guitaristLight'/>
                 <Image src={guitarist.stage} className='guitaristStage'/>
               </View>
+              {/* 空缺填充 */}
+              <View className={`guitaristBox ${guitarist.type?'hide':''}`}>
+                <Image src={guitarist_.staticBand} className='guitarist'/>
+                <Image src={guitarist_.light} className='guitaristLight'/>
+                <Image src={guitarist_.stage} className='guitaristStage'/>
+              </View>
+
+
               <View  className={`bassistBox ${bassist.type?'':'hide'}`}>
                 <Image src={bassist.staticBand} className='bassist'/>
                 <Image src={bassist.light} className='bassistLight'/>
                 <Image src={bassist.stage} className='bassistStage'/>
               </View>
-              <View  className={`drummerBox ${bassist.type?'':'hide'}`}>
-                <Image src={drummer.staticBand} className={`drummer  ${drummer.type?'':'hide'}`}/>
+              {/* 空缺填充 */}
+              <View  className={`bassistBox ${bassist.type?'hide':''}`}>
+                <Image src={bassist_.staticBand} className='bassist'/>
+                <Image src={bassist_.light} className='bassistLight'/>
+                <Image src={bassist_.stage} className='bassistStage'/>
+              </View>
+
+              <View  className={`drummerBox ${drummer.type?'':'hide'}`}>
+                <Image src={drummer.staticBand} className={`drummer`}/>
                 <Image src={drummer.light} className='drummerLight'/>
                 <Image src={drummer.stage} className='drummerStage'/>
               </View>
+              {/* 空缺填充 */}
+              <View  className={`drummerBox ${drummer.type?'hide':''}`}>
+                <Image src={drummer_.staticBand} className={`drummer`}/>
+                <Image src={drummer_.light} className='drummerLight'/>
+                <Image src={drummer_.stage} className='drummerStage'/>
+              </View>
+
             </View>;
   }
 }
