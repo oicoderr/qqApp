@@ -59,6 +59,10 @@ class App extends Component {
 
 	componentWillMount () {
 		let _this = this;
+
+		// console.log = () => {}
+    // console.log('console.log失效了');
+
 		const params = this.$router.params;
 		if(params.query){
 			let inviterRoleId = params.query.inviterRoleId;
@@ -83,7 +87,7 @@ class App extends Component {
 				// 获取缓存userInfo，如果没有授权信息, 授权后并保存缓存中，如果存在openid,跳转游戏登录
 				getStorage('userInfo',(res)=>{
 					if(!res.nickName || !res.avatarUrl ){
-						console.info('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
+						console.log('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
 						// 重新授权登录
 						// Taro.showToast({
 						// 	title: '请授权，解锁更多姿势～',
@@ -113,7 +117,7 @@ class App extends Component {
 
 		// 监测1040 全局提示
 		this.eventEmitter = emitter.addListener('globalTips', (message) => {
-			console.error('收到1040 全局提示');console.info(message);
+			console.error('收到1040 全局提示');console.log(message);
 			clearInterval(message[1]);
 			Taro.showToast({
 				title: message[0].data.content,
@@ -124,14 +128,14 @@ class App extends Component {
 
 		// 1002 游戏登录状态
 		this.eventEmitter = emitter.once('loginGameStatus', (message) => {
-			// console.info('%c 游戏登录状态： ', 'color: blue;font-size:14px;'); console.info(message);
+			// console.log('%c 游戏登录状态： ', 'color: blue;font-size:14px;'); console.log(message);
 			// 清除消息转发定时器
 			clearInterval(message[1]);
 			// 消息本体
 			let loginDesc =  message[0]['data']['loginDesc'];
 			let loginResult = message[0]['data']['loginResult'];
 			if(loginDesc && loginResult){
-				console.info('%c 登陆成功！', 'font-size:14px;color:#20ff1f;background-color:#000000;')
+				console.log('%c 登陆成功！', 'font-size:14px;color:#20ff1f;background-color:#000000;')
 				// Taro.showToast({
 				// 	title: loginDesc,
 				// 	icon: 'none',
@@ -158,8 +162,8 @@ class App extends Component {
 				this.websocket.closeWebSocket();
 				this.globalData.websocket = '';
 			}
-			console.info('('+this.globalData.websocket+')');
-			console.error('卸载的当前路由 ==>');console.info(currentPage);
+			console.log('('+this.globalData.websocket+')');
+			console.error('卸载的当前路由 ==>');console.log(currentPage);
 		}
 	}
 
@@ -226,7 +230,7 @@ class App extends Component {
 	// 创建网络连接
 	createWebSocket(){
 		let _this = this;
-		console.info('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
+		console.log('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
 		// 创建websocket对象
 		this.websocket = new Websocket({
 			// true代表启用心跳检测和断线重连
@@ -249,7 +253,7 @@ class App extends Component {
 
 		// 捕获websocket异常
 		this.websocket.getOnerror((err)=>{
-			console.error('appjs捕获到websocket异常');console.info(err);
+			console.error('appjs捕获到websocket异常');console.log(err);
 			Taro.showToast({
 				title: err,
 				icon: 'none',
@@ -260,8 +264,8 @@ class App extends Component {
 		// 监听网络变化
 		this.websocket.onNetworkChange({
 			url: websocketUrl,
-			success(res) { console.info(res) },
-			fail(err) { console.info(err) }
+			success(res) { console.log(res) },
+			fail(err) { console.log(err) }
 		})
 
 		// 监听服务器返回
@@ -269,8 +273,8 @@ class App extends Component {
 			let message = JSON.parse(result);
 			let messageData = JSON.parse(message.data);
 			message.data = messageData;
-			console.info('%c 收到服务器内容：', 'background:#000;color:white;font-size:14px');
-			console.info(message);
+			console.log('%c 收到服务器内容：', 'background:#000;color:white;font-size:14px');
+			console.log(message);
 			// 要进行的操作
 			new ReceiveMsg(message);
 		})
@@ -278,18 +282,18 @@ class App extends Component {
 		this.websocket.initWebSocket({
 			url: websocketUrl,
 			success(res) { 
-				console.info('～建立连接成功！可以onSocketOpened拉～');
+				console.log('～建立连接成功！可以onSocketOpened拉～');
 				// 对外抛出websocket
 				_this.globalData.websocket = _this.websocket;
 				// 通知AppGlobalSocket
 				let timer = setInterval(()=>{
-					console.info('AppGlobalSocket')
+					console.log('AppGlobalSocket')
 					emitter.emit('AppGlobalSocket', [_this.websocket, timer]);
 				},20);
 				// 开始登陆
 				_this.websocket.onSocketOpened();
 			},
-			fail(err) { console.info(err) }
+			fail(err) { console.log(err) }
 		})
 	}
 

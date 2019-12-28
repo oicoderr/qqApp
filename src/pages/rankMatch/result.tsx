@@ -80,7 +80,7 @@ export class RankReasult extends Component {
 		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
 			console.error('是否征途退出？' + status);
 			if(status.isEnded){
-				console.info('%c 正常播放结束，下发奖励','font-size:14px;color:#0fdb24;');
+				console.log('%c 正常播放结束，下发奖励','font-size:14px;color:#0fdb24;');
 				let data_ = {
 					type: 1,
 					value: '',
@@ -103,7 +103,7 @@ export class RankReasult extends Component {
 							preState.local_data.isShowRankResult = false;
 						},()=>{});
 					},
-					fail(err) { console.info(err) }
+					fail(err) { console.log(err) }
 				});
 			}else{
 				let isSeeAds = this.msgProto.isSeeAds('');
@@ -122,14 +122,14 @@ export class RankReasult extends Component {
 							preState.local_data.isShowRankResult = false;
 						},()=>{});
 					},
-					fail(err) { console.info(err) }
+					fail(err) { console.log(err) }
 				});
 			}
 		});
 
 		// 获取本局结果页数据
 		const params = this.$router.params;
-		console.info('%c 获取排位赛结果数据 ==>','font-size:14px; color:#98ff1a;');console.info(JSON.parse(params.item));
+		console.log('%c 获取排位赛结果数据 ==>','font-size:14px; color:#98ff1a;');console.log(JSON.parse(params.item));
 		const item = JSON.parse(params.item);
 		if(item){
 			this.setState((preState)=>{
@@ -158,7 +158,7 @@ export class RankReasult extends Component {
 	componentDidShow () {
 		let _this = this;
 		if(App.globalData.websocket === ''){
-			console.info('%c rankMatch-result 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c rankMatch-result 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -167,7 +167,7 @@ export class RankReasult extends Component {
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('排位赛结果观看广告->收到1010货币发生变化');console.info(message);
+			console.error('排位赛结果观看广告->收到1010货币发生变化');console.log(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState)=>{
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
@@ -180,9 +180,9 @@ export class RankReasult extends Component {
 
 		// 接受子组件 ==> 返回是否勾选播放激励视频状态
 		this.eventEmitter = emitter.addListener('isCheckPlayVideo', (message) => {
-			console.info('%c 接受子组件 `rankResultInfoUi` 返回是否勾选播放激励视频状态','color:#3c3c3c;fon-size:14px;'); console.info(message);
+			console.log('%c 接受子组件 `rankResultInfoUi` 返回是否勾选播放激励视频状态','color:#3c3c3c;fon-size:14px;'); console.log(message);
 			if(message){
-				console.info('%c ～ 开始播放激励视频 ～',' font-size: 14px; color: #c200be;');
+				console.log('%c ～ 开始播放激励视频 ～',' font-size: 14px; color: #c200be;');
 				// 开始播放激励广告
 				this.videoAd.openVideoAd();
 
@@ -208,7 +208,7 @@ export class RankReasult extends Component {
 							preState.local_data.isShowRankResult = false;
 						},()=>{});
 					},
-					fail(err) { console.info(err) }
+					fail(err) { console.log(err) }
 				});
 			}
 		});
@@ -216,7 +216,7 @@ export class RankReasult extends Component {
 		// 接受排位赛结果战报
 		this.eventEmitter = emitter.addListener('getRankBattleReport', (message) => {
 			clearInterval(message[1]);
-			console.info('%c 接受排位赛结果战报','color:#3c3c3c;fon-size:14px;background-color:#BBFFFF;'); console.info(message[0]['data']);
+			console.log('%c 接受排位赛结果战报','color:#3c3c3c;fon-size:14px;background-color:#BBFFFF;'); console.log(message[0]['data']);
 			// 设置输赢平横幅
 			this.successFailDraw(message[0]['data']['result']);
 			// 奖项列表

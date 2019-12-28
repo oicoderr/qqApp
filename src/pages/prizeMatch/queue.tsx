@@ -171,7 +171,7 @@ export class PrizeQueue extends Component {
 
 		// 匹配中是否断线重连状态
 		const params = this.$router.params;
-		console.info('是否断线重连 ==>');console.info(params);
+		console.log('是否断线重连 ==>');console.log(params);
 		const isreconnection = params.isreconnection;
 		if(isreconnection === '1'){
 			this.setState((preState)=>{
@@ -199,7 +199,7 @@ export class PrizeQueue extends Component {
 		},500);
 
 		if(App.globalData.websocket === ''){
-			console.info('%c prize-queue 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c prize-queue 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -224,8 +224,8 @@ export class PrizeQueue extends Component {
 					if(index>3)clearInterval(_this.state.local_data.timer);
 				})
 			},1500);
-			// console.info(this.state.local_data.selectedHead);
-			// console.info(this.state.local_data.selectedPosi);
+			// console.log(this.state.local_data.selectedHead);
+			// console.log(this.state.local_data.selectedPosi);
 		});
 
 		// 是否断线重连
@@ -238,14 +238,14 @@ export class PrizeQueue extends Component {
 		if(isreconnection){
 			this.websocket.sendWebSocketMsg({
 				data: parentModule,
-				success(res) { console.info('%c 进入匹配ing','font-size:14px;color:#e66900;')},
+				success(res) { console.log('%c 进入匹配ing','font-size:14px;color:#e66900;')},
 				fail(err) {
 					Taro.showToast({
 						title: err.errormsg,
 						icon: 'none',
 						duration: 2000
 					})
-					console.error('匹配错误信息==> ');console.info(err);
+					console.error('匹配错误信息==> ');console.log(err);
 				}
 			});
 		}
@@ -253,7 +253,7 @@ export class PrizeQueue extends Component {
 		// 1332 玩家离开大奖赛匹配队列 
 		this.eventEmitter = emitter.addListener('exitQueueStatus', (message) => {
 			clearInterval(message[1]);
-			console.info('%c 玩家离开大奖赛匹配队列','font-size:14px;color:#ff641a;');
+			console.log('%c 玩家离开大奖赛匹配队列','font-size:14px;color:#ff641a;');
 			let entrancePage = this.state.routers.entrancePage;
 			Taro.redirectTo({
 				url: entrancePage
@@ -263,7 +263,7 @@ export class PrizeQueue extends Component {
 		// 1334 当前队伍情况
 		this.eventEmitter = emitter.addListener('getTeamSituation', (message) => {
 			clearInterval(message[1]);
-			console.info('接受当前队伍情况 ====>');console.info(message[0]);
+			console.log('接受当前队伍情况 ====>');console.log(message[0]);
 			let curTeamInfo = message[0]['data'];
 			this.setState((preState)=>{
 				preState.data.curTeamInfo = curTeamInfo;
@@ -273,7 +273,7 @@ export class PrizeQueue extends Component {
 		// 1304 服务器通知客户端角色进入比赛房间
 		this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
 			clearInterval(message[1]);
-			console.info('接受当前所有参赛玩家信息 ====>');console.info(message[0]['data']);
+			console.log('接受当前所有参赛玩家信息 ====>');console.log(message[0]['data']);
 			// 设置自己大奖赛游戏信息
 			let prizeMatchUserInfo = this.getPrizeMatchUserInfo(message[0]['data']['redPalyerOnInstance']);
 			let enterGame = this.state.routers.enterGame;
@@ -299,7 +299,7 @@ export class PrizeQueue extends Component {
 		let _this = this;
 		getStorage('gameUserInfo',(val)=>{
 			_this.setState((preState)=>{
-				console.info('%c 自己游戏基本信息 ==>','font-size:14px;color:#c500f0;');console.info(val);
+				console.log('%c 自己游戏基本信息 ==>','font-size:14px;color:#c500f0;');console.log(val);
 				preState.local_data.gameUserInfo = val;
 			},()=>{});
 		})
@@ -324,10 +324,10 @@ export class PrizeQueue extends Component {
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res){
-				console.info('～发送退出请求成功～');
+				console.log('～发送退出请求成功～');
 			},
 			fail(err){
-				console.info(err);
+				console.log(err);
 			}
 		})
 	}

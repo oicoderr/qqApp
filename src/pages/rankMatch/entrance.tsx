@@ -85,7 +85,7 @@ export class RankEntrance extends Component {
 			let adsRewards = this.msgProto.adsRewards(data_);
 			let parentModule_ = this.msgProto.parentModule(adsRewards);
 			if(status.isEnded){
-				console.info('%c 正常播放结束，下发奖励','font-size:14px;color:#0fdb24;');
+				console.log('%c 正常播放结束，下发奖励','font-size:14px;color:#0fdb24;');
 				this.websocket.sendWebSocketMsg({
 					data: parentModule_,
 					success(res) {
@@ -100,11 +100,11 @@ export class RankEntrance extends Component {
 							preState.local_data.isShowRankResult = false;
 						},()=>{});
 					},
-					fail(err) { console.info(err) }
+					fail(err) { console.log(err) }
 				});
 				
 			}else{
-				console.info('%c 未看完视频，没有奖励啦','font-size:14px;color:#db2a0f;');
+				console.log('%c 未看完视频，没有奖励啦','font-size:14px;color:#db2a0f;');
 				this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
@@ -119,7 +119,7 @@ export class RankEntrance extends Component {
 							preState.local_data.isShowRankResult = false;
 						},()=>{});
 					},
-					fail(err) { console.info(err) }
+					fail(err) { console.log(err) }
 				});
 			}
 		});
@@ -139,7 +139,7 @@ export class RankEntrance extends Component {
 	componentDidShow () {
 		let _this = this;
 		if(App.globalData.websocket === ''){
-			console.info('%c rankMatch-entrance 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c rankMatch-entrance 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -148,7 +148,7 @@ export class RankEntrance extends Component {
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('收到1010货币发生变化,排位赛入口页面观看广告->');console.info(message);
+			console.error('收到1010货币发生变化,排位赛入口页面观看广告->');console.log(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState)=>{
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
@@ -176,7 +176,7 @@ export class RankEntrance extends Component {
 
 	// 跳转匹配页
 	goMatchRank(){
-		console.info('～跳转匹配～');
+		console.log('～跳转匹配～');
 		let queuePage = this.state.routers.queuePage;
 		Taro.navigateTo({
 			url: queuePage

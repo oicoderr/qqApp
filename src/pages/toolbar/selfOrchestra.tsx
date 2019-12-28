@@ -62,7 +62,7 @@ export class SelfOrchestra extends Component {
 		let _this = this;
 
 		if(App.globalData.websocket === ''){
-			console.info('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -73,7 +73,7 @@ export class SelfOrchestra extends Component {
 		let parentModule = this.msgProto.parentModule(selfOrchestra);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.info('请求我的乐队基本信息Success')},
+			success(res) {console.log('请求我的乐队基本信息Success')},
 			fail(err){
 				Taro.showToast({
 					title: err.errMsg,
@@ -87,8 +87,8 @@ export class SelfOrchestra extends Component {
 		this.eventEmitter = emitter.addListener('getSelfOrchestra', (message) => {
 			clearInterval(message[1]);
 
-			console.info('乐队基本信息:');
-			console.info(message[0]['data']);
+			console.log('乐队基本信息:');
+			console.log(message[0]['data']);
 			this.setState((preState)=>{
 				preState.data.list = message[0]['data']['list'];
 				preState.local_data.isShowLoading = false;
@@ -136,8 +136,8 @@ export class SelfOrchestra extends Component {
 				preState.local_data.bassist = bassist;
 				preState.local_data.drummer = drummer;
 			});
-			console.info('%c 乐队各类 ===>', 'font-size: 14px; color:#1a71ff;');
-			console.info(leadSinger, guitarist, bassist, drummer);
+			console.log('%c 乐队各类 ===>', 'font-size: 14px; color:#1a71ff;');
+			console.log(leadSinger, guitarist, bassist, drummer);
 		}catch(err){
 			//在这里处理错误
 			console.error('错误：' + err);
@@ -157,7 +157,7 @@ export class SelfOrchestra extends Component {
 			let parentModule = this.msgProto.parentModule(usedOrchestra);
 			this.websocket.sendWebSocketMsg({
 				data: parentModule,
-				success(res) {console.info('请求`使用乐队主页显示`Success')},
+				success(res) {console.log('请求`使用乐队主页显示`Success')},
 				fail(err){
 					Taro.showToast({
 						title: err.errMsg,

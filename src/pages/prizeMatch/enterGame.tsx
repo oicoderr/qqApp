@@ -92,7 +92,7 @@ export class PrizeEnterGame extends Component {
 	componentWillMount () {
 		// 设置总人数
 		const params = this.$router.params;
-		console.info('%c 收到大奖赛自己信息 / 参赛总人数 ==>', 'font-size:14px;color:#ff751a;');console.info(JSON.parse(params.item));
+		console.log('%c 收到大奖赛自己信息 / 参赛总人数 ==>', 'font-size:14px;color:#ff751a;');console.log(JSON.parse(params.item));
 		let item = JSON.parse(params.item);
 		if(item){
 			this.setState((preState)=>{
@@ -110,7 +110,7 @@ export class PrizeEnterGame extends Component {
 		let _this = this;
 
 		if(App.globalData.websocket === ''){
-			console.info('%c prize-enterGame  未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c prize-enterGame  未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -120,13 +120,13 @@ export class PrizeEnterGame extends Component {
 		this.setState((preState)=>{
 			preState.local_data.isShowMask = false;
 		},()=>{
-			// console.info('%c' + this.state.local_data.isShowMask,'font-size:20px; color:pink;');
+			// console.log('%c' + this.state.local_data.isShowMask,'font-size:20px; color:pink;');
 		});
 
 		// 1306 服务器广播当前题
 		this.eventEmitter = emitter.addListener('getQuestion', (message) => {
 			clearInterval(message[1]);
-			console.info('%c 1306发题了: ' + getCurrentTime(), 'font-size:14px;color:#1a4dff;');console.info(message[0]['data']);
+			console.log('%c 1306发题了: ' + getCurrentTime(), 'font-size:14px;color:#1a4dff;');console.log(message[0]['data']);
 			let time = message[0]['data']['time'];
 			clearInterval(this.state.data.timer);
 			// 取消所有选中样式
@@ -144,7 +144,7 @@ export class PrizeEnterGame extends Component {
 				// 清除用户所选答案状态
 				preState.local_data.curQuestion['isSuccess'] = -1;
 				preState.local_data.curQuestion['selfSelectId'] = -1;
-			},()=>{	/*console.info(_this.state.local_data.curQuestion);*/ });
+			},()=>{	/*console.log(_this.state.local_data.curQuestion);*/ });
 			// 开始倒计时
 			this.getCountdown(time);
 			// 发题后关闭加载动画
@@ -160,15 +160,15 @@ export class PrizeEnterGame extends Component {
 			this.setState((preState)=>{
 				preState.local_data.isAnswerCorrect = message[0]['data'];
 			},()=>{
-				console.info('%c 已接受到答案', 'color:#1a9cff; font-size:14px;');
-				console.info(message[0]['data']);
+				console.log('%c 已接受到答案', 'color:#1a9cff; font-size:14px;');
+				console.log(message[0]['data']);
 			})
 		});
 
 		// 1312 服务器广播上道题的统计
 		this.eventEmitter = emitter.addListener('getPrizePrevQAInfo', (message) => {
 			clearInterval(message[1]);			
-			console.info('%c 服务器广播上一题统计 ====>','color:#ff9d1a;font-size:14px;');console.info(message[0]);
+			console.log('%c 服务器广播上一题统计 ====>','color:#ff9d1a;font-size:14px;');console.log(message[0]);
 			this.setState((preState)=>{
 				preState.data.preQuestionInfo = message[0]['data'];
 				preState.local_data.preQuestionInfo = JSON.parse(JSON.stringify(message[0]['data']));
@@ -190,8 +190,8 @@ export class PrizeEnterGame extends Component {
 				preState.local_data.curQuestion['isSuccess'] = preState.local_data.isAnswerCorrect.isSuccess;
 				preState.local_data.curQuestion['selfSelectId'] = preState.local_data.isAnswerCorrect.optionId;
 			},()=>{
-				console.info('%c 最终的curQuestion =====>', 'font-size:14px;color:#1ae3ff;')
-				console.info(_this.state.local_data.curQuestion);
+				console.log('%c 最终的curQuestion =====>', 'font-size:14px;color:#1ae3ff;')
+				console.log(_this.state.local_data.curQuestion);
 				let optionId = _this.state.local_data.preQuestionInfo.optionId;
 				let selectedOptionId = _this.state.local_data.selectedOptionId;
 				// 自己是否选择正确答案
@@ -220,7 +220,7 @@ export class PrizeEnterGame extends Component {
 		// 1314 获取复活结果 
 		this.eventEmitter = emitter.addListener('getResurrectResult', (message) => {
 			clearInterval(message[1]);			
-			console.info('%c 是否复活成功 ====>','color:#ff9d1a;font-size:14px;');console.info(message[0]);
+			console.log('%c 是否复活成功 ====>','color:#ff9d1a;font-size:14px;');console.log(message[0]);
 			let isSuccess = message[0]['data']['value'];
 			if(isSuccess){
 				this.setState((preState)=>{
@@ -232,7 +232,7 @@ export class PrizeEnterGame extends Component {
 						mask: false,
 						duration: 1000
 					})
-					console.info('%c ～复活成功～可以继续答题了','font-size:14px;color:#ff1ac9;')
+					console.log('%c ～复活成功～可以继续答题了','font-size:14px;color:#ff1ac9;')
 				})
 			}else{
 				Taro.showToast({
@@ -247,7 +247,7 @@ export class PrizeEnterGame extends Component {
 		// 1318 发送战报(看完战报就离开房间吧)
 		this.eventEmitter = emitter.once('getPrizeMatchReport', (message) => {
 			clearInterval(message[1]);			
-			console.info('%c 服务器广播战报 ====>','color:#ff9d1a;font-size:14px;');console.info(message[0]);
+			console.log('%c 服务器广播战报 ====>','color:#ff9d1a;font-size:14px;');console.log(message[0]);
 			// 取消所有选中样式
 			this.setState((preState)=>{
 				preState.local_data.curQuestion.correctOption = -1;
@@ -262,7 +262,7 @@ export class PrizeEnterGame extends Component {
 		// 1320 广播复活信息（活着的玩家可以看到）
 		this.eventEmitter = emitter.addListener('getRenascenceInfo', (message) => {
 			clearInterval(message[1]);			
-			console.info('%c 服务器广播复活情况信息 ====>','color:#ff9d1a;font-size:14px;');console.info(message[0]);
+			console.log('%c 服务器广播复活情况信息 ====>','color:#ff9d1a;font-size:14px;');console.log(message[0]);
 			this.setState((preState)=>{
 				preState.data.preQuestionInfo = message[0]['data'];
 				// 添加全局剩余人数
@@ -274,8 +274,8 @@ export class PrizeEnterGame extends Component {
 				// 隐藏答错人数提醒
 				preState.local_data.curQuestion['answerErrorCount'] = 0;
 			},()=>{
-				console.info('%c 收到[ 复活信息 ]后的curQuestion =====>', 'font-size:14px;color:#1ae3ff;')
-				console.info(_this.state.local_data.curQuestion);
+				console.log('%c 收到[ 复活信息 ]后的curQuestion =====>', 'font-size:14px;color:#1ae3ff;')
+				console.log(_this.state.local_data.curQuestion);
 			})
 		});
 	}
@@ -341,7 +341,7 @@ export class PrizeEnterGame extends Component {
 		let currquestid = e.currentTarget.dataset.currquestid;		 // 当前题id
 		let curOptionIndex = e.currentTarget.dataset.curoptionindex; // 用户所选当前题的index
 
-		console.info('%c 发送1307用户所选当前题的index ==>' + curOptionIndex,'color:#1a9aff;font-size:14px;');
+		console.log('%c 发送1307用户所选当前题的index ==>' + curOptionIndex,'color:#1a9aff;font-size:14px;');
 		let data = {
 			questId: currquestid,
 			optionId: optionId
@@ -355,7 +355,7 @@ export class PrizeEnterGame extends Component {
 			preState.local_data.selectedOptionId = optionId;
 		},()=>{});
 
-		console.info('%c 发送questId为：'+ currquestid +'， 答案optionId为： ' + optionId, 'font-size:14px;color:#FF4500;');
+		console.log('%c 发送questId为：'+ currquestid +'， 答案optionId为： ' + optionId, 'font-size:14px;color:#FF4500;');
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {
@@ -364,7 +364,7 @@ export class PrizeEnterGame extends Component {
 					preState.local_data.isShowMask = true;
 				},()=>{});
 			},
-			fail(err) { console.info(err) }
+			fail(err) { console.log(err) }
 		});
 	}
 
@@ -408,9 +408,9 @@ export class PrizeEnterGame extends Component {
 			success(res) {
 				_this.setState((preState)=>{
 					preState.local_data.isShowToast = false;
-				},()=>{console.info('选择 --> 取消复活')});
+				},()=>{console.log('选择 --> 取消复活')});
 			},
-			fail(err) { console.info(err) }
+			fail(err) { console.log(err) }
 		});
 	}
 
@@ -422,8 +422,8 @@ export class PrizeEnterGame extends Component {
 		let parentModule = this.msgProto.parentModule(resurrect);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) { console.info('选择 --> 确认复活')},
-			fail(err) { console.info(err) }
+			success(res) { console.log('选择 --> 确认复活')},
+			fail(err) { console.log(err) }
 		});
 	}
 

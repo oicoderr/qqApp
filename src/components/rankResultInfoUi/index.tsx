@@ -43,8 +43,8 @@ export default class RankResultInfo extends Component {
     this.eventEmitter = emitter.addListener('rankResultInfo', message => {
       clearInterval(message[1]);
 
-      console.info('%c 接受父组件rank-Result数据', 'font-size:16px;color:#db740f;');
-      console.info(message);
+      console.log('%c 接受父组件rank-Result数据', 'font-size:16px;color:#db740f;');
+      console.log(message);
       this.setState(
         preState => {
           preState.data.rankResultInfo = message[0];

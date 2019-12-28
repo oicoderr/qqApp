@@ -112,10 +112,10 @@ export const setStorage = (key, value) => {
       //   showCancel: true, 
       //   success(res) {
       //     if (res.confirm) {
-      //       console.info('用户确定替换Storage-key：'+ key);
+      //       console.log('用户确定替换Storage-key：'+ key);
       //       Taro.setStorageSync(key, value);
       //     } else if (res.cancel) {
-      //       console.info('用户点击取消替换Storage-key：'+ key);
+      //       console.log('用户点击取消替换Storage-key：'+ key);
       //     }
       //   }
       // })
@@ -136,7 +136,7 @@ export const setStorage = (key, value) => {
 export const getStorage = (key, callback) => {
   try {
     const value = Taro.getStorageSync(key);
-    // console.info('%c 获取的Storage====> ' + key, 'font-size:14px;color:#8700d6;');console.info(value);
+    // console.log('%c 获取的Storage====> ' + key, 'font-size:14px;color:#8700d6;');console.log(value);
     if(callback)callback(value);
   } catch (err) {
     Taro.showToast({
@@ -153,10 +153,10 @@ export const removeStorage = (key) => {
   Taro.removeStorage({
     key: key,
     success(res){
-      console.info(res);
+      console.log(res);
     },
     fail(err){
-      console.info(err)
+      console.log(err)
     }
   });
 }
@@ -227,8 +227,8 @@ export const getCurrentPageUrl = () => {
   var currentPage = pages[pages.length-1]    // 获取当前页面的对象
   var url = currentPage.route;               // 当前页面url
   if (pages.length == 10) {
-    console.info('%c 当前currentPage ==>','font-size:16px;color:#ff581f;')
-    console.info(pages)
+    console.log('%c 当前currentPage ==>','font-size:16px;color:#ff581f;')
+    console.log(pages)
     Taro.showToast({
       title: "页面打开太多，请回退关闭几个页面",
       icon: 'none',
@@ -250,7 +250,7 @@ export const getUserInfo = (callback) => {
       if(callback)callback(res)
     },
     fail(err){
-      console.info(err)
+      console.log(err)
       Taro.getSetting({
         success(res) {
           if (res.authSetting['scope.userInfo']) {// 如果已经授权，可以直接调用 getUserInfo 获取头像昵称
@@ -436,10 +436,10 @@ export const hideShareMenu = () =>{
     // 'qq', 'qzone', 'wechatFriends', 'wechatMoment'
     hideShareItems: ['qq', 'qzone', 'wechatFriends', 'wechatMoment'],
     success(res){
-      console.info('～隐藏分享成功～');
+      console.log('～隐藏分享成功～');
     },
     fail(err){
-      console.info('～隐藏分享失败～：' + err);
+      console.log('～隐藏分享失败～：' + err);
     }
   })
 }
@@ -449,10 +449,10 @@ export const showShareMenuItem = () =>{
   Taro.hideShareMenu({
     showShareItems: ['qq'],
     success(res){
-      console.info('～显示分享qq成功～');
+      console.log('～显示分享qq成功～');
     },
     fail(err){
-      console.info('～显示分享失败～：' + err);
+      console.log('～显示分享失败～：' + err);
     }
   })
 }

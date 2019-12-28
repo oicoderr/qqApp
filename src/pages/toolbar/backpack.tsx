@@ -46,7 +46,7 @@ export class BackPack extends Component {
 	componentDidShow () {
 		let _this = this;
 		if(App.globalData.websocket === ''){
-			console.info('%c backpack 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c backpack 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -140,7 +140,7 @@ export class BackPack extends Component {
 		let parentModule = this.msgProto.parentModule(getBackpack);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.info('请求背包信息Success')},
+			success(res) {console.log('请求背包信息Success')},
 			fail(err){
 				Taro.showToast({
 					title: err.errMsg,

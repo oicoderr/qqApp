@@ -100,21 +100,21 @@ export class PrizeEntrance extends Component {
 				param2: -1, // int(如果类型是3，这个参数是是否使用加速卡<0.不使用;1.使用>
 			}
 			if(checked) {data.param2 = 1} else {data.param2 = 0};
-			console.info('是否勾选加速卡 ===>', data.param2);
+			console.log('是否勾选加速卡 ===>', data.param2);
 			let adsRewards = this.msgProto.adsRewards(data);
 			let parentModule = this.msgProto.parentModule(adsRewards);
 
 			if(status.isEnded){
-				console.info('%c 看完广告，进入大奖赛','font-size:14px;color:#0fdb24;');
+				console.log('%c 看完广告，进入大奖赛','font-size:14px;color:#0fdb24;');
 				this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
 						// 允许进入匹配页 1302监测返回成功后跳转匹配页
 					},
-					fail(err) { console.info(err) }
+					fail(err) { console.log(err) }
 				});
 			}else{
-				console.info('%c 未看完视频，不能进入大进入大奖赛呦','font-size:14px;color:#db2a0f;');
+				console.log('%c 未看完视频，不能进入大进入大奖赛呦','font-size:14px;color:#db2a0f;');
 			}
 		});
 
@@ -129,7 +129,7 @@ export class PrizeEntrance extends Component {
 		// 显示分享
 		showShareMenuItem();
 		if(App.globalData.websocket === ''){
-			console.info('%c prize-entrance 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c prize-entrance 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -247,7 +247,7 @@ export class PrizeEntrance extends Component {
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('大奖赛入口->收到1010货币发生变化');console.info(message);
+			console.error('大奖赛入口->收到1010货币发生变化');console.log(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState)=>{
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
@@ -262,14 +262,14 @@ export class PrizeEntrance extends Component {
 		let parentModule = this.msgProto.parentModule(isOpenPrize);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) { console.info('%c 请求大奖赛开放状态Success','font-size:14px;color:#e66900;')},
+			success(res) { console.log('%c 请求大奖赛开放状态Success','font-size:14px;color:#e66900;')},
 			fail(err) {
 				Taro.showToast({
 					title: err.errormsg,
 					icon: 'none',
 					duration: 2000
 				})
-				console.error('请求大奖赛开放状态失败==> ');console.info(err);
+				console.error('请求大奖赛开放状态失败==> ');console.log(err);
 			}
 		});
 
@@ -278,14 +278,14 @@ export class PrizeEntrance extends Component {
 		let parentModule_ = this.msgProto.parentModule(quickenCardHelp);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule_,
-			success(res) { console.info('%c 请求邀请好友领取物品情况Success','font-size:14px;color:#e66900;')},
+			success(res) { console.log('%c 请求邀请好友领取物品情况Success','font-size:14px;color:#e66900;')},
 			fail(err) {
 				Taro.showToast({
 					title: err.errormsg,
 					icon: 'none',
 					duration: 2000
 				})
-				console.error('请求邀请好友领取物品情况失败==> ');console.info(err);
+				console.error('请求邀请好友领取物品情况失败==> ');console.log(err);
 			}
 		});
 
@@ -335,14 +335,14 @@ export class PrizeEntrance extends Component {
 		let parentModule = this.msgProto.parentModule(matchingRequest);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) { console.info('%c 门票入场大奖赛匹配ing','font-size:14px;color:#e66900;')},
+			success(res) { console.log('%c 门票入场大奖赛匹配ing','font-size:14px;color:#e66900;')},
 			fail(err) {
 				Taro.showToast({
 					title: err.errormsg,
 					icon: 'none',
 					duration: 2000
 				})
-				console.error('匹配错误信息==> ');console.info(err);
+				console.error('匹配错误信息==> ');console.log(err);
 			}
 		});
 	}
@@ -368,7 +368,7 @@ export class PrizeEntrance extends Component {
 		};
 		// 按钮分享
 		if(res.from === 'button' && roleId){
-			console.info(' =====>按钮分享加速卡<=====');
+			console.log(' =====>按钮分享加速卡<=====');
 			shareData.title = '迎接音乐大考验，组建Wuli梦想乐队！';
 			shareData.path = `/pages/login/index?param1=${param1}&inviterRoleId=${roleId}`,
 			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
@@ -417,14 +417,14 @@ export class PrizeEntrance extends Component {
 		let parentModule = this.msgProto.parentModule(quickenCardGet);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) { console.info('%c 请求领取加速卡Success','font-size:14px;color:#e66900;')},
+			success(res) { console.log('%c 请求领取加速卡Success','font-size:14px;color:#e66900;')},
 			fail(err) {
 				Taro.showToast({
 					title: err.errormsg,
 					icon: 'none',
 					duration: 2000
 				})
-				console.error('请求领取加速卡失败==> ');console.info(err);
+				console.error('请求领取加速卡失败==> ');console.log(err);
 			}
 		});
 	}

@@ -1,5 +1,6 @@
-import Taro, { Component } from '@tarojs/taro';
-import { View, Text, Image } from '@tarojs/components';
+/* eslint-disable react/react-in-jsx-scope */
+import { Component } from '@tarojs/taro';
+import { View, Image } from '@tarojs/components';
 import emitter from '../../service/events';
 import './index.scss';
 
@@ -276,7 +277,7 @@ export class MessageToast extends Component {
       default:
         reusltHeadPosi = headPosi[0];
     }
-    console.info(reusltHeadPosi, 7888);
+    console.log(reusltHeadPosi, 7888);
     this.setState(preState => {
       preState.data.reusltHeadPosi = reusltHeadPosi;
     });
@@ -292,11 +293,11 @@ export class MessageToast extends Component {
     for (let i = 0; i < list.length; i++) {
       if (i < dan) {
         reusltList.push(list[i]);
-        console.info(list[i], 789);
+        console.log(list[i], 789);
       }
     }
     for (let i = dan; i < list.length + 1 - dan; i++) {
-      console.info(i, '>>----11');
+      console.log(i, '>>----11');
       reusltList.push(list_mask[i]);
     }
     this.setState(

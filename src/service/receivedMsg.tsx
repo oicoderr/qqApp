@@ -9,7 +9,7 @@ import { getCurrentTime } from '../utils' // 方法类
 
 export default class ReceiveMsg{
     constructor( message ) {
-		// console.error('接收到message ===>'); console.info(message);
+		// console.error('接收到message ===>'); console.log(message);
 		// 定时器集
 		this.timerCount = [];
 		this.onReceiveMsg(message);
@@ -22,19 +22,19 @@ export default class ReceiveMsg{
 		};
 		switch(message['code']){
 			case 1002:  		// 服务器返回登录结果
-				// console.info('%c 1002返回时间：' + getCurrentTime(), 'font-size:14px;color:blue;');
+				// console.log('%c 1002返回时间：' + getCurrentTime(), 'font-size:14px;color:blue;');
 				this.timerCount[0] = setInterval(()=>{
 					emitter.emit('loginGameStatus', [message, _this.timerCount[0] ]);
 				},20);
 				break;
 			case 1004:		    // 登录成功后，服务器返回角色基本信息
-				// console.info('%c 发送游戏个人信息', 'font-size:14px;color:blue;');
+				// console.log('%c 发送游戏个人信息', 'font-size:14px;color:blue;');
 				this.timerCount[1]= setInterval(()=>{
 					emitter.emit('loginGameInfo', [message, this.timerCount[1] ]);
 				},20);
 				break;
 			case 1006:		    // 当前性别，存在表示游戏性别设置成功
-				// console.info('%c 发送游戏个人信息', 'font-size:14px;color:blue;');
+				// console.log('%c 发送游戏个人信息', 'font-size:14px;color:blue;');
 				this.timerCount[2] = setInterval(()=>{
 					emitter.emit('setSex', [message, this.timerCount[2] ]);
 				},20);
@@ -50,16 +50,16 @@ export default class ReceiveMsg{
 				},20);
 				break;
 			case 1102: 			// 服务器心跳返回 1. 服务器当前时间
-				// console.info('%c 服务器返回心跳','color:red;font-size:14px;'); console.info(message)
+				// console.log('%c 服务器返回心跳','color:red;font-size:14px;'); console.log(message)
 				break;
 			case 1302:			// 服务器回应是否进入了匹配队列
-				// console.info('%c 是否进入匹配队列 ====>','font-size:14px;color:blue;');
+				// console.log('%c 是否进入匹配队列 ====>','font-size:14px;color:blue;');
 				this.timerCount[5] = setInterval(()=>{
 					emitter.emit('enterMatch', [message, this.timerCount[5] ]);
 				},20);
 				break;
 			case 1304: 		 	// 排位赛匹配成功
-				// console.info('排位赛匹配成功～发送队伍信息');
+				// console.log('排位赛匹配成功～发送队伍信息');
 				this.timerCount[6] = setInterval(()=>{
 					emitter.emit('getBattleTeams', [message, this.timerCount[6] ]);
 				},20);
@@ -70,7 +70,7 @@ export default class ReceiveMsg{
 				},20);
 				break;
 			case 1308:			// 服务器答题回复 questId: 题id, optionId: 正确答案id（1=>A, 2=>B ...）
-				//console.info('%c 排位赛---发送正确答案', 'font-size:14px;color:blue;'); console.info(message);
+				//console.log('%c 排位赛---发送正确答案', 'font-size:14px;color:blue;'); console.log(message);
 				this.timerCount[8] = setInterval(()=>{
 					emitter.emit('getAnswer', [message, this.timerCount[8]]);
 				},20);
@@ -91,13 +91,13 @@ export default class ReceiveMsg{
 				},20);
 				break;
 			case 1322:  		// 服务器广播上道题的回答情况(排位赛)
-				// console.info('%c === 答案 ===','font-size:14px;color:#FF6A6A');console.info(message);
+				// console.log('%c === 答案 ===','font-size:14px;color:#FF6A6A');console.log(message);
 				this.timerCount[12] = setInterval(()=>{
 					emitter.emit('getPrevQAInfo', [message, this.timerCount[12] ]);
 				},20);
 				break;
 			case 1324:			// 游戏结束--发本局结果
-				// console.info('%c 游戏结束--发本局结果','font-size:14px;color:#FF6A6A');console.info(message);
+				// console.log('%c 游戏结束--发本局结果','font-size:14px;color:#FF6A6A');console.log(message);
 				this.timerCount[13] = setInterval(()=>{
 					emitter.emit('getRankResultInfo', [message, this.timerCount[13]]);
 				},20);

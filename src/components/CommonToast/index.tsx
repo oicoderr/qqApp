@@ -29,7 +29,7 @@ export default class CommonToast extends Component {
     let _this = this;
     this.eventEmitter = emitter.addListener('takeMoneyMessaeg', message => {
       console.warn('接受父组件（takeMoney）提现金额==>');
-      console.info(message);
+      console.log(message);
       _this.setState(
         () => {
           _this.state.data.money = message.money;

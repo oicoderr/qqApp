@@ -112,7 +112,7 @@ export class RankEnterGame extends Component {
 	componentWillMount () {
 		let _this = this;
 		const params = this.$router.params;
-		console.info('自己/所有队伍信息 ==>');console.info(JSON.parse(params.item));
+		console.log('自己/所有队伍信息 ==>');console.log(JSON.parse(params.item));
 		let item = JSON.parse(params.item);
 		if(item){
 			let arrayJsonA = new Array, arrayJsonB = new Array;
@@ -139,9 +139,9 @@ export class RankEnterGame extends Component {
 				preState.local_data.scoreTeamB = arrayJsonB;
 			},()=>{
 				console.error('设置好了scoreTeamA/B/selfScore')
-				console.info(_this.state.local_data.selfScore);
-				console.info(_this.state.local_data.scoreTeamA);
-				console.info(_this.state.local_data.scoreTeamB);
+				console.log(_this.state.local_data.selfScore);
+				console.log(_this.state.local_data.scoreTeamA);
+				console.log(_this.state.local_data.scoreTeamB);
 			});
 		}else{
 			Taro.showToast({
@@ -161,7 +161,7 @@ export class RankEnterGame extends Component {
 		let _this = this;
 
 		if(App.globalData.websocket === ''){
-			console.info('%c rankMatch-enterGame 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c rankMatch-enterGame 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -170,7 +170,7 @@ export class RankEnterGame extends Component {
 		// 隐藏答题遮罩
 		this.setState((preState)=>{
 			preState.local_data.isShowMask = false;
-		},()=>{ /* console.info('%c' + this.state.local_data.isShowMask,'font-size:20px; color:pink;');*/});
+		},()=>{ /* console.log('%c' + this.state.local_data.isShowMask,'font-size:20px; color:pink;');*/});
 		
 		// 请求道具：延迟卡，求助卡数量
 		this.getMatchProps();
@@ -178,8 +178,8 @@ export class RankEnterGame extends Component {
 		// 1508 接受道具卡数量
 		this.eventEmitter = emitter.addListener('getMatchProps', (message) => {
 			clearInterval(message[1]);
-			console.info('%c 接收到比赛道具卡数量 ===>','font-size:14px;color:#f04e00;');
-			console.info( message[0]['data']);
+			console.log('%c 接收到比赛道具卡数量 ===>','font-size:14px;color:#f04e00;');
+			console.log( message[0]['data']);
 			this.setState((preState)=>{
 				let data = message[0]['data'];
 				preState.local_data.matchProps = data;
@@ -190,8 +190,8 @@ export class RankEnterGame extends Component {
 		// 1338 使用道具结果
 		this.eventEmitter = emitter.addListener('usedPropsResult', (message) => {
 			clearInterval(message[1]);
-			console.info('%c 接收到道具卡使用结果 ===>','font-size:14px;color:#f04e00;');
-			console.info( message[0]['data']);
+			console.log('%c 接收到道具卡使用结果 ===>','font-size:14px;color:#f04e00;');
+			console.log( message[0]['data']);
 
 			let data = message[0]['data'];
 			if(data.id == 1){
@@ -213,8 +213,8 @@ export class RankEnterGame extends Component {
 		// 1306 排位赛发题
 		this.eventEmitter = emitter.addListener('getQuestion', (message) => {
 			clearInterval(message[1]);
-			// console.info('%c 接受到的题目及选项', 'color:#000; font-size:14px;'); console.info(message[0]['data']);
-			console.info('%c <========== 1306发题了 ==========>' + getCurrentTime(), 'font-size:14px;color:#f04e00;');
+			// console.log('%c 接受到的题目及选项', 'color:#000; font-size:14px;'); console.log(message[0]['data']);
+			console.log('%c <========== 1306发题了 ==========>' + getCurrentTime(), 'font-size:14px;color:#f04e00;');
 			let time = message[0]['data']['time'];
 
 			clearInterval(this.state.data.timer);
@@ -249,7 +249,7 @@ export class RankEnterGame extends Component {
 					time: 0,
 				};
 			},()=>{
-				// console.info('%c 处理数据时间 =======> '+  new Date().getSeconds() +'修改返回数据 =====>', 'color:pink;font-size:14px;');
+				// console.log('%c 处理数据时间 =======> '+  new Date().getSeconds() +'修改返回数据 =====>', 'color:pink;font-size:14px;');
 			});
 		});
 
@@ -257,7 +257,7 @@ export class RankEnterGame extends Component {
 		this.eventEmitter = emitter.addListener('getAnswer', (message) => {
 			clearInterval(message[1]);
 			let _this = this;
-			// console.info('%c 已接受到答案', 'color:blue; font-size:12px;');
+			// console.log('%c 已接受到答案', 'color:blue; font-size:12px;');
 			let selectedOptionId = this.state.local_data.selectedOptionId;
 			this.setState((preState)=>{
 				preState.data.curAnswer = message[0]['data'];
@@ -267,7 +267,7 @@ export class RankEnterGame extends Component {
 						preState.local_data.defultClass = 'trueOption';
 						preState.local_data.defultBottomClass = 'trueOptionBottom';
 					},()=>{
-						// console.info('%c 选则正确', 'color:#228B22;font-size:14px;background-color:#3c3c3c;');
+						// console.log('%c 选则正确', 'color:#228B22;font-size:14px;background-color:#3c3c3c;');
 						// 消失选中样式
 						let timer = setTimeout(()=>{
 							_this.setState((preState)=>{
@@ -284,7 +284,7 @@ export class RankEnterGame extends Component {
 						preState.local_data.defultClass = 'falseOption';
 						preState.local_data.defultBottomClass = 'flaseOptionBottom';
 					},()=>{
-						// console.info('%c 选则错误', 'color:#EE6363;font-size:14px;background-color:#3c3c3c;');
+						// console.log('%c 选则错误', 'color:#EE6363;font-size:14px;background-color:#3c3c3c;');
 						// 消失选中样式
 						let timer = setTimeout(()=>{
 							_this.setState((preState)=>{
@@ -302,8 +302,8 @@ export class RankEnterGame extends Component {
 		// 1322 接受上一题基本信息 
 		this.eventEmitter = emitter.addListener('getPrevQAInfo', (message) => {
 			clearInterval(message[1]);
-			console.info('%c 上一题基本信息','font-size:14px;color:#A020F0;');
-			console.info(message[0]['data']);
+			console.log('%c 上一题基本信息','font-size:14px;color:#A020F0;');
+			console.log(message[0]['data']);
 			this.setState((preState)=>{
 				preState.data.prevQAInfo = JSON.parse(JSON.stringify(message[0]['data']));
 			},()=>{
@@ -329,7 +329,7 @@ export class RankEnterGame extends Component {
 				// 找到B队伍积分信息
 				list.map(function (cur, index) {
 					if( scoreTeamB.length > 0 && index < scoreTeamB.length && scoreTeamB[index]['roleId'] == cur['roleId']){
-						console.info(_this.state.local_data.scoreTeamB, 7777)
+						console.log(_this.state.local_data.scoreTeamB, 7777)
 						_this.state.local_data.scoreTeamB[index]['score'] = cur['currScore'];
 					}
 				});
@@ -345,8 +345,8 @@ export class RankEnterGame extends Component {
 		// 1324 接受排位赛结果信息 => `跳转`结果页
 		this.eventEmitter = emitter.once('getRankResultInfo', (message) => {
 			clearInterval(message[1]);
-			console.info('%c 接受到本局结果信息', 'color:#000; font-size:14px;');
-			console.info(message[0]['data']);
+			console.log('%c 接受到本局结果信息', 'color:#000; font-size:14px;');
+			console.log(message[0]['data']);
 			
 			this.setState((preState)=>{
 				preState.data.rankResultInfo = message[0]['data'];
@@ -422,7 +422,7 @@ export class RankEnterGame extends Component {
 		let optionId = e.currentTarget.dataset.optionid; 	  		 // 用户所选optionId
 		let currquestid = e.currentTarget.dataset.currquestid;
 		let curOptionIndex = e.currentTarget.dataset.curoptionindex; // 用户所选当前题的index
-		// console.info('%c 用户所选当前题的index ==>' + curOptionIndex,'color:#FFC125;font-size:14px;');
+		// console.log('%c 用户所选当前题的index ==>' + curOptionIndex,'color:#FFC125;font-size:14px;');
 		let data = {
 			questId: currquestid,
 			optionId: optionId
@@ -436,7 +436,7 @@ export class RankEnterGame extends Component {
 			preState.local_data.selectedOptionId = optionId;
 		},()=>{});
 
-		// console.info('%c 发送questId为：'+ currquestid +'， 答案optionId为： ' + optionId, 'font-size:14px;color:#FF4500;');
+		// console.log('%c 发送questId为：'+ currquestid +'， 答案optionId为： ' + optionId, 'font-size:14px;color:#FF4500;');
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {
@@ -445,7 +445,7 @@ export class RankEnterGame extends Component {
 					preState.local_data.isShowMask = true;
 				},()=>{})
 			},
-			fail(err) { console.info(err) }
+			fail(err) { console.log(err) }
 		});
 	}
 
@@ -456,7 +456,7 @@ export class RankEnterGame extends Component {
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {},
-			fail(err) { console.info(err) }
+			fail(err) { console.log(err) }
 		});
 	}
 
@@ -470,14 +470,14 @@ export class RankEnterGame extends Component {
 		let time = e.currentTarget.dataset.time;
 		
 		console.error('道具使用 ==>');
-		console.info('(id: ' + id + ')','(status: ' + status + ')', '(time: ' + time + ')');
+		console.log('(id: ' + id + ')','(status: ' + status + ')', '(time: ' + time + ')');
 
 		let getMatchProps = this.msgProto.usedPropsMatch(id)
 		let parentModule = this.msgProto.parentModule(getMatchProps);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) { console.info(res)},
-			fail(err) { console.info(err) }
+			success(res) { console.log(res)},
+			fail(err) { console.log(err) }
 		});
 	}
 	

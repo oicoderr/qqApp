@@ -43,7 +43,7 @@ export class Recharge extends Component {
 	componentDidShow () {
 		let _this = this;
 		if(App.globalData.websocket === ''){
-			console.info('%c paTakeMoney-recharge 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c paTakeMoney-recharge 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -94,7 +94,7 @@ export class Recharge extends Component {
 		let parentModule = this.msgProto.parentModule(recharge);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.info('请求充值Success')},
+			success(res) {console.log('请求充值Success')},
 			fail(err){
 				Taro.showToast({
 					title: err.errMsg,
@@ -112,13 +112,13 @@ export class Recharge extends Component {
 
 	// 1903 购买门票
 	buyTickets(e){
-		console.info(e, 10);
+		console.log(e, 10);
 		let chargeid = e.currentTarget.dataset.chargeid;
 		let payStencil = this.msgProto.payStencil(chargeid);
 		let parentModule = this.msgProto.parentModule(payStencil);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.info('请求购买充值模版Success')},
+			success(res) {console.log('请求购买充值模版Success')},
 			fail(err){
 				Taro.showToast({
 					title: err.errMsg,

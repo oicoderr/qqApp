@@ -32,7 +32,7 @@ export default class RedExchange extends Component {
       // this.setState({
       // 	gender: message
       // },()=>{
-      // 	console.info(this.state.gender);
+      // 	console.log(this.state.gender);
       // })
     });
   }

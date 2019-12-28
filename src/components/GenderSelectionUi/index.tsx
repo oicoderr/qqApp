@@ -42,7 +42,7 @@ export default class GenderSelectionUi extends Component {
         isSlectGender: Boolean(gender)
       },
       () => {
-        // console.info(gender, Boolean(gender))
+        // console.log(gender, Boolean(gender))
       }
     );
   };

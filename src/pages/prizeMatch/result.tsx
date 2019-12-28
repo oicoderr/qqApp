@@ -76,7 +76,7 @@ export class PrizeReasult extends Component {
 	componentWillMount () {
 		let _this = this;
 		const params = this.$router.params;
-		console.info('%c 大奖赛结果页数据 ==>', 'font-size:14px;color:#1a98ff;');console.info(JSON.parse(params.item));
+		console.log('%c 大奖赛结果页数据 ==>', 'font-size:14px;color:#1a98ff;');console.log(JSON.parse(params.item));
 		if(params.item){
 			const prizeMatchResult = JSON.parse(params.item);
 			this.setState((preState)=>{
@@ -100,7 +100,7 @@ export class PrizeReasult extends Component {
 			console.error('是否看完视频？' + status.isEnded);
 			let entrancePage = this.state.routers.entrancePage;
 			if(status.isEnded){
-				console.info('%c 正常播放结束，领取复活卡','font-size:14px;color:#0fdb24;');
+				console.log('%c 正常播放结束，领取复活卡','font-size:14px;color:#0fdb24;');
 				let data_ = {
 					type: 4,
 					value: '',
@@ -124,7 +124,7 @@ export class PrizeReasult extends Component {
 							}
 						});
 					},
-					fail(err) { console.info(err) }
+					fail(err) { console.log(err) }
 				});
 			}else{
 				Taro.showToast({
@@ -150,7 +150,7 @@ export class PrizeReasult extends Component {
 		let _this = this;
 
 		if(App.globalData.websocket === ''){
-			console.info('%c prize-result 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c prize-result 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -159,7 +159,7 @@ export class PrizeReasult extends Component {
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('收到1010货币发生变化, 排位赛结果观看广告->');console.info(message);
+			console.error('收到1010货币发生变化, 排位赛结果观看广告->');console.log(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState)=>{
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
@@ -231,7 +231,7 @@ export class PrizeReasult extends Component {
 		if(checked){
 			this.videoAd.openVideoAd();
 		}else{
-			console.info('%c 未勾选观看广告','font-size:14px;color:#ff1aca;')
+			console.log('%c 未勾选观看广告','font-size:14px;color:#ff1aca;')
 			let indexPage = this.state.routers.indexPage;
 			Taro.redirectTo({
 				url: indexPage

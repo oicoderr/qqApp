@@ -64,7 +64,7 @@ export class GoldHelp extends Component {
 	componentDidShow () {
 
 		if(App.globalData.websocket === ''){
-			console.info('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -73,7 +73,7 @@ export class GoldHelp extends Component {
 		// 获取金币/能量
 		getStorage('currencyChange',(res)=>{
 			this.setState((preState)=>{
-				console.info(res,1111223)
+				console.log(res,1111223)
 				preState.local_data.currencyChange = res;
 			})
 		});
@@ -122,7 +122,7 @@ export class GoldHelp extends Component {
 			clearInterval(message[1]);
 
 			let getGoldHelpInfo = message[0]['data'];
-			console.info('%c 收到1512 金币助力信息', 'background-color: #000; color:#fff;font-size:14px;');console.info(getGoldHelpInfo);
+			console.log('%c 收到1512 金币助力信息', 'background-color: #000; color:#fff;font-size:14px;');console.log(getGoldHelpInfo);
 			// 开始倒计时
 			let maxtime = formatSeconds(getGoldHelpInfo.cd);
 			this.timeDown(maxtime);

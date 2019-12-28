@@ -55,7 +55,7 @@ export class Opinion extends Component {
 	componentDidShow () {
 		let _this = this;
 		if(App.globalData.websocket === ''){
-			console.info('%c backpack 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c backpack 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -127,7 +127,7 @@ export class Opinion extends Component {
 			let parentModule = this.msgProto.parentModule(opinion);
 			this.websocket.sendWebSocketMsg({
 				data: parentModule,
-				success(res) {console.info('发送反馈信息Success')},
+				success(res) {console.log('发送反馈信息Success')},
 				fail(err){
 					Taro.showToast({
 						title: err.errMsg,

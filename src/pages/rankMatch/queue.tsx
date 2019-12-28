@@ -81,7 +81,7 @@ export class RankQueue extends Component {
 
 		// 匹配中断线重连状态
 		const params = this.$router.params;
-		console.info('params ==>');console.info(params);
+		console.log('params ==>');console.log(params);
 		const isreconnection = params.isreconnection;
 		if(isreconnection === '1'){
 			this.setState((preState)=>{
@@ -95,7 +95,7 @@ export class RankQueue extends Component {
 
 		// 游戏中断线重连状态
 		if( params.item ){
-			console.info('%c 游戏中途退出重连','font-size:14px;#5d00f0;');
+			console.log('%c 游戏中途退出重连','font-size:14px;#5d00f0;');
 			let teams =  JSON.parse(params.item);
 			this.setState((preState)=>{
 				// 设置游戏中断线重连
@@ -104,7 +104,7 @@ export class RankQueue extends Component {
 				let goenterGame = this.state.routers.goenterGame
 				this.afreshFormation(teams['redPalyerOnInstance'], teams['bluePalyerOnInstance'], (data)=>{
 					console.error('断线data ===>')
-					console.info(data);
+					console.log(data);
 					Taro.reLaunch({
 						url: buildURL(goenterGame,{item: data})
 					});
@@ -122,7 +122,7 @@ export class RankQueue extends Component {
 		let _this = this;
 
 		if(App.globalData.websocket === ''){
-			console.info('%c rankMatch-queue 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c rankMatch-queue 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -139,7 +139,7 @@ export class RankQueue extends Component {
 			this.websocket.sendWebSocketMsg({
 				data: parentModule,
 				success(res) { 
-					console.info('%c 进入匹配ing','font-size:14px;color:#e66900;');
+					console.log('%c 进入匹配ing','font-size:14px;color:#e66900;');
 					// 进入匹配后关闭加载动画
 					_this.setState((preState)=>{
 						preState.local_data.isShowLoading = false;
@@ -151,7 +151,7 @@ export class RankQueue extends Component {
 						icon: 'none',
 						duration: 2000
 					})
-					console.error('匹配错误信息==> ');console.info(err);
+					console.error('匹配错误信息==> ');console.log(err);
 				}
 			});
 		}else{
@@ -200,14 +200,14 @@ export class RankQueue extends Component {
 			this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
 				clearInterval(message[1]);
 				let goenterGame = this.state.routers.goenterGame;
-				console.info('所有队伍');
-				console.info(message[0]['data']);
+				console.log('所有队伍');
+				console.log(message[0]['data']);
 				let PartyATeam = message[0]['data']['redPalyerOnInstance'];
 				let PartyBTeam = message[0]['data']['bluePalyerOnInstance'];
 				// 收到后台 ‘匹配成功后开始从新编队’
 				_this.afreshFormation(PartyATeam, PartyBTeam, (data)=>{
 					console.error('正常data ===>')
-					console.info(data);
+					console.log(data);
 					Taro.redirectTo({
 						url: buildURL(goenterGame,{item:data}),
 					});
@@ -226,11 +226,11 @@ export class RankQueue extends Component {
 		let _this = this;
 		getStorage('gameUserInfo',(val)=>{
 			_this.setState((preState)=>{
-				console.info('%c 自己游戏基本信息 ==>','font-size:14px;color:#c500f0;');
-				console.info(preState);
+				console.log('%c 自己游戏基本信息 ==>','font-size:14px;color:#c500f0;');
+				console.log(preState);
 				preState.local_data.gameUserInfo = val;
 			},()=>{
-				console.info(_this.state.local_data.gameUserInfo.danDesc);
+				console.log(_this.state.local_data.gameUserInfo.danDesc);
 			});
 		})
 	}
@@ -241,7 +241,7 @@ export class RankQueue extends Component {
 		const myselfRoleId = this.state.local_data.gameUserInfo.roleId;
 		let PartyATeam_ = JSON.parse(JSON.stringify(readTeam));
 		let PartyBTeam_ = JSON.parse(JSON.stringify(blueTeam));
-		console.info('%c 我的roleId===> '+myselfRoleId, 'font-size:14px;color:#f06300;');
+		console.log('%c 我的roleId===> '+myselfRoleId, 'font-size:14px;color:#f06300;');
 		this.setState((preState)=>{
 			PartyATeam_.map((value, index, arr)=>{
 				if(value['roleId'] == myselfRoleId){
@@ -249,7 +249,7 @@ export class RankQueue extends Component {
 					arr.splice(index,1);
 					preState.local_data.PartyATeam = PartyATeam_;
 					preState.local_data.PartyBTeam = PartyBTeam_;
-					console.info('A队找到自己:'); console.info(preState.local_data.rankUserInfo)
+					console.log('A队找到自己:'); console.log(preState.local_data.rankUserInfo)
 				}else{
 					preState.local_data.PartyATeam = PartyATeam_;
 					preState.local_data.PartyBTeam = PartyBTeam_;
@@ -262,7 +262,7 @@ export class RankQueue extends Component {
 					arr.splice(index,1);
 					preState.local_data.PartyATeam = PartyBTeam_;
 					preState.local_data.PartyBTeam = PartyATeam_;
-					console.info('B队找到自己:'); console.info(preState.local_data.rankUserInfo);
+					console.log('B队找到自己:'); console.log(preState.local_data.rankUserInfo);
 				}else{
 					return;
 				}
@@ -272,7 +272,7 @@ export class RankQueue extends Component {
 			let PartyATeam = _this.state.local_data.PartyATeam;
 			let PartyBTeam = _this.state.local_data.PartyBTeam;
 			console.error('所有队伍 ===>')
-			console.info(rankUserInfo,PartyATeam,PartyBTeam)
+			console.log(rankUserInfo,PartyATeam,PartyBTeam)
 			if(callback)callback({
 				'rankUserInfo': rankUserInfo,
 				'PartyATeam': PartyATeam,
@@ -289,7 +289,7 @@ export class RankQueue extends Component {
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) { 
-				console.info('%c 请求`退出排位`匹配Success','font-size:14px;color:#e66900;');
+				console.log('%c 请求`退出排位`匹配Success','font-size:14px;color:#e66900;');
 			},
 			fail(err) {
 				Taro.showToast({

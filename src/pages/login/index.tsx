@@ -49,8 +49,8 @@ export class Login extends Component {
 		this.eventEmitter = emitter.addListener('AppGlobalSocket', (message) => {
 			clearInterval(message[1]);
 
-			console.info('%c 收到的App发来的webSocket', 'font-size:14px;color:#ffad1a');
-			console.info(message[0]);
+			console.log('%c 收到的App发来的webSocket', 'font-size:14px;color:#ffad1a');
+			console.log(message[0]);
 			let socket = message[0];
 			App.globalData.websocket = socket;
 			this.websocket = socket;
@@ -73,7 +73,7 @@ export class Login extends Component {
 		showShareMenuItem();
 
 		if(App.globalData.websocket === ''){
-			console.info('%c rankMatch-enterGame 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c rankMatch-enterGame 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -91,8 +91,8 @@ export class Login extends Component {
 		Taro.getUserInfo({
 			success(res) {
 				userInfo = res.userInfo;
-				console.info('%c 授权的基本信息 ===>', 'font-size:14px;color:#31c200;background-color:#000;'); 
-				console.info(userInfo);
+				console.log('%c 授权的基本信息 ===>', 'font-size:14px;color:#31c200;background-color:#000;'); 
+				console.log(userInfo);
 				getStorage('userInfo',(value)=>{
 					for(let i in value){
 						userInfo[i] = value[i];
@@ -105,7 +105,7 @@ export class Login extends Component {
 				_this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
-						console.info('发送用户头像，昵称Success');
+						console.log('发送用户头像，昵称Success');
 						// 跳转游戏页
 						Taro.reLaunch({
 							url: _this.state.routers.indexPage

@@ -33,7 +33,7 @@ export default class websocket {
 	// 心跳重置
 	reset() {
 		clearTimeout(this._timeoutObj);
-		// console.info('%c 心跳重置', 'font-size: 14px; color: #ffc41a;')
+		// console.log('%c 心跳重置', 'font-size: 14px; color: #ffc41a;')
 		return this;
 	}
 
@@ -47,10 +47,10 @@ export default class websocket {
 				// 心跳发送的信息应由前后端商量后决定
 				data: parentModule,
 				success(res) {
-					// console.info("发送心跳成功"); console.info(info)
+					// console.log("发送心跳成功"); console.log(info)
 				},
 				fail(err) {
-					// console.info('%c 发送心跳失败：','font-size:14px;color:#ff1a21;');console.info(err);
+					// console.log('%c 发送心跳失败：','font-size:14px;color:#ff1a21;');console.log(err);
 					_this.reset();
 				}
 			});
@@ -149,7 +149,7 @@ export default class websocket {
 	initWebSocket(options) {
 		let _this = this;
 		if (this._isLogin) {
-			console.info("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+			console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
 		} else {
 			// 检查网络
 			Taro.getNetworkType({
@@ -162,14 +162,14 @@ export default class websocket {
 								if (typeof options.success == "function") {
 									options.success(res)
 								} else {
-									console.info('%c 参数的类型必须为函数', 'background:#000;color:white;font-size:14px')
+									console.log('%c 参数的类型必须为函数', 'background:#000;color:white;font-size:14px')
 								}
 							},
 							fail(err) {
 								if (typeof options.fail == "function") {
 									options.fail(err)
 								} else {
-									console.info('%c 参数的类型必须为函数', 'background:#000;color:white;font-size:14px')
+									console.log('%c 参数的类型必须为函数', 'background:#000;color:white;font-size:14px')
 								}
 							}
 						})
@@ -183,7 +183,7 @@ export default class websocket {
 							showCancel: false,
 							success: function (res) {
 								if (res.confirm) {
-									console.info('用户点击确定')
+									console.log('用户点击确定')
 								}
 							}
 						})
@@ -201,14 +201,14 @@ export default class websocket {
 				if (typeof options.success == "function") {
 					options.success(res)
 				} else {
-					console.info('%c 参数的类型必须为函数', 'background:#000;color:white;font-size:14px')
+					console.log('%c 参数的类型必须为函数', 'background:#000;color:white;font-size:14px')
 				}
 			},
 			fail(err) {
 				if (typeof options.fail == "function") {
 					options.fail(err)
 				} else {
-					console.info('%c 参数的类型必须为函数', 'background:#000;color:white;font-size:14px')
+					console.log('%c 参数的类型必须为函数', 'background:#000;color:white;font-size:14px')
 				}
 			}
 		})
@@ -234,7 +234,7 @@ export default class websocket {
 
 	getOnerror(callBack){
 		Taro.onSocketError((errMsg)=>{
-			console.info(errMsg,999)
+			console.log(errMsg,999)
 			if(callBack)callBack(errMsg);
 		})
 	}

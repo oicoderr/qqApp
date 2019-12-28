@@ -42,7 +42,7 @@ export class TakeMoney extends Component {
 
 	componentDidShow () {
 		if(App.globalData.websocket === ''){
-			console.info('%c paTakeMoney-takeMoney 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c paTakeMoney-takeMoney 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -51,7 +51,7 @@ export class TakeMoney extends Component {
 		// 2102提现信息
 		this.eventEmitter = emitter.addListener('takeMoney', (message) => {
 			clearInterval(message[1]);
-			// console.info('收到2102');console.info(message[0]);
+			// console.log('收到2102');console.log(message[0]);
 			this.setState((preState)=>{
 				preState.data.list = message[0]['data']['list'];
 				preState.data.energy = unitReplacement(message[0]['data']['energy']);
@@ -83,7 +83,7 @@ export class TakeMoney extends Component {
 		let parentModule = this.msgProto.parentModule(takeMoneyInfo);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.info('请求提现信息Success')},
+			success(res) {console.log('请求提现信息Success')},
 			fail(err){
 				Taro.showToast({
 					title: err.errMsg,
@@ -107,7 +107,7 @@ export class TakeMoney extends Component {
 			let parentModule = this.msgProto.parentModule(takeMoney);
 			this.websocket.sendWebSocketMsg({
 				data: parentModule,
-				success(res) {console.info('请求提现Success')},
+				success(res) {console.log('请求提现Success')},
 				fail(err){
 					Taro.showToast({
 						title: err.errMsg,

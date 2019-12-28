@@ -98,11 +98,11 @@ export class Mall extends Component {
 			let parentModule = this.msgProto.parentModule(adsRewards);
 
 			if(status.isEnded){
-				console.info('%c 看完广告，领取免费道具','font-size:14px;color:#0fdb24;');
+				console.log('%c 看完广告，领取免费道具','font-size:14px;color:#0fdb24;');
 				this.websocket.sendWebSocketMsg({
 					data: parentModule,
-					success(res) {console.info(res) },
-					fail(err) { console.info(err) }
+					success(res) {console.log(res) },
+					fail(err) { console.log(err) }
 				});
 			}else{
 				Taro.showToast({
@@ -110,7 +110,7 @@ export class Mall extends Component {
 					icon: 'none',
 					duration: 1000
 				});
-				console.info('%c 未看完视频，不能领取免费道具哦','font-size:14px;color:#db2a0f;');
+				console.log('%c 未看完视频，不能领取免费道具哦','font-size:14px;color:#db2a0f;');
 			}
 		});
 	}
@@ -123,7 +123,7 @@ export class Mall extends Component {
 		let _this = this;
 
 		if(App.globalData.websocket === ''){
-			console.info('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -141,7 +141,7 @@ export class Mall extends Component {
 		let parentModule = this.msgProto.parentModule(getMall);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.info('请求商城信息Success')},
+			success(res) {console.log('请求商城信息Success')},
 			fail(err){
 				Taro.showToast({
 					title: err.errMsg,
@@ -154,8 +154,8 @@ export class Mall extends Component {
 		// 监听 1702 监听服务器回复商城当天已免费领取情况 
 		this.eventEmitter = emitter.addListener('getMall', (message) => {
 			clearInterval(message[1]);
-			console.info('商城信息：');
-			console.info(message[0]['data']);
+			console.log('商城信息：');
+			console.log(message[0]['data']);
 			this.setState((preState)=>{
 				preState.data.list = message[0]['data']['list'];
 				preState.local_data.isShowLoading = false;
@@ -165,7 +165,7 @@ export class Mall extends Component {
 
 		// 监听 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
-			console.error('mall 收到1010货币发生变化');console.info(message);
+			console.error('mall 收到1010货币发生变化');console.log(message);
 			clearInterval(message[1]);
 			let currencyChange = message[0]['data'];
 			this.setState((preState)=>{
@@ -277,8 +277,8 @@ export class Mall extends Component {
 					preState.local_data.bassist = bassist;
 					preState.local_data.drummer = drummer;
 				});
-				console.info('%c 乐队各类 ===>', 'font-size: 14px; color:#1a71ff;');
-				console.info(leadSinger, guitarist, bassist, drummer);
+				console.log('%c 乐队各类 ===>', 'font-size: 14px; color:#1a71ff;');
+				console.log(leadSinger, guitarist, bassist, drummer);
 			}
 
 		}catch(err){
@@ -302,7 +302,7 @@ export class Mall extends Component {
 		let parentModule = this.msgProto.parentModule(getMall);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.info(type==1?'请求道具商城信息Success':'请求乐队商城信息Success')},
+			success(res) {console.log(type==1?'请求道具商城信息Success':'请求乐队商城信息Success')},
 			fail(err){
 				Taro.showToast({
 					title: err.errMsg,
@@ -365,7 +365,7 @@ export class Mall extends Component {
 		let parentModule = this.msgProto.parentModule(buyProps);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.info('请求购买道具Success')},
+			success(res) {console.log('请求购买道具Success')},
 			fail(err){
 				Taro.showToast({
 					title: err.errMsg,

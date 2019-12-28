@@ -106,7 +106,7 @@ export class Index extends Component {
 
 		// 接受AppGlobalSocket
 		if(App.globalData.websocket === ''){
-			console.info('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');
+			console.log('%c indexPAge 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
@@ -125,7 +125,7 @@ export class Index extends Component {
 
 		// 返回并设置性别
 		this.eventEmitter = emitter.once('genderMessage', (message) => {
-			console.info('%c 接受< 性别选择 >子组件发送的信息==> ' + message, 'font-size:14px; color: blue;');
+			console.log('%c 接受< 性别选择 >子组件发送的信息==> ' + message, 'font-size:14px; color: blue;');
 			let slectSex = _this.msgProto.gameSex(message);
 			let parentModule = _this.msgProto.parentModule(slectSex);
 			_this.websocket.sendWebSocketMsg({
@@ -137,7 +137,7 @@ export class Index extends Component {
 					},()=>{})
 				},
 				fail(err){
-					console.error('性别发送失败');console.info(err);
+					console.error('性别发送失败');console.log(err);
 				}
 			});
 		});
@@ -149,7 +149,7 @@ export class Index extends Component {
 			let isreconnection = message[0]['data']['isreconnection'];
 			let result = message[0]['data']['result'];
 			let type =  message[0]['data']['type']; // 1.好友赛；2.大奖赛；3.排位赛
-			console.info('%c 队列ing杀死app，开始进入队列','font-size:14px;color:#ffa61a;');
+			console.log('%c 队列ing杀死app，开始进入队列','font-size:14px;color:#ffa61a;');
 			// 开启断线重连并进入匹配队列
 			if(isreconnection && result){
 				switch(type){
@@ -180,7 +180,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
 			clearInterval(message[1]);
 
-			console.error('～游戏中杀死app～');console.info(message[0]['data']);
+			console.error('～游戏中杀死app～');console.log(message[0]['data']);
 			// 排位赛杀死的
 			let isreconnection_ = message[0]['data']['isreconnection']; 
 			// 大奖赛杀死的
@@ -207,7 +207,7 @@ export class Index extends Component {
 						break;
 				}
 			}else{
-				console.info('%c ～正常进入比赛玩家～','font-size:14px; color:#ffc61a;');
+				console.log('%c ～正常进入比赛玩家～','font-size:14px; color:#ffc61a;');
 			}
 		});
 // -------------------------- 游戏被杀死，重新进入游戏 End-----------------------------------
@@ -216,7 +216,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('getWeekCheckIninfo', (message) => {
 			clearInterval(message[1]);
 
-			console.info('～签到基本信息：～');console.info(message[0]['data']);
+			console.log('～签到基本信息：～');console.log(message[0]['data']);
 			let weekCheckIninfo = message[0]['data']
 			emitter.emit('weekCheckIninfo_child', weekCheckIninfo);
 			// 显示签到组件
@@ -234,7 +234,7 @@ export class Index extends Component {
 
 		// 签到关闭
 		this.eventEmitter = emitter.addListener('closeWeekCheckIn', (message) => {
-			console.info('接受‘签到组件-关闭显示’的信息==>' + message);
+			console.log('接受‘签到组件-关闭显示’的信息==>' + message);
 			this.setState((preState)=>{
 				preState.isShowWeekCheckIn = false;
 			});
@@ -242,7 +242,7 @@ export class Index extends Component {
 
 		// 领取奖励
 		this.eventEmitter = emitter.addListener('curRewardStatus', (message) => {
-			console.info('接受‘签到组件-领取奖励` 信息==>'); console.info(message);
+			console.log('接受‘签到组件-领取奖励` 信息==>'); console.log(message);
 			this.setState((preState)=>{
 				preState.isShareCheckedChange = message.shareCheckedChange;
 			});
@@ -253,7 +253,7 @@ export class Index extends Component {
 				data: parentModule,
 				success(res) {},
 				fail(err){
-					console.error('请求我要签到发送失败：');console.info(err);
+					console.error('请求我要签到发送失败：');console.log(err);
 				}
 			});
 		});
@@ -263,13 +263,13 @@ export class Index extends Component {
 			// this.setState({
 			// 	gender: message
 			// },()=>{
-			// 	console.info(this.state.gender);
+			// 	console.log(this.state.gender);
 			// })
 		});
 
 		// 1004游戏登录成功返回基本信息
 		this.eventEmitter = emitter.once('loginGameInfo', (message) => {
-			// console.info('%c 接受用户游戏基本信息==> ', 'color: blue;font-size:14px;'); console.info(message);
+			// console.log('%c 接受用户游戏基本信息==> ', 'color: blue;font-size:14px;'); console.log(message);
 			// 清除消息转发定时器
 			clearInterval(message[1]);
 			// 消息本体
@@ -292,7 +292,7 @@ export class Index extends Component {
 
 		// 1006游戏性别设置状态 setSex
 		this.eventEmitter = emitter.once('setSex', (message) => {
-			console.info('%c 设置性别状态==> ', 'color: blue;font-size:14px;'); console.info(message);
+			console.log('%c 设置性别状态==> ', 'color: blue;font-size:14px;'); console.log(message);
 			// 清除消息转发定时器
 			clearInterval(message[1]);
 
@@ -322,7 +322,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('checkInResult', (message) => {
 			clearInterval(message[1]);
 
-			console.info('%c 当日签到结果 ===>', 'font-size:14px;color:#ff1fec;');console.info(message[0]['data']);
+			console.log('%c 当日签到结果 ===>', 'font-size:14px;color:#ff1fec;');console.log(message[0]['data']);
 		});
 
 		// 1602 接受我的乐队信息 -> 发送子组件`我的乐队信息`
@@ -336,13 +336,13 @@ export class Index extends Component {
 			let timer = setInterval(()=>{
 				emitter.emit('selfOrchestra', [selfOrchestra, timer]);
 			},20);
-			console.info('%c 我的乐队信息 ===>', 'font-size:14px;color:#ff1fec;');console.info(message[0]['data']);
+			console.log('%c 我的乐队信息 ===>', 'font-size:14px;color:#ff1fec;');console.log(message[0]['data']);
 		});
 
 		// 1010 货币发生变化直接更新（签到奖励等需要直接更新前台）
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('主页收到1010货币发生变化');console.info(message);
+			console.error('主页收到1010货币发生变化');console.log(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState)=>{
 				preState.currencyChange.copper = unitReplacement(currencyChange.copper);
@@ -355,7 +355,7 @@ export class Index extends Component {
 	}
 
 	componentDidHide () {
-		console.info('%c 主页DidHide，开始removeAllListeners','font-size:14px;background-color:#fff81a; color:#00000;');
+		console.log('%c 主页DidHide，开始removeAllListeners','font-size:14px;background-color:#fff81a; color:#00000;');
 		removeEmitter();
 	}
 
@@ -391,7 +391,7 @@ export class Index extends Component {
 
 	// 显示签到
 	weekCheckIn(){
-		console.info(this)
+		console.log(this)
 		// 1801 请求签到基本信息
 		let weekCheckIn = this.msgProto.weekCheckIn();
 		let parentModule = this.msgProto.parentModule(weekCheckIn);
@@ -399,7 +399,7 @@ export class Index extends Component {
 			data: parentModule,
 			success(res) {},
 			fail(err){
-				console.error('请求签到基本信息发送失败：');console.info(err);
+				console.error('请求签到基本信息发送失败：');console.log(err);
 			}
 		});
 	}

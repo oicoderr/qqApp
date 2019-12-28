@@ -63,8 +63,8 @@ export default class WeekCheckIn extends Component {
     let _this = this;
     // 接受签到基本数据
     this.eventEmitter = emitter.addListener('weekCheckIninfo_child', message => {
-      console.info('～接受父组件签到基本信息：～');
-      console.info(message);
+      console.log('～接受父组件签到基本信息：～');
+      console.log(message);
       // 接受父组件签到基本信息
       _this.setState(
         preState => {
@@ -104,7 +104,7 @@ export default class WeekCheckIn extends Component {
 
   // 是否勾选炫耀一下
   shareCheckedChange(value) {
-    console.info('%c 签到是否同意炫耀一下 ====》' + value, 'font-size:14px;color:#9bff1f;');
+    console.log('%c 签到是否同意炫耀一下 ====》' + value, 'font-size:14px;color:#9bff1f;');
     this.setState(preState => {
       preState.local_data.shareChecked = !value;
     });
