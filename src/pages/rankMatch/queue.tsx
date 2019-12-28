@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { getStorage, buildURL } from '../../utils'
+import { getStorage, buildURL, getArrayItems } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import emitter from '../../service/events'
 import './queue.scss'
@@ -67,6 +67,120 @@ export class PrizeQueue extends Component {
 				},
 				PartyATeam:[],
 				PartyBTeam:[],
+				headImgPosi:[
+					{
+						x: -10,
+						y: -10,
+					},{
+						x: -94,
+						y: -10,
+					},{
+						x: -178,
+						y: -10,
+					},{
+						x: -10,
+						y: -98,
+					},{
+						x: -94,
+						y: -98,
+					},{
+						x: -178,
+						y: -98,
+					},{
+						x: -262,
+						y: -98,
+					},{
+						x: -10,
+						y: -186,
+					},{
+						x: -94,
+						y: -186,
+					},{
+						x: -178,
+						y: -186,
+					},{
+						x: -262,
+						y: -186,
+					},{
+						x: -348,
+						y: -10,
+					},{
+						x: -346,
+						y: -10,
+					},{
+						x: -346,
+						y: -98,
+					},{
+						x: -346,
+						y: -186,
+					},{
+						x: -10,
+						y: -274,
+					},{
+						x: -94,
+						y: -274,
+					},{
+						x: -178,
+						y: -274,
+					}
+				],
+				headPosi:[
+					{
+						x: 320,
+						y: 152,
+					},{
+						x: 328,
+						y: 340,
+					},{
+						x: 460,
+						y: 286,
+					},{
+						x: 92,
+						y: 688,
+					},{
+						x: 428,
+						y: 676,
+					},{
+						x: 430,
+						y: 550,
+					},{
+						x: 347,
+						y: 250,
+					},{
+						x: 185,
+						y: 275,
+					},{
+						x: 6,
+						y: 478,
+					},{
+						x: 540,
+						y: 242,
+					},{
+						x: 190,
+						y: 506,
+					},{
+						x: 200,
+						y: 172,
+					},{
+						x: 340,
+						y: 780,
+					},{
+						x: 146,
+						y: 623,
+					},{
+						x: 430,
+						y: 756,
+					},{
+						x: 536,
+						y: 540,
+					},{
+						x: 250,
+						y: 347,
+					},{
+						x: 60,
+						y: 660,
+					}
+				],
 				matchStatus: true,
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				v3Img: 'https://oss.snmgame.com/v1.0.0/3v3.png',
@@ -83,6 +197,7 @@ export class PrizeQueue extends Component {
 		// 匹配中断线重连状态
 		const params = this.$router.params;
 		console.log('params ==>');console.log(params);
+
 		const isreconnection = params.isreconnection;
 		if(isreconnection === '1'){
 			this.setState((preState)=>{
@@ -126,6 +241,27 @@ export class PrizeQueue extends Component {
 		}else{
 			this.websocket = App.globalData.websocket;
 		}
+
+		// 切换匹配头像 1s切换一次
+		this.setState((preState)=>{
+			let headImgPosi = preState.local_data.headImgPosi;
+			let headPosi = preState.local_data.headPosi;
+			preState.local_data.selectedHead = getArrayItems(headImgPosi,6);
+			preState.local_data.selectedPosi = getArrayItems(headPosi,6);
+		},()=>{
+			let index = 1;
+			_this.state.local_data.timer = setInterval(()=>{
+				index+=1;
+				this.setState((preState)=>{
+					let headImgPosi = preState.local_data.headImgPosi;
+					let headPosi = preState.local_data.headPosi;
+					preState.local_data.selectedHead = getArrayItems(headImgPosi,6);
+					preState.local_data.selectedPosi = getArrayItems(headPosi,6);
+				},()=>{
+					if(index>99)clearInterval(_this.state.local_data.timer);
+				})
+			},1000);
+		});
 
 		// 排位赛
 		let isreconnection = this.state.local_data.isreconnection; // 是否断线重连
