@@ -347,7 +347,7 @@ export class RankEnterGame extends Component {
 			clearInterval(message[1]);
 			console.log('%c 接受到本局结果信息', 'color:#000; font-size:14px;');
 			console.log(message[0]['data']);
-			
+
 			this.setState((preState)=>{
 				preState.data.rankResultInfo = message[0]['data'];
 			},()=>{

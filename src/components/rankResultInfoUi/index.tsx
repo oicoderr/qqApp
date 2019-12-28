@@ -15,6 +15,7 @@ export default class RankResultInfo extends Component {
           danDesc: '', // 段位描述
           haveStar: 1,
           totalStar: 4,
+          segmentTitleImg: '',
           gloryUrl: 'https://oss.snmgame.com/v1.0.0/glory.png' // 段位的icon
         }
       },
@@ -117,7 +118,7 @@ export default class RankResultInfo extends Component {
   }
 
   render() {
-    const { result, dan, danDesc, haveStar, totalStar, gloryUrl } = this.state.data.rankResultInfo;
+    const { result, dan, danDesc, haveStar, totalStar, gloryUrl, segmentTitleUrl, } = this.state.data.rankResultInfo;
     const {
       rankResultUrl,
       bgImg,
@@ -209,6 +210,9 @@ export default class RankResultInfo extends Component {
               <View className={`stars ${dan < 8 ? '' : 'hide'}`}>
                 {contentTotalStar}
                 {contentHaveStar}
+              </View>
+              <View className='segmentTitleUrlBox'>
+                <Image src={segmentTitleUrl} className='segmentTitleUrl' />
               </View>
               {/*   超过第8段位，星星展示 x50 */}
               <View className={`stars ${dan > 7 ? '' : 'hide'}`}>
