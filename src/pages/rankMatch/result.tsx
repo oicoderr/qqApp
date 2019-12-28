@@ -301,30 +301,30 @@ export class RankReasult extends Component {
 
 	// 显示胜负平横幅图片
 	successFailDraw(resultCode){
-        const { victoryTitleUrl, failTitleUrl, drawTitleUrl } =  this.state.local_data;
-        switch (resultCode){
-            case 0:
-                this.setState((preState)=>{
-                    preState.local_data.rankResultTitleUrl = failTitleUrl;
-                })
-                break;
-            case 1:
-                this.setState((preState)=>{
-                    preState.local_data.rankResultTitleUrl = victoryTitleUrl;
-                })
-                break;
-            case -1:
-                this.setState((preState)=>{
-                    preState.local_data.rankResultTitleUrl = drawTitleUrl;
-                })
-                break;
-            default:
-                this.setState((preState)=>{
-                    preState.local_data.rankResultTitleUrl = victoryTitleUrl;
-                })
-                break;
-        }
-    }
+		const { victoryTitleUrl, failTitleUrl, drawTitleUrl } =  this.state.local_data;
+		switch (resultCode){
+			case 0:
+				this.setState((preState)=>{
+					preState.local_data.rankResultTitleUrl = failTitleUrl;
+				})
+				break;
+			case 1:
+				this.setState((preState)=>{
+					preState.local_data.rankResultTitleUrl = victoryTitleUrl;
+				})
+				break;
+			case -1:
+				this.setState((preState)=>{
+					preState.local_data.rankResultTitleUrl = drawTitleUrl;
+				})
+				break;
+			default:
+				this.setState((preState)=>{
+					preState.local_data.rankResultTitleUrl = victoryTitleUrl;
+				})
+				break;
+		}
+	}
 
 	// 返回主页
 	goBack(){

@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image, RadioGroup, Radio, Label } from '@tarojs/components';
+import { View, Image } from '@tarojs/components';
 import emitter from '../../service/events';
 import './index.scss';
 
@@ -8,33 +8,23 @@ export default class HomeBand extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			// 后台数据
+
 			data: {
-        leadSinger:{
-        
-          leadStage: 'https://oss.snmgame.com/gif/leadBoy/lead_stage.png',
-          leadLight: 'https://oss.snmgame.com/gif/leadBoy/lead_light.png',
-        },
-        guitarist:{
-          
-          guitaristStage: 'https://oss.snmgame.com/gif/guitarist/guitarist_stage.png',
-          guitaristLight: 'https://oss.snmgame.com/gif/guitarist/guitarist_light.png',
-        },
-        bassist:{
-          
-          bassistStage: 'https://oss.snmgame.com/gif/bassist/bassist_stage.png',
-          bassistLight: 'https://oss.snmgame.com/gif/bassist/bassist_light.png',
-        },
-        drummer:{
-          
-          drummerStage: 'https://oss.snmgame.com/gif/drummer/drummer_stage.png',
-          drummerLight: 'https://oss.snmgame.com/gif/drummer/drummer_light.png',
-        }
+        list:[],
       },
 
       local_data: {
-        list: [],
-        
+           // 主唱
+          leadSinger:{},
+
+          // 吉他手
+          guitarist:{},
+
+          // 贝斯手
+          bassist:{},
+
+          // 鼓手
+          drummer:{}
 			},
 		};
 	}
@@ -45,8 +35,13 @@ export default class HomeBand extends Component {
     this.eventEmitter = emitter.addListener('selfOrchestra', message => {
       clearInterval(message[1]);
 
-      console.log('%c 接受父组件`我的乐队信息`====>', 'font-size:14px;color:#273df1;');
-      console.log(message[0]['list']);
+      // console.log('%c 接受父组件`我的乐队信息`====>', 'font-size:14px;color:#273df1;');console.log(message[0]['list']);
+      let list = message[0]['list'];
+      this.setState((preState)=>{
+        preState.data.list = list;
+      });
+      // 重新分组
+      this.elicitPart(list);
     });
   }
 
@@ -58,42 +53,58 @@ export default class HomeBand extends Component {
 
   componentDidHide() {}
 
-  leadSingerBox(){
-    console.info('0000000');
+  // 将使用的主唱，贝斯手，吉他手，鼓手抽出
+  elicitPart(list){
+    // type 类型(1.主唱;2.吉他手;3.贝斯手;4.鼓手)
+    let elicitPart = JSON.parse(JSON.stringify(list));
+    for(let i = 0; i < elicitPart.length; i++){
+      if(elicitPart[i]['type'] == 1 && elicitPart[i]['status']){
+        this.setState((preState)=>{
+          preState.local_data.leadSinger = elicitPart[i];
+        })
+      }else if(elicitPart[i]['type'] == 2 && elicitPart[i]['status']){
+        this.setState((preState)=>{
+          preState.local_data.leadSinger = elicitPart[i];
+        })
+      }else if(elicitPart[i]['type'] == 3 && elicitPart[i]['status']){
+        this.setState((preState)=>{
+          preState.local_data.bassist = elicitPart[i];
+        })
+      }else if(elicitPart[i]['type'] == 4 && elicitPart[i]['status']){
+        this.setState((preState)=>{
+          preState.local_data.drummer = elicitPart[i];
+        })
+      }
+    }
+    console.info(this.state.local_data, '123123123123')
   }
-  
-  guitaristBox(){
-    console.info('guitaristBox11111');
-  }
-  bassistBox(){
-    console.info('bassistBox22222');
-  }
+
   render() {
-    const { leadSingerGif, leadStage, leadLight } = this.state.data.leadSinger;
-    const { guitaristGif, guitaristStage, guitaristLight } = this.state.data.guitarist;
-    const { bassistGif, bassistStage, bassistLight } = this.state.data.bassist;
-    const { drummerGif, drummerStage, drummerLight } = this.state.data.drummer;
+    const { staticBand, stage, light, type } = this.state.local_data.leadSinger;
+    const guitarist = this.state.local_data.guitarist;
+    const bassist = this.state.local_data.bassist;
+    const drummer = this.state.local_data.drummer;
 
     return  <View className="homeBand">
-              <View onClick={this.leadSingerBox.bind(this)}className='leadSingerBox'>
-                {/* <View className='leadSinger_'></View> */}
-                <Image src={leadLight} className='leadLight'/>
-                <Image src={leadStage} className='leadStage'/>
+              <View onClick={this.leadSingerBox.bind(this)}className={`leadSingerBox ${staticBand?'':'hide'}`}>
+                <Image src={staticBand} className='guitarist'/>
+                <Image src={light} className='leadLight'/>
+                <Image src={stage} className='leadStage'/>
               </View>
-              <View onClick={this.guitaristBox.bind(this)} className='guitaristBox'>
-                <Image src={guitaristGif} className='guitarist'/>
-                <Image src={guitaristLight} className='guitaristLight'/>
-                <Image src={guitaristStage} className='guitaristStage'/>
+              <View onClick={this.guitaristBox.bind(this)} className={`guitaristBox  ${guitarist.type?'':'hide'}`}>
+                <Image src={guitarist.staticBand} className='guitarist'/>
+                <Image src={guitarist.light} className='guitaristLight'/>
+                <Image src={guitarist.stage} className='guitaristStage'/>
               </View>
-              <View onClick={this.bassistBox.bind(this)} className='bassistBox'>
-                <Image src={bassistGif} className='bassist'/>
-                <Image src={bassistLight} className='bassistLight'/>
-                <Image src={bassistStage} className='bassistStage'/>
+              <View  className={`bassistBox ${bassist.type?'':'hide'}`}>
+                <Image src={bassist.staticBand} className='bassist'/>
+                <Image src={bassist.light} className='bassistLight'/>
+                <Image src={bassist.stage} className='bassistStage'/>
               </View>
-              <View className='drummerBox'>
-                <Image src={drummerGif} className='drummer'/>
-                <Image src={drummerLight} className='drummerLight'/>
-                <Image src={drummerStage} className='drummerStage'/>
+              <View  className={`drummerBox ${bassist.type?'':'hide'}`}>
+                <Image src={drummer.staticBand} className={`drummer  ${drummer.type?'':'hide'}`}/>
+                <Image src={drummer.light} className='drummerLight'/>
+                <Image src={drummer.stage} className='drummerStage'/>
               </View>
             </View>;
   }

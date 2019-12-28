@@ -99,6 +99,7 @@ export class Index extends Component {
 
 	componentDidShow () {
 		let _this = this;
+
 		// 显示分享
 		showShareMenuItem();
 		// 页面超出提示,返回当前页面URL

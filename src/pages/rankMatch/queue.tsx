@@ -3,7 +3,6 @@ import { View, Image, Text } from '@tarojs/components'
 import { getStorage, buildURL, getArrayItems } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import emitter from '../../service/events'
-import createVideoAd from '../../service/createVideoAd'
 import './queue.scss'
 
 import GameLoading from '../../components/GameLoading'
@@ -186,10 +185,10 @@ export class PrizeQueue extends Component {
 				url: entrancePage,
 				success(){
 					Taro.showToast({
-						title: '匹配失败',
+						title: '退出匹配',
 						icon: 'none',
 						duration: 2000
-					})
+					});
 				}
 			});
 		});
@@ -199,14 +198,15 @@ export class PrizeQueue extends Component {
 			this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
 				clearInterval(message[1]);
 				let goenterGame = this.state.routers.goenterGame;
+				this.setState((preState)=>{
+					preState.data.curTeamInfo = {currCount:6, maxCount:6};
+				});
 				console.log('所有队伍');
 				console.log(message[0]['data']);
 				let PartyATeam = message[0]['data']['redPalyerOnInstance'];
 				let PartyBTeam = message[0]['data']['bluePalyerOnInstance'];
 				// 收到后台 ‘匹配成功后开始从新编队’
 				_this.afreshFormation(PartyATeam, PartyBTeam, (data)=>{
-					console.error('正常data ===>')
-					console.log(data);
 					Taro.redirectTo({
 						url: buildURL(goenterGame,{item:data}),
 					});
