@@ -138,8 +138,9 @@ export class RankReasult extends Component {
 				preState.local_data.rankUserInfo = item.rankUserInfo;
 			},()=>{
 				// 将当前段位信息存储gameUserInfo中
-				getStorage('getStorage',(res)=>{
-					let rankResultInfo = _this.state.local_data.rankResultInfo
+				getStorage('gameUserInfo',(res)=>{
+					let rankResultInfo = _this.state.local_data.rankResultInfo;
+
 					this.state.local_data.gameUserInfo = res;
 					this.state.local_data.gameUserInfo.dan = rankResultInfo.dan;
 					this.state.local_data.gameUserInfo.haveStar = rankResultInfo.haveStar;
@@ -147,6 +148,7 @@ export class RankReasult extends Component {
 					this.state.local_data.gameUserInfo.segmentTitle = rankResultInfo.segmentTitle;
 					this.state.local_data.gameUserInfo.gloryUrl = rankResultInfo.gloryUrl;
 					setStorage('gameUserInfo',_this.state.local_data.gameUserInfo);
+					console.info(_this.state.local_data.gameUserInfo,789);
 				})
 			});
 			

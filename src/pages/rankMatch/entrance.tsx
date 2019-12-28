@@ -139,9 +139,12 @@ export class RankEntrance extends Component {
 			this.websocket = App.globalData.websocket;
 		}
 		// 设置玩家基本信息UI显示
+		console.info()
 		getStorage('gameUserInfo',(res)=>{
 			this.setState((preState)=>{
 				preState.data.gameUserInfo = res;
+			},()=>{
+				console.info('设置成功gameUserInfo', _this.state.data.gameUserInfo)
 			})
 		});
 
