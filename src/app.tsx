@@ -62,6 +62,7 @@ class App extends Component {
 
 		// console.log = () => {}
 		// console.error = () => {}
+		// console.info = () => {}
     // console.log('console.log失效了');
 
 		const params = this.$router.params;
