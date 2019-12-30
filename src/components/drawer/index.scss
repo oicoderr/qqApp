@@ -1,5 +1,5 @@
 .hide {
-  display: none;
+  display: none !important;
 }
 
 /*mask*/
@@ -45,7 +45,7 @@
 
   .btn {
     width: 48rpx;
-    height: 620rpx;
+    height: 490rpx; // 620
     position: relative;
     z-index: 1004;
 
@@ -61,7 +61,7 @@
 
 .drawer_contentWrap {
   width: 360rpx;
-  height: 620rpx;
+  height: 490rpx; // 620rpx
   padding: 6rpx;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 0rpx 20rpx 20rpx 0rpx;
@@ -81,7 +81,7 @@
 
   .drawer_body {
     width: 100%;
-    height: 470rpx;
+    // height: 470rpx; // 470rpx
     display: flex;
     flex-direction: row;
     justify-content: space-between;

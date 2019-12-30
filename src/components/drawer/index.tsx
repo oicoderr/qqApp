@@ -171,7 +171,7 @@ export default class Drawer extends Component {
           <View className="drawer_contentWrap">
             <View className="drawer_content">
               <View className="drawer_body">{iconBox_item}</View>
-              <View className="drawer_setting">{iconBox_setting}</View>
+              <View className="drawer_setting hide">{iconBox_setting}</View>
             </View>
           </View>
 

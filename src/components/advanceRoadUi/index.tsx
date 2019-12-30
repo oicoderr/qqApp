@@ -296,7 +296,6 @@ export class MessageToast extends Component {
       }
     }
     for (let i = dan; i < list.length + 1 - dan; i++) {
-      console.log(i, '>>----11');
       reusltList.push(list_mask[i]);
     }
     this.setState(
