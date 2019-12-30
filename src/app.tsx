@@ -53,13 +53,14 @@ class App extends Component {
 	}
 
 	globalData = {
+		// 全局setTimeout, 
+		timestamp: 1,
 		websocket: '',
 		gameUserInfo: '',
 	}
 
 	componentWillMount () {
 		let _this = this;
-
 		// console.log = () => {}
 		// console.error = () => {}
 		// console.info = () => {}
@@ -74,6 +75,7 @@ class App extends Component {
 			}
 			setStorage('inviterInfo', inviterInfo);
 		}
+
 		this.msgProto = new MsgProto();
 		// 监听内存情况
 		this.onMemoryWarning();
@@ -151,21 +153,32 @@ class App extends Component {
 				});
 			}
 		});
+
+		clearTimeout(this.globalData.timestamp);
+		this.globalData.timestamp = 1;
+		console.error('～又进来了～', this.globalData);
 	}
 
 	componentDidHide () {
 		let currentPage = getCurrentPageUrl();
+		let _this = this;
+		let time = 10000;
+
 		// 支付页面会触发hide函数,将支付页面排除
-		if(currentPage != 'pages/payTakeMoney/recharge'){
-			console.error('～人为卸载socket～');
-			if(this.globalData.websocket){
-				this.websocket = this.globalData.websocket;
-				this.websocket.closeWebSocket();
-				this.globalData.websocket = '';
-			}
-			console.log('('+this.globalData.websocket+')');
-			console.error('卸载的当前路由 ==>');console.log(currentPage);
-		}
+		this.globalData.timestamp = setTimeout(()=>{
+			// if(currentPage != 'pages/payTakeMoney/recharge'){
+				console.error('～人为卸载socket～');
+				if(_this.globalData.websocket){
+					_this.websocket = _this.globalData.websocket;
+					_this.websocket.closeWebSocket();
+					_this.globalData.websocket = '';
+				};
+				console.log('('+_this.globalData.websocket+')');
+				console.error('卸载的当前路由 ==>');console.log(currentPage);
+				clearTimeout(_this.globalData.timestamp);
+			// }
+		},time);
+		
 	}
 
 	/* 新版本检测升级 */

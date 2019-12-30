@@ -2,6 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { getStorage, buildURL, getArrayItems } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
+import { websocketUrl } from '../../service/config'
 import emitter from '../../service/events'
 import './queue.scss'
 
@@ -199,10 +200,25 @@ export class PrizeQueue extends Component {
 		},500);
 
 		if(App.globalData.websocket === ''){
-			console.log('%c prize-queue 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
+			if(this.websocket.isLogin){
+				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+			}else{
+				this.websocket.initWebSocket({
+					url: websocketUrl,
+					success(res){
+						// 开始登陆
+						_this.websocket.onSocketOpened((res)=>{});
+						// 对外抛出websocket
+						App.globalData.websocket = _this.websocket;
+					},
+					fail(err){
+						createWebSocket(_this);
+					}
+				});
+			}
 		}
 
 		// 切换匹配头像 1s切换一次

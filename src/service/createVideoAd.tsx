@@ -57,8 +57,6 @@ export default class createVideoAd {
                 this.videoAd.load()
                 .then(() => this.videoAd.show())
                 .catch(err => {
-                    console.log('<======  视频播放失败2 ======>');
-                    console.log(err);
                     Taro.showToast({
                         title: this.videoAdErrHandle(err),
                         icon: 'none'

@@ -2,6 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
 import { unitReplacement, getStorage } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
+import { websocketUrl } from '../../service/config'
 import './takeMoney.scss'
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'
@@ -40,11 +41,31 @@ export class TakeMoney extends Component {
 	componentWillUnmount () {}
 
 	componentDidShow () {
+		let _this = this;
+
 		if(App.globalData.websocket === ''){
-			console.log('%c paTakeMoney-takeMoney 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
+			if(this.websocket.isLogin){
+				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				_this.takeMoneyInfo();
+			}else{
+				this.websocket.initWebSocket({
+					url: websocketUrl,
+					success(res){
+						// 开始登陆
+						_this.websocket.onSocketOpened((res)=>{
+							_this.takeMoneyInfo();
+						});
+						// 对外抛出websocket
+						App.globalData.websocket = _this.websocket;
+					},
+					fail(err){
+						createWebSocket(_this);
+					}
+				});
+			}
 		}
 
 		// 2102提现信息
@@ -77,20 +98,7 @@ export class TakeMoney extends Component {
 			}
 		});
 
-		// 请求提现信息
-		let takeMoneyInfo = this.msgProto.takeMoneyInfo();
-		let parentModule = this.msgProto.parentModule(takeMoneyInfo);
-		this.websocket.sendWebSocketMsg({
-			data: parentModule,
-			success(res) {console.log('请求提现信息Success')},
-			fail(err){
-				Taro.showToast({
-					title: err.errMsg,
-					icon: 'none',
-					duration: 2000
-				})
-			}
-		})
+
 	}
 
 	componentDidHide () {
@@ -123,6 +131,24 @@ export class TakeMoney extends Component {
 				duration: 2000
 			});
 		}
+	}
+
+	// 请求提现信息
+	takeMoneyInfo(){
+		// 请求提现信息
+		let takeMoneyInfo = this.msgProto.takeMoneyInfo();
+		let parentModule = this.msgProto.parentModule(takeMoneyInfo);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {console.log('请求提现信息Success')},
+			fail(err){
+				Taro.showToast({
+					title: err.errMsg,
+					icon: 'none',
+					duration: 2000
+				})
+			}
+		})
 	}
 
 	// 返回上一页

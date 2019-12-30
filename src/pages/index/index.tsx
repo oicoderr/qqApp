@@ -3,7 +3,7 @@ import { View, Text } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
 import { getStorage, setStorage, removeEmitter, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem } from '../../utils'
-
+import { websocketUrl } from '../../service/config'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
 import { MessageToast } from '../../components/MessageToast'
@@ -82,7 +82,7 @@ export class Index extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount() { }
+	componentWillMount() {}
 
 	componentDidMount() {
 		let _this = this;
@@ -106,11 +106,30 @@ export class Index extends Component {
 		let currentPageUrl = getCurrentPageUrl();
 
 		// 接受AppGlobalSocket
-		if (App.globalData.websocket === '') {
-			console.log('%c indexPAge 未找到Socket', 'font-size:14px;color:#ff6f1a;');
+		if(App.globalData.websocket === ''){
 			createWebSocket(this);
-		} else {
+		}else{
 			this.websocket = App.globalData.websocket;
+			if(this.websocket.isLogin){
+				// 1601 请求乐队基本信息
+				this.getSelfOrchestra();
+			}else{
+				this.websocket.initWebSocket({
+					url: websocketUrl,
+					success(res){
+						// 开始登陆
+						_this.websocket.onSocketOpened((res)=>{
+							// 1601 请求乐队基本信息
+							this.getSelfOrchestra();
+						});
+						// 对外抛出websocket
+						App.globalData.websocket = _this.websocket;
+					},
+					fail(err){
+						createWebSocket(_this);
+					}
+				});
+			}
 		}
 
 		// 更新金币/红包/能量-数量
@@ -354,8 +373,6 @@ export class Index extends Component {
 			});
 		});
 
-		// 1601 请求乐队基本信息
-		this.getSelfOrchestra();
 	}
 
 	componentDidHide() {
@@ -436,11 +453,11 @@ export class Index extends Component {
 			data: parentModule,
 			success(res) {console.log('请求我的乐队基本信息Success')},
 			fail(err){
-				// Taro.showToast({
-				// 	title: err.errMsg,
-				// 	icon: 'none',
-				// 	duration: 2000
-				// })
+				Taro.showToast({
+					title: err.errMsg,
+					icon: 'none',
+					duration: 2000
+				})
 			}
 		});
 	}

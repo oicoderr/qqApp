@@ -7,11 +7,11 @@
 import Taro from '@tarojs/taro'
 import MsgProto from '../service/msgProto'
 import LoginGame from '../toolProto/getLoginGameInfo' // 游戏登录模块
-import { removeStorage } from '../utils/index'
+
 export default class websocket {
 	constructor({ heartCheck, isReconnection }) {
 		// 是否连接
-		this._isLogin = false;
+		this.isLogin = false;
 		// 当前网络状态
 		this._netWork = true;
 		// 是否人为退出, 不是人为退出
@@ -47,10 +47,10 @@ export default class websocket {
 				// 心跳发送的信息应由前后端商量后决定
 				data: parentModule,
 				success(res) {
-					// console.log("发送心跳成功"); console.log(info)
+					// console.log("发送心跳成功"); // console.log(res)
 				},
 				fail(err) {
-					// console.log('%c 发送心跳失败：','font-size:14px;color:#ff1a21;');console.log(err);
+					// console.log('%c 发送心跳失败：','font-size:14px;color:#ff1a21;'); //console.log(err);
 					_this.reset();
 				}
 			});
@@ -67,7 +67,7 @@ export default class websocket {
 			}
 
 			// 关闭已登录开关
-			this._isLogin = false;
+			this.isLogin = false;
 
 			Taro.showToast({
 				title: '与服务器断开连接',
@@ -90,7 +90,7 @@ export default class websocket {
 		Taro.onNetworkStatusChange(res => {
 			console.error('当前网络状态:' + res.isConnected);
 			if (!this._netWork) {
-				this._isLogin = false;
+				this.isLogin = false;
 				// 进行重连
 				if (this._isReconnection) {
 					this._reConnect(options)
@@ -99,20 +99,21 @@ export default class websocket {
 		})
 	}
 
-	onSocketOpened() {
+	onSocketOpened(callBack) {
 		Taro.onSocketOpen(res => {
 			let _this = this;
 			// 打开网络开关
 			this._netWork = true;
 			// 打开已登录开关
-			this._isLogin = true;
+			this.isLogin = true;
 			let loginModule = this.msgProto.loginModule(LoginGame.getLogin());
 			let parentModule = this.msgProto.parentModule(loginModule);
 			this.sendWebSocketMsg({
 				data: parentModule,
 				success(res) {
 					_this.loginGame = true;
-					removeStorage('inviterInfo');
+					// removeStorage('inviterInfo');
+					if(callBack)callBack(res);
 				},
 				fail(err){
 					Taro.showToast({
@@ -120,7 +121,6 @@ export default class websocket {
 						icon: 'none',
 						duration: 2000,
 					});
-					console.error('游戏登陆失败：' + err);
 				}
 			});
 
@@ -148,7 +148,7 @@ export default class websocket {
 	// 建立websocket连接
 	initWebSocket(options) {
 		let _this = this;
-		if (this._isLogin) {
+		if (this.isLogin) {
 			console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
 		} else {
 			// 检查网络
@@ -242,7 +242,7 @@ export default class websocket {
 	// 关闭websocket连接
 	closeWebSocket(){
 		Taro.closeSocket();
-		this._isLogin = false;
+		this.isLogin = false;
 		this._isClosed = true;
 	}
 }

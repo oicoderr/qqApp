@@ -3,8 +3,9 @@ import { View, Image, Text, Button, RadioGroup, Radio, Label } from '@tarojs/com
 import './entrance.scss'
 import emitter from '../../service/events';
 import throttle from 'lodash/throttle'
-import { getStorage, setStorage, onShareApp, showShareMenuItem, unitReplacement } from '../../utils';
+import { getStorage, setStorage, removeStorage, onShareApp, showShareMenuItem, unitReplacement } from '../../utils';
 import { createWebSocket } from '../../service/createWebSocket'
+import { websocketUrl } from '../../service/config'
 import MessageToast from '../../components/MessageToast'
 import createVideoAd from '../../service/createVideoAd'
 import MsgProto from '../../service/msgProto'
@@ -86,7 +87,6 @@ export class PrizeEntrance extends Component {
 		this.msgProto = new MsgProto();
 	}
 	componentWillMount () {
-		let _this = this;
 
 		// 创建激励视频
 		this.videoAd= new createVideoAd();
@@ -129,11 +129,27 @@ export class PrizeEntrance extends Component {
 		let _this = this;
 		// 显示分享
 		showShareMenuItem();
+
 		if(App.globalData.websocket === ''){
-			console.log('%c prize-entrance 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
+			if(this.websocket.isLogin){
+				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+			}else{
+				this.websocket.initWebSocket({
+					url: websocketUrl,
+					success(res){
+						// 开始登陆
+						_this.websocket.onSocketOpened((res)=>{});
+						// 对外抛出websocket
+						App.globalData.websocket = _this.websocket;
+					},
+					fail(err){
+						createWebSocket(_this);
+					}
+				});
+			}
 		}
 
 		// 获取个人游戏信息
@@ -256,38 +272,6 @@ export class PrizeEntrance extends Component {
 				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
 			});
 			setStorage('currencyChange', currencyChange);
-		});
-
-		// 请求大奖赛开放状态
-		let isOpenPrize = this.msgProto.isOpenPrize()
-		let parentModule = this.msgProto.parentModule(isOpenPrize);
-		this.websocket.sendWebSocketMsg({
-			data: parentModule,
-			success(res) { console.log('%c 请求大奖赛开放状态Success','font-size:14px;color:#e66900;')},
-			fail(err) {
-				Taro.showToast({
-					title: err.errormsg,
-					icon: 'none',
-					duration: 2000
-				})
-				console.error('请求大奖赛开放状态失败==> ');console.log(err);
-			}
-		});
-
-		// 请求邀请好友领取物品情况
-		let quickenCardHelp = this.msgProto.quickenCardHelp()
-		let parentModule_ = this.msgProto.parentModule(quickenCardHelp);
-		this.websocket.sendWebSocketMsg({
-			data: parentModule_,
-			success(res) { console.log('%c 请求邀请好友领取物品情况Success','font-size:14px;color:#e66900;')},
-			fail(err) {
-				Taro.showToast({
-					title: err.errormsg,
-					icon: 'none',
-					duration: 2000
-				})
-				console.error('请求邀请好友领取物品情况失败==> ');console.log(err);
-			}
 		});
 
 		// 更新金币/红包/能量-数量

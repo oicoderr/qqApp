@@ -2,6 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
 import throttle from 'lodash/throttle'
 import { createWebSocket } from '../../service/createWebSocket'
+import { websocketUrl } from '../../service/config'
 import './selfOrchestra.scss'
 import GameLoading from '../../components/GameLoading'
 import emitter from '../../service/events'
@@ -59,28 +60,32 @@ export class SelfOrchestra extends Component {
 	componentWillUnmount () {}
 
 	componentDidShow () {
+		let _this = this;
 
 		if(App.globalData.websocket === ''){
-			console.log('%c mall 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
-		}
-
-		// 请求乐队基本信息
-		let selfOrchestra = this.msgProto.selfOrchestra();
-		let parentModule = this.msgProto.parentModule(selfOrchestra);
-		this.websocket.sendWebSocketMsg({
-			data: parentModule,
-			success(res) {console.log('请求我的乐队基本信息Success')},
-			fail(err){
-				Taro.showToast({
-					title: err.errMsg,
-					icon: 'none',
-					duration: 2000
-				})
+			if(this.websocket.isLogin){
+				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				_this.selfOrchestra();
+			}else{
+				this.websocket.initWebSocket({
+					url: websocketUrl,
+					success(res){
+						// 开始登陆
+						_this.websocket.onSocketOpened((res)=>{
+							_this.selfOrchestra();
+						});
+						// 对外抛出websocket
+						App.globalData.websocket = _this.websocket;
+					},
+					fail(err){
+						createWebSocket(_this);
+					}
+				});
 			}
-		});
+		}
 
 		// 1602 服务器回复乐队基本数据
 		this.eventEmitter = emitter.addListener('getSelfOrchestra', (message) => {
@@ -166,6 +171,23 @@ export class SelfOrchestra extends Component {
 				}
 			});
 		}
+	}
+
+	// 请求乐队基本信息
+	selfOrchestra(){
+		let selfOrchestra = this.msgProto.selfOrchestra();
+		let parentModule = this.msgProto.parentModule(selfOrchestra);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {console.log('请求我的乐队基本信息Success')},
+			fail(err){
+				Taro.showToast({
+					title: err.errMsg,
+					icon: 'none',
+					duration: 2000
+				})
+			}
+		});
 	}
 
 	render () {

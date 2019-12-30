@@ -7,6 +7,7 @@ import { UserAgreement } from '../../utils/UserAgreement'
 import MessageToast from '../../components/MessageToast'
 import MsgProto from '../../service/msgProto'
 import { createWebSocket } from '../../service/createWebSocket'
+import { websocketUrl } from '../../service/config'
 import './index.scss'
 
 const App = Taro.getApp();
@@ -39,7 +40,6 @@ export class Login extends Component {
 				tip0:'同意',
 				tip: '《音乐大作战用户使用须知》',
 			}
-			
 		};
 		this.msgProto = new MsgProto();
 	}
@@ -69,14 +69,30 @@ export class Login extends Component {
 	componentWillUnmount () {}
 
 	componentDidShow () {
+		let _this = this;
 		// 显示分享
 		showShareMenuItem();
 
 		if(App.globalData.websocket === ''){
-			console.log('%c rankMatch-enterGame 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
+			if(this.websocket.isLogin){
+				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+			}else{
+				this.websocket.initWebSocket({
+					url: websocketUrl,
+					success(res){
+						// 开始登陆
+						_this.websocket.onSocketOpened((res)=>{});
+						// 对外抛出websocket
+						App.globalData.websocket = _this.websocket;
+					},
+					fail(err){
+						createWebSocket(_this);
+					}
+				});
+			}
 		}
 	}
 

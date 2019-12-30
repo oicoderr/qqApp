@@ -4,6 +4,7 @@ import './entrance.scss'
 import emitter from '../../service/events';
 import { getStorage, setStorage, unitReplacement } from '../../utils';
 import { createWebSocket } from '../../service/createWebSocket'
+import { websocketUrl } from '../../service/config'
 import createVideoAd from '../../service/createVideoAd'
 import MsgProto from '../../service/msgProto'
 
@@ -131,11 +132,27 @@ export class RankEntrance extends Component {
 
 	componentDidShow () {
 		let _this = this;
+
 		if(App.globalData.websocket === ''){
-			console.log('%c rankMatch-entrance 未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
+			if(this.websocket.isLogin){
+				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+			}else{
+				this.websocket.initWebSocket({
+					url: websocketUrl,
+					success(res){
+						// 开始登陆
+						_this.websocket.onSocketOpened((res)=>{});
+						// 对外抛出websocket
+						App.globalData.websocket = _this.websocket;
+					},
+					fail(err){
+						createWebSocket(_this);
+					}
+				});
+			}
 		}
 
 		// 设置玩家基本信息UI显示
@@ -163,7 +180,6 @@ export class RankEntrance extends Component {
 		});
 	}
 
-
 	componentDidHide () {
 		emitter.removeAllListeners('currencyChange');
 	}
@@ -179,7 +195,6 @@ export class RankEntrance extends Component {
 
 	// 跳转匹配页
 	goMatchRank(){
-		console.log('～跳转匹配～');
 		let queuePage = this.state.routers.queuePage;
 		Taro.navigateTo({
 			url: queuePage

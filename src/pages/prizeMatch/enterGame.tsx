@@ -3,6 +3,7 @@ import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
 import { buildURL, getCurrentTime } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
+import { websocketUrl } from '../../service/config'
 import './enterGame.scss'
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'
@@ -110,10 +111,25 @@ export class PrizeEnterGame extends Component {
 		let _this = this;
 
 		if(App.globalData.websocket === ''){
-			console.log('%c prize-enterGame  未找到Socket','font-size:14px;color:#ff6f1a;');
 			createWebSocket(this);
 		}else{
 			this.websocket = App.globalData.websocket;
+			if(this.websocket.isLogin){
+				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+			}else{
+				this.websocket.initWebSocket({
+					url: websocketUrl,
+					success(res){
+						// 开始登陆
+						_this.websocket.onSocketOpened((res)=>{});
+						// 对外抛出websocket
+						App.globalData.websocket = _this.websocket;
+					},
+					fail(err){
+						createWebSocket(_this);
+					}
+				});
+			}
 		}
 
 		// 隐藏答题遮罩
