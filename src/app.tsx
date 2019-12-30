@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import 'taro-ui/dist/style/index.scss'
 import './utils/ald-stat'
-import { setStorage, getStorage, hideShareMenu, loginRequest, getCurrentPageUrl } from './utils'
+import { setStorage, getStorage, getUa, hideShareMenu, loginRequest, getCurrentPageUrl } from './utils'
 import { Api } from './service/api'
 import './app.scss'
 import emitter from './service/events';
@@ -64,6 +64,9 @@ class App extends Component {
 		// console.log = () => {}
 		// console.error = () => {}
 		// console.info = () => {}
+
+		let ua = getUa();
+		console.info(ua);
 
 		const params = this.$router.params;
 		if(params.query){

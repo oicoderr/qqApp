@@ -167,12 +167,17 @@ export class RankEnterGame extends Component {
 			this.websocket = App.globalData.websocket;
 			if(this.websocket.isLogin){
 				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				// 请求道具：延迟卡，求助卡数量
+				_this.getMatchProps();
 			}else{
 				this.websocket.initWebSocket({
 					url: websocketUrl,
 					success(res){
 						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{});
+						_this.websocket.onSocketOpened((res)=>{
+							// 请求道具：延迟卡，求助卡数量
+							_this.getMatchProps();
+						});
 						// 对外抛出websocket
 						App.globalData.websocket = _this.websocket;
 					},
@@ -187,9 +192,6 @@ export class RankEnterGame extends Component {
 		this.setState((preState)=>{
 			preState.local_data.isShowMask = false;
 		},()=>{ /* console.log('%c' + this.state.local_data.isShowMask,'font-size:20px; color:pink;');*/});
-		
-		// 请求道具：延迟卡，求助卡数量
-		this.getMatchProps();
 
 		// 1508 接受道具卡数量
 		this.eventEmitter = emitter.addListener('getMatchProps', (message) => {

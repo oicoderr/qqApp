@@ -156,7 +156,6 @@ export class RankEntrance extends Component {
 		}
 
 		// 设置玩家基本信息UI显示
-		console.info()
 		getStorage('gameUserInfo',(res)=>{
 			this.setState((preState)=>{
 				preState.data.gameUserInfo = res;

@@ -462,7 +462,7 @@ export class Mall extends Component {
 			return  <View onClick={this.DBbuyProps.bind(this)} data-isUnLock={cur.isUnLock} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
 								<View className='cardBg_'>
 									<Image src={cur.icon} className='cardImg_' />
-									<View className={cur.isunlock?'hide':'isunlock'}>
+									<View className={cur.isUnLock?'hide':'isunlock'}>
 										<View className='unlockTip'>{unlockTip}</View>
 									</View>
 								</View>
@@ -480,7 +480,7 @@ export class Mall extends Component {
 			return  <View onClick={this.DBbuyProps.bind(this)} data-isUnLock={cur.isUnLock} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
-							<View className={cur.isunlock?'hide':'isunlock'}>
+							<View className={cur.isUnLock?'hide':'isunlock'}>
 								<View className='unlockTip'>{unlockTip}</View>
 							</View>
 						</View>
@@ -498,7 +498,7 @@ export class Mall extends Component {
 			return  <View onClick={this.DBbuyProps.bind(this)} data-isUnLock={cur.isUnLock} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
-							<View className={cur.isunlock?'hide':'isunlock'}>
+							<View className={cur.isUnLock?'hide':'isunlock'}>
 								<View className='unlockTip'>{unlockTip}</View>
 							</View>
 						</View>
@@ -516,7 +516,7 @@ export class Mall extends Component {
 			return  <View onClick={this.DBbuyProps.bind(this)} data-isUnLock={cur.isUnLock} data-id={cur.id} data-rewardCount={cur.rewardCount} className={`item_ ${index%3== 1?'bothMargin':''}`}>
 						<View className='cardBg_'>
 							<Image src={cur.icon} className='cardImg_' />
-							<View className={cur.isunlock?'hide':'isunlock'}>
+							<View className={cur.isUnLock?'hide':'isunlock'}>
 								<View className='unlockTip'>{unlockTip}</View>
 							</View>
 						</View>
