@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
-import { getStorage, setStorage, removeEmitter, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem } from '../../utils'
+import { getStorage, setStorage, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem } from '../../utils'
 import { websocketUrl } from '../../service/config'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
@@ -95,7 +95,7 @@ export class Index extends Component {
 		});
 	}
 
-	componentWillUnmount() { }
+	componentWillUnmount() {}
 
 	componentDidShow() {
 		let _this = this;
@@ -161,6 +161,7 @@ export class Index extends Component {
 				}
 			});
 		});
+
 		// -------------------------- 游戏被杀死，重新进入游戏 --------------------------------------
 		// 1302 匹配ing杀死app，根据字段是否断线重连判断：isreconnection 1. 在匹配中杀死的
 		this.eventEmitter = emitter.addListener('enterMatch', (message) => {
@@ -231,7 +232,7 @@ export class Index extends Component {
 			}
 		});
 		// -------------------------- 游戏被杀死，重新进入游戏 End-----------------------------------
-		
+
 		// 1802 回应签到基本信息
 		this.eventEmitter = emitter.addListener('getWeekCheckIninfo', (message) => {
 			clearInterval(message[1]);
@@ -528,7 +529,6 @@ export class Index extends Component {
 					</View>
 
 					<View className='body'>
-						{/* <Image src={ personTheme } className='personTheme'></Image> */}
 						<HomeBandUi />
 					</View>
 
