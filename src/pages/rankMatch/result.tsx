@@ -146,7 +146,7 @@ export class RankReasult extends Component {
 					this.state.local_data.gameUserInfo.dan = rankResultInfo.dan;
 					this.state.local_data.gameUserInfo.haveStar = rankResultInfo.haveStar;
 					this.state.local_data.gameUserInfo.totalStar = rankResultInfo.totalStar;
-					this.state.local_data.gameUserInfo.segmentTitle = rankResultInfo.segmentTitle;
+					this.state.local_data.gameUserInfo.segmentTitleUrl = rankResultInfo.segmentTitle;
 					this.state.local_data.gameUserInfo.gloryUrl = rankResultInfo.gloryUrl;
 					setStorage('gameUserInfo',_this.state.local_data.gameUserInfo);
 					console.info(_this.state.local_data.gameUserInfo,789);

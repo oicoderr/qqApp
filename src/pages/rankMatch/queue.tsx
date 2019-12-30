@@ -382,7 +382,7 @@ export class PrizeQueue extends Component {
 				console.log(preState);
 				preState.local_data.gameUserInfo = val;
 			},()=>{
-				console.log(_this.state.local_data.gameUserInfo.danDesc);
+				console.log(_this.state.local_data.gameUserInfo);
 			});
 		})
 	}
