@@ -463,7 +463,6 @@ export class PrizeEnterGame extends Component {
 		// 复活时间
 		const { waitreceivetime } = this.state.local_data.preQuestionInfo;
 
-		console.error('当前题是否正确：=====》'+ isSuccess)
 		const Answer  = options.map((currentValue,index) => { // selectedOptionIndex 所选题的index
 			return  <View className={`optionBox`}>
 						<View onClick={this.submitAnswer.bind(this)} 
