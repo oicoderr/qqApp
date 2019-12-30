@@ -45,15 +45,15 @@ export class PrizeEnterGame extends Component {
 				dieOutText: '已淘汰：',
 				surplusText: '剩余人数：',
 				countdownPrizeMatch: 'https://oss.snmgame.com/v1.0.0/countdownPrizeMatch.png',
-				defultClass: '',	   	// 选项上层默认样式class 
-				defultBottomClass: '', 	// 选项下层默认样式class
-				isShowMask: false,		// 默认不显示遮罩
-				isShowLoading: true,	// 默认显示加载动画
-				curQuestion: {			// 当前题
+				defultClass: '',	   					// 选项上层默认样式class 
+				defultBottomClass: '', 				// 选项下层默认样式class
+				isShowMask: false,						// 默认不显示遮罩
+				isShowLoading: true,					// 默认显示加载动画
+				curQuestion: {								// 当前题
 					currCount: 30,
-					dieCount: 0,		// 已淘汰人数
-					receiveCount: 0,	// 复活人数
-					currContent: '',	// 当前题文案
+					dieCount: 0,								// 已淘汰人数
+					receiveCount: 0,						// 复活人数
+					currContent: '',						// 当前题文案
 					currIndex: 0,	
 					time: 10,
 					totalCount:'',
@@ -61,17 +61,18 @@ export class PrizeEnterGame extends Component {
 					isSuccess: -1,
 					selfSelectId: -1,
 				},
-				selectedOptionIndex: -1,// 当前题index
-				selectedOptionId: '',	// 所选题optionId
-				preQuestionInfo: {		// 上一题回答基本信息
+				selectedOptionIndex: -1,			// 当前题index
+				memoryIndex: -1,							// 记忆当前index
+				selectedOptionId: '',					// 所选题optionId
+				preQuestionInfo: {						// 上一题回答基本信息
 					answerErrorCount: '',
 					lastQuestId: '',
 					list: [],
 					optionId: '',
 					waitreceivetime: 3,
 				},	
-				prizeMatchUserInfo:{},	// 大奖赛个人信息
-				isAnswerCorrect:{		// 玩家选择10s后显示当前答案是否正确
+				prizeMatchUserInfo:{},				// 大奖赛个人信息
+				isAnswerCorrect:{							// 玩家选择10s后显示当前答案是否正确
 					isSuccess: 0,
 					optionId: '',
 					questId: '',
@@ -84,7 +85,7 @@ export class PrizeEnterGame extends Component {
 					toastBtn2: '复活',
 					toastUnit: '秒',
 				},
-				isShowToast: false,		// 是否显示复活toast
+				isShowToast: false,						// 是否显示复活toast
 			}
 		}
 		this.msgProto = new MsgProto();
@@ -151,6 +152,7 @@ export class PrizeEnterGame extends Component {
 				preState.local_data.curQuestion = this.resetQA(message[0]['data']);
 				preState.local_data.curQuestion.correctOption = -1;
 				preState.local_data.selectedOptionIndex = -1;
+				preState.local_data.memoryIndex = -1;
 				// 隐藏答错人数提示
 				preState.local_data.curQuestion.answerErrorCount = 0;
 				// 隐藏答复活人数提示
@@ -202,7 +204,7 @@ export class PrizeEnterGame extends Component {
 				// 清除选中样式
 				preState.local_data.curQuestion.correctOption = -1;
 				preState.local_data.selectedOptionIndex = -1;
-				// 显示用户是否选择正确，暂只有正确显示，错误不显示
+				// 显示用户是否选择正确, 正确/错误显示
 				preState.local_data.curQuestion['isSuccess'] = preState.local_data.isAnswerCorrect.isSuccess;
 				preState.local_data.curQuestion['selfSelectId'] = preState.local_data.isAnswerCorrect.optionId;
 			},()=>{
@@ -268,6 +270,7 @@ export class PrizeEnterGame extends Component {
 			this.setState((preState)=>{
 				preState.local_data.curQuestion.correctOption = -1;
 				preState.local_data.selectedOptionIndex = -1;
+				preState.local_data.memoryIndex = -1;
 			},()=>{
 				Taro.reLaunch({
 					url: buildURL(_this.state.routers.resultPage,{item: message[0]['data']})
@@ -368,6 +371,7 @@ export class PrizeEnterGame extends Component {
 		// 设置所选答案index - optionId
 		this.setState((preState)=>{
 			preState.local_data.selectedOptionIndex = curOptionIndex;
+			preState.local_data.memoryIndex = curOptionIndex;
 			preState.local_data.selectedOptionId = optionId;
 		},()=>{});
 
@@ -446,7 +450,7 @@ export class PrizeEnterGame extends Component {
 	render () {
 		const {
 			countdownPrizeMatch, surplusText, dieOutText, isShowMask, isShowToast,
-			isShowLoading, selectedOptionIndex, unit,
+			isShowLoading, selectedOptionIndex, unit, memoryIndex, 
 		} = this.state.local_data;
 		// 当前题
 		const { currContent, currIndex, currQuestId, time, totalCount, options, answerErrorCount,
@@ -459,16 +463,23 @@ export class PrizeEnterGame extends Component {
 		// 复活时间
 		const { waitreceivetime } = this.state.local_data.preQuestionInfo;
 
+		console.error('当前题是否正确：=====》'+ isSuccess)
 		const Answer  = options.map((currentValue,index) => { // selectedOptionIndex 所选题的index
 			return  <View className={`optionBox`}>
 						<View onClick={this.submitAnswer.bind(this)} 
-							className={`optionWarp ${selectedOptionIndex == index?'selectedOption':''} ${selfSelectId == currentValue.optionId && isSuccess?'trueOptionBottom':''}`}
+							className={`optionWarp 
+							${selectedOptionIndex == index?'selectedOption':''} 
+							${selfSelectId == currentValue.optionId && isSuccess?'trueOptionBottom':''}
+							${memoryIndex == index && !isSuccess?'flaseOptionBottom':''}`}
+							
 							data-curOptionIndex={index}
 							data-currQuestId={currQuestId}
 							data-quesIndex={currIndex} 
 							data-optionId={currentValue.optionId}
 						>
-							<View className={`option ${ selfSelectId == currentValue.optionId && isSuccess?'trueOption':''}`}>
+							<View className={`option 
+							${selfSelectId == currentValue.optionId && isSuccess?'trueOption':''}
+							${memoryIndex == index && !isSuccess?'falseOption':''}`}>
 								<View className='optionMark'>{currentValue.key}</View>
 								<View className='optionContent'>{currentValue.value}</View>
 							</View>

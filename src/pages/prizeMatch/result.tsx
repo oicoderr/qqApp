@@ -113,17 +113,9 @@ export class PrizeReasult extends Component {
 				this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
-						Taro.showToast({
-							title: '奖励领取成功',
-							icon: 'none',
-							mask: true,
-							duration: 2000,
-							success(){
-								Taro.reLaunch({
-									url: entrancePage
-								})
-							}
-						});
+						Taro.reLaunch({
+							url: entrancePage
+						})
 					},
 					fail(err) { console.log(err) }
 				});
