@@ -1,0 +1,59 @@
+.iosCaveat{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.iosCaveat .bgColor{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(97, 130, 242, 1);
+    position: relative;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+
+    .bgImg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('https://oss.snmgame.com/v1.0.0/login_bgX.png');
+        background-size: 750px  100%;
+        background-repeat: no-repeat;
+        opacity: 1;
+        filter:alpha(opacity=1);
+    }
+
+    .content{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 50rpx 20rpx 20rpx 20rpx;
+        overflow: hidden;
+        box-sizing: border-box;
+        z-index: 2;
+
+        .logo{
+            width: 660rpx;
+            height: 400rpx;
+            position: absolute;
+            top: 290rpx;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .tipImg{
+            width: 670rpx;
+            height: 260rpx;
+            position: absolute;
+            bottom: 140rpx;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+}

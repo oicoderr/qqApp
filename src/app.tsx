@@ -21,27 +21,29 @@ class App extends Component {
 	config: Config = {
 		pages: [
 
-			'pages/login/index',			  // app 登录
-			'pages/index/index',			  // 游戏登录
-			'pages/rankMatch/entrance', 	  // 排位赛入口
+			'pages/activity/iosCaveat',				// ios设备提示
+			'pages/login/index',			  			// app 登录
+			'pages/index/index',			  			// 游戏登录
+			'pages/rankMatch/entrance', 	  	// 排位赛入口
 			'pages/rankMatch/queue',   	  	  // 排位赛队列
 			'pages/rankMatch/enterGame',      // 排位赛开始游戏
 			'pages/rankMatch/result', 	      // 排位赛结果
 
-			'pages/prizeMatch/entrance',	  // 大奖赛入口
-			'pages/prizeMatch/queue',	  	  // 大奖赛队列
-			'pages/prizeMatch/enterGame',	  // 大奖赛开始游戏
+			'pages/prizeMatch/entrance',	  	// 大奖赛入口
+			'pages/prizeMatch/queue',	  	  	// 大奖赛队列
+			'pages/prizeMatch/enterGame',	  	// 大奖赛开始游戏
 			'pages/prizeMatch/result',	  	  // 大奖赛结果
 
 			'pages/payTakeMoney/takeMoney',	  // 提现
 			'pages/payTakeMoney/recharge', 	  // 充值
-			'pages/activity/goldHelp',		  // 金币助力
-			'pages/WriteQuestion/index', 	  // 开始出题
-			'pages/takeMoneyAnnal/index',	  // 提现记录
-			'pages/toolbar/opinion',	  	  // 反馈意见
+			'pages/activity/goldHelp',		  	// 金币助力
+			'pages/WriteQuestion/index', 	  	// 开始出题
+			'pages/takeMoneyAnnal/index',	  	// 提现记录
+			'pages/toolbar/opinion',	  	  	// 反馈意见
 			'pages/toolbar/backpack', 	  	  // 背包
 			'pages/toolbar/mall', 	  	  	  // 商城
 			'pages/toolbar/selfOrchestra',	  // 我的乐队
+			
 		],
 		window: {
 			backgroundTextStyle: 'light',
@@ -53,20 +55,27 @@ class App extends Component {
 	}
 
 	globalData = {
-		// 全局setTimeout, 
-		timestamp: 1,
+		timestamp: 1,					// 全局setTimeout, 
 		websocket: '',
 		gameUserInfo: '',
 	}
 
-	componentWillMount () {
-		let _this = this;
-		// console.log = () => {}
-		// console.error = () => {}
-		// console.info = () => {}
+	componentWillMount () {}
 
+	componentDidMount () {
+		let _this = this;
+		// console.log = () => {};
+		// console.error = () => {};
+		// console.info = () => {};
+
+		// 设备提示
 		let ua = getUa();
-		console.info(ua);
+		if(ua.system.indexOf('iOS') > -1 || ua.model.indexOf('iPhone') > -1){
+			Taro.redirectTo({
+				url: '/pages/activity/iosCaveat'
+			});
+			return;
+		}
 
 		const params = this.$router.params;
 		if(params.query){
@@ -78,7 +87,6 @@ class App extends Component {
 			}
 			setStorage('inviterInfo', inviterInfo);
 		}
-
 		this.msgProto = new MsgProto();
 		// 监听内存情况
 		this.onMemoryWarning();
@@ -96,7 +104,7 @@ class App extends Component {
 						console.log('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
 						// 重新授权登录
 						// Taro.showToast({
-						// 	title: '请授权，解锁更多姿势～',
+						// 	title: '授权解锁更多姿势～',
 						// 	icon: 'none',
 						// 	duration: 2000
 						// });
@@ -114,8 +122,6 @@ class App extends Component {
 			})
 		});
 	}
-
-	componentDidMount () {}
 
 	componentDidShow() {
 		// 隐藏分享
@@ -312,6 +318,17 @@ class App extends Component {
 			},
 			fail(err) { console.log(err) }
 		})
+	}
+
+	// ios设备跳转提示
+	iosTip(){
+		let ua = getUa();
+		if(ua.system.indexOf('iOS') || ua.model.indexOf('iPhone')){
+			Taro.redirectTo({
+				url: '/pages/activity/iosCaveat'
+			})
+			return;
+		}
 	}
 
 	// 在 App 类中的 render() 函数没有实际作用
