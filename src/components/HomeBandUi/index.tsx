@@ -86,7 +86,7 @@ export default class HomeBand extends Component {
         });
       }else if(elicitPart[i]['type'] == 2 && elicitPart[i]['status']){
         this.setState((preState)=>{
-          preState.local_data.leadSinger = elicitPart[i];
+          preState.local_data.guitarist = elicitPart[i];
         });
       }else if(elicitPart[i]['type'] == 3 && elicitPart[i]['status']){
         this.setState((preState)=>{
@@ -107,7 +107,7 @@ export default class HomeBand extends Component {
     const drummer = this.state.local_data.drummer;
 
     // 默认空缺主人物
-    const {guitarist_, bassist_, drummer_} = this.state.default_data;
+    const { guitarist_, bassist_, drummer_ } = this.state.default_data;
 
     return  <View className="homeBand">
               <View className={`leadSingerBox ${type?'':'hide'}`}>

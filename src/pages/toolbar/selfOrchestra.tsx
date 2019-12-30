@@ -141,7 +141,10 @@ export class SelfOrchestra extends Component {
 				preState.local_data.drummer = drummer;
 			});
 			console.log('%c 乐队各类 ===>', 'font-size: 14px; color:#1a71ff;');
-			console.log(leadSinger, guitarist, bassist, drummer);
+			console.log(leadSinger);
+			console.log(guitarist);
+			console.log(bassist);
+			console.log(drummer);
 		}catch(err){
 			//在这里处理错误
 			console.error('错误：' + err);
