@@ -18,6 +18,10 @@ export class BackPack extends Component {
 		super(props);
 
 		this.state = {
+			routers:{
+				indexPage: '/pages/index/index',
+			},
+
 			data:{
 				list: []
 			},
@@ -129,8 +133,9 @@ export class BackPack extends Component {
 
 	// 返回上一页
 	goBack(){
-		Taro.navigateBack({
-			delta: 1
+		let indexPage = this.state.routers.indexPage;
+		Taro.reLaunch({
+			url: indexPage
 		});
 	}
 

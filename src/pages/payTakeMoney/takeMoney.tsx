@@ -19,6 +19,11 @@ export class TakeMoney extends Component {
 		super(props);
 		
 		this.state = {
+
+			routers:{
+				indexPage: '/pages/index/index',
+			},
+
 			data:{
 				list: [],  		// 能量兑换列表
 				energy: 0,		// 当前拥有能量数
@@ -152,8 +157,9 @@ export class TakeMoney extends Component {
 
 	// 返回上一页
 	goBack(){
-		Taro.navigateBack({
-			delta: 1
+		let indexPage = this.state.routers.indexPage;
+		Taro.reLaunch({
+			url: indexPage
 		});
 	}
 

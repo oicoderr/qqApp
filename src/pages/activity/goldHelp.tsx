@@ -25,6 +25,10 @@ export class GoldHelp extends Component {
 		this.DBgetQuickenCard = throttle(this.DBgetQuickenCard, 1000);
 		this.state = {
 
+			routers:{
+				indexPage: '/pages/index/index',
+			},
+
 			data: {
 				gameDescription: [],
 				// 金币助力信息
@@ -221,8 +225,9 @@ export class GoldHelp extends Component {
 
 	// 返回上一页
 	goBack() {
-		Taro.navigateBack({
-			delta: 1
+		let indexPage = this.state.routers.indexPage;
+		Taro.reLaunch({
+			url: indexPage
 		});
 	}
 

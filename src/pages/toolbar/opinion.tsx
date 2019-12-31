@@ -19,9 +19,11 @@ export class Opinion extends Component {
 		super(props);
 
 		this.state = {
-			data:{
-
+			routers:{
+				indexPage: '/pages/index/index',
 			},
+
+			data:{},
 
 			local_data:{
 				// 反馈内容
@@ -106,8 +108,9 @@ export class Opinion extends Component {
 
 	// 返回上一页
 	goBack(){
-		Taro.navigateBack({
-			delta: 1
+		let indexPage = this.state.routers.indexPage;
+		Taro.reLaunch({
+			url: indexPage
 		});
 	}
 	// 记录反馈内容

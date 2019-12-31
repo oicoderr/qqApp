@@ -21,6 +21,11 @@ export class SelfOrchestra extends Component {
 		// 节流函数
 		this.DBreplaceOrchestra = throttle(this.DBreplaceOrchestra, 1000);
 		this.state = {
+
+			routers:{
+				indexPage: '/pages/index/index',
+			},
+
 			data:{
 				/*
 					乐队基本数据
@@ -107,8 +112,9 @@ export class SelfOrchestra extends Component {
 
 	// 返回上一页
 	goBack(){
-		Taro.navigateBack({
-			delta: 1
+		let indexPage = this.state.routers.indexPage;
+		Taro.reLaunch({
+			url: indexPage
 		});
 	}
 

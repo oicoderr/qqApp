@@ -203,8 +203,9 @@ export class PrizeEntrance extends Component {
 				});
 				// 1s后返回主页
 				let timer = setTimeout(()=>{
-					Taro.navigateBack({
-						delta: 1
+					let indexPage = this.state.routers.indexPage;
+					Taro.reLaunch({
+						url: indexPage
 					});
 				},2000);
 			}

@@ -27,6 +27,10 @@ export class Mall extends Component {
 		this.DBseeAdsGetProps = throttle(this.DBseeAdsGetProps, 1000);
 		this.DBgetQuickenCard = throttle(this.DBgetQuickenCard, 1000);
 		this.state = {
+			routers:{
+				indexPage: '/pages/index/index',
+			},
+
 			data:{
 				/*
 					商城信息
@@ -247,8 +251,9 @@ export class Mall extends Component {
 
 	// 返回上一页
 	goBack(){
-		Taro.navigateBack({
-			delta: 1
+		let indexPage = this.state.routers.indexPage;
+		Taro.reLaunch({
+			url: indexPage
 		});
 	}
 

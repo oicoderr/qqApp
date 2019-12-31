@@ -17,8 +17,13 @@ export class Recharge extends Component {
 
 	constructor(props) {
 		super(props);
-		
+
 		this.state = {
+
+			routers:{
+				indexPage: '/pages/index/index'
+			},
+
 			data:{
 				chargeList: [],  		// 门票价格信息
 				redEnvelope: 0,			// 当前门票数量
@@ -134,8 +139,9 @@ export class Recharge extends Component {
 
 	// 返回上一页
 	goBack(){
-		Taro.navigateBack({
-			delta: 1
+		let indexPage = this.state.routers.indexPage;
+		Taro.reLaunch({
+			url: indexPage
 		});
 	}
 
