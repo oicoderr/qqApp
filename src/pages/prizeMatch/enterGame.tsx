@@ -91,6 +91,7 @@ export class PrizeEnterGame extends Component {
 				isShowToast: false,						// 是否显示复活toast
 			}
 		}
+
 		this.msgProto = new MsgProto();
 	}
 

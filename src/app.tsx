@@ -63,9 +63,9 @@ class App extends Component {
 
 	componentDidMount () {
 		let _this = this;
-		// console.log = () => {};
-		// console.info = () => {};
-		// console.error = () => {};
+		console.log = () => {};
+		console.info = () => {};
+		console.error = () => {};
 
 		// 设备提示
 		let ua = getUa();

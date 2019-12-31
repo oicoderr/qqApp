@@ -49,7 +49,7 @@ export class PrizeReasult extends Component {
 				isShowRankResult: true,
 				quickenCardTxt: '答对题数：',
 				answerTxt: '加速卡：',
-				timeCostTxt: '最终用时',
+				timeCostTxt: '最终用时：',
 				receivedRewardTxt: '获得奖励：',
 				// 名次横幅
 				firstBar: 'https://oss.snmgame.com/v1.0.0/firstBar.png',
