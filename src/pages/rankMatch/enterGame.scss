@@ -262,7 +262,7 @@
 
                 }
             }
-            
+
             // 选怎了正确/错误答案页面显示
             .trueOption{
                 background-color: rgba(153, 233, 126, 1) !important;
@@ -278,6 +278,17 @@
             .flaseOptionBottom{
                 background-color: rgba(212, 89, 53, 1) !important;
             }
+
+            // 使用求助卡，错误答案至灰
+            .ItemTips{
+                background-color: rgba(136, 136, 136, 1) !important;
+                color:rgba(255,255,255,1) !important;
+            }
+            .ItemTipsBottom{
+                background-color: rgba(104, 104, 104, 1) !important;
+                color:rgba(255,255,255,1) !important;
+            }
+
             // 遮罩mask
             .mask{
                 position:absolute;

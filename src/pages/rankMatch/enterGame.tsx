@@ -246,6 +246,9 @@ export class RankEnterGame extends Component {
 			this.setState((preState)=>{
 				preState.data.curQuestion = message[0]['data'];
 				preState.local_data.curQuestion = this.resetQA(message[0]['data']);
+				// 取消选中样式
+				preState.local_data.defultClass = '';
+				preState.local_data.defultBottomClass = '';
 				preState.local_data.used_delayCardResult = {
 					delayCard: 1,
 					errmsg: "",
@@ -274,7 +277,7 @@ export class RankEnterGame extends Component {
 		// 1308 接受正确答案信息
 		this.eventEmitter = emitter.addListener('getAnswer', (message) => {
 			clearInterval(message[1]);
-			let _this = this;
+
 			// console.log('%c 已接受到答案', 'color:blue; font-size:12px;');
 			let selectedOptionId = this.state.local_data.selectedOptionId;
 			this.setState((preState)=>{
@@ -284,35 +287,12 @@ export class RankEnterGame extends Component {
 					this.setState((preState)=>{
 						preState.local_data.defultClass = 'trueOption';
 						preState.local_data.defultBottomClass = 'trueOptionBottom';
-					},()=>{
-						// console.log('%c 选则正确', 'color:#228B22;font-size:14px;background-color:#3c3c3c;');
-						// 消失选中样式
-						let timer = setTimeout(()=>{
-							_this.setState((preState)=>{
-								preState.local_data.defultClass = '';
-								preState.local_data.defultBottomClass = '';
-							},()=>{
-								clearTimeout(timer);
-							})
-						},1000);
-
-					})
+					});
 				}else{
 					this.setState((preState)=>{
 						preState.local_data.defultClass = 'falseOption';
 						preState.local_data.defultBottomClass = 'flaseOptionBottom';
-					},()=>{
-						// console.log('%c 选则错误', 'color:#EE6363;font-size:14px;background-color:#3c3c3c;');
-						// 消失选中样式
-						let timer = setTimeout(()=>{
-							_this.setState((preState)=>{
-								preState.local_data.defultClass = '';
-								preState.local_data.defultBottomClass = '';
-							},()=>{
-								clearTimeout(timer);
-							})
-						},1000);
-					})
+					});
 				}
 			})
 		});
@@ -391,7 +371,7 @@ export class RankEnterGame extends Component {
 		emitter.removeAllListeners('getRankResultInfo');
 		emitter.removeAllListeners('getAnswer');
 	}
-	
+
 	// 接受到的问题答案数据放入数组, 同时设置答案optionId
 	resetQA(message){
 		let data = JSON.parse(JSON.stringify(message));
@@ -437,7 +417,7 @@ export class RankEnterGame extends Component {
 	// 发送用户所选optionId
 	submitAnswer(e){
 		let _this = this;
-		let optionId = e.currentTarget.dataset.optionid; 	  		 // 用户所选optionId
+		let optionId = e.currentTarget.dataset.optionid; 	  		 		 // 用户所选optionId
 		let currquestid = e.currentTarget.dataset.currquestid;
 		let curOptionIndex = e.currentTarget.dataset.curoptionindex; // 用户所选当前题的index
 		// console.log('%c 用户所选当前题的index ==>' + curOptionIndex,'color:#FFC125;font-size:14px;');
@@ -486,7 +466,7 @@ export class RankEnterGame extends Component {
 		let status = e.currentTarget.dataset.status;
 		// 延迟卡增加的时间， 求助卡时间0
 		let time = e.currentTarget.dataset.time;
-		
+
 		console.error('道具使用 ==>');
 		console.log('(id: ' + id + ')','(status: ' + status + ')', '(time: ' + time + ')');
 
@@ -498,7 +478,7 @@ export class RankEnterGame extends Component {
 			fail(err) { console.log(err) }
 		});
 	}
-	
+
 	render () {
 		const { defultClass, defultBottomClass, isShowMask, isShowLoading, selectedOptionIndex, countdown, scoreTeamA, 
 			scoreTeamB, selfScore, delayCardBtn, helpCardBtn, rankUserInfo, PartyATeam, PartyBTeam, 
@@ -528,22 +508,21 @@ export class RankEnterGame extends Component {
 
 		const Answer  = options.map((currentValue,index) => { // selectedOptionIndex 所选题的index
 			return  <View onClick={this.submitAnswer.bind(this)} 
-						data-curOptionIndex={index} // 当前题的index
-						data-currQuestId={currQuestId}
-						data-quesIndex={currIndex}
-						data-optionId={currentValue.optionId}
-					className={`optionWarp
-						${ selectedOptionIndex == index? defultBottomClass:'' }
-						${ index == used_helpCardResult.errorId1-1 || index == used_helpCardResult.errorId2-1? 'flaseOptionBottom':'' } `}
-					>
-						<View
-							className={`option 
-								${ selectedOptionIndex == index? defultClass:'' }
-								${ index == used_helpCardResult.errorId1-1 || index == used_helpCardResult.errorId2-1? 'falseOption':'' } `}>
-							<View className='optionMark'>{currentValue.key}</View>
-							<View className='optionContent'>{currentValue.value}</View>
-						</View>
-					</View>
+								data-curOptionIndex={index} 							// 当前题的index
+								data-currQuestId={currQuestId}
+								data-quesIndex={currIndex}
+								data-optionId={currentValue.optionId}
+								className={`optionWarp
+									${ selectedOptionIndex == index? defultBottomClass:'' }
+									${ index == used_helpCardResult.errorId1-1 || index == used_helpCardResult.errorId2-1? 'ItemTipsBottom':'' } `}
+							>
+								<View className={`option 
+										${ selectedOptionIndex == index? defultClass:'' }
+										${ index == used_helpCardResult.errorId1-1 || index == used_helpCardResult.errorId2-1? 'ItemTips':'' } `}>
+									<View className='optionMark'>{currentValue.key}</View>
+									<View className='optionContent'>{currentValue.value}</View>
+								</View>
+							</View>
 		});
 
 		return (
