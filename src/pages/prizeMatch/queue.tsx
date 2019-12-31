@@ -37,8 +37,10 @@ export class PrizeQueue extends Component {
 
 			// 前台数据
 			local_data:{
-				timer: '',				// 定时器
+				timer: '',									// 定时器
+				matchIngTxt:'匹配中...',
 				gameUserInfo: {},
+				curNumberTxt: '当前人数：',
 				headImgPosi:[
 					{
 						x: -10,
@@ -156,8 +158,8 @@ export class PrizeQueue extends Component {
 				selectedHead:[],
 				selectedPosi:[],
 				isShowLoading: true,
-				isreconnection: 0,		// 断线重连
-				isIntheGame: false,		// 是否游戏中断线，默认不是
+				isreconnection: 0,					// 断线重连
+				isIntheGame: false,					// 是否游戏中断线，默认不是
 				quitBtn: 'https://oss.snmgame.com/v1.0.0/quitBtn.png',
 			}
 		}
@@ -328,7 +330,6 @@ export class PrizeQueue extends Component {
 
 	// 获取自己大奖赛游戏信息
 	getPrizeMatchUserInfo(data){
-		let _this = this;
 		let roleId = this.state.local_data.gameUserInfo.roleId, prizeMatchUserInfo;
 		for(let i = 0; i < data.length; i++){
 			if(data[i]['roleId'] == roleId){
@@ -353,9 +354,8 @@ export class PrizeQueue extends Component {
 		})
 	}
 
-
 	render () {
-		const { isShowLoading, quitBtn, selectedHead, selectedPosi } = this.state.local_data;
+		const { isShowLoading, quitBtn, selectedHead, selectedPosi, matchIngTxt, curNumberTxt } = this.state.local_data;
 		const { curTeamInfo } = this.state.data;
 
 		const headImg = selectedPosi.map((cur,index)=>{
@@ -375,7 +375,7 @@ export class PrizeQueue extends Component {
 					<View className='body'>
 						<View className='status'>
 							<Image onClick={this.exitQueue.bind(this)} src={quitBtn} className='quitBtn' />
-							<View className='text'>{'匹配中...'}</View>
+							<View className='text'>{matchIngTxt}</View>
 						</View>
 						<View className='content'>
 							<View className='circle outer'>
@@ -389,7 +389,7 @@ export class PrizeQueue extends Component {
 									</View>
 								</View>
 							</View>	
-							<View className='queuePeopleNum'>当前人数: {curTeamInfo['currCount']}/{curTeamInfo['maxCount']}</View>
+							<View className='queuePeopleNum'>{curNumberTxt}{curTeamInfo['currCount']}/{curTeamInfo['maxCount']}</View>
 							{/* 头像 */}
 							{headImg}
 						</View>

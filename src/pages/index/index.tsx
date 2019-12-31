@@ -3,19 +3,20 @@ import { View, Text } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
 import { getStorage, setStorage, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem } from '../../utils'
+import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
-import { MessageToast } from '../../components/MessageToast'
 import AdvanceRoadUi from '../../components/advanceRoadUi'
 import HomeBandUi from '../../components/HomeBandUi'
 import Drawer from '../../components/drawer'
 import MsgProto from '../../service/msgProto'
-import { createWebSocket } from '../../service/createWebSocket'
+
 
 const App = Taro.getApp()
 
 export class Index extends Component {
+
 	config: Config = {
 		navigationBarTitleText: '音乐大作战主页',
 		navigationBarTextStyle: 'white',
@@ -343,7 +344,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('checkInResult', (message) => {
 			clearInterval(message[1]);
 
-			console.log('%c 当日签到结果 ===>', 'font-size:14px;color:#65ff1f;'); console.log(message[0]['data']);
+			console.log('%c 当日签到结果 ===>', 'font-size:14px;color:#ba5a81;background:#e0e0e0;'); console.log(message[0]['data']);
 		});
 
 		// 1602 接受我的乐队信息 -> 发送子组件`我的乐队信息`
@@ -357,7 +358,7 @@ export class Index extends Component {
 			let timer = setInterval(() => {
 				emitter.emit('selfOrchestra', [selfOrchestra, timer]);
 			}, 20);
-			console.log('%c 我的乐队信息 ===>', 'font-size:14px;color:#ffb01f;'); console.log(message[0]['data']);
+			console.log('%c 我的乐队信息 ===>', 'font-size:14px;color:#ff1a85;background:#e0e0e0;'); console.log(message[0]['data']);
 		});
 
 		// 1010 货币发生变化直接更新（签到奖励等需要直接更新前台）
@@ -395,7 +396,7 @@ export class Index extends Component {
 	// 红包赛入口页
 	goPrizeMatchBtn() {
 		let prizeMatch = this.state.routers.prizeMatch;
-		Taro.navigateTo({
+		Taro.reLaunch({
 			url: prizeMatch
 		})
 	}
@@ -403,21 +404,21 @@ export class Index extends Component {
 	// 跳转排位赛入口页
 	rankEntrance() {
 		let rankGameEntrance = this.state.routers.rankGameEntrance;
-		Taro.navigateTo({
+		Taro.reLaunch({
 			url: rankGameEntrance
 		})
 	}
 
 	// 跳转提现页
 	goTakeMoney() {
-		Taro.navigateTo({
+		Taro.reLaunch({
 			url: this.state.routers.goTakeMoneyPage
 		})
 	}
 
 	// 跳转门票购买页
 	goPayTickets() {
-		Taro.navigateTo({
+		Taro.reLaunch({
 			url: this.state.routers.goPayTicketsPage
 		})
 	}
@@ -452,7 +453,7 @@ export class Index extends Component {
 	// 跳转金币助力
 	goldHelp() {
 		let goldHelpPage = this.state.routers.goldHelpPage;
-		Taro.navigateTo({
+		Taro.reLaunch({
 			url: goldHelpPage
 		})
 	}

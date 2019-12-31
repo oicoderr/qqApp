@@ -4,7 +4,7 @@ import emitter from '../../service/events';
 import throttle from 'lodash/throttle'
 import { setStorage, getStorage, showShareMenuItem } from '../../utils'
 import { UserAgreement } from '../../utils/UserAgreement'
-import MessageToast from '../../components/MessageToast'
+import { MessageToast } from '../../components/MessageToast'
 import MsgProto from '../../service/msgProto'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
@@ -107,8 +107,7 @@ export class Login extends Component {
 		Taro.getUserInfo({
 			success(res) {
 				userInfo = res.userInfo;
-				console.log('%c 授权的基本信息 ===>', 'font-size:14px;color:#31c200;background-color:#000;'); 
-				console.log(userInfo);
+				console.log('%c 授权的基本信息 ===>', 'font-size:14px;color:#31c200; background-color:#000;');console.log(userInfo); 
 				getStorage('userInfo',(value)=>{
 					for(let i in value){
 						userInfo[i] = value[i];
@@ -121,7 +120,7 @@ export class Login extends Component {
 				_this.websocket.sendWebSocketMsg({
 					data: parentModule,
 					success(res) {
-						console.log('发送用户头像，昵称Success');
+						console.log('%c 发送用户(头像，昵称)Success','font-size:14px; color:#ba5a81; background:#e3e3e3;');
 						// 跳转游戏页
 						Taro.reLaunch({
 							url: _this.state.routers.indexPage
@@ -139,7 +138,7 @@ export class Login extends Component {
 			fail(err){
 				if(err.errMsg === 'getUserInfo:fail scope unauthorized'){
 					Taro.showToast({
-						title: '请授权，解锁更多姿势',
+						title: '授权解锁更多姿势',
 						icon: 'none',
 						duration: 2000
 					})

@@ -30,7 +30,6 @@ export class PrizeEntrance extends Component {
 				indexPage: '/pages/index/index',
 			},
 
-			// 后台返回数据
 			data:{
 				isOpen:{
 					type: 1,
@@ -45,7 +44,6 @@ export class PrizeEntrance extends Component {
 				gameDescription:[],
 			},
 
-			// 前台数据
 			local_data:{
 				gameUserInfo:{
 					roleId: -1,
@@ -151,6 +149,17 @@ export class PrizeEntrance extends Component {
 				});
 			}
 		}
+
+		// 更新金币/红包/能量-数量
+		getStorage('currencyChange',(res)=>{
+			if(res!=''){
+				_this.setState((preState)=>{
+					preState.local_data.currencyChange.copper = res.copper;
+					preState.local_data.currencyChange.energy = res.energy;
+					preState.local_data.currencyChange.redEnvelope = res.redEnvelope;
+				},()=>{})
+			}
+		});
 
 		// 获取个人游戏信息
 		getStorage('gameUserInfo',(res)=>{
@@ -274,16 +283,6 @@ export class PrizeEntrance extends Component {
 			setStorage('currencyChange', currencyChange);
 		});
 
-		// 更新金币/红包/能量-数量
-		getStorage('currencyChange',(res)=>{
-			if(res!=''){
-				_this.setState((preState)=>{
-					preState.local_data.currencyChange.copper = res.copper;
-					preState.local_data.currencyChange.energy = res.energy;
-					preState.local_data.currencyChange.redEnvelope = res.redEnvelope;
-				},()=>{})
-			}
-		});
 	}
 
 	componentDidHide () {
@@ -302,7 +301,7 @@ export class PrizeEntrance extends Component {
 	// 返回上一页
 	goBack(){
 		let indexPage = this.state.routers.indexPage;
-		Taro.navigateTo({
+		Taro.reLaunch({
 			url: indexPage
 		});
 	}

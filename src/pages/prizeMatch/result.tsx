@@ -47,7 +47,10 @@ export class PrizeReasult extends Component {
 			local_data:{
 				isShowLoading: true,
 				isShowRankResult: true,
-
+				quickenCardTxt: '答对题数：',
+				answerTxt: '加速卡：',
+				timeCostTxt: '最终用时',
+				receivedRewardTxt: '获得奖励：',
 				// 名次横幅
 				firstBar: 'https://oss.snmgame.com/v1.0.0/firstBar.png',
 				secondBar: 'https://oss.snmgame.com/v1.0.0/secondBar.png',
@@ -95,7 +98,6 @@ export class PrizeReasult extends Component {
 		}
 
 		this.videoAd = new createVideoAd();
-
 		// 下发视频监听事件
 		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
 			console.error('是否看完视频？' + status.isEnded);
@@ -167,12 +169,15 @@ export class PrizeReasult extends Component {
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
+
 			console.error('收到1010货币发生变化, 排位赛结果观看广告->');console.log(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState)=>{
-				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
-				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
-				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
+				preState.local_data.currencyChange = {
+					copper: unitReplacement(currencyChange.copper),
+					energy: unitReplacement(currencyChange.energy),
+					redEnvelope: unitReplacement(currencyChange.redEnvelope),
+				}
 			},()=>{
 				setStorage('currencyChange',_this.state.local_data.currencyChange);
 			});
@@ -248,8 +253,9 @@ export class PrizeReasult extends Component {
 	}
 
 	render () {
-		const { isShowLoading, gradeBar, getRewardTip, questionUnit, timeUnit,
-			energyIcon, confirmBtn, adsTip, checked } = this.state.local_data;
+		const { isShowLoading, gradeBar, getRewardTip, questionUnit, timeUnit,quickenCardTxt, answerTxt, timeCostTxt,
+			energyIcon, confirmBtn, adsTip, checked, receivedRewardTxt
+		} = this.state.local_data;
 
 		const { endtime, energy, rank, rankMsg, speedtime, successCount} = this.state.data.prizeMatchReport;
 
@@ -270,11 +276,11 @@ export class PrizeReasult extends Component {
 							<View className='body'>
 								<View className='wrap'>
 									<View className='msg'>{rankMsg}</View>
-									<View className='barBg successCount'>{'答对题数：'}{successCount} {questionUnit}</View>
-									<View className='barBg speedtime'>{'加速卡：'}<Text>{speedtime != 0?-speedtime: '0'} {timeUnit}</Text></View>
-									<View className='barBg endtime'>{'最终用时：'}{endtime} {timeUnit}</View>
+									<View className='barBg successCount'>{quickenCardTxt}{successCount} {questionUnit}</View>
+									<View className='barBg speedtime'>{answerTxt}<Text>{speedtime != 0?-speedtime: '0'} {timeUnit}</Text></View>
+									<View className='barBg endtime'>{timeCostTxt}{endtime} {timeUnit}</View>
 									<View className='barBg energy'>
-										{'获得奖励：'}
+										{receivedRewardTxt}
 										<Text>{energy}</Text>
 										<Image src={energyIcon} className='energyIcon' />
 									</View>

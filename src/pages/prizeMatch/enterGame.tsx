@@ -27,11 +27,11 @@ export class PrizeEnterGame extends Component {
 			},
 			// 后台返回数据
 			data:{
-				timer:'', 				// 计时器
-				secondsTimer:'',		// 3s计时器
-				time: '10',				// 倒计时
-				curQuestion: {},		// 当前题
-				preQuestionInfo:{		// 上一题回答基本信息
+				timer:'', 										// 计时器
+				secondsTimer:'',							// 3s计时器
+				time: '10',										// 倒计时
+				curQuestion: {},							// 当前题
+				preQuestionInfo:{							// 上一题回答基本信息
 					answerErrorCount: '',
 					lastQuestId: '',
 					list: [],
@@ -42,8 +42,11 @@ export class PrizeEnterGame extends Component {
 
 			// 前台数据
 			local_data:{
-				dieOutText: '已淘汰：',
-				surplusText: '剩余人数：',
+				prevQuesTxt: '本题答错',
+				revivalTxt: '上题复活',
+				waiteOtherRevivalTxt: '等待他人复活中……',
+				dieOutTxt: '已淘汰：',
+				surplusTxt: '剩余人数：',
 				countdownPrizeMatch: 'https://oss.snmgame.com/v1.0.0/countdownPrizeMatch.png',
 				defultClass: '',	   					// 选项上层默认样式class 
 				defultBottomClass: '', 				// 选项下层默认样式class
@@ -154,15 +157,15 @@ export class PrizeEnterGame extends Component {
 				preState.local_data.selectedOptionIndex = -1;
 				preState.local_data.memoryIndex = -1;
 				// 隐藏答错人数提示
-				preState.local_data.curQuestion.answerErrorCount = 0;
+				preState.local_data.curQuestion['answerErrorCount'] = 0;
 				// 隐藏答复活人数提示
-				preState.local_data.curQuestion.receiveCount = 0;
+				preState.local_data.curQuestion['receiveCount'] = 0;
 				// 清空所选答案人数
 				preState.local_data.curQuestion['list'] = [0,0,0,0];
 				// 清除用户所选答案状态
 				preState.local_data.curQuestion['isSuccess'] = -1;
 				preState.local_data.curQuestion['selfSelectId'] = -1;
-			},()=>{	/*console.log(_this.state.local_data.curQuestion);*/ });
+			},()=>{});
 			// 开始倒计时
 			this.getCountdown(time);
 			// 发题后关闭加载动画
@@ -189,33 +192,31 @@ export class PrizeEnterGame extends Component {
 			console.log('%c 服务器广播上一题统计 ====>','color:#ff9d1a;font-size:14px;');console.log(message[0]);
 			this.setState((preState)=>{
 				preState.data.preQuestionInfo = message[0]['data'];
-				preState.local_data.preQuestionInfo = JSON.parse(JSON.stringify(message[0]['data']));
+				let preQuestionInfo =  JSON.parse(JSON.stringify(message[0]['data']));
+				preState.local_data.preQuestionInfo = preQuestionInfo;
 				// 上一题quesId
-				preState.local_data.curQuestion['lastQuestId'] = JSON.parse(JSON.stringify(message[0]['data']['lastQuestId']));
+				preState.local_data.curQuestion['lastQuestId'] = preQuestionInfo['lastQuestId'];
 				// 复活时间
-				preState.local_data.curQuestion['waitreceivetime'] = JSON.parse(JSON.stringify(message[0]['data']['waitreceivetime']));
+				preState.local_data.curQuestion['waitreceivetime'] = preQuestionInfo['waitreceivetime'];
 				// 是否可以复活
-				preState.local_data.curQuestion['receive'] = JSON.parse(JSON.stringify(message[0]['data']['receive']));
+				preState.local_data.curQuestion['receive'] = preQuestionInfo['receive'];
 				// 在curQuestion中添加正确答案
-				preState.local_data.curQuestion['correctOption'] = JSON.parse(JSON.stringify(message[0]['data']['optionId']));
+				preState.local_data.curQuestion['correctOption'] = preQuestionInfo['optionId'];
 				// 添加各答案答对/打错人数
-				preState.local_data.curQuestion['answerErrorCount'] = JSON.parse(JSON.stringify(message[0]['data']['answerErrorCount']));
-				preState.local_data.curQuestion['list'] = JSON.parse(JSON.stringify(message[0]['data']['list']));
+				preState.local_data.curQuestion['answerErrorCount'] = preQuestionInfo['answerErrorCount'];
+				preState.local_data.curQuestion['list'] = preQuestionInfo['list'];
 				// 清除选中样式
-				preState.local_data.curQuestion.correctOption = -1;
+				preState.local_data.curQuestion['correctOption'] = -1;
 				preState.local_data.selectedOptionIndex = -1;
 				// 显示用户是否选择正确, 正确/错误显示
 				preState.local_data.curQuestion['isSuccess'] = preState.local_data.isAnswerCorrect.isSuccess;
 				preState.local_data.curQuestion['selfSelectId'] = preState.local_data.isAnswerCorrect.optionId;
 			},()=>{
-				console.log('%c 最终的curQuestion =====>', 'font-size:14px;color:#1ae3ff;')
-				console.log(_this.state.local_data.curQuestion);
 				let optionId = _this.state.local_data.preQuestionInfo.optionId;
 				let selectedOptionId = _this.state.local_data.selectedOptionId;
-				// 自己是否选择正确答案
-				if(optionId == selectedOptionId){
 
-				}else{	// 提示`是否复活`
+				// 自己是否选择正确答案,错误->提示`是否复活`
+				if(optionId != selectedOptionId){
 					// 复活倒计时开始
 					let time = _this.state.local_data.curQuestion.waitreceivetime;
 					// 是否可以复活状态
@@ -237,7 +238,8 @@ export class PrizeEnterGame extends Component {
 
 		// 1314 获取复活结果 
 		this.eventEmitter = emitter.addListener('getResurrectResult', (message) => {
-			clearInterval(message[1]);			
+			clearInterval(message[1]);
+
 			console.log('%c 是否复活成功 ====>','color:#ff9d1a;font-size:14px;');console.log(message[0]);
 			let isSuccess = message[0]['data']['value'];
 			if(isSuccess){
@@ -258,13 +260,14 @@ export class PrizeEnterGame extends Component {
 					icon: 'none',
 					mask: false,
 					duration: 1000,
-				})
+				});
 			}
 		});
 
 		// 1318 发送战报(看完战报就离开房间吧)
 		this.eventEmitter = emitter.once('getPrizeMatchReport', (message) => {
-			clearInterval(message[1]);			
+			clearInterval(message[1]);
+
 			console.log('%c 服务器广播战报 ====>','color:#ff9d1a;font-size:14px;');console.log(message[0]);
 			// 取消所有选中样式
 			this.setState((preState)=>{
@@ -280,20 +283,22 @@ export class PrizeEnterGame extends Component {
 
 		// 1320 广播复活信息（活着的玩家可以看到）
 		this.eventEmitter = emitter.addListener('getRenascenceInfo', (message) => {
-			clearInterval(message[1]);			
+			clearInterval(message[1]);
+
 			console.log('%c 服务器广播复活情况信息 ====>','color:#ff9d1a;font-size:14px;');console.log(message[0]);
 			this.setState((preState)=>{
 				preState.data.preQuestionInfo = message[0]['data'];
+				let preQuestionInfo = JSON.parse(JSON.stringify(message[0]['data']));
 				// 添加全局剩余人数
-				preState.local_data.curQuestion['currCount'] = JSON.parse(JSON.stringify(message[0]['data']['currCount']));
+				preState.local_data.curQuestion['currCount'] = preQuestionInfo['currCount'];
 				// 添加全局答错人数
-				preState.local_data.curQuestion['dieCount'] = JSON.parse(JSON.stringify(message[0]['data']['dieCount']));
+				preState.local_data.curQuestion['dieCount'] = preQuestionInfo['dieCount'];
 				// 添加全局复活人数
-				preState.local_data.curQuestion['receiveCount'] = JSON.parse(JSON.stringify(message[0]['data']['receiveCount']));
+				preState.local_data.curQuestion['receiveCount'] = preQuestionInfo['receiveCount'];
 				// 隐藏答错人数提醒
 				preState.local_data.curQuestion['answerErrorCount'] = 0;
 			},()=>{
-				console.log('%c 收到[ 复活信息 ]后的curQuestion =====>', 'font-size:14px;color:#1ae3ff;')
+				console.log('%c 收到[ 复活信息 ]后的curQuestion =====>','font-size:14px;color:#1ae3ff;')
 				console.log(_this.state.local_data.curQuestion);
 			})
 		});
@@ -449,8 +454,8 @@ export class PrizeEnterGame extends Component {
 
 	render () {
 		const {
-			countdownPrizeMatch, surplusText, dieOutText, isShowMask, isShowToast,
-			isShowLoading, selectedOptionIndex, unit, memoryIndex, 
+			countdownPrizeMatch, surplusTxt, dieOutTxt, isShowMask, isShowToast, isShowLoading,
+			selectedOptionIndex, unit, memoryIndex, prevQuesTxt, revivalTxt, waiteOtherRevivalTxt,
 		} = this.state.local_data;
 		// 当前题
 		const { currContent, currIndex, currQuestId, time, totalCount, options, answerErrorCount,
@@ -517,9 +522,9 @@ export class PrizeEnterGame extends Component {
 						<View className='head'>
 							<View className='countdownWrap'>
 								<Image src={countdownPrizeMatch} className='countdown' />
-								<View className='people surplus'>{surplusText}{currCount}{unit}</View>
+								<View className='people surplus'>{surplusTxt}{currCount}{unit}</View>
 								<View className='countdown_time'>{time}</View>
-								<View className='people dieOut'>{dieOutText}{dieCount}{unit}</View>
+								<View className='people dieOut'>{dieOutTxt}{dieCount}{unit}</View>
 							</View>
 							<View className='questionBg'>
 								<View className='questionText'>{currIndex+1}. {currContent}</View>
@@ -532,11 +537,11 @@ export class PrizeEnterGame extends Component {
 						</View>
 						{/* 提示答错人数 */}
 						<View className={`footer ${ answerErrorCount > 0?'':'hide'}`}>
-							<View className='wrongAnswer'>{'本题答错'}<Text decode={true}>&ensp;{answerErrorCount}&ensp;</Text>{unit},{'等待他人复活中……'}</View>
+							<View className='wrongAnswer'>{prevQuesTxt}<Text decode={true}>&ensp;{answerErrorCount}&ensp;</Text>{unit},{waiteOtherRevivalTxt}</View>
 						</View>
 						{/* 提示复活人数 */}
 						<View className={`footer ${receiveCount > 0?'':'hide'}`}>
-							<View className='wrongAnswer'>{'上题复活'}<Text decode={true}>&ensp;{receiveCount}&ensp;</Text>{unit}</View>
+							<View className='wrongAnswer'>{revivalTxt}<Text decode={true}>&ensp;{receiveCount}&ensp;</Text>{unit}</View>
 						</View>
 					</View>
 				</View>

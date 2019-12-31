@@ -128,7 +128,7 @@ export default class Drawer extends Component {
   }
   // 页面跳转
   onRouting(router) {
-    Taro.navigateTo({
+    Taro.reLaunch({
       url: router
     });
   }

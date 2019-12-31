@@ -31,7 +31,7 @@ export default class websocket {
 	// 心跳重置
 	reset() {
 		clearTimeout(this._timeoutObj);
-		console.log('%c 心跳重置', 'font-size: 14px; color: #ffc41a;');
+		// console.log('%c 心跳重置', 'font-size:14px; color:#ffc41a; background:#e0e0e0;');
 		return this;
 	}
 

@@ -27,6 +27,7 @@ export class TakeMoney extends Component {
 			local_data:{
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				tips: 'Tips：现金红包存入QQ钱包！每件商品每日可以兑换一次哟！',
+				exchangeTxt: '兑换',
 				energyIcon: 'https://oss.snmgame.com/v1.0.0/energyIcon.png',
 				energyLittleIcon: 'https://oss.snmgame.com/v1.0.0/energyLittleIcon.png',
 			}
@@ -49,7 +50,7 @@ export class TakeMoney extends Component {
 			this.websocket = App.globalData.websocket;
 			if(this.websocket.isLogin){
 				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-				_this.takeMoneyInfo();
+				this.takeMoneyInfo();
 			}else{
 				this.websocket.initWebSocket({
 					url: websocketUrl,
@@ -97,8 +98,6 @@ export class TakeMoney extends Component {
 				})
 			}
 		});
-
-
 	}
 
 	componentDidHide () {
@@ -159,7 +158,7 @@ export class TakeMoney extends Component {
 	}
 
 	render () {
-		const { energyIcon, energyLittleIcon, tips, backBtn } = this.state.local_data;
+		const { energyIcon, energyLittleIcon, tips, backBtn, exchangeTxt } = this.state.local_data;
 		const energy = this.state.data.energy;
 		const list = this.state.data.list;
 
@@ -176,7 +175,7 @@ export class TakeMoney extends Component {
 								</View>
 							</View>
 							<View onClick={this.takeMoney.bind(this)} className={`takeBtn ${cur.exchangeCount < 1?'banTakeMoney':''}`} data-redId={cur.redId} data-exchangeCount={cur.exchangeCount}>
-								<View className={`btnBody ${cur.exchangeCount < 1?'banTakeMoney':''}`}>{ `兑换`}</View>
+								<View className={`btnBody ${cur.exchangeCount < 1?'banTakeMoney':''}`}>{exchangeTxt}</View>
 							</View>
 						</View>
 					</View>

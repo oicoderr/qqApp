@@ -48,12 +48,15 @@ export class Recharge extends Component {
 			this.websocket = App.globalData.websocket;
 			if(this.websocket.isLogin){
 				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				this.recharge();
 			}else{
 				this.websocket.initWebSocket({
 					url: websocketUrl,
 					success(res){
 						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{});
+						_this.websocket.onSocketOpened((res)=>{
+							_this.recharge();
+						});
 						// 对外抛出websocket
 						App.globalData.websocket = _this.websocket;
 					},
@@ -103,21 +106,6 @@ export class Recharge extends Component {
 				}
 			})
 		});
-
-		// 请求充值模版消息
-		let recharge = this.msgProto.recharge();
-		let parentModule = this.msgProto.parentModule(recharge);
-		this.websocket.sendWebSocketMsg({
-			data: parentModule,
-			success(res) {console.log('请求充值Success')},
-			fail(err){
-				Taro.showToast({
-					title: err.errMsg,
-					icon: 'none',
-					duration: 2000
-				})
-			}
-		})
 	}
 
 	componentDidHide () {
@@ -149,6 +137,23 @@ export class Recharge extends Component {
 		Taro.navigateBack({
 			delta: 1
 		});
+	}
+
+	// 请求充值模版消息
+	recharge(){
+		let recharge = this.msgProto.recharge();
+		let parentModule = this.msgProto.parentModule(recharge);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {console.log('请求充值Success')},
+			fail(err){
+				Taro.showToast({
+					title: err.errMsg,
+					icon: 'none',
+					duration: 2000
+				})
+			}
+		})
 	}
 
 	render () {
