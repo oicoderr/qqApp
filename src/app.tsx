@@ -19,6 +19,7 @@ import MsgProto from './service/msgProto'
 class App extends Component {
 
 	config: Config = {
+
 		pages: [
 
 			'pages/login/index',			  			// app 登录
