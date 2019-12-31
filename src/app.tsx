@@ -64,19 +64,20 @@ class App extends Component {
 
 	componentDidMount () {
 		let _this = this;
-		console.log = () => {};
-		console.info = () => {};
-		console.error = () => {};
-		console.warn = () => {};
+		// console.log = () => {};
+		// console.info = () => {};
+		// console.error = () => {};
+		// console.warn = () => {};
+		// console.table = () => {};
 
 		// 设备提示
 		let ua = getUa();
-		if(ua.system.indexOf('iOS')> -1 || ua.model.indexOf('iPhone') > -1){
-			Taro.reLaunch({
-				url: '/pages/activity/iosCaveat'
-			})
-			return;
-		}
+		// if(ua.system.indexOf('iOS')> -1 || ua.model.indexOf('iPhone') > -1){
+		// 	Taro.reLaunch({
+		// 		url: '/pages/activity/iosCaveat'
+		// 	})
+		// 	return;
+		// }
 
 		const params = this.$router.params;
 		if(params.query){

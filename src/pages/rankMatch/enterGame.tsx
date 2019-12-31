@@ -300,43 +300,51 @@ export class RankEnterGame extends Component {
 		// 1322 接受上一题基本信息 
 		this.eventEmitter = emitter.addListener('getPrevQAInfo', (message) => {
 			clearInterval(message[1]);
+
 			console.log('%c 上一题基本信息','font-size:14px;color:#A020F0;');
 			console.log(message[0]['data']);
 			this.setState((preState)=>{
 				preState.data.prevQAInfo = JSON.parse(JSON.stringify(message[0]['data']));
 			},()=>{
-				let list = this.state.data.prevQAInfo.list;			// 上一题得分情况
+				let list = this.state.data.prevQAInfo.list;					// 上一题得分情况
 				let scoreTeamA = this.state.local_data.scoreTeamA;	// A队积分信息
 				let scoreTeamB = this.state.local_data.scoreTeamB;	// B对积分信息
-				let selfScore = this.state.local_data.selfScore;	// 自己的积分信息
-				
+				let selfScore = this.state.local_data.selfScore;		// 自己的积分信息
+
 				// 找到我的积分信息
-				list.map(function (cur) {
-					if( selfScore['roleId'] == cur['roleId']){
-						_this.state.local_data.selfScore['score'] = cur['currScore'];
+				for(let i = 0; i < list.length; i++){
+					if( selfScore['roleId'] == list[i]['roleId']){
+						_this.state.local_data.selfScore['score'] = list[i]['currScore'];
 					}
-				});
+				}
 
 				// 找到A队伍积分信息
-				list.map(function (cur, index) {
-					if( scoreTeamA.length >0 && index < scoreTeamA.length && scoreTeamA[index]['roleId'] == cur['roleId']){
-						_this.state.local_data.scoreTeamA[index]['score'] = cur['currScore'];
-					}
-				});
+				for(let i = 0; i < list.length; i++){
+					for(let j = 0; j < scoreTeamA.length; j++){
+						if( scoreTeamA[j]['roleId'] == list[i]['roleId']){
+							_this.state.local_data.scoreTeamA[j]['score'] = list[i]['currScore'];
+						}
+					}	
+				}
 
 				// 找到B队伍积分信息
-				list.map(function (cur, index) {
-					if( scoreTeamB.length > 0 && index < scoreTeamB.length && scoreTeamB[index]['roleId'] == cur['roleId']){
-						console.log(_this.state.local_data.scoreTeamB, 7777)
-						_this.state.local_data.scoreTeamB[index]['score'] = cur['currScore'];
-					}
-				});
-			
-				this.setState((preState)=>{
+				for(let i = 0; i < list.length; i++){
+					for(let j = 0; j < scoreTeamB.length; j++){
+						if( scoreTeamB[j]['roleId'] == list[i]['roleId']){
+							_this.state.local_data.scoreTeamB[j]['score'] = list[i]['currScore'];
+						}
+					}	
+				}
+
+				console.info(_this.state.local_data.selfScore);
+				console.table(_this.state.local_data.scoreTeamB);
+				console.table( _this.state.local_data.scoreTeamB);
+
+				_this.setState((preState)=>{
 					preState.local_data.selfScore = selfScore;
 					preState.local_data.scoreTeamA = scoreTeamA;
 					preState.local_data.scoreTeamB = scoreTeamB;
-				},()=>{})
+				},()=>{});
 			})
 		})
 
@@ -485,7 +493,7 @@ export class RankEnterGame extends Component {
 			matchProps, used_delayCardResult, used_helpCardResult, disable_delayCardBtn, disable_helpCardBtn, 
 		} = this.state.local_data;
 		const { currContent, currIndex, currQuestId, time, totalCount, options } = this.state.local_data.curQuestion;
-		const {blueScore, redScore, selfCamp} = this.state.data.prevQAInfo;
+		const { blueScore, redScore, selfCamp } = this.state.data.prevQAInfo;
 
 		const redContent = PartyATeam.map((currentValue,index) => {
 			return  <View className='redSelf' data-roleId={currentValue.roleId}>
