@@ -206,10 +206,10 @@ export class RankEntrance extends Component {
 		this.videoAd.openVideoAd();
 	}
 
-	// 返回上一页 reLaunch
+	// 返回上一页
 	goBack(){
 		let indexPage = this.state.routers.indexPage;
-		Taro.redirectTo({
+		Taro.reLaunch({
 			url: indexPage
 		})
 	}

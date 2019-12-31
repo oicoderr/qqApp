@@ -103,6 +103,7 @@ export class Index extends Component {
 	componentDidShow() {
 		let _this = this;
 
+		console.log(Taro.getCurrentPages())
 		// 显示分享
 		showShareMenuItem();
 		// 页面超出提示,返回当前页面URL
@@ -411,15 +412,17 @@ export class Index extends Component {
 
 	// 跳转提现页
 	goTakeMoney() {
+		let goTakeMoneyPage = this.state.routers.goTakeMoneyPage;
 		Taro.navigateTo({
-			url: this.state.routers.goTakeMoneyPage
+			url: goTakeMoneyPage
 		})
 	}
 
 	// 跳转门票购买页
 	goPayTickets() {
+		let goPayTicketsPage = this.state.routers.goPayTicketsPage;
 		Taro.navigateTo({
-			url: this.state.routers.goPayTicketsPage
+			url: goPayTicketsPage
 		})
 	}
 

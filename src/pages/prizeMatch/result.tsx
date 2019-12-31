@@ -220,15 +220,17 @@ export class PrizeReasult extends Component {
 
 	// 返回主页
 	goBack(){
+		let indexPage = this.state.routers.indexPage;
 		Taro.reLaunch({
-			url: this.state.routers.indexPage
+			url: indexPage
 		});
 	}
 
 	// 重玩返回入口页面
 	replay(){
+		let entrancePage = this.state.routers.entrancePage;
 		Taro.reLaunch({
-			url: this.state.routers.entrancePage
+			url: entrancePage
 		});
 	}
 

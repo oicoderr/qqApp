@@ -279,7 +279,7 @@ export class PrizeEntrance extends Component {
 	// 返回上一页
 	goBack(){
 		let indexPage = this.state.routers.indexPage;
-		Taro.redirectTo({
+		Taro.reLaunch({
 			url: indexPage
 		});
 	}
