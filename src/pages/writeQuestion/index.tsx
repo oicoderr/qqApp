@@ -74,9 +74,9 @@ export class WriteQuestion extends Component {
 		}
 	}
 
-  	componentWillMount () {}
+	componentWillMount () {}
 
-  	componentDidMount () {}
+	componentDidMount () {}
 	
 	componentWillUnmount () {}
 

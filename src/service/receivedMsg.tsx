@@ -1,28 +1,26 @@
 /*
   * @全局接受服务器返回信息
-  *
+  *	@code 消息
+  * @emitter node.js 转发
   * 
-  *   
 */
 import emitter from './events'
-import { getCurrentTime } from '../utils' // 方法类
 
 export default class ReceiveMsg{
     constructor( message ) {
-		// console.error('接收到message ===>'); console.log(message);
 		// 定时器集
 		this.timerCount = [];
 		this.onReceiveMsg(message);
 	}
 
-    onReceiveMsg(message){
+	onReceiveMsg(message){
 		let _this = this;
+		// 清空定时器集
 		for(let i = 0; i <= this.timerCount.length; i++){
 			clearInterval(this.timerCount[i]);
 		};
 		switch(message['code']){
 			case 1002:  		// 服务器返回登录结果
-				// console.log('%c 1002返回时间：' + getCurrentTime(), 'font-size:14px;color:blue;');
 				this.timerCount[0] = setInterval(()=>{
 					emitter.emit('loginGameStatus', [message, _this.timerCount[0] ]);
 				},20);
@@ -207,5 +205,5 @@ export default class ReceiveMsg{
 				},20);
 				break;
 		}
-    }
+	}
 }

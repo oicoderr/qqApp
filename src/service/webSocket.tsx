@@ -1,12 +1,12 @@
 /*
   *  @全局心跳 引入 MsgProto 模块
-  *
+  *  
   *
   *
 */
 import Taro from '@tarojs/taro'
 import MsgProto from '../service/msgProto'
-import LoginGame from '../toolProto/getLoginGameInfo' // 游戏登录模块
+import LoginGame from '../toolProto/getLoginGameInfo'
 
 export default class websocket {
 	constructor({ heartCheck, isReconnection }) {
@@ -24,8 +24,6 @@ export default class websocket {
 		// 心跳检测和断线重连开关，true为启用，false为关闭
 		this._heartCheck = heartCheck;
 		this._isReconnection = isReconnection;
-		// 游戏是否登录
-		this.loginGame = false;	
 		// 实例化msg对象
 		this.msgProto = new MsgProto();
 	}
@@ -33,7 +31,7 @@ export default class websocket {
 	// 心跳重置
 	reset() {
 		clearTimeout(this._timeoutObj);
-		// console.log('%c 心跳重置', 'font-size: 14px; color: #ffc41a;')
+		console.log('%c 心跳重置', 'font-size: 14px; color: #ffc41a;');
 		return this;
 	}
 
@@ -101,7 +99,6 @@ export default class websocket {
 
 	onSocketOpened(callBack) {
 		Taro.onSocketOpen(res => {
-			let _this = this;
 			// 打开网络开关
 			this._netWork = true;
 			// 打开已登录开关
@@ -111,8 +108,6 @@ export default class websocket {
 			this.sendWebSocketMsg({
 				data: parentModule,
 				success(res) {
-					_this.loginGame = true;
-					// removeStorage('inviterInfo');
 					if(callBack)callBack(res);
 				},
 				fail(err){
@@ -128,7 +123,6 @@ export default class websocket {
 			if (this._heartCheck) {
 				this.reset().start();
 			}
-
 		})
 	}
 
@@ -186,7 +180,7 @@ export default class websocket {
 									console.log('用户点击确定')
 								}
 							}
-						})
+						});
 					}
 				}
 			})
@@ -216,7 +210,7 @@ export default class websocket {
 
 	// 重连方法，会根据时间频率越来越慢
 	_reConnect(options) {
-		let timer, _this = this;
+		let timer;
 		if (this._connectNum < 20) {
 			timer = setTimeout(() => {
 				this.initWebSocket(options)

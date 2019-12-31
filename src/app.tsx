@@ -65,17 +65,11 @@ class App extends Component {
 	componentDidMount () {
 		let _this = this;
 		// console.log = () => {};
-		// console.error = () => {};
 		// console.info = () => {};
+		// console.error = () => {};
 
 		// 设备提示
-		let ua = getUa();
-		if(ua.system.indexOf('iOS') > -1 || ua.model.indexOf('iPhone') > -1){
-			Taro.redirectTo({
-				url: '/pages/activity/iosCaveat'
-			});
-			return;
-		}
+		// this.iosTip();
 
 		const params = this.$router.params;
 		if(params.query){
@@ -102,12 +96,6 @@ class App extends Component {
 				getStorage('userInfo',(res)=>{
 					if(!res.nickName || !res.avatarUrl ){
 						console.log('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
-						// 重新授权登录
-						// Taro.showToast({
-						// 	title: '授权解锁更多姿势～',
-						// 	icon: 'none',
-						// 	duration: 2000
-						// });
 						userInfo = appLogin.data;
 						// 开始登陆
 						_this.createWebSocket();

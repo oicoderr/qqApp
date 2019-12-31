@@ -12,6 +12,7 @@ import HomeBandUi from '../../components/HomeBandUi'
 import Drawer from '../../components/drawer'
 import MsgProto from '../../service/msgProto'
 import { createWebSocket } from '../../service/createWebSocket'
+
 const App = Taro.getApp()
 
 export class Index extends Component {
@@ -23,6 +24,7 @@ export class Index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+
 			routers: {
 				/* 断线重连 */
 				rankQueue: '/pages/rankMatch/queue',
@@ -65,7 +67,6 @@ export class Index extends Component {
 			isShowWeekCheckIn: false,
 			// 晋级之路
 			isShowAdvanceRoadUi: false,
-			personTheme: 'https://oss.snmgame.com/v1.0.0/personTheme.png',
 			// 签到基本信息
 			weekCheckIninfo: {},
 			// 默认勾选了签到分享
@@ -79,6 +80,7 @@ export class Index extends Component {
 				redEnvelope: 0,
 			}
 		};
+
 		this.msgProto = new MsgProto();
 	}
 
@@ -154,7 +156,7 @@ export class Index extends Component {
 					_this.setState((preState) => {
 						preState.gameUserInfo.sex = message;
 						preState.userInfo.sex = message;
-					}, () => { })
+					});
 				},
 				fail(err) {
 					console.error('性别发送失败'); console.log(err);
@@ -201,7 +203,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
 			clearInterval(message[1]);
 
-			console.error('～游戏中杀死app～'); console.log(message[0]['data']);
+			console.log('%c ～游戏中杀死app～','font-size:14px;color:#ff511f;'); console.log(message[0]['data']);
 			// 排位赛杀死的
 			let isreconnection_ = message[0]['data']['isreconnection'];
 			// 大奖赛杀死的
@@ -227,8 +229,6 @@ export class Index extends Component {
 						});
 						break;
 				}
-			} else {
-				console.log('%c ～正常进入比赛玩家～', 'font-size:14px; color:#ffc61a;');
 			}
 		});
 		// -------------------------- 游戏被杀死，重新进入游戏 End-----------------------------------
@@ -343,7 +343,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('checkInResult', (message) => {
 			clearInterval(message[1]);
 
-			console.log('%c 当日签到结果 ===>', 'font-size:14px;color:#ff1fec;'); console.log(message[0]['data']);
+			console.log('%c 当日签到结果 ===>', 'font-size:14px;color:#65ff1f;'); console.log(message[0]['data']);
 		});
 
 		// 1602 接受我的乐队信息 -> 发送子组件`我的乐队信息`
@@ -357,23 +357,25 @@ export class Index extends Component {
 			let timer = setInterval(() => {
 				emitter.emit('selfOrchestra', [selfOrchestra, timer]);
 			}, 20);
-			console.log('%c 我的乐队信息 ===>', 'font-size:14px;color:#ff1fec;'); console.log(message[0]['data']);
+			console.log('%c 我的乐队信息 ===>', 'font-size:14px;color:#ffb01f;'); console.log(message[0]['data']);
 		});
 
 		// 1010 货币发生变化直接更新（签到奖励等需要直接更新前台）
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('主页收到1010货币发生变化'); console.log(message);
+
+			console.info('%c 主页收到1010货币发生变化','font-size:14px;color:#ff311f;'); console.log(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState) => {
-				preState.currencyChange.copper = unitReplacement(currencyChange.copper);
-				preState.currencyChange.energy = unitReplacement(currencyChange.energy);
-				preState.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
-			}, () => {
+				preState.currencyChange = {
+					copper: unitReplacement(currencyChange.copper),
+					energy: unitReplacement(currencyChange.energy),
+					redEnvelope: unitReplacement(currencyChange.redEnvelope)
+				}
+			},()=>{
 				setStorage('currencyChange', _this.state.currencyChange);
 			});
 		});
-
 	}
 
 	componentDidHide() {
@@ -479,19 +481,18 @@ export class Index extends Component {
 		const isShowAdvanceRoadUi = this.state.isShowAdvanceRoadUi;
 		return (
 			<View className='index' catchtouchmove="ture">
+
 				{/* 左侧按钮list */}
 				<Drawer />
+
 				{/* 签到 */}
 				<View className={`${isShowWeekCheckIn ? '' : 'hide'}`}>
 					<WeekCheckIn />
 				</View>
+
 				{/* 晋级之路 */}
 				<View className={`${isShowAdvanceRoadUi ? '' : 'hide'}`}>
 					<AdvanceRoadUi />
-				</View>
-				{/* 全局提示 */}
-				<View className='hide'>
-					<MessageToast />
 				</View>
 
 				<View className='bgColor'>
@@ -512,6 +513,7 @@ export class Index extends Component {
 							<Text className='num-same goldNum'>{copper}</Text>
 							<View onClick={this.goldHelp.bind(this)} className='addIcon-same addIcon' ></View>
 						</View>
+
 						<View className='redEnvelopeWrap hide'>
 							<View className='board-same board'></View>
 							<View className='icon-same envelopeIcon' ></View>
@@ -527,11 +529,9 @@ export class Index extends Component {
 						<View onClick={this.weekCheckIn.bind(this)} className='rightBtnIcon signInBtn'></View>
 						<View className='hide rightBtnIcon welfareBtn'></View>
 					</View>
-
 					<View className='body'>
 						<HomeBandUi />
 					</View>
-
 					<View className='foot'>
 						<View onClick={this.goPrizeMatchBtn.bind(this)} className='sameBtn redEnvelopeBtn'></View>
 						<View className='bothBtn'>

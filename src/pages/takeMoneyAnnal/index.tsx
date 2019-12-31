@@ -70,15 +70,15 @@ export class TakeMoneyAnnal extends Component {
 		}
 	}
 
-  	componentWillMount () {}
+	componentWillMount () {}
 
-  	componentDidMount () {}
+	componentDidMount () {}
 	
 	componentWillUnmount () {}
 
-	componentDidShow () { }
+	componentDidShow () {}
 
-	componentDidHide () { }
+	componentDidHide () {}
 	
 	// 滑动事件
 	onScroll(e){
