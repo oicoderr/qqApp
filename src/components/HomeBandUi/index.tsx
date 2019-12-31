@@ -73,7 +73,9 @@ export default class HomeBand extends Component {
     });
   }
 
-  componentDidHide() {}
+  componentDidHide() {
+    emitter.removeAllListeners('selfOrchestra');
+  }
 
   // 将使用的主唱，贝斯手，吉他手，鼓手抽出
   elicitPart(list){

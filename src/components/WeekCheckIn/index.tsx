@@ -57,7 +57,13 @@ export default class WeekCheckIn extends Component {
     };
   }
 
-  componentWillMount() {
+  componentWillMount() {}
+
+  componentDidMount() {}
+
+  componentWillUnmount() {}
+
+  componentDidShow() {
     let _this = this;
     // 接受签到基本数据
     this.eventEmitter = emitter.addListener('weekCheckIninfo_child', message => {
@@ -81,13 +87,9 @@ export default class WeekCheckIn extends Component {
     });
   }
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
+  componentDidHide() {
+    emitter.removeAllListeners('weekCheckIninfo_child');
+  }
 
   // 关闭签到弹窗,传给父组件关闭标示
   closeWeekCheckIn(value) {

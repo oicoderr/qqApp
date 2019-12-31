@@ -25,7 +25,11 @@ export default class CommonToast extends Component {
 
   componentWillMount() {}
 
-  componentDidMount() {
+  componentDidMount() {}
+
+  componentWillUnmount() {}
+
+  componentDidShow() {
     let _this = this;
     this.eventEmitter = emitter.addListener('takeMoneyMessaeg', message => {
       console.warn('接受父组件（takeMoney）提现金额==>');
@@ -43,11 +47,9 @@ export default class CommonToast extends Component {
     });
   }
 
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
+  componentDidHide() {
+    emitter.removeAllListeners('takeMoneyMessaeg');
+  }
 
   // 关闭签到弹窗,发送父组件关闭标示
   closeToast(value) {

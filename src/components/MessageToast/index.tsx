@@ -18,6 +18,12 @@ export class MessageToast extends Component {
   componentWillMount() {}
 
   componentDidMount = () => {
+
+  };
+
+  componentWillUnmount() {}
+
+  componentDidShow() {
     // 接受各种提示说明
     this.eventEmitter = emitter.addListener('messageToast', message => {
       if (message['type'] == undefined) {
@@ -37,13 +43,11 @@ export class MessageToast extends Component {
         });
       }
     });
-  };
+  }
 
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
+  componentDidHide() {
+    emitter.removeAllListeners('messageToast');
+  }
 
   // 关闭弹窗
   cancel(e) {

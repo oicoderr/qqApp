@@ -26,8 +26,13 @@ export default class RedExchange extends Component {
   componentWillMount() {}
 
   componentDidMount() {
+
+  }
+
+  componentWillUnmount() {}
+
+  componentDidShow() {
     this.eventEmitter = emitter.addListener('getWebSocket', message => {
-      console.warn(message, 'abc');
       // this.setState({
       // 	gender: message
       // },()=>{
@@ -36,11 +41,9 @@ export default class RedExchange extends Component {
     });
   }
 
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
+  componentDidHide() {
+    emitter.removeAllListeners('getWebSocket');
+  }
 
   // 关闭签到弹窗,传给父组件关闭标示
   closeToast(value) {

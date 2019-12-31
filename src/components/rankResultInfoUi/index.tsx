@@ -38,7 +38,13 @@ export default class RankResultInfo extends Component {
     };
   }
 
-  componentWillMount() {
+  componentWillMount() {}
+
+  componentDidMount() {}
+
+  componentWillUnmount() {}
+
+  componentDidShow() {
     this.eventEmitter = emitter.addListener('rankResultInfo', message => {
       clearInterval(message[1]);
 
@@ -55,13 +61,9 @@ export default class RankResultInfo extends Component {
     });
   }
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
+  componentDidHide() {
+    emitter.removeAllListeners('rankResultInfo');
+  }
 
   // 开始看广告
   submitSeeAds(e) {
