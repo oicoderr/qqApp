@@ -66,6 +66,7 @@ class App extends Component {
 		console.log = () => {};
 		console.info = () => {};
 		console.error = () => {};
+		console.warn = () => {};
 
 		// 设备提示
 		let ua = getUa();
