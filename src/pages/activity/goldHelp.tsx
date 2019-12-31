@@ -226,7 +226,7 @@ export class GoldHelp extends Component {
 	// 返回上一页
 	goBack() {
 		let indexPage = this.state.routers.indexPage;
-		Taro.reLaunch({
+		Taro.redirectTo({
 			url: indexPage
 		});
 	}
