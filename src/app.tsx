@@ -21,7 +21,6 @@ class App extends Component {
 	config: Config = {
 		pages: [
 
-			'pages/activity/iosCaveat',				// ios设备提示
 			'pages/login/index',			  			// app 登录
 			'pages/index/index',			  			// 游戏登录
 			'pages/rankMatch/entrance', 	  	// 排位赛入口
@@ -43,7 +42,7 @@ class App extends Component {
 			'pages/toolbar/backpack', 	  	  // 背包
 			'pages/toolbar/mall', 	  	  	  // 商城
 			'pages/toolbar/selfOrchestra',	  // 我的乐队
-			
+			'pages/activity/iosCaveat',				// ios设备提示
 		],
 		window: {
 			backgroundTextStyle: 'light',
@@ -69,7 +68,13 @@ class App extends Component {
 		// console.error = () => {};
 
 		// 设备提示
-		// this.iosTip();
+		let ua = getUa();
+		if(ua.system.indexOf('iOS')> -1 || ua.model.indexOf('iPhone') > -1){
+			Taro.reLaunch({
+				url: '/pages/activity/iosCaveat'
+			})
+			return;
+		}
 
 		const params = this.$router.params;
 		if(params.query){
@@ -112,6 +117,7 @@ class App extends Component {
 	}
 
 	componentDidShow() {
+
 		// 隐藏分享
 		hideShareMenu();
 
@@ -311,7 +317,7 @@ class App extends Component {
 	// ios设备跳转提示
 	iosTip(){
 		let ua = getUa();
-		if(ua.system.indexOf('iOS') || ua.model.indexOf('iPhone')){
+		if(ua.system.indexOf('iOS')> -1 || ua.model.indexOf('iPhone') > -1){
 			Taro.redirectTo({
 				url: '/pages/activity/iosCaveat'
 			})

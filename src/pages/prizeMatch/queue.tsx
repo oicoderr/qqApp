@@ -269,10 +269,11 @@ export class PrizeQueue extends Component {
 		// 1332 玩家离开大奖赛匹配队列 
 		this.eventEmitter = emitter.addListener('exitQueueStatus', (message) => {
 			clearInterval(message[1]);
+
 			console.log('%c 玩家离开大奖赛匹配队列','font-size:14px;color:#ff641a;');
 			let entrancePage = this.state.routers.entrancePage;
-			Taro.reLaunch({
-				url: entrancePage,
+			Taro.navigateBack({
+				delta: 1,
 				success(){
 					clearInterval(_this.state.local_data.timer);
 				}

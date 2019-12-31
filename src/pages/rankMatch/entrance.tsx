@@ -192,10 +192,10 @@ export class RankEntrance extends Component {
 		return con;
 	}
 
-	// 跳转匹配页
+	// 开始->跳转匹配页
 	goMatchRank(){
 		let queuePage = this.state.routers.queuePage;
-		Taro.reLaunch({
+		Taro.navigateTo({
 			url: queuePage
 		})
 	}
@@ -206,12 +206,12 @@ export class RankEntrance extends Component {
 		this.videoAd.openVideoAd();
 	}
 
-	// 返回上一页
+	// 返回上一页 reLaunch
 	goBack(){
 		let indexPage = this.state.routers.indexPage;
-		Taro.reLaunch({
+		Taro.redirectTo({
 			url: indexPage
-		});
+		})
 	}
 
 	render () {

@@ -216,7 +216,7 @@ export class PrizeReasult extends Component {
 				preState.local_data.gradeBar = thanTenBar;
 			})
 		}
-    }
+  }
 
 	// 返回主页
 	goBack(){

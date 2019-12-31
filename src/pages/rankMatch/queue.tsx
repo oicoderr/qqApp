@@ -334,8 +334,8 @@ export class PrizeQueue extends Component {
 			clearInterval(message[1]);
 
 			let entrancePage = this.state.routers.entrancePage;
-			Taro.reLaunch({
-				url: entrancePage,
+			Taro.navigateBack({
+				delta: 1, // url: entrancePage,
 				success(){
 					Taro.showToast({
 						title: '退出匹配',

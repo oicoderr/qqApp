@@ -85,38 +85,15 @@ export class PrizeEntrance extends Component {
 		this.msgProto = new MsgProto();
 	}
 	componentWillMount () {
-
+		let _this = this;
 		// 创建激励视频
 		this.videoAd= new createVideoAd();
 
 		// 监听广告: 看完发2003，未看完不发
 		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
-			let checked = this.state.local_data.checked;
-			let data = {
-				type: 3,
-				value:'',
-				param1: '', // 扩展参数暂无用
-				param2: -1, // int(如果类型是3，这个参数是是否使用加速卡<0.不使用;1.使用>
-			}
-			if(checked) {data.param2 = 1} else {data.param2 = 0};
-			console.log('是否勾选加速卡 ===>', data.param2);
-			let adsRewards = this.msgProto.adsRewards(data);
-			let parentModule = this.msgProto.parentModule(adsRewards);
-
-			if(status.isEnded){
-				console.log('%c 看完广告，进入大奖赛','font-size:14px;color:#0fdb24;');
-				this.websocket.sendWebSocketMsg({
-					data: parentModule,
-					success(res) {
-						// 允许进入匹配页 1302监测返回成功后跳转匹配页
-					},
-					fail(err) { console.log(err) }
-				});
-			}else{
-				console.log('%c 未看完视频，不能进入大进入大奖赛呦','font-size:14px;color:#db2a0f;');
-			}
+			// lookAds_todo
+			_this.lookAds_todo(status);
 		});
-
 	}
 
 	componentDidMount () {}
@@ -176,7 +153,7 @@ export class PrizeEntrance extends Component {
 			let errormsg = message[0]['data']['errormsg'];
 			if(result){
 				// 跳转匹配页
-				Taro.reLaunch({
+				Taro.navigateTo({
 					url: this.state.routers.queuePage,
 					success(){
 						Taro.showToast({
@@ -194,7 +171,6 @@ export class PrizeEntrance extends Component {
 						});
 					}
 				});
-				
 			}else{
 				Taro.showToast({
 					title: errormsg,
@@ -207,7 +183,8 @@ export class PrizeEntrance extends Component {
 					Taro.reLaunch({
 						url: indexPage
 					});
-				},2000);
+					clearTimeout(timer);
+				},1000);
 			}
 		});
 
@@ -302,7 +279,7 @@ export class PrizeEntrance extends Component {
 	// 返回上一页
 	goBack(){
 		let indexPage = this.state.routers.indexPage;
-		Taro.reLaunch({
+		Taro.redirectTo({
 			url: indexPage
 		});
 	}
@@ -411,6 +388,33 @@ export class PrizeEntrance extends Component {
 				console.error('请求领取加速卡失败==> ');console.log(err);
 			}
 		});
+	}
+
+	// 观看完广告要做的事情
+	lookAds_todo(status){
+		let checked = this.state.local_data.checked;
+		let data = {
+			type: 3,
+			value:'',
+			param1: '', // 扩展参数暂无用
+			param2: -1, // int(如果类型是3，这个参数是是否使用加速卡<0.不使用;1.使用>
+		}
+		if(checked) {data.param2 = 1} else {data.param2 = 0};
+		// console.log('是否勾选加速卡 ===>', data.param2);
+		let adsRewards = this.msgProto.adsRewards(data);
+		let parentModule = this.msgProto.parentModule(adsRewards);
+		if(status.isEnded){
+			console.log('%c 看完广告，进入大奖赛','font-size:14px;color:#0fdb24;');
+			this.websocket.sendWebSocketMsg({
+				data: parentModule,
+				success(res) {
+					// 允许进入匹配页 1302监测返回成功后跳转匹配页
+				},
+				fail(err) { console.log(err) }
+			});
+		}else{
+			console.log('%c 未看完视频，不能进入大进入大奖赛呦','font-size:14px;color:#db2a0f;');
+		}
 	}
 
 	// 请求说明

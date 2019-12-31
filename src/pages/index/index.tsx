@@ -393,10 +393,10 @@ export class Index extends Component {
 		emitter.removeAllListeners('currencyChange');
 	}
 
-	// 红包赛入口页
+	// 大奖赛入口页
 	goPrizeMatchBtn() {
 		let prizeMatch = this.state.routers.prizeMatch;
-		Taro.reLaunch({
+		Taro.navigateTo({
 			url: prizeMatch
 		})
 	}
@@ -404,21 +404,21 @@ export class Index extends Component {
 	// 跳转排位赛入口页
 	rankEntrance() {
 		let rankGameEntrance = this.state.routers.rankGameEntrance;
-		Taro.reLaunch({
+		Taro.navigateTo({
 			url: rankGameEntrance
 		})
 	}
 
 	// 跳转提现页
 	goTakeMoney() {
-		Taro.reLaunch({
+		Taro.navigateTo({
 			url: this.state.routers.goTakeMoneyPage
 		})
 	}
 
 	// 跳转门票购买页
 	goPayTickets() {
-		Taro.reLaunch({
+		Taro.navigateTo({
 			url: this.state.routers.goPayTicketsPage
 		})
 	}
@@ -453,7 +453,7 @@ export class Index extends Component {
 	// 跳转金币助力
 	goldHelp() {
 		let goldHelpPage = this.state.routers.goldHelpPage;
-		Taro.reLaunch({
+		Taro.redirectTo({
 			url: goldHelpPage
 		})
 	}
