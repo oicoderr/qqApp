@@ -456,7 +456,7 @@ export class Index extends Component {
 	// 跳转金币助力
 	goldHelp() {
 		let goldHelpPage = this.state.routers.goldHelpPage;
-		Taro.redirectTo({
+		Taro.navigateTo({
 			url: goldHelpPage
 		})
 	}

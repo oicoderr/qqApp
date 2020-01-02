@@ -276,7 +276,6 @@ export class AdvanceRoadUi extends Component {
       default:
         reusltHeadPosi = headPosi[0];
     }
-    console.log(reusltHeadPosi, 7888);
     this.setState(preState => {
       preState.data.reusltHeadPosi = reusltHeadPosi;
     });
