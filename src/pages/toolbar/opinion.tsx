@@ -91,8 +91,8 @@ export class Opinion extends Component {
 					duration: 2000
 				});
 				this.setState((preState)=>{
-					preState.local_data.textareaVal = ' ';
-					preState.local_data.inputVal = ' ';
+					preState.local_data.textareaVal = '';
+					preState.local_data.inputVal = '';
 				},()=>{})
 			}else{
 				Taro.showToast({
@@ -113,6 +113,7 @@ export class Opinion extends Component {
 			url: indexPage
 		});
 	}
+
 	// 记录反馈内容
 	onInput(e){
 		let detail = e.detail.value;
@@ -122,6 +123,7 @@ export class Opinion extends Component {
 			preState.local_data.contentVal = detail;
 		});
 	}
+
 	// 记录联系方式
 	contactInput(e){
 		let detail = e.detail.value;
@@ -140,7 +142,7 @@ export class Opinion extends Component {
 			contact: contactVal,
 		};
 
-		if(contentVal.length > 9){
+		if(contentVal.length > 0){
 			let opinion = this.msgProto.opinion(data);
 			let parentModule = this.msgProto.parentModule(opinion);
 			this.websocket.sendWebSocketMsg({

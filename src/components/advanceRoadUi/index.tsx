@@ -293,7 +293,8 @@ export class AdvanceRoadUi extends Component {
         reusltList.push(list[i]);
       }
     }
-    for (let i = dan-1; i < list.length; i++) {
+
+    for (let i = dan; i < list.length; i++) {
       reusltList.push(list_mask[i]);
     }
     this.setState(

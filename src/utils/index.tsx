@@ -272,7 +272,6 @@ export const request = (method = 'GET', params, callback) => {
 
   // 缓存获取openid
   getStorage('userInfo',(res)=>{
-
     Taro.request({
       url: `${baseUrl + url}`,
       method: `${method}`,
