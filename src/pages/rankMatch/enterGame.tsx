@@ -528,7 +528,7 @@ export class RankEnterGame extends Component {
 										${ selectedOptionIndex == index? defultClass:'' }
 										${ index == used_helpCardResult.errorId1-1 || index == used_helpCardResult.errorId2-1? 'ItemTips':'' } `}>
 									<View className='optionMark'>{currentValue.key}</View>
-									<View className='optionContent'>{currentValue.value}</View>
+									<View className='optionContent'><Text decode="true">{currentValue.value}</Text></View>
 								</View>
 							</View>
 		});

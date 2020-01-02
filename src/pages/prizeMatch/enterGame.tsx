@@ -485,7 +485,7 @@ export class PrizeEnterGame extends Component {
 							${selfSelectId == currentValue.optionId && isSuccess?'trueOption':''}
 							${memoryIndex == index && !isSuccess?'falseOption':''}`}>
 								<View className='optionMark'>{currentValue.key}</View>
-								<View className='optionContent'>{currentValue.value}</View>
+								<View className='optionContent'><Text decode="true">{currentValue.value}</Text></View>
 							</View>
 						</View>
 						<View className='optionPeople'>{list[index]}人</View>
