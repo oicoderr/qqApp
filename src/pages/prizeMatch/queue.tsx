@@ -374,25 +374,27 @@ export class PrizeQueue extends Component {
 					<View className='bgImg'></View>
 					<View className='mask_black'></View>
 					<View className='body'>
-						<View className='status'>
-							<Image onClick={this.exitQueue.bind(this)} src={quitBtn} className='quitBtn' />
-							<View className='text'>{matchIngTxt}</View>
-						</View>
-						<View className='content'>
-							<View className='circle outer'>
-								<View className='circle middle'>
-									<View className='circle inner'>
-									<View className='avatarWrap'>
-										<View className='avatar'>
-											<openData type="userAvatarUrl"></openData>
+						<View className='main'>
+							<View className='status'>
+								<Image onClick={this.exitQueue.bind(this)} src={quitBtn} className='quitBtn' />
+								<View className='text'>{matchIngTxt}</View>
+							</View>
+							<View className='content'>
+								<View className='circle outer'>
+									<View className='circle middle'>
+										<View className='circle inner'>
+										<View className='avatarWrap'>
+											<View className='avatar'>
+												<openData type="userAvatarUrl"></openData>
+											</View>
+										</View>
 										</View>
 									</View>
-									</View>
+								</View>	
+								<View className='queuePeopleNum'>{curNumberTxt}{curTeamInfo['currCount']}/{curTeamInfo['maxCount']}</View>
+									{/* 头像 */}
+									{headImg}
 								</View>
-							</View>	
-							<View className='queuePeopleNum'>{curNumberTxt}{curTeamInfo['currCount']}/{curTeamInfo['maxCount']}</View>
-							{/* 头像 */}
-							{headImg}
 						</View>
 					</View>
 				</View>

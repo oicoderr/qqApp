@@ -470,11 +470,12 @@ export class PrizeQueue extends Component {
 					<View className='bgImg'></View>
 					<View className='mask_black'></View>
 					<View className='body'>
-						<View className='status'>
-							<Image onClick={this.exitQueue.bind(this)} src={quitBtn} className='quitBtn' />
-							<View className='text'>{'匹配中...'}</View>
-						</View>
-						<View className='content'>
+						<View className='main'>
+							<View className='status'>
+								<Image onClick={this.exitQueue.bind(this)} src={quitBtn} className='quitBtn' />
+								<View className='text'>{'匹配中...'}</View>
+							</View>
+							<View className='content'>
 							<View className='circle outer'>
 								<View className='circle middle'>
 									<View className='circle inner'>
@@ -492,6 +493,7 @@ export class PrizeQueue extends Component {
 							</View>
 							{/* 头像 */}
 							{headImg}
+						</View>
 						</View>
 					</View>
 				</View>

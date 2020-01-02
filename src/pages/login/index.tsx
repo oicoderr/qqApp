@@ -157,6 +157,7 @@ export class Login extends Component {
 	}
 	// 发送昵称，头像信息
 	basicInfo(userInfo){
+		let _this = this;
 		// 发送昵称，头像信息
 		let basicInfo = this.msgProto.basicInfo(userInfo);
 		let parentModule = this.msgProto.parentModule(basicInfo);
@@ -165,7 +166,7 @@ export class Login extends Component {
 			success(res) {
 				console.log('%c 发送用户(头像，昵称)Success','font-size:14px; color:#ba5a81; background:#e3e3e3;');
 				// 跳转游戏页
-				let indexPage = this.state.routers.indexPage;
+				let indexPage = _this.state.routers.indexPage;
 				Taro.reLaunch({
 					url: indexPage,
 				});
