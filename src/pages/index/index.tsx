@@ -12,7 +12,6 @@ import HomeBandUi from '../../components/HomeBandUi'
 import Drawer from '../../components/drawer'
 import MsgProto from '../../service/msgProto'
 
-
 const App = Taro.getApp()
 
 export class Index extends Component {
@@ -103,7 +102,6 @@ export class Index extends Component {
 	componentDidShow() {
 		let _this = this;
 
-		// console.log(Taro.getCurrentPages())
 		// 显示分享
 		showShareMenuItem();
 		// 页面超出提示,返回当前页面URL
@@ -239,19 +237,14 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('getWeekCheckIninfo', (message) => {
 			clearInterval(message[1]);
 
-			console.log('～签到基本信息：～'); console.log(message[0]['data']);
-			let weekCheckIninfo = message[0]['data']
+			console.log('%c ～签到基本信息：～','font-size: 14px; color: #ffda57;background:#000000;'); console.log(message[0]['data']);
+			let weekCheckIninfo = message[0]['data'];
+			// 发给子组件签到信息
 			emitter.emit('weekCheckIninfo_child', weekCheckIninfo);
 			// 显示签到组件
 			_this.setState((preState) => {
 				preState.weekCheckIninfo = weekCheckIninfo;
 				preState.isShowWeekCheckIn = true;
-			}, () => {
-				// 是否勾选`炫耀一下`
-				let isShareCheckedChange = _this.state.isShareCheckedChange;
-				if (isShareCheckedChange) {
-
-				}
 			});
 		});
 
@@ -265,19 +258,12 @@ export class Index extends Component {
 
 		// 领取奖励
 		this.eventEmitter = emitter.addListener('curRewardStatus', (message) => {
-			console.log('接受‘签到组件-领取奖励` 信息==>'); console.log(message);
+			console.log('%c 接受‘签到组件-领取奖励`信息==>', 'font-size:14px;color:#007ef0;background:#d1d1d1;'); console.log(message);
 			this.setState((preState) => {
 				preState.isShareCheckedChange = message.shareCheckedChange;
-			});
-			// 开始签到
-			let signIn = this.msgProto.signIn();
-			let parentModule = this.msgProto.parentModule(signIn);
-			this.websocket.sendWebSocketMsg({
-				data: parentModule,
-				success(res) { },
-				fail(err) {
-					console.error('请求我要签到发送失败：'); console.log(err);
-				}
+			},()=>{
+				// 请求签到信息
+				_this.signIn();
 			});
 		});
 
@@ -441,6 +427,20 @@ export class Index extends Component {
 		});
 	}
 
+	// 请求签到
+	signIn(){
+		// 开始签到
+		let signIn = this.msgProto.signIn();
+		let parentModule = this.msgProto.parentModule(signIn);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {},
+			fail(err) {
+				console.error('请求我要签到发送失败：'); console.log(err);
+			}
+		});
+	}
+
 	// 显示晋级之路
 	advanceRoad() {
 		let gameUserInfo = this.state.gameUserInfo;
@@ -537,10 +537,12 @@ export class Index extends Component {
 						<HomeBandUi />
 					</View>
 					<View className='foot'>
-						<View onClick={this.goPrizeMatchBtn.bind(this)} className='sameBtn redEnvelopeBtn'></View>
+						<View onClick={this.goPrizeMatchBtn.bind(this)} className='sameBtn redEnvelopeBtn'>
+							<View className='cashTip'></View>
+						</View>
 						<View className='bothBtn'>
 							<View onClick={this.goTakeMoney.bind(this)} className='sameBtn withdrawBtn'></View>
-							<View className='sameBtn OneVOneBtn'></View>
+							<View className='sameBtn OneVOneBtn'>敬请期待</View>
 						</View>
 						<View onClick={this.rankEntrance.bind(this)} className='sameBtn rankBtn'></View>
 					</View>

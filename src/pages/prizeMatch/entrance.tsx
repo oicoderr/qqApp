@@ -1,12 +1,12 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text, Button, RadioGroup, Radio, Label } from '@tarojs/components'
 import './entrance.scss'
-import emitter from '../../service/events';
+import emitter from '../../service/events'
 import throttle from 'lodash/throttle'
-import { getStorage, setStorage, removeStorage, onShareApp, showShareMenuItem, unitReplacement } from '../../utils';
+import { getStorage, setStorage, onShareApp, showShareMenuItem, unitReplacement } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
-import MessageToast from '../../components/MessageToast'
+import { MessageToast } from '../../components/MessageToast'
 import createVideoAd from '../../service/createVideoAd'
 import MsgProto from '../../service/msgProto'
 
@@ -69,7 +69,11 @@ export class PrizeEntrance extends Component {
 				adsTip: '每局比赛自动使用一张加速卡',
 				quickenTip: 'Tips: 邀请好友获取加速卡，减少每局答题总耗时。',
 				mask_tip: '即将开放',
-				checked: true,     // 默认勾选观看广告
+				unit_card: '张',
+				inviteBtnTxt: '邀请',
+				receiveBtnTxt: '领取',
+				// 默认勾选观看广告
+				checked: true,
 				StayTunedImg: 'https://oss.snmgame.com/v1.0.0/StayTuned.png',
 				tipImg: 'https://oss.snmgame.com/v1.0.0/prizeMatch_FreeBtnTip.png',
 				freeBtn: 'https://oss.snmgame.com/v1.0.0/prizeMatch_FreeBtn.png',
@@ -91,7 +95,6 @@ export class PrizeEntrance extends Component {
 
 		// 监听广告: 看完发2003，未看完不发
 		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
-			// lookAds_todo
 			_this.lookAds_todo(status);
 		});
 	}
@@ -403,6 +406,7 @@ export class PrizeEntrance extends Component {
 		// console.log('是否勾选加速卡 ===>', data.param2);
 		let adsRewards = this.msgProto.adsRewards(data);
 		let parentModule = this.msgProto.parentModule(adsRewards);
+
 		if(status.isEnded){
 			console.log('%c 看完广告，进入大奖赛','font-size:14px;color:#0fdb24;');
 			this.websocket.sendWebSocketMsg({
@@ -442,7 +446,7 @@ export class PrizeEntrance extends Component {
 	render () {
 		const { backBtn, entranceBg, ruleTitle, freeBtn, ticketsBtn, tipImg, adsTip, checked, 
 			StayTunedImg, quickenCardBg, directionsTitle, pendingText, surplusText, quickenTip, 
-			progress_item_blank, progress_item, isShowDirections, mask_tip} = this.state.local_data;
+			progress_item_blank, progress_item, isShowDirections, mask_tip, unit_card, inviteBtnTxt, receiveBtnTxt} = this.state.local_data;
 		const {type, value} = this.state.data.isOpen;
 		const {energy, redEnvelope} = this.state.local_data.currencyChange;
 		const {overCount, speedItemCount, currSpeedItemCount} = this.state.data.quickenCardHelpResult;
@@ -467,9 +471,8 @@ export class PrizeEntrance extends Component {
 
 						{/* 能量bar */}
 						<View className='energyBar'>
-							<View className='board-same board'></View>
+							<View className='board-same board'>{energy}</View>
 							<View className='energyIcon'></View>
-							<Text className='num-same energyNum'>{energy}</Text>
 						</View>
 					</View>
 
@@ -481,7 +484,7 @@ export class PrizeEntrance extends Component {
 							<View className='items'>
 								<Image onClick={this.freeAdmission.bind(this)} src={freeBtn} className='btn freeBtn'/>
 								<Image onClick={this.payAdmission.bind(this)} src={ticketsBtn} className='btn ticketsBtn'/>
-		<View className='mask_'>{mask_tip}</View>
+								<View className='mask_'>{mask_tip}</View>
 							</View>
 							<View className='seeAdsStatus'>
 								<RadioGroup className='checkBox'>
@@ -507,8 +510,8 @@ export class PrizeEntrance extends Component {
 							<Image src={quickenCardBg} className='quickenCardBg'/>
 							<View className='title'>
 								<View className='num'>
-									{pendingText}<Text decode={true}>{speedItemCount}&ensp;</Text>张 
-									{surplusText}<Text decode={true}>{currSpeedItemCount}&ensp;</Text>张 
+									{pendingText}<Text decode={true}>{speedItemCount}&ensp;</Text>{unit_card} 
+									{surplusText}<Text decode={true}>{currSpeedItemCount}&ensp;</Text>{unit_card}
 								</View>
 								<View onClick={this.DBdescription.bind(this)} data-type='3' className='directions'>{directionsTitle}</View>
 							</View>
@@ -522,10 +525,10 @@ export class PrizeEntrance extends Component {
 
 								<View className='progress_btn'>
 									<View className='inviteBtnWrap'>
-										<Button openType='share' className='inviteBtn'>邀请</Button>
+										<Button openType='share' className='inviteBtn'>{inviteBtnTxt}</Button>
 									</View>
 									<View onClick={this.getQuickenCard.bind(this)} className='receiveBtnWrap'>
-										<View className='receiveBtn'>领取</View>
+										<View className='receiveBtn'>{receiveBtnTxt}</View>
 									</View>
 								</View>
 							</View>

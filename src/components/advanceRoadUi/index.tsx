@@ -3,7 +3,7 @@ import { View, Image } from '@tarojs/components';
 import emitter from '../../service/events';
 import './index.scss';
 
-export class MessageToast extends Component {
+export class AdvanceRoadUi extends Component {
   constructor(props) {
     super(props);
     this.state.data = {

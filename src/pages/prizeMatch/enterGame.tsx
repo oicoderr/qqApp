@@ -394,7 +394,6 @@ export class PrizeEnterGame extends Component {
 		});
 	}
 
-
 	// 显示复活弹窗
 	isResurrection(){
 		this.setState((preState)=>{

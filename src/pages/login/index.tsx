@@ -107,7 +107,7 @@ export class Login extends Component {
 		Taro.getUserInfo({
 			success(res) {
 				userInfo = res.userInfo;
-				console.log('%c 授权的基本信息 ===>', 'font-size:14px;color:#31c200; background-color:#000;');console.log(userInfo); 
+				console.log('%c 授权的基本信息 ===>', 'font-size:14px;color:#fff; background-color:#000;');console.log(userInfo); 
 				getStorage('userInfo',(value)=>{
 					for(let i in value){
 						userInfo[i] = value[i];
@@ -115,25 +115,7 @@ export class Login extends Component {
 				});
 				setStorage('userInfo', userInfo);
 				// 发送昵称，头像信息
-				let basicInfo_ = _this.msgProto.basicInfo(userInfo);
-				let parentModule = _this.msgProto.parentModule(basicInfo_);
-				_this.websocket.sendWebSocketMsg({
-					data: parentModule,
-					success(res) {
-						console.log('%c 发送用户(头像，昵称)Success','font-size:14px; color:#ba5a81; background:#e3e3e3;');
-						// 跳转游戏页
-						Taro.reLaunch({
-							url: _this.state.routers.indexPage
-						});
-					},
-					fail(err){
-						Taro.showToast({
-							title: err.errMsg,
-							icon: 'none',
-							duration: 2000
-						})
-					}
-				});
+				_this.basicInfo(userInfo);
 			},
 			fail(err){
 				if(err.errMsg === 'getUserInfo:fail scope unauthorized'){
@@ -173,6 +155,31 @@ export class Login extends Component {
 			preState.local_data.isShowDirections = true;
 		})
 	}
+	// 发送昵称，头像信息
+	basicInfo(userInfo){
+		// 发送昵称，头像信息
+		let basicInfo = this.msgProto.basicInfo(userInfo);
+		let parentModule = this.msgProto.parentModule(basicInfo);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {
+				console.log('%c 发送用户(头像，昵称)Success','font-size:14px; color:#ba5a81; background:#e3e3e3;');
+				// 跳转游戏页
+				let indexPage = this.state.routers.indexPage;
+				Taro.reLaunch({
+					url: indexPage,
+				});
+			},
+			fail(err){
+				Taro.showToast({
+					title: err.errMsg,
+					icon: 'none',
+					duration: 2000
+				})
+			}
+		});
+	}
+
 	render () {
 		const { isShowDirections, tip0, tip, logo, loginBtn } = this.state.local_data;
 		return (

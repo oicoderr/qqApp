@@ -104,7 +104,7 @@ export default class WeekCheckIn extends Component {
 
   // 是否勾选炫耀一下
   shareCheckedChange(value) {
-    console.log('%c 签到是否同意炫耀一下 ====》' + value, 'font-size:14px;color:#9bff1f;');
+    console.log('%c 签到是否同意炫耀一下: ' + value, 'font-size:14px;color:#f04800;background:#000000;');
     this.setState(preState => {
       preState.local_data.shareChecked = !value;
     });
