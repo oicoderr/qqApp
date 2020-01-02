@@ -177,7 +177,7 @@ export class WriteQuestion extends Component {
 		})
 
 		return (
-			<View className='index'>
+			<View className='writeQ'>
 				<View className='bgColor'>
 					<View className='bgImg'></View>
 					<View className='body'>

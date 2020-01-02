@@ -1,352 +1,354 @@
-.hide{
-    display: none;
+.hide {
+  display: none;
 }
 
-.prizeMatch{
-	position: fixed;
-	top: 0;
-	left: 0;
-	bottom: 0;
+.prizeMatch {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
 
-	.toast{
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		width: 100vw;
-		height: 100vh;
-		background:rgba(0,0,0,.6);
-		z-index: 19;
+  .toast {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .6);
+    z-index: 19;
 
-		.content{
-			position: absolute;
-			top: 440rpx;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 640rpx;
-			height:340rpx;
-			box-sizing: border-box;
-			overflow: hidden;
-			background:rgba(68,125,239,1);
-			border: 2rpx solid rgba(0,0,0,1);
-			border-radius: 20rpx;
-			display: flex;
-			flex-direction: column;
-			padding: 30rpx;
+    .content {
+      position: absolute;
+      top: 440rpx;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 640rpx;
+      height: 340rpx;
+      box-sizing: border-box;
+      overflow: hidden;
+      background: rgba(68, 125, 239, 1);
+      border: 2rpx solid rgba(0, 0, 0, 1);
+      border-radius: 20rpx;
+      display: flex;
+      flex-direction: column;
+      padding: 30rpx;
 
-			.title{
-				width: 100%;
-				text-align: center;
-				box-sizing: border-box;
-				height: 40rpx;
-				line-height: 40rpx;
-				overflow: hidden;
-				font-size: 40rpx;
-				font-weight:600;
-				color:rgba(255,255,255,1);
-				text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
-			}
+      .title {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+        height: 40rpx;
+        line-height: 40rpx;
+        overflow: hidden;
+        font-size: 40rpx;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 1);
+        text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+      }
 
-			.body{
-				width: 100%;
-				box-sizing: border-box;
-				height: 146rpx;
-				line-height: 146rpx;
-				font-size: 30rpx;
-				font-weight: 400;
-				color:rgba(255,255,255,1);
-				text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
-				text-align: center;
-			}
+      .body {
+        width: 100%;
+        box-sizing: border-box;
+        height: 146rpx;
+        line-height: 146rpx;
+        font-size: 30rpx;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+        text-align: center;
+      }
 
-			.btns{
-				width: 100%;
-				height: 94rpx;
-				display: flex;
-				justify-content: space-between;
+      .btns {
+        width: 100%;
+        height: 94rpx;
+        display: flex;
+        justify-content: space-between;
 
-				.cancelBtnWarp{
-					width: 214rpx;
-					height: 94rpx;
-					background:rgba(32,139,187,1);
-					border: 2rpx solid rgba(48,48,48,1);
-					border-radius: 20rpx;
-				}
+        .cancelBtnWarp {
+          width: 214rpx;
+          height: 94rpx;
+          background: rgba(32, 139, 187, 1);
+          border: 2rpx solid rgba(48, 48, 48, 1);
+          border-radius: 20rpx;
+        }
 
-				.cancelBtn{
-					width:210rpx;
-					height:84rpx;
-					line-height:84rpx;
-					text-align:center;
-					background-color:rgba(41,189,255,1);
-					border-radius: 20rpx;
-					margin: 0 2rpx;
-					font-size: 30rpx;
-					font-weight: 400;
-					color:rgba(250,250,250,1);
-					text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
-				}
+        .cancelBtn {
+          width: 210rpx;
+          height: 84rpx;
+          line-height: 84rpx;
+          text-align: center;
+          background-color: rgba(41, 189, 255, 1);
+          border-radius: 20rpx;
+          margin: 0 2rpx;
+          font-size: 30rpx;
+          font-weight: 400;
+          color: rgba(250, 250, 250, 1);
+          text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
+        }
 
-				.confirmBtnWarp{
-					width: 214rpx;
-					height: 94rpx;
-					background-color:rgba(187,137,32,1);
-					border: 2rpx solid rgba(48,48,48,1);
-					border-radius: 20rpx;
-				}
+        .confirmBtnWarp {
+          width: 214rpx;
+          height: 94rpx;
+          background-color: rgba(187, 137, 32, 1);
+          border: 2rpx solid rgba(48, 48, 48, 1);
+          border-radius: 20rpx;
+        }
 
-				.confirmBtn{
-					width: 210rpx;
-					height: 84rpx;
-					line-height:84rpx;
-					text-align:center;
-					background: rgba(254,183,39,1);
-					border-radius: 20rpx;
-					margin: 0 2rpx;
-					font-size: 30rpx;
-					font-weight: 400;
-					color:rgba(250,250,250,1);
-					text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57)
-				}
-			}
-		}
-	}
+        .confirmBtn {
+          width: 210rpx;
+          height: 84rpx;
+          line-height: 84rpx;
+          text-align: center;
+          background: rgba(254, 183, 39, 1);
+          border-radius: 20rpx;
+          margin: 0 2rpx;
+          font-size: 30rpx;
+          font-weight: 400;
+          color: rgba(250, 250, 250, 1);
+          text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57)
+        }
+      }
+    }
+  }
 }
 
-.prizeMatch .bgColor{
-	width: 100vw;
-	height: 100vh;
-	background-color: rgba(97, 130, 242, 1);
-	position: relative;
-	top: 0;
-	left: 0;
-    
-	.bgImg{
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		z-index: 1;
-		width: 100vw;
-		height: 100vh;
-		background-image: url('https://oss.snmgame.com/v1.0.0/rank-texture-0001.png');
-		background-size: 750px 3000px;
-		background-repeat: no-repeat;
-		opacity: 1;
-		filter:alpha(opacity=1);
-	}
+.prizeMatch .bgColor {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(97, 130, 242, 1);
+  position: relative;
+  top: 0;
+  left: 0;
 
-	.body{
-		position: relative;
-		z-index: 2;
-		width: 100%;
-		height: 100%;
-		box-sizing: border-box;
-		padding-top: 112rpx;
+  .bgImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('https://oss.snmgame.com/v1.0.0/rank-texture-0001.png');
+    background-size: 750px 3000px;
+    background-repeat: no-repeat;
+    opacity: 1;
+    filter: alpha(opacity=1);
+  }
 
-		.head{
-				width: 100%;
-				height: 320rpx;
-				position: relative;
+  .body {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding-top: 112rpx;
 
-				.countdownWrap{
-						position: absolute;
-						left: 50%;
-						transform: translateX(-50%);
-						width: 605rpx;
-						height: 130rpx;
-						z-index: 4;
+    .head {
+      width: 100%;
+      height: 320rpx;
+      position: relative;
 
-						.countdown{
-								width: 100%;
-								height: 100%;
-						}
+      .countdownWrap {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 605rpx;
+        height: 130rpx;
+        z-index: 4;
 
-						.people{
-								position: absolute;
-								top: 50rpx;
-								left: 15rpx;
-								width: 230rpx;
-								font-size: 30rpx;
-								height: 30rpx;
-								line-height: 30rpx;
-								font-weight: 600;
-								color:rgba(255,255,255,1);
-								text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
-								text-align: center;
-						}
+        .countdown {
+          width: 100%;
+          height: 100%;
+        }
 
-						.dieOut{
-								left: 370rpx;
-						}
+        .people {
+          position: absolute;
+          top: 50rpx;
+          left: 15rpx;
+          width: 230rpx;
+          font-size: 30rpx;
+          height: 30rpx;
+          line-height: 30rpx;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 1);
+          text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
+          text-align: center;
+        }
 
-						.countdown_time{
-								position: absolute;
-								top: 0;
-								left: 50%;
-								transform: translateX(-50%);
-								font-size: 60rpx;
-								font-weight: 600;
-								color: rgba(48,48,48,1);
-								text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
-								padding: 20rpx 0;
-						}
-				}
+        .dieOut {
+          left: 370rpx;
+        }
 
-				
+        .countdown_time {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 60rpx;
+          font-weight: 600;
+          color: rgba(48, 48, 48, 1);
+          text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
+          padding: 20rpx 0;
+        }
+      }
 
-				.questionBg{
-						position: absolute;
-						top: 78rpx;
-						width: 100%;
-						height: 290rpx;
-						background-color: rgba(0,0,0,.5);
-						z-index: 3;
-						overflow: hidden;
 
-						.questionText{
-								width: 100%;
-								height: auto;
-								padding: 80rpx 35rpx 0 35rpx;
-								box-sizing: border-box;
-								overflow: hidden;
-								font-size: 30rpx;
-								font-weight: 600;
-								color:rgba(255,255,255,1);
-						}
-				}
-		}
 
-		.content{
-			position: relative;
-			top: 110rpx;
-			left: 0;
-			width: 100%;
-			height: auto;
-			padding:0 45rpx 0 150rpx;
-			box-sizing: border-box;
+      .questionBg {
+        position: absolute;
+        top: 78rpx;
+        width: 100%;
+        height: 290rpx;
+        background-color: rgba(0, 0, 0, .5);
+        z-index: 3;
+        overflow: hidden;
 
-			.optionBox{
-				position: relative;
-				width: 554rpx;
-				height: 105rpx;
-				margin-bottom: 60rpx;
-			}
+        .questionText {
+          width: 100%;
+          height: auto;
+          padding: 80rpx 35rpx 0 35rpx;
+          box-sizing: border-box;
+          overflow: hidden;
+          font-size: 30rpx;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 1);
+        }
+      }
+    }
 
-			.optionWarp{
-				position: absolute;
-				width: 450rpx;
-				height: 105rpx;
-				background: rgba(202,202,202,1);
-				border: 2rpx solid rgba(30,30,30,1);
-				border-radius: 51rpx;
-				overflow: hidden;
-				z-index: 6;
+    .content {
+      position: relative;
+      top: 110rpx;
+      left: 0;
+      width: 100%;
+      height: auto;
+      padding: 0 45rpx 0 150rpx;
+      box-sizing: border-box;
 
-				.option{
-					width: 451rpx;
-					height: 96rpx;
-					background: rgba(255,255,255,1);
-					border-radius: 48rpx;
-					line-height: 96rpx;
-					padding: 13rpx 17rpx;
-					box-sizing: border-box;
-					display: flex;
-					justify-content: flex-start;
+      .optionBox {
+        position: relative;
+        width: 554rpx;
+        height: 105rpx;
+        margin-bottom: 60rpx;
+      }
 
-					.optionMark{
-						width: 70rpx;
-						height: 70rpx;
-						line-height: 70rpx;
-						background: rgba(255,255,255,1);
-						border: 2rpx solid rgba(30,30,30,1);
-						border-radius: 50%;
-						text-align: center;
-						font-size: 40rpx;
-						font-weight:600;
-						color:rgba(48,48,48,1);
-					}
+      .optionWarp {
+        position: absolute;
+        width: 450rpx;
+        height: 105rpx;
+        background: rgba(202, 202, 202, 1);
+        border: 2rpx solid rgba(30, 30, 30, 1);
+        border-radius: 51rpx;
+        overflow: hidden;
+        z-index: 6;
 
-					.optionContent{
-						width: 340rpx;
-						height: 70rpx;
-						text-align: center;
-						line-height: 70rpx;
-						padding: 0 12rpx;
-						box-sizing: border-box;
-						overflow: hidden;
-						font-weight: 600;
-					}
-				}
-			}
+        .option {
+          width: 451rpx;
+          height: 96rpx;
+          background: rgba(255, 255, 255, 1);
+          border-radius: 48rpx;
+          line-height: 96rpx;
+          padding: 13rpx 17rpx;
+          box-sizing: border-box;
+          display: flex;
+          justify-content: flex-start;
 
-			// 选中状态
-			.selectedOption{
-				border:8rpx solid rgba(254,183,39,1) !important;
-			}
+          .optionMark {
+            width: 70rpx;
+            height: 70rpx;
+            line-height: 70rpx;
+            background: rgba(255, 255, 255, 1);
+            border: 2rpx solid rgba(30, 30, 30, 1);
+            border-radius: 50%;
+            text-align: center;
+            font-size: 40rpx;
+            font-weight: 600;
+            color: rgba(48, 48, 48, 1);
+          }
 
-			.optionPeople{
-				position: absolute;
-				z-index: 5;
-				width: 120rpx;
-				height: 54rpx;
-				background: rgba(0,0,0,.3);
-				border-radius: 0 27rpx 27rpx 0;
-				text-align: center;
-				line-height: 54rpx;
-				overflow: hidden;
-				font-size: 28rpx;
-				font-weight: 600;
-				color:rgba(255,255,255,1);
-				text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
-				right: 0rpx;
-				top: 30rpx;
-			}
+          .optionContent {
+            width: 340rpx;
+            height: 70rpx;
+            text-align: center;
+            line-height: 70rpx;
+            padding: 0 12rpx;
+            box-sizing: border-box;
+            overflow: hidden;
+            font-weight: 600;
+          }
+        }
+      }
 
-			// 选怎了正确/错误答案页面显示
-			.trueOption{
-				background-color: rgba(153, 233, 126, 1) !important;
-				color:rgba(255,255,255,1) !important;
-			}
-			.trueOptionBottom{
-				background-color: rgba(113, 170, 94, 1) !important;
-			}
+      // 选中状态
+      .selectedOption {
+        border: 8rpx solid rgba(254, 183, 39, 1) !important;
+      }
 
-			.falseOption{
-				background-color: rgba(238, 134, 104, 1) !important;
-				color:rgba(255,255,255,1) !important;
-			}
-			.flaseOptionBottom{
-				background-color: rgba(212, 89, 53, 1) !important;
-			}
+      .optionPeople {
+        position: absolute;
+        z-index: 5;
+        width: 120rpx;
+        height: 54rpx;
+        background: rgba(0, 0, 0, .3);
+        border-radius: 0 27rpx 27rpx 0;
+        text-align: center;
+        line-height: 54rpx;
+        overflow: hidden;
+        font-size: 28rpx;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 1);
+        text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
+        right: 0rpx;
+        top: 30rpx;
+      }
 
-			// 遮罩mask
-			.mask{
-				position:absolute;
-				width: 454rpx;
-				height: 110%;
-				overflow: hidden;
-				background-color: rgba(0,0,0,.01);
-				z-index: 12;
-			}
-		}
+      // 选怎了正确/错误答案页面显示
+      .trueOption {
+        background-color: rgba(153, 233, 126, 1) !important;
+        color: rgba(255, 255, 255, 1) !important;
+      }
 
-		.footer{
-			position: absolute;
-			left: 0;
-			bottom: 0;
-			width: 100%;
-			height: 120rpx;
-			text-align: center;
-			line-height: 120rpx;
-			font-size: 30rpx;
-			font-weight: 600;
-			color: rgba(255,254,254,1);
-			background:rgba(0,0,0,.6);
+      .trueOptionBottom {
+        background-color: rgba(113, 170, 94, 1) !important;
+      }
 
-			text{
-				font-size: 60rpx;
-			}
-		}
-	}   
+      .falseOption {
+        background-color: rgba(238, 134, 104, 1) !important;
+        color: rgba(255, 255, 255, 1) !important;
+      }
+
+      .flaseOptionBottom {
+        background-color: rgba(212, 89, 53, 1) !important;
+      }
+
+      // 遮罩mask
+      .mask {
+        position: absolute;
+        width: 454rpx;
+        height: 110%;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, .01);
+        z-index: 12;
+      }
+    }
+
+    .footer {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 120rpx;
+      text-align: center;
+      line-height: 120rpx;
+      font-size: 30rpx;
+      font-weight: 600;
+      color: rgba(255, 254, 254, 1);
+      background: rgba(0, 0, 0, .6);
+
+      text {
+        font-size: 60rpx;
+      }
+    }
+  }
 }

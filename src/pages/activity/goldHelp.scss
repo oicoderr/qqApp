@@ -1,375 +1,378 @@
-.hide{
-    display: none !important;
+.hide {
+  display: none !important;
 }
 
-.golgHelp{
+.golgHelp {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.golgHelp .bgColor {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(97, 130, 242, 1);
+  position: relative;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+
+  .bgImg {
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
-}
-
-.golgHelp .bgColor{
+    z-index: 1;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(97, 130, 242, 1);
-    position: relative;
-    top: 0;
-    left: 0;
+    background-image: url('https://oss.snmgame.com/v1.0.0/rank-texture-0001.png');
+    background-size: 750px 3000px;
+    background-repeat: no-repeat;
+    opacity: 1;
+    filter: alpha(opacity=1);
+  }
+
+  .content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 50rpx 20rpx 20rpx 20rpx;
     overflow: hidden;
+    box-sizing: border-box;
+    z-index: 2;
 
-    .bgImg{
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        z-index: 1;
-        width: 100vw;
-        height: 100vh;
-        background-image: url('https://oss.snmgame.com/v1.0.0/rank-texture-0001.png');
-        background-size: 750px 3000px;
-        background-repeat: no-repeat;
-        opacity: 1;
-        filter:alpha(opacity=1);
-    }
+    .head {
+      width: 100%;
+      height: 54rpx;
+      display: flex;
+      justify-content: left;
+      padding-bottom: 24rpx;
 
-    .content{
-        position: absolute;
+      .backBtnBox {
         width: 100%;
-        height: 100%;
-        padding: 50rpx 20rpx 20rpx 20rpx;
-        overflow: hidden;
-        box-sizing: border-box;
-        z-index: 2;
+        height: 54rpx;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        background-color: transparent;
+        position: absolute;
+        z-index: 99;
 
-        .head{
-            width: 100%;
-            height: 54rpx;
-            display: flex;
-            justify-content: left;
-            padding-bottom: 24rpx;
-
-            .backBtnBox{
-                width: 100%;
-                height: 54rpx;
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                background-color: transparent;
-                position: absolute;
-                z-index: 99;
-        
-                .backBtn{
-                    width: 60rpx;
-                    height: 54rpx;
-                }
-
-                .goldWrap{
-                    position: relative;
-                    width: 140rpx;
-                    max-width: 200rpx;
-                    height: 62rpx;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    left: 20rpx;
-
-                    .goldIcon_{
-                        position:absolute;
-                        z-index:18;
-                        width: 52rpx;
-                        height: 62rpx;
-                    }
-                    
-                }
-
-                .num{
-                    position: absolute;
-                    height: 44rpx;
-                    z-index: 16;
-                    text-align: center;
-                    line-height: 42rpx;
-                    border: 2rpx solid rgba(48,48,48,1);
-                    background:rgba(0,0,0,.2);
-                    border-radius: 10rpx;
-                    font-size: 24rpx;
-                    font-weight: 600;
-                    color: rgba(255,255,255,1);
-                    padding: 0 20rpx 0 42rpx;
-                    box-sizing: border-box;
-                    margin: auto;
-                    left:14rpx;
-                    top:10rpx;
-                }
-
-            }
+        .backBtn {
+          width: 60rpx;
+          height: 54rpx;
         }
 
-        .body{
+        .goldWrap {
+          position: relative;
+          width: 140rpx;
+          max-width: 200rpx;
+          height: 62rpx;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          left: 20rpx;
+
+          .goldIcon_ {
             position: absolute;
-            z-index: 3;
+            z-index: 18;
+            width: 52rpx;
+            height: 62rpx;
+          }
+
+        }
+
+        .num {
+          position: absolute;
+          height: 44rpx;
+          z-index: 16;
+          text-align: center;
+          line-height: 42rpx;
+          border: 2rpx solid rgba(48, 48, 48, 1);
+          background: rgba(0, 0, 0, .2);
+          border-radius: 10rpx;
+          font-size: 24rpx;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 1);
+          padding: 0 20rpx 0 42rpx;
+          box-sizing: border-box;
+          margin: auto;
+          left: 14rpx;
+          top: 10rpx;
+        }
+
+      }
+    }
+
+    .body {
+      position: absolute;
+      z-index: 3;
+      box-sizing: border-box;
+      overflow: hidden;
+
+      .gold_help_box {
+        position: relative;
+
+        .gold_help_bg {
+          width: 710rpx;
+          height: 900rpx;
+        }
+
+        .howPlayTip {
+          position: absolute;
+          top: 30rpx;
+          right: 0;
+          width: 710rpx;
+          height: 30rpx;
+          line-height: 30rpx;
+          font-size: 30rpx;
+          font-weight: 400;
+          color: rgba(255, 255, 255, 1);
+          text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
+          text-align: right;
+          padding: 0 30rpx;
+          box-sizing: border-box;
+        }
+
+        .scrollview {
+          position: absolute;
+          top: 80rpx;
+          width: 100%;
+          padding: 0 28rpx;
+          height: 540rpx;
+          box-sizing: border-box;
+          overflow: hidden;
+          z-index: 20;
+        }
+
+        .itemBox {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+
+          .item {
+            width: 320rpx;
+            height: 120rpx;
+            background: rgba(0, 0, 0, .3);
+            border-radius: 20rpx;
+            margin-bottom: 20rpx;
+            padding: 10rpx;
             box-sizing: border-box;
             overflow: hidden;
+            display: flex;
+            flex-direction: row;
+          }
 
-            .gold_help_box{
-                position: relative;
+          .headUrl {
+            width: 100rpx;
+            height: 100rpx;
+            border-radius: 50%;
+          }
 
-                .gold_help_bg{
-                    width: 710rpx;
-                    height: 900rpx;
-                }
+          .golgNum {
+            height: 100rpx;
+            padding: 20rpx 10rpx 0 10rpx;
+            box-sizing: border-box;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
 
-                .howPlayTip{
-                    position: absolute;
-                    top: 30rpx;
-                    right: 0;
-                    width: 710rpx;
-                    height: 30rpx;
-                    line-height: 30rpx;
-                    font-size: 30rpx;
-                    font-weight: 400;
-                    color:rgba(255,255,255,1);
-                    text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
-                    text-align: right;
-                    padding: 0 30rpx;
-                    box-sizing: border-box;
-                }
-
-                .scrollview{
-                    position: absolute;
-                    top: 80rpx;
-                    width: 100%;
-                    padding:0 28rpx;
-                    height:540rpx;
-                    box-sizing: border-box;
-                    overflow: hidden;
-                    z-index: 20;
-                }
-
-                .itemBox{
-                    width: 100%;
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-
-                    .item{
-                        width: 320rpx;
-                        height: 120rpx;
-                        background:rgba(0,0,0,.3);
-                        border-radius: 20rpx;
-                        margin-bottom: 20rpx;
-                        padding: 10rpx;
-                        box-sizing: border-box;
-                        overflow: hidden;
-                        display: flex;
-                        flex-direction: row;
-                    }
-
-                    .headUrl{
-                        width: 100rpx;
-                        height: 100rpx;
-                        border-radius: 50%;
-                    }
-
-                    .golgNum{
-                        height: 100rpx;
-                        padding: 20rpx 10rpx 0 10rpx;
-                        box-sizing: border-box;
-                        overflow: hidden;
-                        display: flex;
-                        flex-direction: row;
-
-                        .goldIconOverlay{
-                            width: 50rpx;
-                            height: 60rpx;
-                        }
-
-                        .num{
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: space-between;
-                            height: 80rpx;
-                            margin-left:12rpx;
-
-                            .addSymbol{
-                                font-size: 24rpx;
-                                color: rgba(253, 201, 44, 1);
-                                height:40rpx;
-                                line-height:40rpx;
-                            }
-
-                            .bonus{
-                                font-size: 40rpx;
-                                font-weight: 600;
-                                color:rgba(253,201,44,1);
-                                text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
-                            }
-
-                            .baseGoldTxt{
-                                font-size: 24rpx;
-                                font-weight: 400;
-                                color:rgba(255,255,255,1);
-                            }
-                        }
-                    }
-
-                    .marginLeft{
-                        margin-left: 14rpx;
-                    }
-                }
-
-                .inviteBox{
-                    position: absolute;
-                    left: 0;
-                    bottom: 135rpx;
-                    width: 100%;
-                    height: 120rpx;
-                    display: flex;
-                    flex-direction: center;
-
-                    .inviteWrap{
-                        width: 410rpx;
-                        height: 120rpx;
-                        background: rgba(0,0,0,.3);
-                        border-radius: 20rpx;
-                        padding: 14rpx 44rpx;
-                        box-sizing: border-box;
-                        margin:0 auto;
-                        display: flex;
-                        flex-direction: row;
-
-                        .addIcon{
-                            width: 92rpx;
-                            height: 92rpx;
-                            margin-right: 10rpx;
-                        }
-
-                        .inviteBtn{
-                            position: absolute;
-                            width: 92rpx;
-                            height: 92rpx;
-                            opacity: 0;
-                        }
-
-                        .inviteTxtBox{
-                            padding: 13rpx 0;
-                            box-sizing: border-box;
-                            overflow: hidden;
-
-                            .inviteTxt0{
-                                font-size: 32rpx;
-                                height: 32rpx;
-                                line-height: 32rpx;
-                                font-weight: 600;
-                                color:rgba(41,189,255,1);
-                                text-shadow:0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
-                                margin-bottom: 12rpx;
-                            }
-    
-                            .inviteTxt1{
-                                height: 24rpx;
-                                line-height: 24rpx;
-                                font-size: 24rpx;
-                                font-weight: 400;
-                                color:rgba(255,255,255,1);
-                                text-align: center;
-                            }
-                        }
-                    }
-                }
-
-                .inviteTxt3{
-                    position: absolute;
-                    bottom: 92rpx;
-                    width: 100%;
-                    font-size: 30rpx;
-                    height: 30rpx;
-                    line-height: 30rpx;
-                    text-align: center;
-                    font-weight: 400;
-                    overflow: hidden;
-                    color:rgba(255,255,255,1);
-                }
-
-                .goldTotal{
-                    position: absolute;
-                    bottom: 22rpx;
-                    width: 100%;
-                    height: 60rpx;
-                    display: flex;
-                    justify-content: center;
-                    
-                    .goldIconOverlay{
-                        width: 50rpx;
-                        height: 60rpx;
-                        margin-right: 14rpx;
-                    }
-
-                    .currCopper{
-                        font-size: 40rpx;
-                        height: 60rpx;
-                        line-height: 60rpx;
-                        font-weight: 600;
-                        color:rgba(253,201,44,1);
-                        text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
-                    }
-                }
+            .goldIconOverlay {
+              width: 50rpx;
+              height: 60rpx;
             }
 
-            .countdown{
-                width: 100%;
-                height: 60rpx;
-                line-height: 60rpx;
-                display: flex;
-                justify-content: center;
-                color: rgba(255,255,255,1);
-                padding-top: 15rpx;
+            .num {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              height: 80rpx;
+              margin-left: 12rpx;
 
-                .countdownTxt{
-                    font-size: 30rpx;
-                    font-weight: 400;
-                    color:rgba(255,255,255,1);
-                    text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
-                }
+              .addSymbol {
+                font-size: 24rpx;
+                color: rgba(253, 201, 44, 1);
+                height: 40rpx;
+                line-height: 40rpx;
+              }
 
-                .hour, .minute, .second{
-                    width: 60rpx;
-                    height: 60rpx;
-                    background: rgba(255,177,48,1);
-                    border: 2rpx solid rgba(48,48,48,1);
-                    border-radius: 20rpx;
-                    font-size: 40rpx;
-                    font-weight: 600;
-                    color:rgba(255,255,255,1);
-                    line-height: 60rpx;
-                    text-align: center;
-                    box-sizing: border-box;
-                }
-                .hour{
-                    margin-right: 10rpx;
-                }
+              .bonus {
+                font-size: 40rpx;
+                font-weight: 600;
+                color: rgba(253, 201, 44, 1);
+                text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
+              }
 
-                .minute{
-                    margin: 0 10rpx;
-                }
-
-                .second{
-                    margin-left: 10rpx;
-                }
+              .baseGoldTxt {
+                font-size: 24rpx;
+                font-weight: 400;
+                color: rgba(255, 255, 255, 1);
+              }
             }
+          }
 
-            .receiveBtnWrap{
-                width: 100%;
-                height: 94rpx;
-                display: flex;
-                justify-content: center;
-                padding-top: 30rpx;
-
-                .receiveBtn{
-                    width: 214rpx;
-                    height: 94rpx;
-                }
-            }
+          .marginLeft {
+            margin-left: 14rpx;
+          }
         }
+
+        .inviteBox {
+          position: absolute;
+          left: 0;
+          bottom: 135rpx;
+          width: 100%;
+          height: 120rpx;
+          display: flex;
+          flex-direction: center;
+
+          .inviteWrap {
+            width: 410rpx;
+            height: 120rpx;
+            background: rgba(0, 0, 0, .3);
+            border-radius: 20rpx;
+            padding: 14rpx 44rpx;
+            box-sizing: border-box;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+
+            .addIcon {
+              width: 92rpx;
+              height: 92rpx;
+              margin-right: 10rpx;
+            }
+
+            .inviteBtn {
+              position: absolute;
+              width: 92rpx;
+              height: 92rpx;
+              opacity: 0;
+            }
+
+            .inviteTxtBox {
+              padding: 13rpx 0;
+              box-sizing: border-box;
+              overflow: hidden;
+
+              .inviteTxt0 {
+                font-size: 32rpx;
+                height: 32rpx;
+                line-height: 32rpx;
+                font-weight: 600;
+                color: rgba(41, 189, 255, 1);
+                text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
+                margin-bottom: 12rpx;
+              }
+
+              .inviteTxt1 {
+                height: 24rpx;
+                line-height: 24rpx;
+                font-size: 24rpx;
+                font-weight: 400;
+                color: rgba(255, 255, 255, 1);
+                text-align: center;
+              }
+            }
+          }
+        }
+
+        .inviteTxt3 {
+          position: absolute;
+          bottom: 92rpx;
+          width: 100%;
+          font-size: 30rpx;
+          height: 30rpx;
+          line-height: 30rpx;
+          text-align: center;
+          font-weight: 400;
+          overflow: hidden;
+          color: rgba(255, 255, 255, 1);
+        }
+
+        .goldTotal {
+          position: absolute;
+          bottom: 22rpx;
+          width: 100%;
+          height: 60rpx;
+          display: flex;
+          justify-content: center;
+
+          .goldIconOverlay {
+            width: 50rpx;
+            height: 60rpx;
+            margin-right: 14rpx;
+          }
+
+          .currCopper {
+            font-size: 40rpx;
+            height: 60rpx;
+            line-height: 60rpx;
+            font-weight: 600;
+            color: rgba(253, 201, 44, 1);
+            text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
+          }
+        }
+      }
+
+      .countdown {
+        width: 100%;
+        height: 60rpx;
+        line-height: 60rpx;
+        display: flex;
+        justify-content: center;
+        color: rgba(255, 255, 255, 1);
+        padding-top: 15rpx;
+
+        .countdownTxt {
+          font-size: 30rpx;
+          font-weight: 400;
+          color: rgba(255, 255, 255, 1);
+          text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 0.57);
+        }
+
+        .hour,
+        .minute,
+        .second {
+          width: 60rpx;
+          height: 60rpx;
+          background: rgba(255, 177, 48, 1);
+          border: 2rpx solid rgba(48, 48, 48, 1);
+          border-radius: 20rpx;
+          font-size: 40rpx;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 1);
+          line-height: 60rpx;
+          text-align: center;
+          box-sizing: border-box;
+        }
+
+        .hour {
+          margin-right: 10rpx;
+        }
+
+        .minute {
+          margin: 0 10rpx;
+        }
+
+        .second {
+          margin-left: 10rpx;
+        }
+      }
+
+      .receiveBtnWrap {
+        width: 100%;
+        height: 94rpx;
+        display: flex;
+        justify-content: center;
+        padding-top: 30rpx;
+
+        .receiveBtn {
+          width: 214rpx;
+          height: 94rpx;
+        }
+      }
     }
+  }
 }
