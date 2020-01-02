@@ -9,18 +9,23 @@ export default class RankResultInfo extends Component {
     this.state = {
       // 动态数据
       data: {
+
         rankResultInfo: {
-          result: 1, // 0.失败;1.胜利;-1平局
-          dan: 1, // 当前段位
-          danDesc: '', // 段位描述
+          // 0.失败 1.胜利 -1平局
+          result: 1,
+          // 当前段位
+          dan: 1, 
+          // 段位描述文字版
+          danDesc: '',
+          // 段位描述Icon
+          danDescIcon: '',
           haveStar: 1,
           totalStar: 4,
-          danDescIcon: '',
-          gloryUrl: 'https://oss.snmgame.com/v1.0.0/glory.png' // 段位的icon
+          // 段位的icon
+          gloryUrl: '' 
         }
       },
 
-      // 默认组件数据
       local_data: {
         successUrl: 'https://oss.snmgame.com/v1.0.0/victoryTitle.png',
         failUrl: 'https://oss.snmgame.com/v1.0.0/failTitle.png',
@@ -31,9 +36,11 @@ export default class RankResultInfo extends Component {
         blankStar: 'https://oss.snmgame.com/v1.0.0/blankStar.png',
         // 发光星
         shineStar: 'https://oss.snmgame.com/v1.0.0/shineStar.png',
-        checked: true, // 默认勾选观看广告
+        // 默认勾选观看广告
+        checked: true,
         adsTip: '观看短片，获取额外金币',
-        rankResultUrl: '' // 对局胜负平结果
+        // 对局胜负平结果
+        rankResultUrl: ''
       }
     };
   }
@@ -53,12 +60,11 @@ export default class RankResultInfo extends Component {
       this.setState(
         preState => {
           preState.data.rankResultInfo = message[0];
-        },
-        () => {
+        },()=>{
           this.successFailDraw(message[0].result);
         }
-      );
-    });
+      )
+    })
   }
 
   componentDidHide() {
@@ -112,8 +118,7 @@ export default class RankResultInfo extends Component {
     this.setState(
       preState => {
         preState.local_data.checked = !value;
-      },
-      () => {
+      },() => {
         emitter.emit('isFinishWatching', '1');
       }
     );
@@ -143,10 +148,7 @@ export default class RankResultInfo extends Component {
       'seventhPosi',
       'eighthPosi'
     ];
-    let totalStarArr = new Array(),
-      haveStarArr = this.sumHasStar(haveStar),
-      contentTotalStar,
-      contentHaveStar;
+    let totalStarArr = new Array(), haveStarArr = this.sumHasStar(haveStar),contentTotalStar, contentHaveStar;
     if (totalStar === 4) {
       contentHaveStar = haveStarArr.map((currentValue, index) => {
         return (

@@ -1,6 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
-import emitter from '../../service/events';
 import './index.scss';
 
 export default class Drawer extends Component {
@@ -148,7 +147,7 @@ export default class Drawer extends Component {
       );
     });
 
-    const iconBox_setting = setting.map((cur, index) => {
+    const iconBox_setting = setting.map((cur) => {
       return (
         <View onClick={this.onRouting.bind(this, cur.router)} className="item">
           <View style={`background-position:${cur.x}rpx ${cur.y}rpx`} className="settingItemBg"></View>
@@ -161,7 +160,7 @@ export default class Drawer extends Component {
       <View className="drawer">
         {/* <!--mask--> */}
         <View
-          className={`drawer_screen ${showModalStatus ? '' : 'hide'}`}
+          className={`drawer_screen ${showModalStatus? '' : 'hide'}`}
           onClick={this.powerDrawer.bind(this)}
           data-statu="close"
         ></View>
@@ -176,7 +175,7 @@ export default class Drawer extends Component {
           </View>
 
           <View
-            className={`btn ${isAnimateClass == 'animateStart' ? 'rotateBtn' : ''}`}
+            className={`btn ${isAnimateClass == 'animateStart'?'rotateBtn' : ''}`}
             onClick={this.powerDrawer.bind(this)}
             data-statu="open"
           >

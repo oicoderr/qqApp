@@ -1,17 +1,34 @@
-.content {
+.hide{
+  display: none;
+}
+
+.genderSelectionUi {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.8);
   box-sizing: border-box;
-  padding: 100px 143px 0 143px; // 123px 143px 0 143px;
+  padding: 0 143px;
+  z-index: 99;
+
   .body {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
     .head {
       color: rgba(255, 255, 255, 1);
       text-align: center;
+      display: flex;
+      flex-direction: column;
+
       .title {
         font-size: 30rpx;
         font-weight: 600;
       }
+
       .remark {
         font-size: 24rpx;
         display: inline-block;
@@ -19,31 +36,40 @@
       }
     }
     .personWrap {
+
       width: 466rpx;
       height: 680rpx;
       border-radius: 20rpx;
-      background-color: rgba(137, 220, 255, 1);
+      // background-color: rgba(137, 220, 255, 1);
+
       .themePerson {
         width: 464rpx;
         height: 620rpx;
         margin: 30rpx auto;
       }
     }
+
     .genders {
+
       display: flex;
       justify-content: space-between;
       padding-top: 20rpx;
+
       .leftMargin {
         margin-left: 40rpx;
       }
+
       .rightMargin {
         margin-right: 40rpx;
       }
+
       .slectGender {
         border: 4rpx solid rgba(40, 189, 255, 1) !important;
       }
+
       .gender_ {
         box-sizing: border-box;
+
         .btn {
           width: 100rpx;
           height: 100rpx;
@@ -54,16 +80,19 @@
           display: flex;
           align-items: center;
           justify-content: center;
+
           .boyLogo {
             width: 62rpx;
             height: 68rpx;
             text-align: center;
           }
+
           .girlLogo {
             width: 54rpx;
             height: 75rpx;
             text-align: center;
           }
+
         }
         .genderText {
           font-size: 24rpx;
@@ -71,9 +100,11 @@
           box-sizing: border-box;
           padding: 2rpx 0;
         }
+
         .boyText {
           color: rgba(85, 190, 255, 1);
         }
+
         .girlText {
           color: rgba(255, 118, 157, 1);
         }

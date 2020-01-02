@@ -45,6 +45,7 @@ class App extends Component {
 			'pages/toolbar/selfOrchestra',	  // 我的乐队
 			'pages/activity/iosCaveat',				// ios设备提示
 		],
+
 		window: {
 			backgroundTextStyle: 'light',
 			navigationBarBackgroundColor: 'rgba(97, 130, 242, 1)',
@@ -52,6 +53,7 @@ class App extends Component {
 			navigationBarTextStyle: 'white',
 			navigationStyle: 'custom',
 		},
+
 	}
 
 	globalData = {
@@ -72,12 +74,12 @@ class App extends Component {
 
 		// 设备提示
 		let ua = getUa();
-		// if(ua.system.indexOf('iOS')> -1 || ua.model.indexOf('iPhone') > -1){
-		// 	Taro.reLaunch({
-		// 		url: '/pages/activity/iosCaveat'
-		// 	})
-		// 	return;
-		// }
+		if(ua.system.indexOf('iOS')> -1 || ua.model.indexOf('iPhone') > -1){
+			Taro.reLaunch({
+				url: '/pages/activity/iosCaveat'
+			})
+			return;
+		}
 
 		const params = this.$router.params;
 		if(params.query){
@@ -160,6 +162,7 @@ class App extends Component {
 			}
 		});
 
+		// 清除全局定时器
 		clearTimeout(this.globalData.timestamp);
 		this.globalData.timestamp = 1;
 		console.error('～又进来了～', this.globalData);

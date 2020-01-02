@@ -2,7 +2,11 @@
   display: none !important;
 }
 
-/*mask*/
+.drawer{
+  position: absolute;
+  z-index: 12;
+}
+
 .drawer_screen {
   width: 100%;
   height: 100%;
