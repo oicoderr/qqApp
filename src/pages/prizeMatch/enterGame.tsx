@@ -527,7 +527,7 @@ export class PrizeEnterGame extends Component {
 								<View className='people dieOut'>{dieOutTxt}{dieCount}{unit}</View>
 							</View>
 							<View className='questionBg'>
-								<View className='questionText'>{currIndex+1}. <Text decode="true">currContent}</Text></View>
+								<View className='questionText'>{currIndex+1}. <Text decode="true">{currContent}</Text></View>
 							</View>
 						</View>
 						{/* 答案 */}
