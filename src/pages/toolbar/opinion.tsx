@@ -27,7 +27,6 @@ export class Opinion extends Component {
 
 			local_data:{
 				// 反馈内容
-				contactVal: '',
 				textareaVal: '',
 				inputVal: '',
 				placeholder: '请输入内容（200字内）',
@@ -41,6 +40,7 @@ export class Opinion extends Component {
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				opinionTitleImg: 'https://oss.snmgame.com/v1.0.0/opinionTitleImg.png',
 				submitBtn: 'https://oss.snmgame.com/v1.0.0/submitBtn.png',
+				copyBtn: 'https://oss.snmgame.com/v1.0.0/copyBtn.png',
 			}
 		};
 		this.msgProto = new MsgProto();
@@ -91,6 +91,7 @@ export class Opinion extends Component {
 				});
 				this.setState((preState)=>{
 					preState.local_data.textareaVal = '';
+					// preState.local_data.inputVal = '';
 				},()=>{})
 			}else{
 				Taro.showToast({
@@ -127,7 +128,7 @@ export class Opinion extends Component {
 	contactInput(e){
 		let detail = e.detail.value;
 		this.setState((preState)=>{
-			preState.local_data.contactVal = detail;
+			preState.local_data.inputVal = detail;
 		});
 	}
 
@@ -135,7 +136,7 @@ export class Opinion extends Component {
 	submit(){
 		// 发送反馈信息
 		let contentVal = String(this.state.local_data.textareaVal);
-		let contactVal = this.state.local_data.contactVal;
+		let contactVal = this.state.local_data.inputVal;
 		let data = {
 			content: contentVal,
 			contact: contactVal,
@@ -181,7 +182,7 @@ export class Opinion extends Component {
 
 	render () {
 		const { opinionTitleImg, backBtn, submitBtn, placeholder, contactTip, textareaVal,inputVal,
-			maxlength, qqIcon, tip1, tip2, tip3, tipQQ } = this.state.local_data;
+			maxlength, qqIcon, tip1, tip2, tip3, tipQQ, copyBtn } = this.state.local_data;
 
 		return (
 			<View className='opinion'>
@@ -212,10 +213,11 @@ export class Opinion extends Component {
 								</View>
 								<View className='tips'>
 									<View className='tip2'>{tip2}</View>
-									<View className='tip3'>
+									<View onClick={this.copyQQ.bind(this)} className='tip3'>
 										<Image src={qqIcon} className='qqIcon'/>
 										<Text decode='true' className='customer'>{tip3}&ensp;</Text>
-										<Text onClick={this.copyQQ.bind(this)}>{tipQQ}</Text>
+										<Text>{tipQQ}</Text>
+										<Image src={copyBtn} className='copyBtn' />
 									</View>
 								</View>
 							</View>

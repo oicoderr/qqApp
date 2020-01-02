@@ -560,7 +560,7 @@ export class RankEnterGame extends Component {
 									<View className='countdown'>{time}</View>
 									<View className='score teamBScore'>{selfCamp?redScore : blueScore}</View>
 								</View>
-								<View className='Text'>{currIndex+1}. { currContent }</View>
+								<View className='Text'>{currIndex+1}. <Text decode="true">{ currContent }</Text></View>
 							</View>
 
 							<View className='blueTeam'>
