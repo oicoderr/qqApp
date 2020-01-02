@@ -27,7 +27,6 @@ export class Opinion extends Component {
 
 			local_data:{
 				// 反馈内容
-				contentVal: '',
 				contactVal: '',
 				textareaVal: '',
 				inputVal: '',
@@ -92,7 +91,6 @@ export class Opinion extends Component {
 				});
 				this.setState((preState)=>{
 					preState.local_data.textareaVal = '';
-					preState.local_data.inputVal = '';
 				},()=>{})
 			}else{
 				Taro.showToast({
@@ -121,6 +119,7 @@ export class Opinion extends Component {
 		console.log(e)
 		this.setState((preState)=>{
 			preState.local_data.contentVal = detail;
+			preState.local_data.textareaVal = detail;
 		});
 	}
 
@@ -135,7 +134,7 @@ export class Opinion extends Component {
 	// 提交反馈
 	submit(){
 		// 发送反馈信息
-		let contentVal = String(this.state.local_data.contentVal);
+		let contentVal = String(this.state.local_data.textareaVal);
 		let contactVal = this.state.local_data.contactVal;
 		let data = {
 			content: contentVal,
