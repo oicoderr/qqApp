@@ -1,168 +1,167 @@
 .hide{
-    display: none;
+	display: none;
 }
 
 .prizeMatchResult .bgColor{
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(97, 130, 242, 1);
-    position: relative;
-    top: 0;
-    left: 0;
-    
-    .bgImg{
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        z-index: 1;
-        width: 100vw;
-        height: 100vh;
-        background-image: url('https://oss.snmgame.com/v1.0.0/rank-texture-0001.png');
-        background-size: 750px 3000px;
-        background-repeat: no-repeat;
-        opacity: 1;
-        filter:alpha(opacity=1);
-    }
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(97, 130, 242, 1);
+	position: relative;
+	top: 0;
+	left: 0;
+	
+	.bgImg{
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		z-index: 1;
+		width: 100vw;
+		height: 100vh;
+		background-image: url('https://oss.snmgame.com/v1.0.0/rank-texture-0001.png');
+		background-size: 750px 3000px;
+		background-repeat: no-repeat;
+		opacity: 1;
+		filter:alpha(opacity=1);
+	}
 
-    .content{
-        position: relative;
-        z-index: 2;
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-        padding: 230rpx 20rpx 300rpx 20rpx;
+	.content{
+		position: relative;
+		z-index: 2;
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+		padding: 230rpx 20rpx 300rpx 20rpx;
 
-        .main{
-            width: 710rpx;
-            height: 620rpx;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+		.main{
+			width: 710rpx;
+			height: 620rpx;
+			display: flex;
+			flex-direction: column;
+			position: relative;
 
-            .banner, .bar{
-                width: 313rpx;
-                height: 140rpx;
-                position: absolute;
-                z-index: 4;
-                left: 50%;
-                transform: translateX(-50%);
-            }
+			.banner, .bar{
+				width: 313rpx;
+				height: 140rpx;
+				position: absolute;
+				z-index: 4;
+				left: 50%;
+				transform: translateX(-50%);
+			}
 
-            .grade{
-                position: absolute;
-                z-index: 7;
-                top: 50rpx;
-                left: 50%;
-                transform: translateX(-50%);
-                font-size: 40rpx;
-                height: 40rpx;
-                line-height: 40rpx;
-                width: 260rpx;
-                overflow: hidden;
-                font-weight: 600;
-                color: rgba(48,48,48,1);
-                text-align: center;
-                
-            }
+			.grade{
+				position: absolute;
+				z-index: 7;
+				top: 50rpx;
+				left: 50%;
+				transform: translateX(-50%);
+				font-size: 40rpx;
+				height: 40rpx;
+				line-height: 40rpx;
+				width: 260rpx;
+				overflow: hidden;
+				font-weight: 600;
+				color: rgba(48,48,48,1);
+				text-align: center;
+			}
 
-            .body{
-                width: 100%;
-                height: 540rpx;
-                background:rgba(0,0,0,.3);
-                border: 2rpx solid rgba(0,0,0,1);
-                border-radius: 20rpx;
-                position: absolute;
-                top: 80rpx;
-                z-index: 3;
-                
-                .wrap{
-                    position: absolute;
-                    top: 90rpx;
-                    width: 100%;
-                    height: 450rpx;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    text-align: center;
-                }
+			.body{
+				width: 100%;
+				height: 540rpx;
+				background:rgba(0,0,0,.3);
+				border: 2rpx solid rgba(0,0,0,1);
+				border-radius: 20rpx;
+				position: absolute;
+				top: 80rpx;
+				z-index: 3;
+					
+				.wrap{
+					position: absolute;
+					top: 90rpx;
+					width: 100%;
+					height: 450rpx;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					text-align: center;
+				}
 
-                .barBg{
-                    width: 320rpx;
-                    height: 60rpx;
-                    line-height: 60rpx;
-                    overflow: hidden;
-                    background: rgba(0,0,0,.3);
-                    border-radius: 30rpx;
-                    font-size: 30rpx;
-                    font-weight: 400;
-                    color:rgba(255,201,108,1);
-                    text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
-                    margin: 0 auto;
-                    padding: 0 30rpx;
-                    text-align: left;
-                    box-sizing: border-box;
+				.barBg{
+					width: 320rpx;
+					height: 60rpx;
+					line-height: 60rpx;
+					overflow: hidden;
+					background: rgba(0,0,0,.3);
+					border-radius: 30rpx;
+					font-size: 30rpx;
+					font-weight: 400;
+					color:rgba(255,201,108,1);
+					text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+					margin: 0 auto;
+					padding: 0 30rpx;
+					text-align: left;
+					box-sizing: border-box;
 
-                    .energyIcon{
-                        width: 42rpx;
-                        height: 55rpx;
-                        float: right;
-                    }
-                }
+					.energyIcon{
+						width: 42rpx;
+						height: 55rpx;
+						float: right;
+					}
+				}
 
-                .msg{
-                    font-size: 30rpx;
-                    font-weight: 600;
-                    color: rgba(255,255,255,1);
-                    text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
-                }
+				.msg{
+					font-size: 30rpx;
+					font-weight: 600;
+					color: rgba(255,255,255,1);
+					text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+				}
 
-                .energy text{
-                    float: right;
-                    width: 68rpx;
-                    max-width: 68rpx;
-                    overflow: hidden;
-                }
+				.energy text{
+					float: right;
+					width: 68rpx;
+					max-width: 68rpx;
+					overflow: hidden;
+				}
 
-                .speedtime text{
-                    color: rgba(83, 204, 132, 1);
-                }
+				.speedtime text{
+					color: rgba(83, 204, 132, 1);
+				}
 
-                .getRewardTip{
-                    font-size: 24rpx;
-                    font-weight: 400;
-                    color: rgba(255,255,255,1);
-                    text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
-                    padding: 10rpx 0 30rpx 0;
-                }
-            }
-        }
+				.getRewardTip{
+					font-size: 24rpx;
+					font-weight: 400;
+					color: rgba(255,255,255,1);
+					text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+					padding: 10rpx 0 30rpx 0;
+				}
+			}
+		}
 
-        .foot{
-            position: absolute;
-            z-index: 20;
-            width: 100%;
-            height: auto;
-            overflow: hidden;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding-top: 30rpx;
+		.foot{
+			position: absolute;
+			z-index: 20;
+			width: 100%;
+			height: auto;
+			overflow: hidden;
+			box-sizing: border-box;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			padding-top: 30rpx;
 
-            .confirmBtn{
-                width: 214rpx;
-                height: 94rpx;
-                margin: 0 auto 32rpx auto;
-            }
+			.confirmBtn{
+				width: 214rpx;
+				height: 94rpx;
+				margin: 0 auto 32rpx auto;
+			}
 
-            .seeAdsStatus{
-                font-size: 24rpx;
-                font-weight: 600;
-                color: rgba(255,255,255,1);
-                text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
-                margin: 0 auto;
-            }
-        }
-    }
+			.seeAdsStatus{
+				font-size: 24rpx;
+				font-weight: 600;
+				color: rgba(255,255,255,1);
+				text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
+				margin: 0 auto;
+			}
+		}
+	}
 }
