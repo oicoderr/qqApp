@@ -57,7 +57,8 @@ class App extends Component {
 	}
 
 	globalData = {
-		timestamp: 1,					// 全局setTimeout, 
+		// 全局setTimeout, 
+		timestamp: 1,
 		websocket: '',
 		gameUserInfo: '',
 	}
