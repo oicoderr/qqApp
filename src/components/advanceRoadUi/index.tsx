@@ -284,26 +284,25 @@ export class AdvanceRoadUi extends Component {
 
   // 设置晋级之路段位路标显示
   setRoadSign(dan) {
+    let _this = this;
     let reusltList = new Array();
     let list = this.state.data.list;
     let list_mask = this.state.data.list_mask;
-    // 未到达的路标个数
-    let last_mask = list.length - dan;
+
     for (let i = 0; i < list.length; i++) {
       if (i < dan) {
         reusltList.push(list[i]);
-        console.log(list[i], 789);
       }
     }
-    for (let i = dan; i < list.length + 1 - dan; i++) {
+    for (let i = dan-1; i < list.length; i++) {
       reusltList.push(list_mask[i]);
     }
     this.setState(
       preState => {
         preState.data.reusltList = reusltList;
-      },
-      () => {}
-    );
+      },() => {
+        // console.log( _this.state.data.reusltList,899);
+      });
   }
 
   render() {
