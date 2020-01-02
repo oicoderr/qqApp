@@ -321,7 +321,7 @@ export class AdvanceRoadUi extends Component {
     });
 
     return (
-      <View className="messageToast">
+      <View className="advanceRoadUi">
         <View className="content">
           <View onClick={this.cancel.bind(this)} className="closeImgBtnWrap">
             <Image src={closeImgBtn} className="closeImgBtn" />

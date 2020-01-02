@@ -182,7 +182,7 @@ export default class WeekCheckIn extends Component {
     });
 
     return (
-      <View className="index">
+      <View className="weekCheckIn">
         <View className="calendarIconWrap">
           <Image src={calendarIcon} className="calendarIcon" />
         </View>
