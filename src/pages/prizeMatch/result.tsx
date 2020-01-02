@@ -77,7 +77,9 @@ export class PrizeReasult extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {
+	componentWillMount () {}
+
+	componentDidMount () {
 		let _this = this;
 		const params = this.$router.params;
 		console.log('%c 大奖赛结果页数据 ==>', 'font-size:14px;color:#1a98ff;');console.log(JSON.parse(params.item));
@@ -134,12 +136,11 @@ export class PrizeReasult extends Component {
 				})
 			}
 		});
-
 	}
-
-	componentDidMount () {}
 	
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		emitter.removeAllListeners('currencyChange');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -184,9 +185,7 @@ export class PrizeReasult extends Component {
 		});
 	}
 
-	componentDidHide () {
-		emitter.removeAllListeners('currencyChange');
-	}
+	componentDidHide () {}
 
 	// 显示名次横幅图片
 	ranking(rank){

@@ -187,7 +187,12 @@ export class PrizeQueue extends Component {
 		}
 	}
 	
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		clearInterval(this.state.local_data.timer);
+		emitter.removeAllListeners('exitQueueStatus');
+		emitter.removeAllListeners('getTeamSituation');
+		emitter.removeAllListeners('getBattleTeams');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -311,12 +316,7 @@ export class PrizeQueue extends Component {
 		});
 	}
 
-	componentDidHide () {
-		clearInterval(this.state.local_data.timer);
-		emitter.removeAllListeners('exitQueueStatus');
-		emitter.removeAllListeners('getTeamSituation');
-		emitter.removeAllListeners('getBattleTeams');
-	}
+	componentDidHide () {}
 
 	// 获取游戏自己基本个人信息
 	getGameUserInfo(){

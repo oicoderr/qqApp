@@ -101,7 +101,14 @@ export class PrizeEntrance extends Component {
 
 	componentDidMount () {}
 
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		emitter.removeAllListeners('enterMatch');
+		emitter.removeAllListeners('getIsPrizeOpen');
+		emitter.removeAllListeners('quickenCardHelpResult');
+		emitter.removeAllListeners('getGameDescription');
+		emitter.removeAllListeners('closeMessageToast');
+		emitter.removeAllListeners('currencyChange');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -266,14 +273,7 @@ export class PrizeEntrance extends Component {
 
 	}
 
-	componentDidHide () {
-		emitter.removeAllListeners('enterMatch');
-		emitter.removeAllListeners('getIsPrizeOpen');
-		emitter.removeAllListeners('quickenCardHelpResult');
-		emitter.removeAllListeners('getGameDescription');
-		emitter.removeAllListeners('closeMessageToast');
-		emitter.removeAllListeners('currencyChange');
-	}
+	componentDidHide () {}
 
 	watchAdsGetReward(e){
 		this.videoAd.openVideoAd();

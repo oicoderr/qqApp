@@ -42,7 +42,10 @@ export class Recharge extends Component {
 
 	componentDidMount () {}
 
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		emitter.removeAllListeners('getRechargeMessage');
+		emitter.removeAllListeners('getPrePay_id');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -113,10 +116,7 @@ export class Recharge extends Component {
 		});
 	}
 
-	componentDidHide () {
-		emitter.removeAllListeners('getRechargeMessage');
-		emitter.removeAllListeners('getPrePay_id');
-	}
+	componentDidHide () {}
 
 	// 1903 购买门票
 	buyTickets(e){

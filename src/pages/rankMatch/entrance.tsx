@@ -128,7 +128,9 @@ export class RankEntrance extends Component {
 
 	componentDidMount () {}
 
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		emitter.removeAllListeners('currencyChange');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -179,9 +181,7 @@ export class RankEntrance extends Component {
 		});
 	}
 
-	componentDidHide () {
-		emitter.removeAllListeners('currencyChange');
-	}
+	componentDidHide () {}
 	
 	// 计算拥有多少星转数组
 	sumHasStar(len){

@@ -74,7 +74,12 @@ export class GoldHelp extends Component {
 
 	componentDidMount() { }
 
-	componentWillUnmount() { }
+	componentWillUnmount() {
+		clearInterval(this.state.local_data.timer);
+		emitter.removeAllListeners('getGameDescription');
+		emitter.removeAllListeners('getGoldHelp');
+		emitter.removeAllListeners('closeMessageToast');
+	}
 
 	componentDidShow() {
 		let _this = this;
@@ -177,12 +182,7 @@ export class GoldHelp extends Component {
 		});
 	}
 
-	componentDidHide() {
-		clearInterval(this.state.local_data.timer);
-		emitter.removeAllListeners('getGameDescription');
-		emitter.removeAllListeners('getGoldHelp');
-		emitter.removeAllListeners('closeMessageToast');
-	}
+	componentDidHide() {}
 
 	// 请求说明
 	DBgetQuickenCard(e) {

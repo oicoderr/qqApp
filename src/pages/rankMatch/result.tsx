@@ -73,7 +73,9 @@ export class RankReasult extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {
+	componentWillMount () {}
+
+	componentDidMount () {
 		let _this = this;
 		// 额外奖励
 		this.videoAd = new createVideoAd();
@@ -168,10 +170,12 @@ export class RankReasult extends Component {
 			})
 		}
 	}
-
-	componentDidMount () {}
 	
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		emitter.removeAllListeners('currencyChange');
+		emitter.removeAllListeners('isCheckPlayVideo');
+		emitter.removeAllListeners('getRankBattleReport');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -291,11 +295,7 @@ export class RankReasult extends Component {
 		});
 	}
 
-	componentDidHide () {
-		emitter.removeAllListeners('currencyChange');
-		emitter.removeAllListeners('isCheckPlayVideo');
-		emitter.removeAllListeners('getRankBattleReport');
-	}
+	componentDidHide () {}
 
 	// 重新编队
 	reForm(data){

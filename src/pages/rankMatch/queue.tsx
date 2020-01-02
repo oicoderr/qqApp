@@ -231,7 +231,10 @@ export class PrizeQueue extends Component {
 		}
 	}
 	
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		emitter.removeAllListeners('enterMatch');
+		emitter.removeAllListeners('exitQueueStatus');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -368,10 +371,7 @@ export class PrizeQueue extends Component {
 		}
 	}
 
-	componentDidHide () {
-		emitter.removeAllListeners('enterMatch');
-		emitter.removeAllListeners('exitQueueStatus');
-	}
+	componentDidHide () {}
 
 	// 获取游戏自己基本个人信息
 	getGameUserInfo(){

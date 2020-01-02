@@ -62,7 +62,9 @@ export class SelfOrchestra extends Component {
 
 	componentDidMount () {}
 
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		emitter.removeAllListeners('getSelfOrchestra');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -106,9 +108,7 @@ export class SelfOrchestra extends Component {
 		});
 	}
 
-	componentDidHide () {
-		emitter.removeAllListeners('getSelfOrchestra');
-	}
+	componentDidHide () {}
 
 	// 返回上一页
 	goBack(){

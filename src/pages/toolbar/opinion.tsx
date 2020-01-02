@@ -51,7 +51,9 @@ export class Opinion extends Component {
 
 	componentDidMount () {}
 
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		emitter.removeAllListeners('getOpinionResult');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -102,9 +104,7 @@ export class Opinion extends Component {
 		});
 	}
 
-	componentDidHide () {
-		emitter.removeAllListeners('getOpinionResult');
-	}
+	componentDidHide () {}
 
 	// 返回上一页
 	goBack(){

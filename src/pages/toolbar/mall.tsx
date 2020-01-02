@@ -123,7 +123,12 @@ export class Mall extends Component {
 
 	componentDidMount () {}
 
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		emitter.removeAllListeners('getMall');
+		emitter.removeAllListeners('currencyChange');
+		emitter.removeAllListeners('getGameDescription');
+		emitter.removeAllListeners('closeMessageToast');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -242,12 +247,7 @@ export class Mall extends Component {
 		});
 	}
 
-	componentDidHide () {
-		emitter.removeAllListeners('getMall');
-		emitter.removeAllListeners('currencyChange');
-		emitter.removeAllListeners('getGameDescription');
-		emitter.removeAllListeners('closeMessageToast');
-	}
+	componentDidHide () {}
 
 	// 返回上一页
 	goBack(){

@@ -43,7 +43,10 @@ export class BackPack extends Component {
 
 	componentDidMount () {}
 
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		emitter.removeAllListeners('getBackpack');
+		emitter.removeAllListeners('propsInfo');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -126,10 +129,7 @@ export class BackPack extends Component {
 		});
 	}
 
-	componentDidHide () {
-		emitter.removeAllListeners('getBackpack');
-		emitter.removeAllListeners('propsInfo');
-	}
+	componentDidHide () {}
 
 	// 返回上一页
 	goBack(){

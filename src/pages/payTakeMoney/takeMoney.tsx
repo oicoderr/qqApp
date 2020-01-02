@@ -44,7 +44,10 @@ export class TakeMoney extends Component {
 
 	componentDidMount () {}
 
-	componentWillUnmount () {}
+	componentWillUnmount () {
+		emitter.removeAllListeners('takeMoney');
+		emitter.removeAllListeners('takeMoneyStatus');
+	}
 
 	componentDidShow () {
 		let _this = this;
@@ -105,10 +108,7 @@ export class TakeMoney extends Component {
 		});
 	}
 
-	componentDidHide () {
-		emitter.removeAllListeners('takeMoney');
-		emitter.removeAllListeners('takeMoneyStatus');
-	}
+	componentDidHide () {}
 
 	// 开始能量兑换现金，提现
 	takeMoney(e){
