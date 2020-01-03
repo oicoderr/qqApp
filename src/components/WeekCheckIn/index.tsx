@@ -1,8 +1,10 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image, Text, RadioGroup, Radio, Label, Button } from '@tarojs/components';
 import emitter from '../../service/events';
-import { onShareApp } from '../../utils';
+import { onShareApp, get_OpenId_RoleId } from '../../utils';
 import './index.scss';
+
+const App = Taro.getApp()
 
 export default class WeekCheckIn extends Component {
   constructor(props) {
@@ -93,6 +95,8 @@ export default class WeekCheckIn extends Component {
 
   // 关闭签到弹窗,传给父组件关闭标示
   closeWeekCheckIn(value) {
+    // 签到关闭点击
+    App.aldstat.sendEvent('click-签到关闭点击', get_OpenId_RoleId());
     this.setState(
       preState => {
         preState.local_data.isShowWeekCheckIn = !value;
@@ -104,6 +108,9 @@ export default class WeekCheckIn extends Component {
 
   // 是否勾选炫耀一下
   shareCheckedChange(value) {
+    // 签到分享点击
+    App.aldstat.sendEvent('click-签到分享', get_OpenId_RoleId());
+
     console.log('%c 签到是否同意炫耀一下: ' + value, 'font-size:14px;color:#f04800;background:#000000;');
     this.setState(preState => {
       preState.local_data.shareChecked = !value;
@@ -112,6 +119,8 @@ export default class WeekCheckIn extends Component {
 
   // 领取奖励
   receiveAward(value) {
+    // 签到领奖点击
+    App.aldstat.sendEvent('click-签到领奖', get_OpenId_RoleId());
     this.setState(
       preState => {
         preState.local_data.curRewardStatus = !value;

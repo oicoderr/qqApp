@@ -3,7 +3,7 @@ import { View, Image, Text, Button, ScrollView } from '@tarojs/components'
 import './goldHelp.scss'
 import emitter from '../../service/events'
 import throttle from 'lodash/throttle'
-import { getStorage, formatSeconds, onShareApp } from '../../utils'
+import { getStorage, formatSeconds, onShareApp, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
 import GameLoading from '../../components/GameLoading'
@@ -83,6 +83,8 @@ export class GoldHelp extends Component {
 
 	componentDidShow() {
 		let _this = this;
+		// pv 金币助力
+		App.aldstat.sendEvent('pv-金币助力', get_OpenId_RoleId());
 
 		if (App.globalData.websocket === '') {
 			createWebSocket(this);
@@ -281,6 +283,8 @@ export class GoldHelp extends Component {
 
 	// 领取金币助力
 	receiveGoldHelp() {
+		App.aldstat.sendEvent('click-领取金币助力', get_OpenId_RoleId());
+
 		let receiveGoldHelp = this.msgProto.receiveGoldHelp();
 		let parentModule = this.msgProto.parentModule(receiveGoldHelp);
 		this.websocket.sendWebSocketMsg({
@@ -298,6 +302,8 @@ export class GoldHelp extends Component {
 
 	// 分享
 	onShareAppMessage(res) {
+		// 邀请好友助力点击
+		App.aldstat.sendEvent('click-邀请助力', get_OpenId_RoleId());
 		// 邀请者roleId
 		let roleId = this.state.local_data.gameUserInfo.roleId;
 		// 受邀请类型(1.组队;2.加速卡)
@@ -351,6 +357,7 @@ export class GoldHelp extends Component {
 		}
 		return onShareApp(shareData);
 	}
+	
 	render() {
 		const { backBtn, goldIcon, goldIconOverlay, addIcon, gold_help_bg, baseGoldTxt,
 			isShowDirections, howPlayTip, inviteTxt0, inviteTxt1, inviteTxt2, countdownTxt,

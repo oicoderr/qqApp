@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
-import { unitReplacement, getStorage } from '../../utils'
+import { unitReplacement, getStorage, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
 import './takeMoney.scss'
@@ -51,7 +51,8 @@ export class TakeMoney extends Component {
 
 	componentDidShow () {
 		let _this = this;
-
+		// pv 兑换中心
+		App.aldstat.sendEvent('pv-兑换中心', get_OpenId_RoleId());
 		if(App.globalData.websocket === ''){
 			createWebSocket(this);
 		}else{

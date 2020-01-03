@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text, RadioGroup, Radio, Label } from '@tarojs/components'
 import emitter from '../../service/events'
-import { setStorage, unitReplacement } from '../../utils';
+import { setStorage, unitReplacement, get_OpenId_RoleId } from '../../utils';
 import './result.scss'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
@@ -105,6 +105,8 @@ export class PrizeReasult extends Component {
 			console.error('是否看完视频？' + status.isEnded);
 			let entrancePage = this.state.routers.entrancePage;
 			if (status.isEnded) {
+				// 大奖赛结果观看视频
+				App.aldstat.sendEvent('click-大奖赛结果观看视频', get_OpenId_RoleId());
 				console.log('%c 正常播放结束，领取复活卡', 'font-size:14px;color:#0fdb24;');
 				let data_ = {
 					type: 4,
@@ -144,6 +146,9 @@ export class PrizeReasult extends Component {
 
 	componentDidShow() {
 		let _this = this;
+
+		// 大奖赛结果pv
+		App.aldstat.sendEvent('pv-大奖赛结果', get_OpenId_RoleId());
 
 		if (App.globalData.websocket === '') {
 			createWebSocket(this);

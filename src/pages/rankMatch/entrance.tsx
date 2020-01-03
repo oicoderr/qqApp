@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import './entrance.scss'
 import emitter from '../../service/events';
-import { getStorage, setStorage, unitReplacement } from '../../utils';
+import { getStorage, setStorage, unitReplacement, get_OpenId_RoleId } from '../../utils';
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
 import createVideoAd from '../../service/createVideoAd'
@@ -135,6 +135,9 @@ export class RankEntrance extends Component {
 	componentDidShow() {
 		let _this = this;
 
+		// 排位赛pv
+		App.aldstat.sendEvent('pv-排位赛首页', get_OpenId_RoleId());
+		
 		if (App.globalData.websocket === '') {
 			createWebSocket(this);
 		} else {
@@ -202,6 +205,8 @@ export class RankEntrance extends Component {
 
 	// 获取奖励
 	watchAdsGetReward(e) {
+		// 排位赛入口观看广告
+		App.aldstat.sendEvent('click-排位赛入口广告', get_OpenId_RoleId());
 		// 开始播放激励视频
 		this.videoAd.openVideoAd();
 	}

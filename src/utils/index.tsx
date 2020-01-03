@@ -486,3 +486,16 @@ export const formatSeconds = (value) => {
   }
   return result;
 }
+/* 获取roleId / openid*/
+export const get_OpenId_RoleId = () => {
+  try {
+    const userInfo = Taro.getStorageSync('userInfo');
+    const gameUserInfo = Taro.getStorageSync('gameUserInfo');
+    return {
+      'openId': userInfo.openid,
+      'roleId': gameUserInfo.roleId,
+    }
+  } catch (err) {
+    console.info(err)
+  }
+}

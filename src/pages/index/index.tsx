@@ -2,12 +2,12 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
-import { getStorage, setStorage, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem } from '../../utils'
+import { getStorage, setStorage, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
-import AdvanceRoadUi from '../../components/advanceRoadUi'
+import { AdvanceRoadUi } from '../../components/advanceRoadUi'
 import HomeBandUi from '../../components/HomeBandUi'
 import Drawer from '../../components/drawer'
 import MsgProto from '../../service/msgProto'
@@ -101,6 +101,8 @@ export class Index extends Component {
 
 	componentDidShow() {
 		let _this = this;
+		// 首页pv
+		App.aldstat.sendEvent('pv-主页', get_OpenId_RoleId());
 
 		// 显示分享
 		showShareMenuItem();
@@ -148,20 +150,11 @@ export class Index extends Component {
 		// 返回并设置性别
 		this.eventEmitter = emitter.once('genderMessage', (message) => {
 			console.log('%c 接受< 性别选择 >子组件发送的信息==> ' + message, 'font-size:14px; color: blue;');
-			let slectSex = _this.msgProto.gameSex(message);
-			let parentModule = _this.msgProto.parentModule(slectSex);
-			_this.websocket.sendWebSocketMsg({
-				data: parentModule,
-				success(res) {
-					_this.setState((preState) => {
-						preState.gameUserInfo.sex = message;
-						preState.userInfo.sex = message;
-					});
-				},
-				fail(err) {
-					console.error('性别发送失败'); console.log(err);
-				}
-			});
+			App.aldstat.sendEvent('设置性别',{
+				"sex" : message,
+				'ids': get_OpenId_RoleId(),
+      });
+			this.setSex(message);
 		});
 
 		// -------------------------- 游戏被杀死，重新进入游戏 --------------------------------------
@@ -242,7 +235,7 @@ export class Index extends Component {
 			// 发给子组件签到信息
 			emitter.emit('weekCheckIninfo_child', weekCheckIninfo);
 			// 显示签到组件
-			_this.setState((preState) => {
+			this.setState((preState) => {
 				preState.weekCheckIninfo = weekCheckIninfo;
 				preState.isShowWeekCheckIn = true;
 			});
@@ -380,8 +373,30 @@ export class Index extends Component {
 		emitter.removeAllListeners('currencyChange');
 	}
 
+	// 设置性别
+	setSex(message){
+		let _this = this;
+		let setSex = this.msgProto.gameSex(message);
+		let parentModule = this.msgProto.parentModule(setSex);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {
+				_this.setState((preState) => {
+					preState.gameUserInfo.sex = message;
+					preState.userInfo.sex = message;
+				});
+			},
+			fail(err) {
+				console.error('性别发送失败'); console.log(err);
+			}
+		});
+	}
+
 	// 大奖赛入口页
 	goPrizeMatchBtn() {
+		// 大奖赛点击
+		App.aldstat.sendEvent('click-大奖赛', get_OpenId_RoleId());
+
 		let prizeMatch = this.state.routers.prizeMatch;
 		Taro.navigateTo({
 			url: prizeMatch
@@ -390,6 +405,9 @@ export class Index extends Component {
 
 	// 跳转排位赛入口页
 	rankEntrance() {
+		// 排位赛点击
+		App.aldstat.sendEvent('click-排位赛', get_OpenId_RoleId());
+
 		let rankGameEntrance = this.state.routers.rankGameEntrance;
 		Taro.navigateTo({
 			url: rankGameEntrance
@@ -398,6 +416,8 @@ export class Index extends Component {
 
 	// 跳转提现页
 	goTakeMoney() {
+		// 兑换点击
+		App.aldstat.sendEvent('click-兑换', get_OpenId_RoleId());
 		let goTakeMoneyPage = this.state.routers.goTakeMoneyPage;
 		Taro.navigateTo({
 			url: goTakeMoneyPage
@@ -414,7 +434,8 @@ export class Index extends Component {
 
 	// 显示签到
 	weekCheckIn() {
-		console.log(this)
+		// 签到点击
+		App.aldstat.sendEvent('click-签到', get_OpenId_RoleId());
 		// 1801 请求签到基本信息
 		let weekCheckIn = this.msgProto.weekCheckIn();
 		let parentModule = this.msgProto.parentModule(weekCheckIn);
@@ -447,6 +468,8 @@ export class Index extends Component {
 		let dan = gameUserInfo.dan;
 		// 晋级之路子组件发送当前段位
 		emitter.emit('current_dan', { 'dan': dan });
+		// 头像点击
+		App.aldstat.sendEvent('click-头像', get_OpenId_RoleId());
 
 		this.setState((preState) => {
 			preState.isShowAdvanceRoadUi = !preState.isShowAdvanceRoadUi;
@@ -456,9 +479,12 @@ export class Index extends Component {
 	// 跳转金币助力
 	goldHelp() {
 		let goldHelpPage = this.state.routers.goldHelpPage;
+		// 金币点击
+		App.aldstat.sendEvent('click-金币+', get_OpenId_RoleId());
+
 		Taro.navigateTo({
 			url: goldHelpPage
-		})
+		});
 	}
 
 	// 请求乐队基本信息

@@ -4,7 +4,7 @@ import emitter from '../../service/events';
 import createVideoAd from '../../service/createVideoAd'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
-import { setStorage, getStorage, unitReplacement } from '../../utils';
+import { setStorage, getStorage, unitReplacement, get_OpenId_RoleId } from '../../utils';
 import './result.scss'
 
 import RankResultInfo from '../../components/rankResultInfoUi'
@@ -180,6 +180,9 @@ export class RankReasult extends Component {
 	componentDidShow() {
 		let _this = this;
 
+		// 排位赛结果pv
+		App.aldstat.sendEvent('pv-排位赛结果', get_OpenId_RoleId());
+
 		if (App.globalData.websocket === '') {
 			createWebSocket(this);
 		} else {
@@ -223,7 +226,8 @@ export class RankReasult extends Component {
 				console.log('%c ～ 开始播放激励视频 ～', ' font-size: 14px; color: #c200be;');
 				// 开始播放激励广告
 				this.videoAd.openVideoAd();
-
+				// 排位赛观看广告
+				App.aldstat.sendEvent('click-排位赛观看广告', get_OpenId_RoleId());
 				// 关闭结果页Ui
 				this.setState((preState) => {
 					preState.local_data.isShowRankResult = message;
@@ -362,6 +366,8 @@ export class RankReasult extends Component {
 
 	// 返回主页
 	goBack() {
+		// 排位赛返回主页
+		App.aldstat.sendEvent('click-排位赛返回主页', get_OpenId_RoleId());
 		let indexPage = this.state.routers.indexPage;
 		Taro.reLaunch({
 			url: indexPage
@@ -370,6 +376,8 @@ export class RankReasult extends Component {
 
 	// 重玩返回入口页面
 	replay() {
+		// 排位赛再来一局
+		App.aldstat.sendEvent('click-排位赛再来一局', get_OpenId_RoleId());
 		let entrancePage = this.state.routers.entrancePage;
 		Taro.reLaunch({
 			url: entrancePage

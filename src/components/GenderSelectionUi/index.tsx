@@ -3,6 +3,8 @@ import { View, Text, Image } from '@tarojs/components';
 import emitter from '../../service/events';
 import './index.scss';
 
+var app = Taro.getApp();
+
 export default class GenderSelectionUi extends Component {
   constructor(props) {
     super(props);

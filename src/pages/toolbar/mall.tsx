@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
 import throttle from 'lodash/throttle'
-import { setStorage, getStorage, unitReplacement } from '../../utils'
+import { setStorage, getStorage, unitReplacement, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
 import './mall.scss'
@@ -334,10 +334,14 @@ export class Mall extends Component {
 			}
 		});
 		if(type == 1){
+			// pv 商店
+			App.aldstat.sendEvent('pv-商店', get_OpenId_RoleId());
 			this.setState((preState)=>{
 				preState.local_data.isTab = true;
-			})
+			});
 		}else if(type == 2){
+			// pv 乐队
+			App.aldstat.sendEvent('pv-乐队', get_OpenId_RoleId());
 			this.setState((preState)=>{
 				preState.local_data.isTab = false;
 			})

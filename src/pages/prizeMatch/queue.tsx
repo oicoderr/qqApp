@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { getStorage, buildURL, getArrayItems } from '../../utils'
+import { getStorage, buildURL, getArrayItems, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
 import emitter from '../../service/events'
@@ -344,6 +344,9 @@ export class PrizeQueue extends Component {
 
 	// 退出排队
 	exitQueue(e) {
+		// 退出匹配
+		App.aldstat.sendEvent('click-大奖赛退出匹配', get_OpenId_RoleId());
+
 		let exitQueue = this.msgProto.exitQueue();
 		let parentModule = this.msgProto.parentModule(exitQueue);
 		this.websocket.sendWebSocketMsg({

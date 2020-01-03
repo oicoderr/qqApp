@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
-import { buildURL, getCurrentTime } from '../../utils'
+import { buildURL, getCurrentTime, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
 import './enterGame.scss'
@@ -115,6 +115,8 @@ export class PrizeEnterGame extends Component {
 
 	componentDidShow() {
 		let _this = this;
+		// 大奖赛答题pv
+		App.aldstat.sendEvent('pv-大奖赛比赛', get_OpenId_RoleId());
 
 		if (App.globalData.websocket === '') {
 			createWebSocket(this);
@@ -397,6 +399,8 @@ export class PrizeEnterGame extends Component {
 
 	// 显示复活弹窗
 	isResurrection() {
+		// 大奖赛是否复活pv
+		App.aldstat.sendEvent('pv-大奖赛复活', get_OpenId_RoleId());
 		this.setState((preState) => {
 			preState.local_data.isShowToast = true;
 		}, () => { })

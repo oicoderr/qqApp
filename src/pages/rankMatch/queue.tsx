@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { getStorage, buildURL, getArrayItems } from '../../utils'
+import { getStorage, buildURL, getArrayItems, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
 import emitter from '../../service/events'
@@ -238,6 +238,9 @@ export class PrizeQueue extends Component {
 
 	componentDidShow() {
 		let _this = this;
+
+		// 排位赛匹配pv
+		App.aldstat.sendEvent('pv-排位赛匹配', get_OpenId_RoleId());
 
 		if (App.globalData.websocket === '') {
 			createWebSocket(this);

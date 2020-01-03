@@ -3,7 +3,7 @@ import { View, Image, Text, Button, RadioGroup, Radio, Label } from '@tarojs/com
 import './entrance.scss'
 import emitter from '../../service/events'
 import throttle from 'lodash/throttle'
-import { getStorage, setStorage, onShareApp, showShareMenuItem, unitReplacement } from '../../utils'
+import { getStorage, setStorage, onShareApp, showShareMenuItem, unitReplacement,get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import { websocketUrl } from '../../service/config'
 import { MessageToast } from '../../components/MessageToast'
@@ -289,6 +289,8 @@ export class PrizeEntrance extends Component {
 
 	// 开始看广告 -> 免费入场
 	freeAdmission(e) {
+		// 免费入场
+		App.aldstat.sendEvent('click-大奖赛免费入场', get_OpenId_RoleId());
 		this.videoAd.openVideoAd();
 	}
 

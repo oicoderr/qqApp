@@ -1,7 +1,9 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
+import { get_OpenId_RoleId } from '../../utils'
 import './index.scss';
 
+const App = Taro.getApp()
 export default class Drawer extends Component {
   constructor(props) {
     super(props);
@@ -105,6 +107,9 @@ export default class Drawer extends Component {
     var currentStatu = e.currentTarget.dataset.statu;
     let isAnimateClass = this.state.isAnimateClass;
     this.util(currentStatu, isAnimateClass);
+
+    // 抽屉点击
+		App.aldstat.sendEvent('click-抽屉', get_OpenId_RoleId());
   }
 
   util(currentStatu, isAnimateClass) {
@@ -127,10 +132,47 @@ export default class Drawer extends Component {
   }
   // 页面跳转
   onRouting(router) {
+    this.drawerPageChild(router);
+
     Taro.navigateTo({
       url: router
     });
   }
+
+  // 判断抽屉页面
+  drawerPageChild(router){
+    switch(router){
+      case '/pages/toolbar/backpack':
+        App.aldstat.sendEvent('click-背包', get_OpenId_RoleId());
+        break;
+      case '/pages/toolbar/mall':
+        App.aldstat.sendEvent('click-商店', get_OpenId_RoleId());
+        break;
+      case '/pages/toolbar/selfOrchestra':
+        App.aldstat.sendEvent('click-乐队', get_OpenId_RoleId());
+        break;
+      case '/pages/toolbar/opinion':
+        App.aldstat.sendEvent('click-反馈', get_OpenId_RoleId());
+        break;
+      case '/pages/toolbar/record':         // 战绩
+        break;
+      case '/pages/toolbar/ranking':        // 排行榜
+        break;
+      case '/pages/toolbar/achievement':    // 成就
+        break;
+      case '/pages/toolbar/partner':        // 好友
+        break;
+      case '/pages/toolbar/review':         // 审题
+        break;
+      case '/pages/toolbar/sitting':        // 设置
+        break;
+      case '/pages/toolbar/mail':           // 邮件
+        break;
+      case '/pages/toolbar/bulletin':       // 公告
+        break;
+    }
+  }
+
   render() {
     const animationData = this.state.animationData;
     const showModalStatus = this.state.showModalStatus;
