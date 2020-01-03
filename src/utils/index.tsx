@@ -68,7 +68,7 @@ export const formatNumber = n => {
 }
 
 // 金币/能量//门票单位置换
-export const unitReplacement = (val) =>{
+export const unitReplacement = (val) => {
   const units = ['K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y', 'S', 'O', 'N', 'H', 'X'];
   let str1 = val.toString();
   let str = str1.replace(/,/g, "");
@@ -119,7 +119,7 @@ export const setStorage = (key, value) => {
       //     }
       //   }
       // })
-    }else{
+    } else {
       Taro.setStorageSync(key, value);
     }
   } catch (err) {
@@ -137,7 +137,7 @@ export const getStorage = (key, callback) => {
   try {
     const value = Taro.getStorageSync(key);
     // console.log('%c 获取的Storage====> ' + key, 'font-size:14px;color:#8700d6;');console.log(value);
-    if(callback)callback(value);
+    if (callback) callback(value);
   } catch (err) {
     Taro.showToast({
       title: err.errmsg,
@@ -152,10 +152,10 @@ export const getStorage = (key, callback) => {
 export const removeStorage = (key) => {
   Taro.removeStorage({
     key: key,
-    success(res){
+    success(res) {
       console.log(res);
     },
-    fail(err){
+    fail(err) {
       console.log(err)
     }
   });
@@ -176,7 +176,7 @@ export const clearStorage = () => {
 }
 
 /* 网络检查状态/ 是否有网络true/false */
-export const  getNetworkStatusChange = (callback) => {
+export const getNetworkStatusChange = (callback) => {
   Taro.getNetworkType({
     success(res) {
       const networkType = res.networkType;
@@ -194,13 +194,13 @@ export const  getNetworkStatusChange = (callback) => {
           image: '../images/warning.png',
           duration: 2000,
         })
-      } else if (networkType == '4g' || networkType == 'wifi'){
-        if(callback)callback();
+      } else if (networkType == '4g' || networkType == 'wifi') {
+        if (callback) callback();
       }
     }
   });
 
-  Taro.onNetworkStatusChange(function(res) {
+  Taro.onNetworkStatusChange(function (res) {
     if (!res.isConnected) {
       Taro.showToast({
         title: '请检查网络连接',
@@ -215,8 +215,8 @@ export const  getNetworkStatusChange = (callback) => {
         image: '../images/warning.png',
         duration: 2000,
       })
-    } else if (res.networkType == '4g' || res.networkType == 'wifi'){
-      if(callback)callback();
+    } else if (res.networkType == '4g' || res.networkType == 'wifi') {
+      if (callback) callback();
     }
   });
 }
@@ -224,10 +224,10 @@ export const  getNetworkStatusChange = (callback) => {
 /*获取当前页路由*/
 export const getCurrentPageUrl = () => {
   var pages = Taro.getCurrentPages();        // 获取加载的页面
-  var currentPage = pages[pages.length-1]    // 获取当前页面的对象
+  var currentPage = pages[pages.length - 1]    // 获取当前页面的对象
   var url = currentPage.route;               // 当前页面url
   if (pages.length == 10) {
-    console.log('%c 当前currentPage ==>','font-size:16px;color:#ff581f;')
+    console.log('%c 当前currentPage ==>', 'font-size:16px;color:#ff581f;')
     console.log(pages)
     Taro.showToast({
       title: "页面打开太多，请回退关闭几个页面",
@@ -247,16 +247,16 @@ export const getCurrentPageUrl = () => {
 export const getUserInfo = (callback) => {
   Taro.getUserInfo({
     success(res) {
-      if(callback)callback(res)
+      if (callback) callback(res)
     },
-    fail(err){
+    fail(err) {
       console.log(err)
       Taro.getSetting({
         success(res) {
           if (res.authSetting['scope.userInfo']) {// 如果已经授权，可以直接调用 getUserInfo 获取头像昵称
             Taro.getUserInfo({
               success(res) {
-                if(callback)callback(res);
+                if (callback) callback(res);
               }
             })
           }
@@ -268,14 +268,14 @@ export const getUserInfo = (callback) => {
 
 /* 网络请求 */
 export const request = (method = 'GET', params, callback) => {
-  let { url, data} = params;
+  let { url, data } = params;
 
   // 缓存获取openid
-  getStorage('userInfo',(res)=>{
+  getStorage('userInfo', (res) => {
     Taro.request({
       url: `${baseUrl + url}`,
       method: `${method}`,
-      data:  `${data}`,
+      data: `${data}`,
       header: {
         'X-Access-Token': `${res.openid}`,
       },
@@ -293,7 +293,7 @@ export const request = (method = 'GET', params, callback) => {
               icon: 'none',
             })
           } else {
-            if(callback)callback(res);
+            if (callback) callback(res);
           }
         } else {
           Taro.showToast({
@@ -302,8 +302,8 @@ export const request = (method = 'GET', params, callback) => {
           });
         }
       },
-      fail(err){
-        console.error(err,'ERR');
+      fail(err) {
+        console.error(err, 'ERR');
       }
     })
 
@@ -312,7 +312,7 @@ export const request = (method = 'GET', params, callback) => {
 
 /* 登录请求 */
 export const loginRequest = (params, callback) => {
-  let { url, data} = params;
+  let { url, data } = params;
   data = JSON.stringify(data);
   Taro.request({
     url: `${baseUrl + url}`,
@@ -332,7 +332,7 @@ export const loginRequest = (params, callback) => {
             icon: 'none',
           })
         } else {
-          if(callback)callback(res);
+          if (callback) callback(res);
         }
       } else {
         Taro.showToast({
@@ -341,11 +341,11 @@ export const loginRequest = (params, callback) => {
         });
       }
     },
-    fail(err){
+    fail(err) {
       Taro.showToast({
         title: err.errMsg,
-				icon: 'none',
-				duration: 2000
+        icon: 'none',
+        duration: 2000
       })
     }
   })
@@ -358,19 +358,19 @@ export const getCurrentTime = () => {
   var hour = zeroFill(date.getHours());//时
   var minute = zeroFill(date.getMinutes());//分
   var second = zeroFill(date.getSeconds());//秒
-  
+
   //当前时间
   var curTime = date.getFullYear() + "-" + month + "-" + day
-      + " " + hour + ":" + minute + "--" + second + '秒';
-  
-  function zeroFill(i){
+    + " " + hour + ":" + minute + "--" + second + '秒';
+
+  function zeroFill(i) {
     if (i >= 0 && i <= 9) {
       return "0" + i;
     } else {
       return i;
     }
   }
-  
+
   return curTime;
 }
 
@@ -393,11 +393,11 @@ export const getArrayItems = (arr, num) => {
   }
   //取出的数值项,保存在此数组
   var return_array = new Array();
-  for (var i = 0; i<num; i++) {
+  for (var i = 0; i < num; i++) {
     //判断如果数组还有可以取出的元素,以防下标越界
-    if (temp_array.length>0) {
+    if (temp_array.length > 0) {
       //在数组中产生一个随机索引
-      var arrIndex = Math.floor(Math.random()*temp_array.length);
+      var arrIndex = Math.floor(Math.random() * temp_array.length);
       //将此随机索引的对应的数组元素值复制出来
       return_array[i] = temp_array[arrIndex];
       //然后删掉此索引的数组元素,这时候temp_array变为新的数组
@@ -411,8 +411,8 @@ export const getArrayItems = (arr, num) => {
 }
 
 /* 大奖赛加速卡转发 */
-export const onShareApp = (params) =>{
-  const { title, path, imageUrl, callback} = params;
+export const onShareApp = (params) => {
+  const { title, path, imageUrl, callback } = params;
   let defaultImageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
   return {
     title: title,
@@ -423,66 +423,66 @@ export const onShareApp = (params) =>{
     success(res) {
       callback(res);
     },
-    fail(err){
+    fail(err) {
       callback(err);
     }
   }
 }
 
 /* 隐藏分享转发平台 */
-export const hideShareMenu = () =>{
+export const hideShareMenu = () => {
   Taro.hideShareMenu({
     // 'qq', 'qzone', 'wechatFriends', 'wechatMoment'
     hideShareItems: ['qq', 'qzone', 'wechatFriends', 'wechatMoment'],
-    success(res){
+    success(res) {
       console.log('～隐藏分享成功～');
     },
-    fail(err){
+    fail(err) {
       console.log('～隐藏分享失败～：' + err);
     }
   })
 }
 
 /* 显示分享转发平台：qq */
-export const showShareMenuItem = () =>{
+export const showShareMenuItem = () => {
   Taro.hideShareMenu({
     showShareItems: ['qq'],
-    success(res){
+    success(res) {
       console.log('～显示分享qq成功～');
     },
-    fail(err){
+    fail(err) {
       console.log('～显示分享失败～：' + err);
     }
   })
 }
 /* 将秒转换成时间格式 */
-export const formatSeconds = (value) =>{
-	var theTime = parseInt(value);
-	var theTime1 = 0;
-	var theTime2 = 0;
-	if(theTime >= 60) {
-		theTime1 = parseInt(theTime / 60);
-		theTime = parseInt(theTime % 60);
-		if(theTime1 >= 60) {
-			theTime2 = parseInt(theTime1 / 60);
-			theTime1 = parseInt(theTime1 % 60);
-		}
-	}
-	if(theTime < 10) {
-		theTime = "0" + parseInt(theTime)
-	}
-	var result = "" + theTime + "";
-	if(theTime1 >= 0) {
-		if(theTime1 < 10) {
-			theTime1 = "0" + parseInt(theTime1)
-		}
-		result = "" + theTime1 + ":" + result;
-	}
-	if(theTime2 >= 0) {
-		if(theTime2 < 10) {
-			theTime2 = "0" + parseInt(theTime2)
-		}
-		result = "" + theTime2 + ":" + result;
-	}
-	return result;
+export const formatSeconds = (value) => {
+  var theTime = parseInt(value);
+  var theTime1 = 0;
+  var theTime2 = 0;
+  if (theTime >= 60) {
+    theTime1 = parseInt(theTime / 60);
+    theTime = parseInt(theTime % 60);
+    if (theTime1 >= 60) {
+      theTime2 = parseInt(theTime1 / 60);
+      theTime1 = parseInt(theTime1 % 60);
+    }
+  }
+  if (theTime < 10) {
+    theTime = "0" + parseInt(theTime)
+  }
+  var result = "" + theTime + "";
+  if (theTime1 >= 0) {
+    if (theTime1 < 10) {
+      theTime1 = "0" + parseInt(theTime1)
+    }
+    result = "" + theTime1 + ":" + result;
+  }
+  if (theTime2 >= 0) {
+    if (theTime2 < 10) {
+      theTime2 = "0" + parseInt(theTime2)
+    }
+    result = "" + theTime2 + ":" + result;
+  }
+  return result;
 }

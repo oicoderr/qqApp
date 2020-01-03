@@ -1,6 +1,6 @@
 const isWeapp = process.env.CLIENT_ENV === 'weapp'
 // 你自己的请求域名
-const HOST = "http://192.168.1.39:3800"; 
+const HOST = "http://192.168.1.39:3800";
 
 module.exports = {
   env: {
@@ -9,8 +9,7 @@ module.exports = {
   defineConstants: {
     HOST: isWeapp ? '"/api"' : JSON.parse(HOST)
   },
-  weapp: {
-  },
+  weapp: {},
   h5: {
     devServer: {
       // 设置代理来解决 H5 请求的跨域问题

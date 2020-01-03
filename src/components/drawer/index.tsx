@@ -86,13 +86,13 @@ export default class Drawer extends Component {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
-  componentDidShow() {}
+  componentDidShow() { }
 
   componentDidHide() {
     this.setState({
@@ -160,7 +160,7 @@ export default class Drawer extends Component {
       <View className="drawer">
         {/* <!--mask--> */}
         <View
-          className={`drawer_screen ${showModalStatus? '' : 'hide'}`}
+          className={`drawer_screen ${showModalStatus ? '' : 'hide'}`}
           onClick={this.powerDrawer.bind(this)}
           data-statu="close"
         ></View>
@@ -175,7 +175,7 @@ export default class Drawer extends Component {
           </View>
 
           <View
-            className={`btn ${isAnimateClass == 'animateStart'?'rotateBtn' : ''}`}
+            className={`btn ${isAnimateClass == 'animateStart' ? 'rotateBtn' : ''}`}
             onClick={this.powerDrawer.bind(this)}
             data-statu="open"
           >

@@ -15,13 +15,13 @@ export class MessageToast extends Component {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
   componentDidMount = () => {
 
   };
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
   componentDidShow() {
     // 接受各种提示说明
@@ -60,9 +60,9 @@ export class MessageToast extends Component {
   }
 
   // 父组件发送关闭弹窗消息
-	closeToast() {
-		emitter.emit('closeMessageToast', { closeMessageToast: 1 });
-	}
+  closeToast() {
+    emitter.emit('closeMessageToast', { closeMessageToast: 1 });
+  }
 
   render() {
     const scrollTop = 0;

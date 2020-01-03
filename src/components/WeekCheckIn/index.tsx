@@ -5,7 +5,7 @@ import { onShareApp } from '../../utils';
 import './index.scss';
 
 export default class WeekCheckIn extends Component {
-	constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       local_data: {
@@ -57,11 +57,11 @@ export default class WeekCheckIn extends Component {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
   componentDidShow() {
     let _this = this;
@@ -82,7 +82,7 @@ export default class WeekCheckIn extends Component {
           });
           preState.local_data.weekCheckIninfo = weekCheckIninfo;
         },
-        () => {}
+        () => { }
       );
     });
   }
@@ -97,7 +97,7 @@ export default class WeekCheckIn extends Component {
       preState => {
         preState.local_data.isShowWeekCheckIn = !value;
       },
-      () => {}
+      () => { }
     );
     emitter.emit('closeWeekCheckIn', !value);
   }

@@ -8,7 +8,7 @@ export default class GenderSelectionUi extends Component {
     super(props);
     this.state = {
 
-      local_data:{
+      local_data: {
         title: '请选定你的乐队主唱性别',
         remark: '（性别一旦确认无法更换）',
         boyImg: 'https://oss.snmgame.com/v1.0.0/boyImg.png',
@@ -24,15 +24,15 @@ export default class GenderSelectionUi extends Component {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
-  componentDidShow() {}
+  componentDidShow() { }
 
-  componentDidHide() {}
+  componentDidHide() { }
 
   // 发送子给父组件消息
   handleClick(that) {
@@ -43,7 +43,7 @@ export default class GenderSelectionUi extends Component {
   // 选择性别
   selectedGender = (gender) => {
     console.info()
-    this.setState((preState)=>{
+    this.setState((preState) => {
       preState.local_data.gender = gender;
       preState.local_data.isSlectGender = Boolean(gender);
     })
@@ -60,20 +60,20 @@ export default class GenderSelectionUi extends Component {
           </View>
 
           <View className="personWrap">
-            <Image src={girlImg} className={`themePerson ${isSlectGender?'hide':''}`}></Image>
-            <Image src={boyImg} className={`themePerson ${isSlectGender?'':'hide'}`}></Image>
+            <Image src={girlImg} className={`themePerson ${isSlectGender ? 'hide' : ''}`}></Image>
+            <Image src={boyImg} className={`themePerson ${isSlectGender ? '' : 'hide'}`}></Image>
           </View>
 
           <View className="genders">
             <View className="gender_ leftMargin" onClick={this.selectedGender.bind(this, 1)}>
-              <View className={`btn ${isSlectGender?'slectGender':''} `}>
+              <View className={`btn ${isSlectGender ? 'slectGender' : ''} `}>
                 <Image src={boyLogo} className="boyLogo"></Image>
               </View>
               <View className="genderText boyText">{boyLogoTxt}</View>
             </View>
 
             <View className="gender_ rightMargin" onClick={this.selectedGender.bind(this, 0)}>
-              <View className={`btn ${isSlectGender?'':'slectGender'}`}>
+              <View className={`btn ${isSlectGender ? '' : 'slectGender'}`}>
                 <Image src={girlLogo} className="girlLogo"></Image>
               </View>
               <View className="genderText girlText">{girlLogoTxt}</View>

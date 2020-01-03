@@ -214,11 +214,11 @@ export class AdvanceRoadUi extends Component {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
   componentDidShow() {
     let _this = this;
@@ -237,7 +237,7 @@ export class AdvanceRoadUi extends Component {
     });
   }
 
-  componentDidHide() {}
+  componentDidHide() { }
 
   // 父组件发送关闭弹窗消息
   cancel(e) {
@@ -300,7 +300,7 @@ export class AdvanceRoadUi extends Component {
     this.setState(
       preState => {
         preState.data.reusltList = reusltList;
-      },() => {
+      }, () => {
         // console.log( _this.state.data.reusltList,899);
       });
   }

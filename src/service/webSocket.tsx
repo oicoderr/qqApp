@@ -39,7 +39,7 @@ export default class websocket {
 	start() {
 		let _this = this;
 		this._timeoutObj = setInterval(() => {
-			const HeartMessage =  this.msgProto.heartModule(new Date().getTime());
+			const HeartMessage = this.msgProto.heartModule(new Date().getTime());
 			const parentModule = this.msgProto.parentModule(HeartMessage);
 			Taro.sendSocketMessage({
 				// 心跳发送的信息应由前后端商量后决定
@@ -108,9 +108,9 @@ export default class websocket {
 			this.sendWebSocketMsg({
 				data: parentModule,
 				success(res) {
-					if(callBack)callBack(res);
+					if (callBack) callBack(res);
 				},
-				fail(err){
+				fail(err) {
 					Taro.showToast({
 						title: '登陆失败请重新登陆',
 						icon: 'none',
@@ -132,7 +132,7 @@ export default class websocket {
 		Taro.onSocketMessage(msg => {
 			if (typeof callBack == "function") {
 				let str = _this.msgProto.receivedMsg(msg.data);
-				callBack( str );
+				callBack(str);
 			} else {
 				console.error('参数的类型必须为函数');
 			}
@@ -216,7 +216,7 @@ export default class websocket {
 				this.initWebSocket(options)
 			}, 3000)
 			this._connectNum += 1;
-		} else if (this._connectNum > 20 && this._connectNum < 50 ) {
+		} else if (this._connectNum > 20 && this._connectNum < 50) {
 			timer = setTimeout(() => {
 				this.initWebSocket(options)
 			}, 10000)
@@ -226,15 +226,15 @@ export default class websocket {
 		}
 	}
 
-	getOnerror(callBack){
-		Taro.onSocketError((errMsg)=>{
-			console.log(errMsg,999)
-			if(callBack)callBack(errMsg);
+	getOnerror(callBack) {
+		Taro.onSocketError((errMsg) => {
+			console.log(errMsg, 999)
+			if (callBack) callBack(errMsg);
 		})
 	}
 
 	// 关闭websocket连接
-	closeWebSocket(){
+	closeWebSocket() {
 		Taro.closeSocket();
 		this.isLogin = false;
 		this._isClosed = true;

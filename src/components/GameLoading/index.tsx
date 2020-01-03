@@ -14,15 +14,15 @@ export default class GameLoading extends Component {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
-  componentDidShow() {}
+  componentDidShow() { }
 
-  componentDidHide() {}
+  componentDidHide() { }
 
   render() {
     const { loadingGif, loadingText } = this.state.local_data;

@@ -1,355 +1,355 @@
 import Json3 from 'json3'
 
-export default class MsgProto{
-    constructor(){
-    }
+export default class MsgProto {
+	constructor() {
+	}
 
-    // 顶级父模块 encode
-    parentModule(params){
-        const { code, data} = params;
-        return this.str2buf(encodeURIComponent(Json3.stringify({
-            'code': code,
-            'data': Json3.stringify(data)
-        })))
-    }
+	// 顶级父模块 encode
+	parentModule(params) {
+		const { code, data } = params;
+		return this.str2buf(encodeURIComponent(Json3.stringify({
+			'code': code,
+			'data': Json3.stringify(data)
+		})))
+	}
 
-    loginModule(params){
-        const { openId, password, channel, roomid, device, param1, param2 } = params;
-        return {
-            'code': 1001,
-            'data': {
-                'openId': openId,
-                'password': password,
-                'channel': channel,
-                'roomid': roomid,
-                'device': device,
-                'param1': param1,
-                'param2': param2
-            }
-        }
-    }
+	loginModule(params) {
+		const { openId, password, channel, roomid, device, param1, param2 } = params;
+		return {
+			'code': 1001,
+			'data': {
+				'openId': openId,
+				'password': password,
+				'channel': channel,
+				'roomid': roomid,
+				'device': device,
+				'param1': param1,
+				'param2': param2
+			}
+		}
+	}
 
-    // 1101 前台发送心跳
-    heartModule(data){
-        let _this = this;
-        return {
-            'code': 1101,
-            'data': data,
-        };
-    }
-    
-    // 1007 登录页发送昵称，头像
-    basicInfo(params){
-        const { nickName, avatarUrl } = params;
-        return {
-            'code': 1007,
-            'data': {
-                'nickname': nickName,
-                'imgurl': avatarUrl,
-            }
-        };
-    }
+	// 1101 前台发送心跳
+	heartModule(data) {
+		let _this = this;
+		return {
+			'code': 1101,
+			'data': data,
+		};
+	}
 
-    // 1301 匹配比赛
-    matchingRequest(params){ // type 1.好友赛；2.红包赛；3.排位赛；4.大奖赛
-        const { type, useSpeedItem } = params;
-        return {
-            'code': 1301,
-            'data': {
-                'type': type,
-                'useSpeedItem': useSpeedItem
-            }
-        }
-    }
+	// 1007 登录页发送昵称，头像
+	basicInfo(params) {
+		const { nickName, avatarUrl } = params;
+		return {
+			'code': 1007,
+			'data': {
+				'nickname': nickName,
+				'imgurl': avatarUrl,
+			}
+		};
+	}
 
-    // 1307 排位赛发送答题内容
-    submitAnswer(params){
-        const { questId, optionId } = params;
-        return {
-            'code': 1307,
-            'data': {
-                'questId': questId,
-                'optionId': optionId
-            }
-        }
-    }
+	// 1301 匹配比赛
+	matchingRequest(params) { // type 1.好友赛；2.红包赛；3.排位赛；4.大奖赛
+		const { type, useSpeedItem } = params;
+		return {
+			'code': 1301,
+			'data': {
+				'type': type,
+				'useSpeedItem': useSpeedItem
+			}
+		}
+	}
 
-    // 1309 大奖赛是否复活 0.不复活  1.复活
-    resurrect(val){
-        return {
-            'code': 1309,
-            'data': {
-                'value': val,
-            }
-        }
-    }
+	// 1307 排位赛发送答题内容
+	submitAnswer(params) {
+		const { questId, optionId } = params;
+		return {
+			'code': 1307,
+			'data': {
+				'questId': questId,
+				'optionId': optionId
+			}
+		}
+	}
 
-    // 1325 是否是看广告 与比赛绑定的结束奖励, 看完广告发
-    isSeeAds(val){ 
-        return {
-            'code': 1325,
-            'data':{
-                'value': val
-            }
-        }
-    }
+	// 1309 大奖赛是否复活 0.不复活  1.复活
+	resurrect(val) {
+		return {
+			'code': 1309,
+			'data': {
+				'value': val,
+			}
+		}
+	}
 
-    // 2003 是否看完广告
-    adsRewards (data) { // type 1.排位赛额外奖励;2.排位赛100金币奖励;3.免费进大奖赛
-        const {type, value, param1, param2} = data
-        return {
-            'code': 2003,
-            'data':{
-                'type': type,
-                'value': value,
-                'param1': param1,
-                'param2': param2,
-            }
-        }
-    }
+	// 1325 是否是看广告 与比赛绑定的结束奖励, 看完广告发
+	isSeeAds(val) {
+		return {
+			'code': 1325,
+			'data': {
+				'value': val
+			}
+		}
+	}
 
-    // 1005 发送性别选择
-    gameSex(val){
-        return {
-            'code': 1005,
-            'data':{
-                'value': val,
-            }
-        }
-    }
+	// 2003 是否看完广告
+	adsRewards(data) { // type 1.排位赛额外奖励;2.排位赛100金币奖励;3.免费进大奖赛
+		const { type, value, param1, param2 } = data
+		return {
+			'code': 2003,
+			'data': {
+				'type': type,
+				'value': value,
+				'param1': param1,
+				'param2': param2,
+			}
+		}
+	}
 
-    /* -------------------------- 充值 -------------------------- */
-    // 1901 请求充值模版信息
-    recharge(){
-        return {
-            'code': 1901,
-            'data':{
-                'value': '',
-            }
-        }
-    }
-    // 1903 购买充值模板
-    payStencil(id){
-        return {
-            'code': 1903,
-            'data':{
-                'id': id,
-            }
-        }
-    }
-    /* -------------------------- 充值 End------------------------- */
+	// 1005 发送性别选择
+	gameSex(val) {
+		return {
+			'code': 1005,
+			'data': {
+				'value': val,
+			}
+		}
+	}
 
-    /* -------------------------- 提现 -------------------------- */
-    // 2101 能量信息
-    takeMoneyInfo(){
-        return{
-            'code': 2101,
-            'data':{
-                'value': '',
-            }
-        }
-    }
-    // 2103 请求提现
-    takeMoney(id){
-        return {
-            'code': 2103,
-            'data':{
-                'id': id,
-            }
-        }
-    }
-    /* -------------------------- 提现 End-------------------------- */
+	/* -------------------------- 充值 -------------------------- */
+	// 1901 请求充值模版信息
+	recharge() {
+		return {
+			'code': 1901,
+			'data': {
+				'value': '',
+			}
+		}
+	}
+	// 1903 购买充值模板
+	payStencil(id) {
+		return {
+			'code': 1903,
+			'data': {
+				'id': id,
+			}
+		}
+	}
+	/* -------------------------- 充值 End------------------------- */
 
-    /*  大奖赛 */
+	/* -------------------------- 提现 -------------------------- */
+	// 2101 能量信息
+	takeMoneyInfo() {
+		return {
+			'code': 2101,
+			'data': {
+				'value': '',
+			}
+		}
+	}
+	// 2103 请求提现
+	takeMoney(id) {
+		return {
+			'code': 2103,
+			'data': {
+				'id': id,
+			}
+		}
+	}
+	/* -------------------------- 提现 End-------------------------- */
 
-    // 1331 退出排队
-    exitQueue(){
-        return {
-            'code': 1331,
-            'data':{}
-        }
-    }
-    
-    // 1501 客户端请求背包数据
-    getBackpack(){
-        return {
-            'code': 1501,
-            'data':{}
-        }
-    }
+	/*  大奖赛 */
 
-    // 1503 背包内使用道具
-    usedProps(params){
-        const {id, count} = params;
-        return{
-            code: 1503,
-            data:{
-                'id': id,
-                'count': count,
-            }
-        }
-    }
+	// 1331 退出排队
+	exitQueue() {
+		return {
+			'code': 1331,
+			'data': {}
+		}
+	}
 
-    // 1339 大奖赛是否开放
-    isOpenPrize(){
-        return{
-            code: 1339,
-            data: {}
-        }
-    }
+	// 1501 客户端请求背包数据
+	getBackpack() {
+		return {
+			'code': 1501,
+			'data': {}
+		}
+	}
 
-    /* --------------------------- 商城 ----------------------------- */
-    // 1701 客户端请求商城数据  类型(1.道具;2.乐队人物;)
-    getMall(val){
-        return {
-            code: 1701,
-            data: {
-                value: val
-            }
-        }
-    }
+	// 1503 背包内使用道具
+	usedProps(params) {
+		const { id, count } = params;
+		return {
+			code: 1503,
+			data: {
+				'id': id,
+				'count': count,
+			}
+		}
+	}
 
-    // 1703 购买商城道具
-    buyProps(params){
-        const {id, count} = params;
-        return{
-            code: 1703,
-            data:{
-                id: id,
-                count: count,
-            }
-        }
-    }
+	// 1339 大奖赛是否开放
+	isOpenPrize() {
+		return {
+			code: 1339,
+			data: {}
+		}
+	}
 
-    /* --------------------------- 道具使用 ----------------------------- */
+	/* --------------------------- 商城 ----------------------------- */
+	// 1701 客户端请求商城数据  类型(1.道具;2.乐队人物;)
+	getMall(val) {
+		return {
+			code: 1701,
+			data: {
+				value: val
+			}
+		}
+	}
 
-    // 1509：请求延时卡和求助卡的数量
-    getMatchProps(){
-        return{
-            code: 1509,
-            data:{}
-        }
-    }
+	// 1703 购买商城道具
+	buyProps(params) {
+		const { id, count } = params;
+		return {
+			code: 1703,
+			data: {
+				id: id,
+				count: count,
+			}
+		}
+	}
 
-    // 1337 比赛使用道具 id: 1.求助卡;2.延时卡
-    usedPropsMatch(val){
-        return{
-            code: 1337,
-            data:{
-                id: val
-            }
-        }
-    }
+	/* --------------------------- 道具使用 ----------------------------- */
 
-    /* --------------------------- 我的乐队 ----------------------------- */
-    // 1601 乐队基本数据
-    selfOrchestra(){
-        return {
-            code: 1601,
-            data:{}
-        }
-    }
-    // 1603 使用乐队人物(即再主界面显示的)
-    usedOrchestra(val){
-        return{
-            code: 1603,
-            data:{
-                id: val
-            }
-        }
-    }
+	// 1509：请求延时卡和求助卡的数量
+	getMatchProps() {
+		return {
+			code: 1509,
+			data: {}
+		}
+	}
 
-    /* --------------------------- 签到 ----------------------------- */
-    // 1801 客户端请求签到基本信息
-    weekCheckIn(){
-        return{
-            code: 1801,
-            data:{}
-        }
-    }
+	// 1337 比赛使用道具 id: 1.求助卡;2.延时卡
+	usedPropsMatch(val) {
+		return {
+			code: 1337,
+			data: {
+				id: val
+			}
+		}
+	}
 
-    // 1803 客户端请求签到
-    signIn(){
-        return{
-            code: 1803,
-            data:{}
-        }
-    } 
+	/* --------------------------- 我的乐队 ----------------------------- */
+	// 1601 乐队基本数据
+	selfOrchestra() {
+		return {
+			code: 1601,
+			data: {}
+		}
+	}
+	// 1603 使用乐队人物(即再主界面显示的)
+	usedOrchestra(val) {
+		return {
+			code: 1603,
+			data: {
+				id: val
+			}
+		}
+	}
 
-    /* --------------------------- 反馈 ----------------------------- */
-    // 2201 意见反馈
-    opinion(params){
-        const { content, contact } = params;
-        return{
-            code: 2201,
-            data:{
-                content: content,
-                contact: contact,
-            }
-        }
-    }
-    /* --------------------------- 好友助力加速 ----------------------------- */
-    // 1505 好友助力加速
-    quickenCardHelp(){
-        return{
-            code: 1505,
-            data:{}
-        }
-    }
+	/* --------------------------- 签到 ----------------------------- */
+	// 1801 客户端请求签到基本信息
+	weekCheckIn() {
+		return {
+			code: 1801,
+			data: {}
+		}
+	}
 
-    // 1507 领取好友助力加速卡
-    quickenCardGet(){
-        return{
-            code: 1507,
-            data:{}
-        }
-    }
+	// 1803 客户端请求签到
+	signIn() {
+		return {
+			code: 1803,
+			data: {}
+		}
+	}
 
-    /* --------------------------- 请求说明 ----------------------------- */
-    // 2401：玩法说明 类型(1.金币助力;2.大奖赛规则;3.大奖赛加速卡说明;4.商城限免说明)
-    gameDescription(val){
-        return{
-            code: 2401,
-            data:{
-                type: val
-            }
-        }
-    }
+	/* --------------------------- 反馈 ----------------------------- */
+	// 2201 意见反馈
+	opinion(params) {
+		const { content, contact } = params;
+		return {
+			code: 2201,
+			data: {
+				content: content,
+				contact: contact,
+			}
+		}
+	}
+	/* --------------------------- 好友助力加速 ----------------------------- */
+	// 1505 好友助力加速
+	quickenCardHelp() {
+		return {
+			code: 1505,
+			data: {}
+		}
+	}
 
-    // 1511 请求金币助力信息
-    goldHelpInfo(){
-        return{
-            code: 1511,
-            data:{}
-        }
-    }
+	// 1507 领取好友助力加速卡
+	quickenCardGet() {
+		return {
+			code: 1507,
+			data: {}
+		}
+	}
 
-    // 1513 领取金币助力的金币
-    receiveGoldHelp(){
-        return{
-            code: 1513,
-            data:{}
-        }
-    }
+	/* --------------------------- 请求说明 ----------------------------- */
+	// 2401：玩法说明 类型(1.金币助力;2.大奖赛规则;3.大奖赛加速卡说明;4.商城限免说明)
+	gameDescription(val) {
+		return {
+			code: 2401,
+			data: {
+				type: val
+			}
+		}
+	}
 
+	// 1511 请求金币助力信息
+	goldHelpInfo() {
+		return {
+			code: 1511,
+			data: {}
+		}
+	}
 
+	// 1513 领取金币助力的金币
+	receiveGoldHelp() {
+		return {
+			code: 1513,
+			data: {}
+		}
+	}
 
 
-    // 反序列化接受服务器返回信息
-    receivedMsg(str){
-        return decodeURIComponent( this.buf2str((str)))
-    }
 
-    // ArrayBuffer转为字符串，参数为ArrayBuffer对象
+
+	// 反序列化接受服务器返回信息
+	receivedMsg(str) {
+		return decodeURIComponent(this.buf2str((str)))
+	}
+
+	// ArrayBuffer转为字符串，参数为ArrayBuffer对象
 	buf2str(buf) {
 		return String.fromCharCode.apply(null, new Uint8Array(buf));
 	}
-	
+
 	// 字符串转为ArrayBuffer对象，参数为字符串
 	str2buf(str) {
-		var buf = new ArrayBuffer(str.length*2); // 每个字符占用2个字节
+		var buf = new ArrayBuffer(str.length * 2); // 每个字符占用2个字节
 		var bufView = new Uint8Array(buf);
-		for (let i=0, strLen=str.length; i<strLen; i++) {
+		for (let i = 0, strLen = str.length; i < strLen; i++) {
 			bufView[i] = str.charCodeAt(i);
 		}
 		return buf;

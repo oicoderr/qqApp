@@ -4,7 +4,7 @@ import emitter from '../../service/events';
 import './index.scss';
 
 export default class RankResultInfo extends Component {
-	constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       // 动态数据
@@ -14,7 +14,7 @@ export default class RankResultInfo extends Component {
           // 0.失败 1.胜利 -1平局
           result: 1,
           // 当前段位
-          dan: 1, 
+          dan: 1,
           // 段位描述文字版
           danDesc: '',
           // 段位描述Icon
@@ -22,7 +22,7 @@ export default class RankResultInfo extends Component {
           haveStar: 1,
           totalStar: 4,
           // 段位的icon
-          gloryUrl: '' 
+          gloryUrl: ''
         }
       },
 
@@ -45,11 +45,11 @@ export default class RankResultInfo extends Component {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
   componentDidShow() {
     this.eventEmitter = emitter.addListener('rankResultInfo', message => {
@@ -60,7 +60,7 @@ export default class RankResultInfo extends Component {
       this.setState(
         preState => {
           preState.data.rankResultInfo = message[0];
-        },()=>{
+        }, () => {
           this.successFailDraw(message[0].result);
         }
       )
@@ -118,7 +118,7 @@ export default class RankResultInfo extends Component {
     this.setState(
       preState => {
         preState.local_data.checked = !value;
-      },() => {
+      }, () => {
         emitter.emit('isFinishWatching', '1');
       }
     );
@@ -148,7 +148,7 @@ export default class RankResultInfo extends Component {
       'seventhPosi',
       'eighthPosi'
     ];
-    let totalStarArr = new Array(), haveStarArr = this.sumHasStar(haveStar),contentTotalStar, contentHaveStar;
+    let totalStarArr = new Array(), haveStarArr = this.sumHasStar(haveStar), contentTotalStar, contentHaveStar;
     if (totalStar === 4) {
       contentHaveStar = haveStarArr.map((currentValue, index) => {
         return (
