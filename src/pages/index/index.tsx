@@ -84,7 +84,7 @@ export class Index extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount() {}
+	componentWillMount() { }
 
 	componentDidMount() {
 		let _this = this;
@@ -97,7 +97,7 @@ export class Index extends Component {
 		});
 	}
 
-	componentWillUnmount() {}
+	componentWillUnmount() { }
 
 	componentDidShow() {
 		let _this = this;
@@ -108,26 +108,26 @@ export class Index extends Component {
 		let currentPageUrl = getCurrentPageUrl();
 
 		// 接受AppGlobalSocket
-		if(App.globalData.websocket === ''){
+		if (App.globalData.websocket === '') {
 			createWebSocket(this);
-		}else{
+		} else {
 			this.websocket = App.globalData.websocket;
-			if(this.websocket.isLogin){
+			if (this.websocket.isLogin) {
 				// 1601 请求乐队基本信息
 				this.getSelfOrchestra();
-			}else{
+			} else {
 				this.websocket.initWebSocket({
 					url: websocketUrl,
-					success(res){
+					success(res) {
 						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{
+						_this.websocket.onSocketOpened((res) => {
 							// 1601 请求乐队基本信息
 							this.getSelfOrchestra();
 						});
 						// 对外抛出websocket
 						App.globalData.websocket = _this.websocket;
 					},
-					fail(err){
+					fail(err) {
 						createWebSocket(_this);
 					}
 				});
@@ -203,7 +203,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('getBattleTeams', (message) => {
 			clearInterval(message[1]);
 
-			console.log('%c ～游戏中杀死app～','font-size:14px;color:#ff511f;'); console.log(message[0]['data']);
+			console.log('%c ～游戏中杀死app～', 'font-size:14px;color:#ff511f;'); console.log(message[0]['data']);
 			// 排位赛杀死的
 			let isreconnection_ = message[0]['data']['isreconnection'];
 			// 大奖赛杀死的
@@ -237,7 +237,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('getWeekCheckIninfo', (message) => {
 			clearInterval(message[1]);
 
-			console.log('%c ～签到基本信息：～','font-size: 14px; color: #ffda57;background:#000000;'); console.log(message[0]['data']);
+			console.log('%c ～签到基本信息：～', 'font-size: 14px; color: #ffda57;background:#000000;'); console.log(message[0]['data']);
 			let weekCheckIninfo = message[0]['data'];
 			// 发给子组件签到信息
 			emitter.emit('weekCheckIninfo_child', weekCheckIninfo);
@@ -261,7 +261,7 @@ export class Index extends Component {
 			console.log('%c 接受‘签到组件-领取奖励`信息==>', 'font-size:14px;color:#007ef0;background:#d1d1d1;'); console.log(message);
 			this.setState((preState) => {
 				preState.isShareCheckedChange = message.shareCheckedChange;
-			},()=>{
+			}, () => {
 				// 请求签到信息
 				_this.signIn();
 			});
@@ -352,7 +352,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
 
-			console.info('%c 主页收到1010货币发生变化','font-size:14px;color:#ff311f;'); console.log(message);
+			console.info('%c 主页收到1010货币发生变化', 'font-size:14px;color:#ff311f;'); console.log(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState) => {
 				preState.currencyChange = {
@@ -360,7 +360,7 @@ export class Index extends Component {
 					energy: unitReplacement(currencyChange.energy),
 					redEnvelope: unitReplacement(currencyChange.redEnvelope)
 				}
-			},()=>{
+			}, () => {
 				setStorage('currencyChange', _this.state.currencyChange);
 			});
 		});
@@ -428,13 +428,13 @@ export class Index extends Component {
 	}
 
 	// 请求签到
-	signIn(){
+	signIn() {
 		// 开始签到
 		let signIn = this.msgProto.signIn();
 		let parentModule = this.msgProto.parentModule(signIn);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {},
+			success(res) { },
 			fail(err) {
 				console.error('请求我要签到发送失败：'); console.log(err);
 			}
@@ -462,13 +462,13 @@ export class Index extends Component {
 	}
 
 	// 请求乐队基本信息
-	getSelfOrchestra(){
+	getSelfOrchestra() {
 		let selfOrchestra = this.msgProto.selfOrchestra();
 		let parentModule = this.msgProto.parentModule(selfOrchestra);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.log('请求我的乐队基本信息Success')},
-			fail(err){
+			success(res) { console.log('请求我的乐队基本信息Success') },
+			fail(err) {
 				Taro.showToast({
 					title: err.errMsg,
 					icon: 'none',

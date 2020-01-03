@@ -24,15 +24,15 @@ export class IosCaveat extends Component {
 		};
 	}
 
-	componentWillMount() {}
+	componentWillMount() { }
 
-	componentDidMount() {}
+	componentDidMount() { }
 
-	componentWillUnmount() {}
+	componentWillUnmount() { }
 
-	componentDidShow() {}
+	componentDidShow() { }
 
-	componentDidHide() {}
+	componentDidHide() { }
 
 	render() {
 		const { tipImg, logo } = this.state.local_data;
@@ -42,8 +42,8 @@ export class IosCaveat extends Component {
 				<View className='bgColor'>
 					<View className='bgImg'></View>
 					<View className='content'>
-						<Image src={logo} className='logo'/>
-						<Image src={tipImg} className='tipImg'/>
+						<Image src={logo} className='logo' />
+						<Image src={tipImg} className='tipImg' />
 					</View>
 				</View>
 			</View>

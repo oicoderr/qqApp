@@ -25,7 +25,7 @@ export class GoldHelp extends Component {
 		this.DBgetQuickenCard = throttle(this.DBgetQuickenCard, 1000);
 		this.state = {
 
-			routers:{
+			routers: {
 				indexPage: '/pages/index/index',
 			},
 
@@ -84,22 +84,22 @@ export class GoldHelp extends Component {
 	componentDidShow() {
 		let _this = this;
 
-		if(App.globalData.websocket === ''){
+		if (App.globalData.websocket === '') {
 			createWebSocket(this);
-		}else{
+		} else {
 			this.websocket = App.globalData.websocket;
-			if(this.websocket.isLogin){
+			if (this.websocket.isLogin) {
 				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-			}else{
+			} else {
 				this.websocket.initWebSocket({
 					url: websocketUrl,
-					success(res){
+					success(res) {
 						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{});
+						_this.websocket.onSocketOpened((res) => { });
 						// 对外抛出websocket
 						App.globalData.websocket = _this.websocket;
 					},
-					fail(err){
+					fail(err) {
 						createWebSocket(_this);
 					}
 				});
@@ -182,7 +182,7 @@ export class GoldHelp extends Component {
 		});
 	}
 
-	componentDidHide() {}
+	componentDidHide() { }
 
 	// 请求说明
 	DBgetQuickenCard(e) {

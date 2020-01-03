@@ -25,21 +25,21 @@ export class RankReasult extends Component {
 		this.state = {
 
 			// 路由
-			routers:{
+			routers: {
 				indexPage: '/pages/index/index',
 				entrancePage: '/pages/rankMatch/entrance',
 			},
 
 			// 后台返回数据
-			data:{
-				rankBattleReport:{},  // 排位赛结果页战报
+			data: {
+				rankBattleReport: {},  // 排位赛结果页战报
 			},
 
 			// 前台数据
-			local_data:{
+			local_data: {
 				isShowRankResult: true,
-				rankUserInfo:{},
-				gameUserInfo:{},
+				rankUserInfo: {},
+				gameUserInfo: {},
 				PartyATeam: [], 		// 红队 战报各玩家数据
 				PartyBTeam: [],			// 蓝队
 				resultBg: 'https://oss.snmgame.com/v1.0.0/result-container.png',
@@ -48,22 +48,22 @@ export class RankReasult extends Component {
 				goBackBtn: 'https://oss.snmgame.com/v1.0.0/goBackBtn.png',
 				replayBtn: 'https://oss.snmgame.com/v1.0.0/replayBtn.png',
 
-				victoryTitleUrl:'https://oss.snmgame.com/v1.0.0/victoryTitle.png',
-				failTitleUrl:'https://oss.snmgame.com/v1.0.0/failTitle.png',
-				drawTitleUrl:'https://oss.snmgame.com/v1.0.0/drawTitle.png',
+				victoryTitleUrl: 'https://oss.snmgame.com/v1.0.0/victoryTitle.png',
+				failTitleUrl: 'https://oss.snmgame.com/v1.0.0/failTitle.png',
+				drawTitleUrl: 'https://oss.snmgame.com/v1.0.0/drawTitle.png',
 				rankResultTitleUrl: 'https://oss.snmgame.com/v1.0.0/victoryTitle.png', // 显示输，赢，平横幅
 				personMvpUrl: 'https://oss.snmgame.com/v1.0.0/personMvp.png', // 个人mvp-logo
 				leftGetAward: [],
 				rightGetAward: [],
-				selfRankBattleReport:{}, // 自己的rank战报
+				selfRankBattleReport: {}, // 自己的rank战报
 				rankResultInfo: {},
-				rankBattleReport:{		 // 结果页战报
-					PartyATeam:[],
-					PartyBTeam:[],
+				rankBattleReport: {		 // 结果页战报
+					PartyATeam: [],
+					PartyBTeam: [],
 					rewardAds: 100,		 // 战报页看广告奖励金币
 				},
 				// 货币
-				currencyChange:{
+				currencyChange: {
 					energy: 0,
 					copper: 1234,
 					redEnvelope: 0,
@@ -73,22 +73,22 @@ export class RankReasult extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {}
+	componentWillMount() { }
 
-	componentDidMount () {
+	componentDidMount() {
 		let _this = this;
 		// 额外奖励
 		this.videoAd = new createVideoAd();
 
 		// 下发视频监听事件 (排位额外奖励)
-		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
+		this.videoAd.adGet((status) => { // status.isEnded: (1完整看完激励视频) - (0中途退出) 
 			console.error('是否征途退出？' + status);
-			if(status.isEnded){
-				console.log('%c 正常播放结束，下发奖励','font-size:14px;color:#0fdb24;');
+			if (status.isEnded) {
+				console.log('%c 正常播放结束，下发奖励', 'font-size:14px;color:#0fdb24;');
 				let data_ = {
 					type: 1,
 					value: '',
-					param1:'',
+					param1: '',
 					param2: '', // int(如果类型是3，这个参数是是否使用加速卡<0.不使用;1.使用>
 				}
 				let adsRewards = this.msgProto.adsRewards(data_);
@@ -103,13 +103,13 @@ export class RankReasult extends Component {
 							duration: 2000
 						});
 						// 关闭结果页Ui
-						_this.setState((preState)=>{
+						_this.setState((preState) => {
 							preState.local_data.isShowRankResult = false;
-						},()=>{});
+						}, () => { });
 					},
 					fail(err) { console.log(err) }
 				});
-			}else{
+			} else {
 				let isSeeAds = this.msgProto.isSeeAds('');
 				let parentModule = this.msgProto.parentModule(isSeeAds);
 				this.websocket.sendWebSocketMsg({
@@ -122,9 +122,9 @@ export class RankReasult extends Component {
 							duration: 2000
 						});
 						// 关闭结果页Ui
-						_this.setState((preState)=>{
+						_this.setState((preState) => {
 							preState.local_data.isShowRankResult = false;
-						},()=>{});
+						}, () => { });
 					},
 					fail(err) { console.log(err) }
 				});
@@ -133,15 +133,15 @@ export class RankReasult extends Component {
 
 		// 获取本局结果页数据
 		const params = this.$router.params;
-		console.log('%c 获取排位赛结果数据 ==>','font-size:14px; color:#98ff1a;');console.log(JSON.parse(params.item));
+		console.log('%c 获取排位赛结果数据 ==>', 'font-size:14px; color:#98ff1a;'); console.log(JSON.parse(params.item));
 		const item = JSON.parse(params.item);
-		if(item){
-			this.setState((preState)=>{
+		if (item) {
+			this.setState((preState) => {
 				preState.local_data.rankResultInfo = item.rankResultInfo;
 				preState.local_data.rankUserInfo = item.rankUserInfo;
-			},()=>{
+			}, () => {
 				// 将当前段位信息存储gameUserInfo中
-				getStorage('gameUserInfo',(res)=>{
+				getStorage('gameUserInfo', (res) => {
 					let rankResultInfo = _this.state.local_data.rankResultInfo;
 
 					this.state.local_data.gameUserInfo = res;
@@ -151,17 +151,17 @@ export class RankReasult extends Component {
 					// this.state.local_data.gameUserInfo.segmentTitleUrl = rankResultInfo.segmentTitle;
 					this.state.local_data.gameUserInfo.danDescIcon = rankResultInfo.danDescIcon;
 					this.state.local_data.gameUserInfo.gloryUrl = rankResultInfo.gloryUrl;
-					setStorage('gameUserInfo',_this.state.local_data.gameUserInfo);
-					console.info(_this.state.local_data.gameUserInfo,789);
+					setStorage('gameUserInfo', _this.state.local_data.gameUserInfo);
+					console.info(_this.state.local_data.gameUserInfo, 789);
 				})
 			});
-			
+
 			// 本局结果页数据发送给子组件rankResultInfoUi
-			let timer = setInterval(()=>{
+			let timer = setInterval(() => {
 				emitter.emit('rankResultInfo', [item.rankResultInfo, timer]);
-			},20);
+			}, 20);
 			console.error('发射rankResultInfo');
-		}else{
+		} else {
 			Taro.showToast({
 				title: '未获得排位赛结果数据',
 				icon: 'none',
@@ -170,32 +170,32 @@ export class RankReasult extends Component {
 			})
 		}
 	}
-	
-	componentWillUnmount () {
+
+	componentWillUnmount() {
 		emitter.removeAllListeners('currencyChange');
 		emitter.removeAllListeners('isCheckPlayVideo');
 		emitter.removeAllListeners('getRankBattleReport');
 	}
 
-	componentDidShow () {
+	componentDidShow() {
 		let _this = this;
 
-		if(App.globalData.websocket === ''){
+		if (App.globalData.websocket === '') {
 			createWebSocket(this);
-		}else{
+		} else {
 			this.websocket = App.globalData.websocket;
-			if(this.websocket.isLogin){
+			if (this.websocket.isLogin) {
 				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-			}else{
+			} else {
 				this.websocket.initWebSocket({
 					url: websocketUrl,
-					success(res){
+					success(res) {
 						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{});
+						_this.websocket.onSocketOpened((res) => { });
 						// 对外抛出websocket
 						App.globalData.websocket = _this.websocket;
 					},
-					fail(err){
+					fail(err) {
 						createWebSocket(_this);
 					}
 				});
@@ -205,30 +205,30 @@ export class RankReasult extends Component {
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('排位赛结果观看广告->收到1010货币发生变化');console.log(message);
+			console.error('排位赛结果观看广告->收到1010货币发生变化'); console.log(message);
 			let currencyChange = message[0]['data'];
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
 				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
 				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
-			},()=>{
-				setStorage('currencyChange',_this.state.local_data.currencyChange);
+			}, () => {
+				setStorage('currencyChange', _this.state.local_data.currencyChange);
 			});
 		});
 
 		// 接受子组件 ==> 返回是否勾选播放激励视频状态
 		this.eventEmitter = emitter.addListener('isCheckPlayVideo', (message) => {
-			console.log('%c 接受子组件 `rankResultInfoUi` 返回是否勾选播放激励视频状态','color:#3c3c3c;fon-size:14px;'); console.log(message);
-			if(message){
-				console.log('%c ～ 开始播放激励视频 ～',' font-size: 14px; color: #c200be;');
+			console.log('%c 接受子组件 `rankResultInfoUi` 返回是否勾选播放激励视频状态', 'color:#3c3c3c;fon-size:14px;'); console.log(message);
+			if (message) {
+				console.log('%c ～ 开始播放激励视频 ～', ' font-size: 14px; color: #c200be;');
 				// 开始播放激励广告
 				this.videoAd.openVideoAd();
 
 				// 关闭结果页Ui
-				this.setState((preState)=>{
+				this.setState((preState) => {
 					preState.local_data.isShowRankResult = message;
-				},()=>{});
-			}else{
+				}, () => { });
+			} else {
 				console.error('～未勾选观看激励视频，无法播放视频～');
 				let isSeeAds = this.msgProto.isSeeAds('');
 				let parentModule = this.msgProto.parentModule(isSeeAds);
@@ -242,9 +242,9 @@ export class RankReasult extends Component {
 							duration: 2000
 						});
 						// 关闭结果页Ui，显示战报页
-						_this.setState((preState)=>{
+						_this.setState((preState) => {
 							preState.local_data.isShowRankResult = false;
-						},()=>{});
+						}, () => { });
 					},
 					fail(err) { console.log(err) }
 				});
@@ -254,7 +254,7 @@ export class RankReasult extends Component {
 		// 接受排位赛结果战报
 		this.eventEmitter = emitter.addListener('getRankBattleReport', (message) => {
 			clearInterval(message[1]);
-			console.log('%c 接受排位赛结果战报','color:#3c3c3c;fon-size:14px;background-color:#BBFFFF;'); console.log(message[0]['data']);
+			console.log('%c 接受排位赛结果战报', 'color:#3c3c3c;fon-size:14px;background-color:#BBFFFF;'); console.log(message[0]['data']);
 			// 设置输赢平横幅
 			this.successFailDraw(message[0]['data']['result']);
 			// 奖项列表
@@ -262,10 +262,10 @@ export class RankReasult extends Component {
 				{
 					key: '胜利',
 					value: message[0]['data']['rewardinit']
-				},{
+				}, {
 					key: 'MVP',
 					value: message[0]['data']['mvp']
-				},{
+				}, {
 					key: '金币卡',
 					value: message[0]['data']['goldItem']
 				}
@@ -274,57 +274,57 @@ export class RankReasult extends Component {
 				{
 					key: '连胜',
 					value: message[0]['data']['row']
-				},{
+				}, {
 					key: '组队',
 					value: message[0]['data']['team']
-				},{
+				}, {
 					key: '额外奖励',
 					value: message[0]['data']['other']
 				}
 			]
 
 			let rankBattleReport = JSON.parse(JSON.stringify(message[0]['data']));
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.data.rankBattleReport = message[0]['data'];
 				preState.local_data.rankBattleReport = this.reForm(rankBattleReport);
 				preState.local_data.selfRankBattleReport;
 				// 设置奖项列表
 				preState.local_data.leftGetAward = leftGetAward_;
 				preState.local_data.rightGetAward = rightGetAward_;
-			},()=>{});
+			}, () => { });
 		});
 	}
 
-	componentDidHide () {}
+	componentDidHide() { }
 
 	// 重新编队
-	reForm(data){
+	reForm(data) {
 		let _this = this;
 		let list = data.palyerOnInstance;
 		let selfRoleId = this.state.local_data.rankUserInfo.roleId;
 		let teamA = new Array, teamB = new Array;
 
-		list.map((cur, index, arr)=>{
-			if(cur['camp'] === 1){	// camp:1进A队 <==> camp:0进B队		
+		list.map((cur, index, arr) => {
+			if (cur['camp'] === 1) {	// camp:1进A队 <==> camp:0进B队		
 				teamA.push(cur);
-			}else{
+			} else {
 				teamB.push(cur);
 			}
 		});
 
-		teamA.map((cur,index)=>{
-			if(cur['roleId'] == selfRoleId){
+		teamA.map((cur, index) => {
+			if (cur['roleId'] == selfRoleId) {
 				_this.state.local_data.selfRankBattleReport = cur;
-				teamA.splice(index,1);
+				teamA.splice(index, 1);
 				_this.state.local_data.PartyATeam = teamA;
 				_this.state.local_data.PartyBTeam = teamB;
 			}
 		});
 
-		teamB.map((cur,index)=>{
-			if(cur['roleId'] == selfRoleId){
+		teamB.map((cur, index) => {
+			if (cur['roleId'] == selfRoleId) {
 				_this.state.local_data.selfRankBattleReport = cur;
-				teamB.splice(index,1);
+				teamB.splice(index, 1);
 				_this.state.local_data.PartyATeam = teamB;
 				_this.state.local_data.PartyBTeam = teamA;
 			}
@@ -334,26 +334,26 @@ export class RankReasult extends Component {
 	}
 
 	// 显示胜负平横幅图片
-	successFailDraw(resultCode){
-		const { victoryTitleUrl, failTitleUrl, drawTitleUrl } =  this.state.local_data;
-		switch (resultCode){
+	successFailDraw(resultCode) {
+		const { victoryTitleUrl, failTitleUrl, drawTitleUrl } = this.state.local_data;
+		switch (resultCode) {
 			case 0:
-				this.setState((preState)=>{
+				this.setState((preState) => {
 					preState.local_data.rankResultTitleUrl = failTitleUrl;
 				})
 				break;
 			case 1:
-				this.setState((preState)=>{
+				this.setState((preState) => {
 					preState.local_data.rankResultTitleUrl = victoryTitleUrl;
 				})
 				break;
 			case -1:
-				this.setState((preState)=>{
+				this.setState((preState) => {
 					preState.local_data.rankResultTitleUrl = drawTitleUrl;
 				})
 				break;
 			default:
-				this.setState((preState)=>{
+				this.setState((preState) => {
 					preState.local_data.rankResultTitleUrl = victoryTitleUrl;
 				})
 				break;
@@ -361,7 +361,7 @@ export class RankReasult extends Component {
 	}
 
 	// 返回主页
-	goBack(){
+	goBack() {
 		let indexPage = this.state.routers.indexPage;
 		Taro.reLaunch({
 			url: indexPage
@@ -369,66 +369,66 @@ export class RankReasult extends Component {
 	}
 
 	// 重玩返回入口页面
-	replay(){
+	replay() {
 		let entrancePage = this.state.routers.entrancePage;
 		Taro.reLaunch({
 			url: entrancePage
 		});
 	}
 
-	render () {
+	render() {
 		const { isShowRankResult, resultBg, scoreBg, goldIcon, leftGetAward, rightGetAward, goBackBtn,
-			replayBtn, PartyATeam, PartyBTeam, rankResultTitleUrl, personMvpUrl} = this.state.local_data;
+			replayBtn, PartyATeam, PartyBTeam, rankResultTitleUrl, personMvpUrl } = this.state.local_data;
 		const { selfCamp, blueScore, redScore, mvpRoleId } = this.state.local_data.rankBattleReport;
 		const { score, camp, roleId } = this.state.local_data.selfRankBattleReport;
 
 		const leftList = leftGetAward.map((currentValue) => {
-			return  <View className='score'>
-						<Text>{currentValue.key}</Text>
-						<Text>{currentValue.value}</Text>
-					</View>
+			return <View className='score'>
+				<Text>{currentValue.key}</Text>
+				<Text>{currentValue.value}</Text>
+			</View>
 		});
-		
+
 		const rightList = rightGetAward.map((currentValue) => {
-			return  <View className='score'>
-						<Text>{currentValue.key}</Text>
-						<Text>{currentValue.value}</Text>
-					</View>
+			return <View className='score'>
+				<Text>{currentValue.key}</Text>
+				<Text>{currentValue.value}</Text>
+			</View>
 		});
 
 		const redContent = PartyATeam.map((currentValue) => {
 			return <View className='player' data-roleId={currentValue.roleId} data-camp={currentValue.camp}>
-						<Image src={ personMvpUrl } className={`personMvp ${currentValue.roleId === mvpRoleId?'':'hide'}`}/>
-						<View className='myselfHead headImg'>
-							<Image src={currentValue.headUrl} className='userAvatarUrl'/>
-						</View>
-						<View className='nameAndscore'>
-							<View className='nickName'>
-								{currentValue.nickName}
-							</View>
-							<View className='curScore'>{currentValue.score}</View>
-						</View>
+				<Image src={personMvpUrl} className={`personMvp ${currentValue.roleId === mvpRoleId ? '' : 'hide'}`} />
+				<View className='myselfHead headImg'>
+					<Image src={currentValue.headUrl} className='userAvatarUrl' />
+				</View>
+				<View className='nameAndscore'>
+					<View className='nickName'>
+						{currentValue.nickName}
 					</View>
+					<View className='curScore'>{currentValue.score}</View>
+				</View>
+			</View>
 		});
 
 		const blueContent = PartyBTeam.map((currentValue) => {
-			return 	<View className='player' data-roleId={currentValue.roleId} data-camp={currentValue.camp}>
-						<Image src={ personMvpUrl } className={`personMvp ${currentValue.roleId === mvpRoleId?'':'hide'}`}/>
-						<View className='myselfHead headImg'>
-							<Image src={currentValue.headUrl} className='userAvatarUrl'/>
-						</View>
-						<View className='nameAndscore'>
-							<View className='nickName'>
-								{currentValue.nickName}
-							</View>
-							<View className='curScore'>{currentValue.score}</View>
-						</View>
+			return <View className='player' data-roleId={currentValue.roleId} data-camp={currentValue.camp}>
+				<Image src={personMvpUrl} className={`personMvp ${currentValue.roleId === mvpRoleId ? '' : 'hide'}`} />
+				<View className='myselfHead headImg'>
+					<Image src={currentValue.headUrl} className='userAvatarUrl' />
+				</View>
+				<View className='nameAndscore'>
+					<View className='nickName'>
+						{currentValue.nickName}
 					</View>
+					<View className='curScore'>{currentValue.score}</View>
+				</View>
+			</View>
 		});
 
 		return (
 			<View className='rankResult' catchtouchmove="ture">
-				<View className={isShowRankResult?'':'hide'} catchtouchmove="ture">
+				<View className={isShowRankResult ? '' : 'hide'} catchtouchmove="ture">
 					<RankResultInfo />
 				</View>
 
@@ -437,16 +437,16 @@ export class RankReasult extends Component {
 					<View className='body'>
 						<View className='head'>
 							<View className='container'>
-								<Image src={rankResultTitleUrl} className='titleImg'/>
+								<Image src={rankResultTitleUrl} className='titleImg' />
 								<View className='scoreBgWrap'>
-									<View className='score_ redScore'>{selfCamp?blueScore:redScore}</View>
+									<View className='score_ redScore'>{selfCamp ? blueScore : redScore}</View>
 									<Image src={scoreBg} className='scoreBg' />
-									<View className='score_ blueScore'>{selfCamp?redScore:blueScore}</View>
+									<View className='score_ blueScore'>{selfCamp ? redScore : blueScore}</View>
 								</View>
 								<Image src={resultBg} className='bg' />
 								<View className='team redTeam'>
 									<View className='player' data-roleId={roleId} data-camp={camp}>
-										<Image src={ personMvpUrl } className={`personMvp ${roleId === mvpRoleId?'':'hide'}`}/>
+										<Image src={personMvpUrl} className={`personMvp ${roleId === mvpRoleId ? '' : 'hide'}`} />
 										<View className='myselfHead headImg'>
 											<openData type="userAvatarUrl"></openData>
 										</View>
@@ -454,7 +454,7 @@ export class RankReasult extends Component {
 											<View className='nickName'>
 												<openData type='userNickName' lang='zh_CN'></openData>
 											</View>
-											<View className='curScore'>{ score }</View>
+											<View className='curScore'>{score}</View>
 										</View>
 									</View>
 									{redContent}
@@ -467,15 +467,15 @@ export class RankReasult extends Component {
 						</View>
 						<View className='content'>
 							<View className='goldIconWarp'>
-								<Image src={goldIcon} className='goldIcon'/>
+								<Image src={goldIcon} className='goldIcon' />
 							</View>
 							<View className='list'>{leftList}</View>
 							<View className='list'>{rightList}</View>
 						</View>
 						<View className='foot'>
 							<View className='btns'>
-								<Image onClick={this.goBack.bind(this)} src={goBackBtn} className='btn goBackBtn'/>
-								<Image onClick={this.replay.bind(this)} src={replayBtn} className='btn replayBtn'/>
+								<Image onClick={this.goBack.bind(this)} src={goBackBtn} className='btn goBackBtn' />
+								<Image onClick={this.replay.bind(this)} src={replayBtn} className='btn replayBtn' />
 							</View>
 						</View>
 					</View>

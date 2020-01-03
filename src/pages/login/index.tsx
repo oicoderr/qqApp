@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Image, Text, RadioGroup, Radio, Label  } from '@tarojs/components'
+import { View, Button, Image, Text, RadioGroup, Radio, Label } from '@tarojs/components'
 import emitter from '../../service/events';
 import throttle from 'lodash/throttle'
 import { setStorage, getStorage, showShareMenuItem } from '../../utils'
@@ -24,27 +24,27 @@ export class Login extends Component {
 		this.DBdescription = throttle(this.DBdescription, 1000);
 		this.state = {
 
-			routers:{
+			routers: {
 				indexPage: '/pages/index/index'
 			},
 
-			data:{
-				
+			data: {
+
 			},
 
-			local_data:{
+			local_data: {
 				isAgreeNotice: false, 	// 已同意用户须知, 已打开
 				isShowDirections: false,
 				logo: 'https://oss.snmgame.com/v1.0.0/logo.png',
 				loginBtn: 'https://oss.snmgame.com/v1.0.0/loginBtn.png',
-				tip0:'同意',
+				tip0: '同意',
 				tip: '《音乐大作战用户使用须知》',
 			}
 		};
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {
+	componentWillMount() {
 		// 接受AppGlobalSocket
 		this.eventEmitter = emitter.addListener('AppGlobalSocket', (message) => {
 			clearInterval(message[1]);
@@ -58,37 +58,37 @@ export class Login extends Component {
 
 		// 监听 子组件MessageToast 关闭弹窗消息 
 		this.eventEmitter = emitter.addListener('closeMessageToast', (message) => {
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.local_data.isShowDirections = false;
 			})
 		});
 	}
 
-	componentDidMount () {}
+	componentDidMount() { }
 
-	componentWillUnmount () {}
+	componentWillUnmount() { }
 
-	componentDidShow () {
+	componentDidShow() {
 		let _this = this;
 		// 显示分享
 		showShareMenuItem();
 
-		if(App.globalData.websocket === ''){
+		if (App.globalData.websocket === '') {
 			createWebSocket(this);
-		}else{
+		} else {
 			this.websocket = App.globalData.websocket;
-			if(this.websocket.isLogin){
+			if (this.websocket.isLogin) {
 				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-			}else{
+			} else {
 				this.websocket.initWebSocket({
 					url: websocketUrl,
-					success(res){
+					success(res) {
 						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{});
+						_this.websocket.onSocketOpened((res) => { });
 						// 对外抛出websocket
 						App.globalData.websocket = _this.websocket;
 					},
-					fail(err){
+					fail(err) {
 						createWebSocket(_this);
 					}
 				});
@@ -96,20 +96,20 @@ export class Login extends Component {
 		}
 	}
 
-	componentDidHide () {
+	componentDidHide() {
 		emitter.removeAllListeners('closeMessageToast');
 		emitter.removeAllListeners('AppGlobalSocket');
 	}
 
-	getUserInfo(){
+	getUserInfo() {
 		let _this = this;
 		let userInfo = {};
 		Taro.getUserInfo({
 			success(res) {
 				userInfo = res.userInfo;
-				console.log('%c 授权的基本信息 ===>', 'font-size:14px;color:#fff; background-color:#000;');console.log(userInfo); 
-				getStorage('userInfo',(value)=>{
-					for(let i in value){
+				console.log('%c 授权的基本信息 ===>', 'font-size:14px;color:#fff; background-color:#000;'); console.log(userInfo);
+				getStorage('userInfo', (value) => {
+					for (let i in value) {
 						userInfo[i] = value[i];
 					}
 				});
@@ -117,8 +117,8 @@ export class Login extends Component {
 				// 发送昵称，头像信息
 				_this.basicInfo(userInfo);
 			},
-			fail(err){
-				if(err.errMsg === 'getUserInfo:fail scope unauthorized'){
+			fail(err) {
+				if (err.errMsg === 'getUserInfo:fail scope unauthorized') {
 					Taro.showToast({
 						title: '授权解锁更多姿势',
 						icon: 'none',
@@ -130,8 +130,8 @@ export class Login extends Component {
 						if (res.authSetting['scope.userInfo']) { // 如果已经授权，可以直接调用 getUserInfo 获取头像昵称
 							Taro.getUserInfo({
 								success(res) {
-									getStorage('userInfo',(value)=>{
-										for(let i in value){
+									getStorage('userInfo', (value) => {
+										for (let i in value) {
 											userInfo[i] = value[i];
 										}
 									})
@@ -145,18 +145,18 @@ export class Login extends Component {
 		})
 	}
 	// 用户说明
-	DBdescription(){
+	DBdescription() {
 		this.description();
 	}
-	description(){
+	description() {
 		// 发送用户协议
 		emitter.emit('messageToast', UserAgreement);
-		this.setState((preState)=>{
+		this.setState((preState) => {
 			preState.local_data.isShowDirections = true;
 		})
 	}
 	// 发送昵称，头像信息
-	basicInfo(userInfo){
+	basicInfo(userInfo) {
 		let _this = this;
 		// 发送昵称，头像信息
 		let basicInfo = this.msgProto.basicInfo(userInfo);
@@ -164,14 +164,14 @@ export class Login extends Component {
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
 			success(res) {
-				console.log('%c 发送用户(头像，昵称)Success','font-size:14px; color:#ba5a81; background:#e3e3e3;');
+				console.log('%c 发送用户(头像，昵称)Success', 'font-size:14px; color:#ba5a81; background:#e3e3e3;');
 				// 跳转游戏页
 				let indexPage = _this.state.routers.indexPage;
 				Taro.reLaunch({
 					url: indexPage,
 				});
 			},
-			fail(err){
+			fail(err) {
 				Taro.showToast({
 					title: err.errMsg,
 					icon: 'none',
@@ -181,11 +181,11 @@ export class Login extends Component {
 		});
 	}
 
-	render () {
+	render() {
 		const { isShowDirections, tip0, tip, logo, loginBtn } = this.state.local_data;
 		return (
 			<View className='login'>
-				<View className={isShowDirections?'':'hide'}>
+				<View className={isShowDirections ? '' : 'hide'}>
 					<MessageToast />
 				</View>
 

@@ -25,38 +25,38 @@ export class PrizeEntrance extends Component {
 		this.DBdescription = throttle(this.DBdescription, 1000);
 		this.state = {
 			// 路由
-			routers:{
+			routers: {
 				queuePage: '/pages/prizeMatch/queue',
 				indexPage: '/pages/index/index',
 			},
 
-			data:{
-				isOpen:{
+			data: {
+				isOpen: {
 					type: 1,
 					value: '开放时间：上午8:00-次日凌晨2:00',
 				},
-				quickenCardHelpResult:{
+				quickenCardHelpResult: {
 					overCount: 0,
 					speedItemCount: 0,
 					currSpeedItemCount: 0,
 				},
 				// 玩法说明
-				gameDescription:[],
+				gameDescription: [],
 			},
 
-			local_data:{
-				gameUserInfo:{
+			local_data: {
+				gameUserInfo: {
 					roleId: -1,
 					level: 1,
 					imgurl: '',
 					nickName: '',
-					sex: '-1',  	
-					copper: 1234,	
+					sex: '-1',
+					copper: 1234,
 					redEnvelope: 0,
 					energy: 0,
 				},
 				// 货币
-				currencyChange:{
+				currencyChange: {
 					energy: 0,
 					copper: 1234,
 					redEnvelope: 0,
@@ -65,7 +65,7 @@ export class PrizeEntrance extends Component {
 				ruleTitle: '赛事规则',
 				directionsTitle: '说明',
 				pendingText: '待领取：',
-				surplusText:'剩余：',
+				surplusText: '剩余：',
 				adsTip: '每局比赛自动使用一张加速卡',
 				quickenTip: 'Tips: 邀请好友获取加速卡，减少每局答题总耗时。',
 				mask_tip: '即将开放',
@@ -88,20 +88,20 @@ export class PrizeEntrance extends Component {
 		}
 		this.msgProto = new MsgProto();
 	}
-	componentWillMount () {
+	componentWillMount() {
 		let _this = this;
 		// 创建激励视频
-		this.videoAd= new createVideoAd();
+		this.videoAd = new createVideoAd();
 
 		// 监听广告: 看完发2003，未看完不发
-		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
+		this.videoAd.adGet((status) => { // status.isEnded: (1完整看完激励视频) - (0中途退出) 
 			_this.lookAds_todo(status);
 		});
 	}
 
-	componentDidMount () {}
+	componentDidMount() { }
 
-	componentWillUnmount () {
+	componentWillUnmount() {
 		emitter.removeAllListeners('enterMatch');
 		emitter.removeAllListeners('getIsPrizeOpen');
 		emitter.removeAllListeners('quickenCardHelpResult');
@@ -110,27 +110,27 @@ export class PrizeEntrance extends Component {
 		emitter.removeAllListeners('currencyChange');
 	}
 
-	componentDidShow () {
+	componentDidShow() {
 		let _this = this;
 		// 显示分享
 		showShareMenuItem();
 
-		if(App.globalData.websocket === ''){
+		if (App.globalData.websocket === '') {
 			createWebSocket(this);
-		}else{
+		} else {
 			this.websocket = App.globalData.websocket;
-			if(this.websocket.isLogin){
+			if (this.websocket.isLogin) {
 				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-			}else{
+			} else {
 				this.websocket.initWebSocket({
 					url: websocketUrl,
-					success(res){
+					success(res) {
 						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{});
+						_this.websocket.onSocketOpened((res) => { });
 						// 对外抛出websocket
 						App.globalData.websocket = _this.websocket;
 					},
-					fail(err){
+					fail(err) {
 						createWebSocket(_this);
 					}
 				});
@@ -138,19 +138,19 @@ export class PrizeEntrance extends Component {
 		}
 
 		// 更新金币/红包/能量-数量
-		getStorage('currencyChange',(res)=>{
-			if(res!=''){
-				_this.setState((preState)=>{
+		getStorage('currencyChange', (res) => {
+			if (res != '') {
+				_this.setState((preState) => {
 					preState.local_data.currencyChange.copper = res.copper;
 					preState.local_data.currencyChange.energy = res.energy;
 					preState.local_data.currencyChange.redEnvelope = res.redEnvelope;
-				},()=>{})
+				}, () => { })
 			}
 		});
 
 		// 获取个人游戏信息
-		getStorage('gameUserInfo',(res)=>{
-			_this.setState((preState)=>{
+		getStorage('gameUserInfo', (res) => {
+			_this.setState((preState) => {
 				preState.local_data.gameUserInfo = res;
 			})
 		});
@@ -161,18 +161,18 @@ export class PrizeEntrance extends Component {
 			let isreconnection = message[0]['data']['isreconnection'];
 			let result = message[0]['data']['result'];
 			let errormsg = message[0]['data']['errormsg'];
-			if(result){
+			if (result) {
 				// 跳转匹配页
 				Taro.navigateTo({
 					url: this.state.routers.queuePage,
-					success(){
+					success() {
 						Taro.showToast({
 							title: '进入匹配队列',
 							icon: 'none',
 							duration: 2000,
 						});
 					},
-					fail(err){
+					fail(err) {
 						Taro.showToast({
 							title: '请退出重新匹配',
 							mask: true,
@@ -181,20 +181,20 @@ export class PrizeEntrance extends Component {
 						});
 					}
 				});
-			}else{
+			} else {
 				Taro.showToast({
 					title: errormsg,
 					icon: 'none',
 					duration: 2000,
 				});
 				// 1s后返回主页
-				let timer = setTimeout(()=>{
+				let timer = setTimeout(() => {
 					let indexPage = this.state.routers.indexPage;
 					Taro.reLaunch({
 						url: indexPage
 					});
 					clearTimeout(timer);
-				},1000);
+				}, 1000);
 			}
 		});
 
@@ -202,7 +202,7 @@ export class PrizeEntrance extends Component {
 		this.eventEmitter = emitter.addListener('getIsPrizeOpen', (message) => {
 			clearInterval(message[1]);
 
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.data.isOpen = message[0]['data'];
 			})
 		});
@@ -211,7 +211,7 @@ export class PrizeEntrance extends Component {
 		this.eventEmitter = emitter.addListener('quickenCardHelpResult', (message) => {
 			clearInterval(message[1]);
 
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.data.quickenCardHelpResult = message[0]['data'];
 			});
 		});
@@ -222,16 +222,16 @@ export class PrizeEntrance extends Component {
 
 			let gameDescription = message[0]['data'];
 			let type = message[0]['data']['type'];
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.data.gameDescription = gameDescription;
 				preState.local_data.isShowDirections = true;
-			},()=>{});
+			}, () => { });
 			// 发送子组件messageToast
 			let messageToast_data = {
 				title: '说明',
 				body: gameDescription
 			};
-			switch (type){
+			switch (type) {
 				case 1:
 					messageToast_data['title'] = '金币助力';
 					break;
@@ -253,7 +253,7 @@ export class PrizeEntrance extends Component {
 
 		// 监听 子组件MessageToast 关闭弹窗消息 
 		this.eventEmitter = emitter.addListener('closeMessageToast', (message) => {
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.local_data.isShowDirections = false;
 			})
 		});
@@ -261,9 +261,9 @@ export class PrizeEntrance extends Component {
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('大奖赛入口->收到1010货币发生变化');console.log(message);
+			console.error('大奖赛入口->收到1010货币发生变化'); console.log(message);
 			let currencyChange = message[0]['data'];
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
 				preState.local_data.currencyChange.energy = unitReplacement(currencyChange.energy);
 				preState.local_data.currencyChange.redEnvelope = unitReplacement(currencyChange.redEnvelope);
@@ -273,14 +273,14 @@ export class PrizeEntrance extends Component {
 
 	}
 
-	componentDidHide () {}
+	componentDidHide() { }
 
-	watchAdsGetReward(e){
+	watchAdsGetReward(e) {
 		this.videoAd.openVideoAd();
 	}
 
 	// 返回上一页
-	goBack(){
+	goBack() {
 		let indexPage = this.state.routers.indexPage;
 		Taro.reLaunch({
 			url: indexPage
@@ -288,34 +288,34 @@ export class PrizeEntrance extends Component {
 	}
 
 	// 开始看广告 -> 免费入场
-	freeAdmission(e){
+	freeAdmission(e) {
 		this.videoAd.openVideoAd();
 	}
 
 	// 门票入场 -> 付费入场
-	payAdmission(e){
-		let data = {type: 2,useSpeedItem: 1,};
+	payAdmission(e) {
+		let data = { type: 2, useSpeedItem: 1, };
 		let matchingRequest = this.msgProto.matchingRequest(data)
 		let parentModule = this.msgProto.parentModule(matchingRequest);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) { console.log('%c 门票入场大奖赛匹配ing','font-size:14px;color:#e66900;')},
+			success(res) { console.log('%c 门票入场大奖赛匹配ing', 'font-size:14px;color:#e66900;') },
 			fail(err) {
 				Taro.showToast({
 					title: err.errormsg,
 					icon: 'none',
 					duration: 2000
 				})
-				console.error('匹配错误信息==> ');console.log(err);
+				console.error('匹配错误信息==> '); console.log(err);
 			}
 		});
 	}
 
 	// 更改勾选状态
-	checkedChange(value){
-        this.setState((preState) => {
-            preState.local_data.checked = !value;
-        },()=>{});
+	checkedChange(value) {
+		this.setState((preState) => {
+			preState.local_data.checked = !value;
+		}, () => { });
 	}
 
 	// 分享
@@ -328,22 +328,22 @@ export class PrizeEntrance extends Component {
 			title: '酸柠檬',
 			path: '/pages/login/index',
 			imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
-			callback: (status)=>{},
+			callback: (status) => { },
 		};
 		// 按钮分享
-		if(res.from === 'button' && roleId){
+		if (res.from === 'button' && roleId) {
 			console.log(' =====>按钮分享加速卡<=====');
 			shareData.title = '迎接音乐大考验，组建Wuli梦想乐队！';
 			shareData.path = `/pages/login/index?param1=${param1}&inviterRoleId=${roleId}`,
-			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
-			shareData.shareCallBack = (status)=>{
-				if(status.errMsg === "shareAppMessage:fail cancel"){
+				shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+			shareData.shareCallBack = (status) => {
+				if (status.errMsg === "shareAppMessage:fail cancel") {
 					Taro.showToast({
 						title: '分享失败',
 						icon: 'none',
 						duration: 2000,
 					})
-				}else{
+				} else {
 					Taro.showToast({
 						title: '分享成功',
 						icon: 'none',
@@ -351,18 +351,18 @@ export class PrizeEntrance extends Component {
 					})
 				}
 			}
-		}else{ // 右上角分享App
+		} else { // 右上角分享App
 			shareData.title = '明星、热点、八卦知多少？一试便知！';
 			shareData.path = '/pages/login/index';
 			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
-			shareData.shareCallBack = (status)=>{
-				if(status.errMsg === "shareAppMessage:fail cancel"){
+			shareData.shareCallBack = (status) => {
+				if (status.errMsg === "shareAppMessage:fail cancel") {
 					Taro.showToast({
 						title: '分享失败',
 						icon: 'none',
 						duration: 2000,
 					})
-				}else{
+				} else {
 					Taro.showToast({
 						title: '分享成功',
 						icon: 'none',
@@ -375,40 +375,40 @@ export class PrizeEntrance extends Component {
 	}
 
 	// 领取加速卡
-	getQuickenCard(){
+	getQuickenCard() {
 		// quickenCardGet
 		let quickenCardGet = this.msgProto.quickenCardGet()
 		let parentModule = this.msgProto.parentModule(quickenCardGet);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) { console.log('%c 请求领取加速卡Success','font-size:14px;color:#e66900;')},
+			success(res) { console.log('%c 请求领取加速卡Success', 'font-size:14px;color:#e66900;') },
 			fail(err) {
 				Taro.showToast({
 					title: err.errormsg,
 					icon: 'none',
 					duration: 2000
 				})
-				console.error('请求领取加速卡失败==> ');console.log(err);
+				console.error('请求领取加速卡失败==> '); console.log(err);
 			}
 		});
 	}
 
 	// 观看完广告要做的事情
-	lookAds_todo(status){
+	lookAds_todo(status) {
 		let checked = this.state.local_data.checked;
 		let data = {
 			type: 3,
-			value:'',
+			value: '',
 			param1: '', // 扩展参数暂无用
 			param2: -1, // int(如果类型是3，这个参数是是否使用加速卡<0.不使用;1.使用>
 		}
-		if(checked) {data.param2 = 1} else {data.param2 = 0};
+		if (checked) { data.param2 = 1 } else { data.param2 = 0 };
 		// console.log('是否勾选加速卡 ===>', data.param2);
 		let adsRewards = this.msgProto.adsRewards(data);
 		let parentModule = this.msgProto.parentModule(adsRewards);
 
-		if(status.isEnded){
-			console.log('%c 看完广告，进入大奖赛','font-size:14px;color:#0fdb24;');
+		if (status.isEnded) {
+			console.log('%c 看完广告，进入大奖赛', 'font-size:14px;color:#0fdb24;');
 			this.websocket.sendWebSocketMsg({
 				data: parentModule,
 				success(res) {
@@ -416,23 +416,23 @@ export class PrizeEntrance extends Component {
 				},
 				fail(err) { console.log(err) }
 			});
-		}else{
-			console.log('%c 未看完视频，不能进入大进入大奖赛呦','font-size:14px;color:#db2a0f;');
+		} else {
+			console.log('%c 未看完视频，不能进入大进入大奖赛呦', 'font-size:14px;color:#db2a0f;');
 		}
 	}
 
 	// 请求说明
-	DBdescription(e){
+	DBdescription(e) {
 		this.description(e);
 	}
-	description(e){
+	description(e) {
 		// 类型 type (1.金币助力;2.大奖赛规则;3.大奖赛加速卡说明;4.商城限免说明, 5.道具卡使用说明)
 		let type = e.currentTarget.dataset.type;
 		let gameDescription = this.msgProto.gameDescription(type);
 		let parentModule = this.msgProto.parentModule(gameDescription);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {},
+			success(res) { },
 			fail(err) {
 				Taro.showToast({
 					title: err.errormsg,
@@ -443,17 +443,17 @@ export class PrizeEntrance extends Component {
 		});
 	}
 
-	render () {
-		const { backBtn, entranceBg, ruleTitle, freeBtn, ticketsBtn, tipImg, adsTip, checked, 
-			StayTunedImg, quickenCardBg, directionsTitle, pendingText, surplusText, quickenTip, 
-			progress_item_blank, progress_item, isShowDirections, mask_tip, unit_card, inviteBtnTxt, receiveBtnTxt} = this.state.local_data;
-		const {type, value} = this.state.data.isOpen;
-		const {energy, redEnvelope} = this.state.local_data.currencyChange;
-		const {overCount, speedItemCount, currSpeedItemCount} = this.state.data.quickenCardHelpResult;
+	render() {
+		const { backBtn, entranceBg, ruleTitle, freeBtn, ticketsBtn, tipImg, adsTip, checked,
+			StayTunedImg, quickenCardBg, directionsTitle, pendingText, surplusText, quickenTip,
+			progress_item_blank, progress_item, isShowDirections, mask_tip, unit_card, inviteBtnTxt, receiveBtnTxt } = this.state.local_data;
+		const { type, value } = this.state.data.isOpen;
+		const { energy, redEnvelope } = this.state.local_data.currencyChange;
+		const { overCount, speedItemCount, currSpeedItemCount } = this.state.data.quickenCardHelpResult;
 
 		return (
 			<View className='entrance' catchtouchmove="ture">
-				<View className={isShowDirections?'':'hide'}>
+				<View className={isShowDirections ? '' : 'hide'}>
 					<MessageToast />
 				</View>
 				<View className='bgColor'>
@@ -478,26 +478,26 @@ export class PrizeEntrance extends Component {
 
 					<View className='body'>
 						<View className='Entrance'>
-							<Image src={entranceBg} className='bg'/>
+							<Image src={entranceBg} className='bg' />
 							<View onClick={this.DBdescription.bind(this)} data-type='2' className='title'>{ruleTitle}</View>
-							<Image src={tipImg} className='tip'/>
+							<Image src={tipImg} className='tip' />
 							<View className='items'>
-								<Image onClick={this.freeAdmission.bind(this)} src={freeBtn} className='btn freeBtn'/>
-								<Image onClick={this.payAdmission.bind(this)} src={ticketsBtn} className='btn ticketsBtn'/>
+								<Image onClick={this.freeAdmission.bind(this)} src={freeBtn} className='btn freeBtn' />
+								<Image onClick={this.payAdmission.bind(this)} src={ticketsBtn} className='btn ticketsBtn' />
 								<View className='mask_'>{mask_tip}</View>
 							</View>
 							<View className='seeAdsStatus'>
 								<RadioGroup className='checkBox'>
 									<Label className='share_label' for='1' key='1'>
-										<Radio className='radio_' value={adsTip} 
-											onClick={this.checkedChange.bind(this,checked)} 
+										<Radio className='radio_' value={adsTip}
+											onClick={this.checkedChange.bind(this, checked)}
 											checked={checked}>
 											<View className='adsTip'>{adsTip}</View>
 										</Radio>
 									</Label>
 								</RadioGroup>
-						</View>
-							<View className={`mask ${type?'hide':''}`}>{value}</View>
+							</View>
+							<View className={`mask ${type ? 'hide' : ''}`}>{value}</View>
 						</View>
 
 						<View className='StayTuned'>
@@ -507,10 +507,10 @@ export class PrizeEntrance extends Component {
 
 					<View className='foot'>
 						<View className='quickenCard'>
-							<Image src={quickenCardBg} className='quickenCardBg'/>
+							<Image src={quickenCardBg} className='quickenCardBg' />
 							<View className='title'>
 								<View className='num'>
-									{pendingText}<Text decode={true}>{speedItemCount}&ensp;</Text>{unit_card} 
+									{pendingText}<Text decode={true}>{speedItemCount}&ensp;</Text>{unit_card}
 									{surplusText}<Text decode={true}>{currSpeedItemCount}&ensp;</Text>{unit_card}
 								</View>
 								<View onClick={this.DBdescription.bind(this)} data-type='3' className='directions'>{directionsTitle}</View>
@@ -518,9 +518,9 @@ export class PrizeEntrance extends Component {
 
 							<View className='progress'>
 								<View className='progress_list'>
-									<Image src={overCount>0?progress_item:progress_item_blank} className='progress_item'/>
-									<Image src={overCount>1?progress_item:progress_item_blank} className='progress_item'/>
-									<Image src={overCount>2?progress_item:progress_item_blank} className='progress_item'/>
+									<Image src={overCount > 0 ? progress_item : progress_item_blank} className='progress_item' />
+									<Image src={overCount > 1 ? progress_item : progress_item_blank} className='progress_item' />
+									<Image src={overCount > 2 ? progress_item : progress_item_blank} className='progress_item' />
 								</View>
 
 								<View className='progress_btn'>

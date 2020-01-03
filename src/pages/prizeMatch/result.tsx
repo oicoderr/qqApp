@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text, RadioGroup, Radio, Label  } from '@tarojs/components'
+import { View, Image, Text, RadioGroup, Radio, Label } from '@tarojs/components'
 import emitter from '../../service/events'
 import { setStorage, unitReplacement } from '../../utils';
 import './result.scss'
@@ -24,15 +24,15 @@ export class PrizeReasult extends Component {
 		this.state = {
 
 			// 路由
-			routers:{
+			routers: {
 				indexPage: '/pages/index/index',
 				entrancePage: '/pages/prizeMatch/entrance',
 			},
 
 			// 后台返回数据
-			data:{
+			data: {
 				// 大奖赛结果页战报
-				prizeMatchReport:{ 				
+				prizeMatchReport: {
 					endtime: 10,
 					energy: 10,
 					rank: 1,
@@ -44,7 +44,7 @@ export class PrizeReasult extends Component {
 			},
 
 			// 前台数据
-			local_data:{
+			local_data: {
 				isShowLoading: true,
 				isShowRankResult: true,
 				quickenCardTxt: '答对题数：',
@@ -65,9 +65,9 @@ export class PrizeReasult extends Component {
 				timeUnit: '秒',
 				energyIcon: 'https://oss.snmgame.com/v1.0.0/energyLittleIcon.png',
 				adsTip: '观看短片，获取1张复活卡',
-				checked:  true,
+				checked: true,
 				// 货币
-				currencyChange:{
+				currencyChange: {
 					energy: 0,
 					copper: 1234,
 					redEnvelope: 0,
@@ -77,21 +77,21 @@ export class PrizeReasult extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {}
+	componentWillMount() { }
 
-	componentDidMount () {
+	componentDidMount() {
 		let _this = this;
 		const params = this.$router.params;
-		console.log('%c 大奖赛结果页数据 ==>', 'font-size:14px;color:#1a98ff;');console.log(JSON.parse(params.item));
-		if(params.item){
+		console.log('%c 大奖赛结果页数据 ==>', 'font-size:14px;color:#1a98ff;'); console.log(JSON.parse(params.item));
+		if (params.item) {
 			const prizeMatchResult = JSON.parse(params.item);
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.data.prizeMatchReport = prizeMatchResult;
 				preState.local_data.isShowLoading = false; // 关闭加载动画
-			},()=>{
+			}, () => {
 				_this.ranking(prizeMatchResult.rank);
 			});
-		}else{
+		} else {
 			Taro.showToast({
 				title: '没有拿到结果页数据',
 				icon: 'none',
@@ -101,15 +101,15 @@ export class PrizeReasult extends Component {
 
 		this.videoAd = new createVideoAd();
 		// 下发视频监听事件
-		this.videoAd.adGet((status)=>{ // status.isEnded: (1完整看完激励视频) - (0中途退出) 
+		this.videoAd.adGet((status) => { // status.isEnded: (1完整看完激励视频) - (0中途退出) 
 			console.error('是否看完视频？' + status.isEnded);
 			let entrancePage = this.state.routers.entrancePage;
-			if(status.isEnded){
-				console.log('%c 正常播放结束，领取复活卡','font-size:14px;color:#0fdb24;');
+			if (status.isEnded) {
+				console.log('%c 正常播放结束，领取复活卡', 'font-size:14px;color:#0fdb24;');
 				let data_ = {
 					type: 4,
 					value: '',
-					param1:'',
+					param1: '',
 					param2: '',
 				}
 				let adsRewards = this.msgProto.adsRewards(data_);
@@ -123,12 +123,12 @@ export class PrizeReasult extends Component {
 					},
 					fail(err) { console.log(err) }
 				});
-			}else{
+			} else {
 				Taro.showToast({
 					title: '观看完整视频可获取完整奖励',
 					icon: 'none',
 					duration: 2000,
-					success(){
+					success() {
 						Taro.reLaunch({
 							url: entrancePage
 						})
@@ -137,30 +137,30 @@ export class PrizeReasult extends Component {
 			}
 		});
 	}
-	
-	componentWillUnmount () {
+
+	componentWillUnmount() {
 		emitter.removeAllListeners('currencyChange');
 	}
 
-	componentDidShow () {
+	componentDidShow() {
 		let _this = this;
 
-		if(App.globalData.websocket === ''){
+		if (App.globalData.websocket === '') {
 			createWebSocket(this);
-		}else{
+		} else {
 			this.websocket = App.globalData.websocket;
-			if(this.websocket.isLogin){
+			if (this.websocket.isLogin) {
 				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-			}else{
+			} else {
 				this.websocket.initWebSocket({
 					url: websocketUrl,
-					success(res){
+					success(res) {
 						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{});
+						_this.websocket.onSocketOpened((res) => { });
 						// 对外抛出websocket
 						App.globalData.websocket = _this.websocket;
 					},
-					fail(err){
+					fail(err) {
 						createWebSocket(_this);
 					}
 				});
@@ -171,54 +171,54 @@ export class PrizeReasult extends Component {
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
 
-			console.error('收到1010货币发生变化, 排位赛结果观看广告->');console.log(message);
+			console.error('收到1010货币发生变化, 排位赛结果观看广告->'); console.log(message);
 			let currencyChange = message[0]['data'];
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.local_data.currencyChange = {
 					copper: unitReplacement(currencyChange.copper),
 					energy: unitReplacement(currencyChange.energy),
 					redEnvelope: unitReplacement(currencyChange.redEnvelope),
 				}
-			},()=>{
-				setStorage('currencyChange',_this.state.local_data.currencyChange);
+			}, () => {
+				setStorage('currencyChange', _this.state.local_data.currencyChange);
 			});
 		});
 	}
 
-	componentDidHide () {}
+	componentDidHide() { }
 
 	// 显示名次横幅图片
-	ranking(rank){
-		const { firstBar, secondBar, thirdBar, thanThreeBar, thanTenBar } =  this.state.local_data;
-		if(rank === 1){
-			this.setState((preState)=>{
+	ranking(rank) {
+		const { firstBar, secondBar, thirdBar, thanThreeBar, thanTenBar } = this.state.local_data;
+		if (rank === 1) {
+			this.setState((preState) => {
 				preState.local_data.gradeBar = firstBar;
 			})
-		}else if(rank === 2){
-			this.setState((preState)=>{
+		} else if (rank === 2) {
+			this.setState((preState) => {
 				preState.local_data.gradeBar = secondBar;
 			})
-		}else if(rank === 3){
-			this.setState((preState)=>{
+		} else if (rank === 3) {
+			this.setState((preState) => {
 				preState.local_data.gradeBar = thirdBar;
 			})
-		}else if(rank > 3){
-			this.setState((preState)=>{
+		} else if (rank > 3) {
+			this.setState((preState) => {
 				preState.local_data.gradeBar = thanThreeBar;
 			})
-		}else if(rank > 10){
-			this.setState((preState)=>{
+		} else if (rank > 10) {
+			this.setState((preState) => {
 				preState.local_data.gradeBar = thanTenBar;
 			})
-		}else{
-			this.setState((preState)=>{
+		} else {
+			this.setState((preState) => {
 				preState.local_data.gradeBar = thanTenBar;
 			})
 		}
-  }
+	}
 
 	// 返回主页
-	goBack(){
+	goBack() {
 		let indexPage = this.state.routers.indexPage;
 		Taro.reLaunch({
 			url: indexPage
@@ -226,7 +226,7 @@ export class PrizeReasult extends Component {
 	}
 
 	// 重玩返回入口页面
-	replay(){
+	replay() {
 		let entrancePage = this.state.routers.entrancePage;
 		Taro.reLaunch({
 			url: entrancePage
@@ -234,18 +234,18 @@ export class PrizeReasult extends Component {
 	}
 
 	// 是否勾选观看广告
-	adsStatusChange(isChecked){
-		this.setState((preState)=>{
+	adsStatusChange(isChecked) {
+		this.setState((preState) => {
 			preState.local_data.checked = !isChecked;
 		});
 	}
 
-	playVideo(){
+	playVideo() {
 		let checked = this.state.local_data.checked;
-		if(checked){
+		if (checked) {
 			this.videoAd.openVideoAd();
-		}else{
-			console.log('%c 未勾选观看广告','font-size:14px;color:#ff1aca;')
+		} else {
+			console.log('%c 未勾选观看广告', 'font-size:14px;color:#ff1aca;')
 			let indexPage = this.state.routers.indexPage;
 			Taro.reLaunch({
 				url: indexPage
@@ -253,16 +253,16 @@ export class PrizeReasult extends Component {
 		}
 	}
 
-	render () {
-		const { isShowLoading, gradeBar, getRewardTip, questionUnit, timeUnit,quickenCardTxt, answerTxt, timeCostTxt,
+	render() {
+		const { isShowLoading, gradeBar, getRewardTip, questionUnit, timeUnit, quickenCardTxt, answerTxt, timeCostTxt,
 			energyIcon, confirmBtn, adsTip, checked, receivedRewardTxt
 		} = this.state.local_data;
 
-		const { endtime, energy, rank, rankMsg, speedtime, successCount} = this.state.data.prizeMatchReport;
+		const { endtime, energy, rank, rankMsg, speedtime, successCount } = this.state.data.prizeMatchReport;
 
 		return (
 			<View className='prizeMatchResult' catchtouchmove="ture">
-				<View className={isShowLoading?'':'hide'} catchtouchmove="ture">
+				<View className={isShowLoading ? '' : 'hide'} catchtouchmove="ture">
 					< GameLoading />
 				</View>
 
@@ -272,13 +272,13 @@ export class PrizeReasult extends Component {
 						<View className='main'>
 							<View className='banner'>
 								<Image src={gradeBar} className='bar' />
-								<View className={`grade ${rank > 3?'':'hide'}`}>{'第'} {rank} {'名'}</View>
+								<View className={`grade ${rank > 3 ? '' : 'hide'}`}>{'第'} {rank} {'名'}</View>
 							</View>
 							<View className='body'>
 								<View className='wrap'>
 									<View className='msg'>{rankMsg}</View>
 									<View className='barBg successCount'>{quickenCardTxt}{successCount} {questionUnit}</View>
-									<View className='barBg speedtime'>{answerTxt}<Text>{speedtime != 0?-speedtime: '0'} {timeUnit}</Text></View>
+									<View className='barBg speedtime'>{answerTxt}<Text>{speedtime != 0 ? -speedtime : '0'} {timeUnit}</Text></View>
 									<View className='barBg endtime'>{timeCostTxt}{endtime} {timeUnit}</View>
 									<View className='barBg energy'>
 										{receivedRewardTxt}
@@ -292,16 +292,16 @@ export class PrizeReasult extends Component {
 						<View className='foot'>
 							<Image onClick={this.playVideo.bind(this)} src={confirmBtn} className='confirmBtn' />
 							<View className='seeAdsStatus'>
-                                <RadioGroup className='checkBox'>
-                                    <Label className='share_label' for='1' key='1'>
-                                        <Radio className='radio_' value={adsTip} 
-                                            onClick={this.adsStatusChange.bind(this,checked)} 
-                                            checked={checked}>
-                                            <View className='tip'>{adsTip}</View>
-                                        </Radio>
-                                    </Label>
-                                </RadioGroup>
-                            </View>
+								<RadioGroup className='checkBox'>
+									<Label className='share_label' for='1' key='1'>
+										<Radio className='radio_' value={adsTip}
+											onClick={this.adsStatusChange.bind(this, checked)}
+											checked={checked}>
+											<View className='tip'>{adsTip}</View>
+										</Radio>
+									</Label>
+								</RadioGroup>
+							</View>
 						</View>
 					</View>
 				</View>
