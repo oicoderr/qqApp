@@ -16,7 +16,7 @@ import MsgProto from './service/msgProto'
 //   require('nerv-devtools')
 // }
 
-class App extends Component {
+class _App extends Component {
 
 	config: Config = {
 
@@ -345,4 +345,4 @@ class App extends Component {
 	}
 }
 
-Taro.render(<App />, document.getElementById('app'))
+Taro.render(<_App />, document.getElementById('app'))

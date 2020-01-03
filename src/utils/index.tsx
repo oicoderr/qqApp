@@ -491,10 +491,11 @@ export const get_OpenId_RoleId = () => {
   try {
     const userInfo = Taro.getStorageSync('userInfo');
     const gameUserInfo = Taro.getStorageSync('gameUserInfo');
-    return {
+
+    return JSON.stringify({
       'openId': userInfo.openid,
       'roleId': gameUserInfo.roleId,
-    }
+    })
   } catch (err) {
     console.info(err)
   }
