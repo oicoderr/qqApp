@@ -23,14 +23,34 @@
   transform: translateX(-50%);
   z-index: 88;
 
-
   // 蓝色女主唱
   .leadSingerImg02{
-    width: 425rpx !important;
-    height: 657rpx !important;
-    background-size: 13600rpx 657rpx !important;
+    width: 425px !important;
+    height: 657px !important;
+    background-size: 13600px 657px !important;
+    animation-fill-mode: forwards;
+    background-repeat: no-repeat;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d; 
   }
-  @keyframes leadSingerGirl02{ 0%{} 100%{ background-position: -13600px 0;}}
+  @keyframes leadSingerGirl02{ 
+    0%{background-position: 0 0;} 100%{ background-position: -13598px 0;}
+  }
+
+
+  // 吉他手
+  .guitaristBoyImg02{
+    width: 411px !important;
+    height: 520px !important;
+    background-size: 13152px 520px !important;
+    animation-fill-mode: forwards;
+    background-repeat: no-repeat;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d; 
+  }
+  @keyframes guitaristBoy02{ 
+    0%{background-position: 0 0;} 100%{ background-position: -13150px 0;}
+  }
 
 
 

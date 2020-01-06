@@ -112,25 +112,27 @@ export default class HomeBand extends Component {
     const drummer = this.state.local_data.drummer;
 
     // 当前主页展示人物参数：主唱
-    //  width, height, bgSizeW, bgSizeH, img, steps, timeAn, classAn 
-    const leadSingerAnParams = this.state.local_data.leadSinger.animation;
+    const AnParams_leadSinger = this.state.local_data.leadSinger.animation;
+    // 贝斯手
+    const AnParams_bassist = guitarist.animation;
+    // 吉他手
+    const AnParams_guitarist = bassist.animation;
+    // 鼓手
+    const AnParams_drummer = drummer.animation;
 
     // 默认空缺主人物
     const { guitarist_, bassist_, drummer_ } = this.state.default_data;
 
     return <View className="homeBand">
-      <View className={`leadSingerBox ${type ? '' : 'hide'}`} style={`width:${leadSingerAnParams.width}rpx; height:${leadSingerAnParams.height}rpx;`}>
+      <View className={`leadSingerBox ${type ? '' : 'hide'}`} style={`width:${AnParams_leadSinger.width}rpx; height:${AnParams_leadSinger.height}rpx;`}>
 
-        {/* 主唱人物 *由于行间style rpx会被强行更改未px，解决方案：class替换行间 */}
-        <svg viewBox={`0, 0, ${leadSingerAnParams.width}, ${leadSingerAnParams.height}`} className='svgClass'
-          style={`position: absolute; z-index: 70; width: ${leadSingerAnParams.width}rpx; height: ${leadSingerAnParams.height}rpx;`} >
+        {/* 主唱人物 *由于行间style rpx会被强行更改未px，解决方案：class替换行间 *svg解决animation抖动 */}
+        <svg viewBox={`0, 0, ${AnParams_leadSinger.width}, ${AnParams_leadSinger.height}`} className='svgClass'
+          style={`position: absolute; z-index: 70; width: ${AnParams_leadSinger.width}rpx; height: ${AnParams_leadSinger.height}rpx;`} >
 
-          <foreignObject width={leadSingerAnParams.width} height={leadSingerAnParams.height}>
-            <View className={leadSingerAnParams.classSvg}
-            style={`background:url(${leadSingerAnParams.img});
-            animation: ${leadSingerAnParams.classAn} ${leadSingerAnParams.timeAn}s steps(${leadSingerAnParams.steps}) infinite; 
-            animation-fill-mode: forwards;
-            background-repeat: no-repeat;`}>
+          <foreignObject width={AnParams_leadSinger.width} height={AnParams_leadSinger.height}>
+            <View className={AnParams_leadSinger.classSvg} style={`background:url(${AnParams_leadSinger.img}); backface-visibility: hidden;
+            animation: ${AnParams_leadSinger.classAn} ${AnParams_leadSinger.timeAn}s steps(${AnParams_leadSinger.steps}) infinite; `}>
 
             </View>
           </foreignObject>
