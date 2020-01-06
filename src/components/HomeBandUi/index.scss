@@ -15,52 +15,24 @@
 
 }
 
-/*
-.leadSinger_{
-	width: 425rpx;
-	height: 560rpx;
-	background: url('https://oss.snmgame.com/gif/leadBoy/leadSprite001.png') no-repeat 0 0;
-	background-size: 445rpx 13540rpx;
-	animation: run 2.1s steps(20) infinite 0s;
-	-webkit-animation: run 2.1s steps(20) infinite 0s;
-	animation-timing-function:0/20;
-	overflow: hidden;
-}
-@-webkit-keyframes run { 
-	0%{
-		background-position: -10rpx -10rpx;
-	}
-	100%{
-		background-position: -10rpx -12873rpx;
-	}
-}
-@keyframes run { 
-	0%{
-		background-position: -10rpx -10rpx;
-	}
-	100%{
-		background-position: -10rpx -12873rpx;
-	}
-}
-*/
-
 // 主唱
 .leadSingerBox {
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 425rpx;
-  height: 660rpx;
   z-index: 88;
 
-  .leadSinger {
-    position: absolute;
-    width: 425rpx;
-    height: 657rpx;
-    z-index: 20;
-    bottom: 60rpx;
+
+  // 蓝色女主唱
+  .leadSingerImg02{
+    width: 425rpx !important;
+    height: 657rpx !important;
+    background-size: 13600rpx 657rpx !important;
   }
+  @keyframes leadSingerGirl02{ 0%{} 100%{ background-position: -13600px 0;}}
+
+
 
   .leadLight {
     position: absolute;

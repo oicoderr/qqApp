@@ -82,6 +82,7 @@ export default class HomeBand extends Component {
     // type 类型(1.主唱;2.吉他手;3.贝斯手;4.鼓手)
     let elicitPart = JSON.parse(JSON.stringify(list));
     for (let i = 0; i < elicitPart.length; i++) {
+      elicitPart[i]['animation'] = JSON.parse(elicitPart[i]['animation']);
       if (elicitPart[i]['type'] == 1 && elicitPart[i]['status']) {
         this.setState((preState) => {
           preState.local_data.leadSinger = elicitPart[i];
@@ -100,7 +101,9 @@ export default class HomeBand extends Component {
         });
       }
     }
+    console.log(elicitPart,123)
   }
+
 
   render() {
     const { staticBand, stage, light, type } = this.state.local_data.leadSinger;
@@ -108,14 +111,34 @@ export default class HomeBand extends Component {
     const bassist = this.state.local_data.bassist;
     const drummer = this.state.local_data.drummer;
 
+    // 当前主页展示人物参数：主唱
+    //  width, height, bgSizeW, bgSizeH, img, steps, timeAn, classAn 
+    const leadSingerAnParams = this.state.local_data.leadSinger.animation;
+
     // 默认空缺主人物
     const { guitarist_, bassist_, drummer_ } = this.state.default_data;
 
     return <View className="homeBand">
-      <View className={`leadSingerBox ${type ? '' : 'hide'}`}>
-        <Image src={staticBand} className='leadSinger' />
+      <View className={`leadSingerBox ${type ? '' : 'hide'}`} style={`width:${leadSingerAnParams.width}rpx; height:${leadSingerAnParams.height}rpx;`}>
+
+        {/* 主唱人物 *由于行间style rpx会被强行更改未px，解决方案：class替换行间 */}
+        <svg viewBox={`0, 0, ${leadSingerAnParams.width}, ${leadSingerAnParams.height}`} className='svgClass'
+          style={`position: absolute; z-index: 70; width: ${leadSingerAnParams.width}rpx; height: ${leadSingerAnParams.height}rpx;`} >
+
+          <foreignObject width={leadSingerAnParams.width} height={leadSingerAnParams.height}>
+            <View className={leadSingerAnParams.classSvg}
+            style={`background:url(${leadSingerAnParams.img});
+            animation: ${leadSingerAnParams.classAn} ${leadSingerAnParams.timeAn}s steps(${leadSingerAnParams.steps}) infinite; 
+            animation-fill-mode: forwards;
+            background-repeat: no-repeat;`}>
+
+            </View>
+          </foreignObject>
+        </svg>
+
         <Image src={light} className='leadLight' />
         <Image src={stage} className='leadStage' />
+
       </View>
 
       <View className={`guitaristBox ${guitarist.type ? '' : 'hide'}`}>
