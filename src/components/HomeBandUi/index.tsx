@@ -14,16 +14,56 @@ export default class HomeBand extends Component {
 
       local_data: {
         // 主唱
-        leadSinger: {},
+        leadSinger: {
+          animation:{
+            classAn: "",
+            classSvg: "",
+            height: "",
+            img: "",
+            steps: "",
+            timeAn: "",
+            width: "",
+          }
+        },
 
         // 吉他手
-        guitarist: {},
+        guitarist: {
+          animation:{
+            classAn: "",
+            classSvg: "",
+            height: "",
+            img: "",
+            steps: "",
+            timeAn: "",
+            width: "",
+          }
+        },
 
         // 贝斯手
-        bassist: {},
+        bassist: {
+          animation:{
+            classAn: "",
+            classSvg: "",
+            height: "",
+            img: "",
+            steps: "",
+            timeAn: "",
+            width: "",
+          }
+        },
 
         // 鼓手
-        drummer: {}
+        drummer: {
+          animation:{
+            classAn: "",
+            classSvg: "",
+            height: "",
+            img: "",
+            steps: "",
+            timeAn: "",
+            width: "",
+          }
+        }
       },
 
       // 未使用人物默认主图代替
@@ -46,7 +86,38 @@ export default class HomeBand extends Component {
           stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/drum-stage-shadow-1.png',
           light: '',
         }
-      ]
+      ],
+
+      // 各动画class(位置，大小信息, 灯光，舞台)
+      anClass: [{
+        'main': 'leadSingerBox',
+        'light': 'leadLight',
+        'stage': 'leadStage',
+        'svg': 'leadSvg',
+        'type': 1,
+        'status': true,
+      },{
+        'main': 'guitaristBox',
+        'light': 'guitaristLight',
+        'stage': 'guitaristStage',
+        'svg': 'guitaristSvg',
+        'type': 2,
+        'status': true,
+      },{
+        'main': 'bassistBox',
+        'light': 'bassistLight',
+        'stage': 'bassistStage',
+        'svg': 'bassistSvg',
+        'type': 3,
+        'status': true,
+      },{
+        'main': 'drummerBox',
+        'light': 'drummerLight',
+        'stage': 'drummerStage',
+        'svg': 'drummerSvg',
+        'type': 4,
+        'status': true,
+      }],
     }
   }
 
@@ -99,6 +170,22 @@ export default class HomeBand extends Component {
         });
       }
     }
+    console.log('%c 主页乐队动画：','font-size:14px;color:#FF6347;background:#F8F8FF;');console.log(elicitPart);
+  }
+
+  // 更改播放/暂停状态
+  setAnimationStatus(e){
+    // type: 1主唱 2吉他手 3贝斯手 4鼓手
+    let type = e.currentTarget.dataset.type;
+    let status = e.currentTarget.dataset.status;
+    let anClass = this.state.anClass;
+    anClass.map((cur,index)=>{
+      if(cur['type'] == type){
+        this.setState((preState)=>{
+          preState.anClass[index]['status'] = !status;
+        })
+      }
+    })
   }
 
   render() {
@@ -114,34 +201,14 @@ export default class HomeBand extends Component {
     // 人物参数
     let protagonist = [leadSinger, guitarist, bassist, drummer];
     // 各动画class(位置，大小信息, 灯光，舞台)
-    let AnClass =  [{
-      'main': 'leadSingerBox',
-      'light': 'leadLight',
-      'stage': 'leadStage',
-      'svg': 'leadSvg',
-    },{
-      'main': 'guitaristBox',
-      'light': 'guitaristLight',
-      'stage': 'guitaristStage',
-      'svg': 'guitaristSvg',
-    },{
-      'main': 'bassistBox',
-      'light': 'bassistLight',
-      'stage': 'bassistStage',
-      'svg': 'bassistSvg',
-    },{
-      'main': 'drummerBox',
-      'light': 'drummerLight',
-      'stage': 'drummerStage',
-      'svg': 'drummerSvg',
-    }];
+    let AnClass = this.state.anClass;
 
     // 动画
     const Animations = AnArry.map((cur, index)=>{
       return  <View className={`${AnClass[index]['main']} ${protagonist[index]['type'] ? '' : 'hide'}`} style={`width:${cur.width}rpx; height:${cur.height}rpx;`}>
                 <svg viewBox={`0, 0, ${cur.width}, ${cur.height}`} style={`position: absolute; z-index: ${70 - index}; width: ${cur.width}rpx; height: ${cur.height}rpx;`} >
                   <foreignObject width={cur.width} height={cur.height}>
-                    <View className={`${cur.classSvg} ${AnClass[index]['svg']} `} style={`background:url(${cur.img}); backface-visibility: hidden;
+                    <View data-type={AnClass[index]['type']} data-status={AnClass[index]['status']} onClick={this.setAnimationStatus.bind(this)}  className={`${cur.classSvg} ${AnClass[index]['svg']} ${AnClass[index]['status']?'play':'stop'} `} style={`background:url(${cur.img}); backface-visibility: hidden;
                     animation: ${cur.classAn} ${cur.timeAn}s steps(${cur.steps}) infinite; `}></View>
                   </foreignObject>
                 </svg>

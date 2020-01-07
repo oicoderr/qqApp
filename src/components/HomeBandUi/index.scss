@@ -46,7 +46,7 @@
   // 吉他手 
   .guitaristBox {
     position: absolute;
-    top: 0;
+    top: 60rpx;
     right: 0;
     width: 411rpx;
     height: 590rpx;
@@ -57,7 +57,7 @@
       width: 411rpx;
       height: 520rpx;
       z-index: 20;
-      bottom: 68rpx;
+      bottom: 0;
     }
 
     .guitaristLight {
@@ -73,7 +73,7 @@
       width: 324rpx;
       height: 92rpx;
       z-index: 19;
-      bottom: 20rpx;
+      bottom: -40rpx;
     }
   }
 
@@ -81,7 +81,7 @@
   .bassistBox {
     position: absolute;
     bottom: 110rpx;
-    right: -90rpx;
+    right: 0rpx;
     width: 322rpx;
     height: 590rpx;
     z-index: 87;
@@ -115,7 +115,7 @@
   // 鼓手
   .drummerBox {
     position: absolute;
-    top: 70rpx;
+    top: 200rpx;
     left: -20rpx;
     width: 506rpx;
     height: 660rpx;
@@ -257,6 +257,17 @@
 }
 @keyframes drummerGirlFrame60{ 
   0%{background-position: 0 0;} 100%{ background-position: -30358px 0;}
+}
+
+// 开始播放
+.play{
+  animation-play-state: running !important;
+  -webkit-animation-play-state: running !important;
+}
+
+.stop{
+  animation-play-state: paused !important;
+  -webkit-animation-play-state: paused !important;
 }
 
 /*            动画End              */
