@@ -27,28 +27,26 @@ export default class HomeBand extends Component {
       },
 
       // 未使用人物默认主图代替
-      default_data: {
+      default_data: [
         // 吉他手
-        guitarist_: {
+        {
           staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/guitar-shadow-1.png',
           stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/guitar-stage-shadow-1.png',
           light: '',
         },
-
         // 贝斯手
-        bassist_: {
+        {
           staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/bass-shadow-1.png',
           stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/bass-stage-shadow-1.png',
           light: '',
         },
-
         // 鼓手
-        drummer_: {
+        {
           staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/drum-shadow-1.png',
           stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/drum-stage-shadow-1.png',
           light: '',
         }
-      }
+      ]
     }
   }
 
@@ -101,12 +99,12 @@ export default class HomeBand extends Component {
         });
       }
     }
-    console.log(elicitPart,123)
   }
 
 
   render() {
-    const { staticBand, stage, light, type } = this.state.local_data.leadSinger;
+    // { staticBand, stage, light, type } 
+    const leadSinger = this.state.local_data.leadSinger;
     const guitarist = this.state.local_data.guitarist;
     const bassist = this.state.local_data.bassist;
     const drummer = this.state.local_data.drummer;
@@ -120,66 +118,61 @@ export default class HomeBand extends Component {
     // 鼓手
     const AnParams_drummer = drummer.animation;
 
-    // 默认空缺主人物
-    const { guitarist_, bassist_, drummer_ } = this.state.default_data;
+    // 剪影
+    const default_data = this.state.default_data;
+    // 动画
+    let AnArry = [AnParams_leadSinger,  AnParams_guitarist, AnParams_bassist, AnParams_drummer];
+    // 人物参数
+    let protagonist = [leadSinger, guitarist, bassist, drummer];
+    // 各动画class(位置，大小信息, 灯光，舞台)
+    let AnClass =  [{
+      'main': 'leadSingerBox',
+      'light': 'leadLight',
+      'stage': 'leadStage',
+      'svg': 'leadSvg',
+    },{
+      'main': 'guitaristBox',
+      'light': 'guitaristLight',
+      'stage': 'guitaristStage',
+      'svg': 'guitaristSvg',
+    },{
+      'main': 'bassistBox',
+      'light': 'bassistLight',
+      'stage': 'bassistStage',
+      'svg': 'bassistSvg',
+    },{
+      'main': 'drummerBox',
+      'light': 'drummerLight',
+      'stage': 'drummerStage',
+      'svg': 'drummerSvg',
+    }];
+
+    // 动画
+    const Animations = AnArry.map((cur, index)=>{
+      return  <View className={`${AnClass[index]['main']} ${protagonist[index]['type'] ? '' : 'hide'}`} style={`width:${cur.width}rpx; height:${cur.height}rpx;`}>
+                <svg viewBox={`0, 0, ${cur.width}, ${cur.height}`} style={`position: absolute; z-index: ${70 - index}; width: ${cur.width}rpx; height: ${cur.height}rpx;`} >
+                  <foreignObject width={cur.width} height={cur.height}>
+                    <View className={`${cur.classSvg} ${AnClass[index]['svg']} `} style={`background:url(${cur.img}); backface-visibility: hidden;
+                    animation: ${cur.classAn} ${cur.timeAn}s steps(${cur.steps}) infinite; `}></View>
+                  </foreignObject>
+                </svg>
+                <Image src={protagonist[index]['light']} className={AnClass[index]['light']} />
+                <Image src={protagonist[index]['stage']} className={AnClass[index]['stage']} />
+              </View>
+    })
+    // 剪影
+    const Silhouette = default_data.map((cur,index)=>{
+      return <View className={`${AnClass[index]['main']} ${protagonist[index+1]['type'] ? 'hide' : ''}`}>
+              <Image src={cur.staticBand} className={AnClass[index+1]['svg']} />
+              <Image src={cur.light} className={AnClass[index+1]['light']} />
+              <Image src={cur.stage} className={AnClass[index+1]['stage']} />
+            </View>
+    })
 
     return <View className="homeBand">
-      <View className={`leadSingerBox ${type ? '' : 'hide'}`} style={`width:${AnParams_leadSinger.width}rpx; height:${AnParams_leadSinger.height}rpx;`}>
-
-        {/* 主唱人物 *由于行间style rpx会被强行更改未px，解决方案：class替换行间 *svg解决animation抖动 */}
-        <svg viewBox={`0, 0, ${AnParams_leadSinger.width}, ${AnParams_leadSinger.height}`} className='svgClass'
-          style={`position: absolute; z-index: 70; width: ${AnParams_leadSinger.width}rpx; height: ${AnParams_leadSinger.height}rpx;`} >
-
-          <foreignObject width={AnParams_leadSinger.width} height={AnParams_leadSinger.height}>
-            <View className={AnParams_leadSinger.classSvg} style={`background:url(${AnParams_leadSinger.img}); backface-visibility: hidden;
-            animation: ${AnParams_leadSinger.classAn} ${AnParams_leadSinger.timeAn}s steps(${AnParams_leadSinger.steps}) infinite; `}>
-
-            </View>
-          </foreignObject>
-        </svg>
-
-        <Image src={light} className='leadLight' />
-        <Image src={stage} className='leadStage' />
-
-      </View>
-
-      <View className={`guitaristBox ${guitarist.type ? '' : 'hide'}`}>
-        <Image src={guitarist.staticBand} className='guitarist' />
-        <Image src={guitarist.light} className='guitaristLight' />
-        <Image src={guitarist.stage} className='guitaristStage' />
-      </View>
-      {/* 空缺填充 */}
-      <View className={`guitaristBox ${guitarist.type ? 'hide' : ''}`}>
-        <Image src={guitarist_.staticBand} className='guitarist' />
-        <Image src={guitarist_.light} className='guitaristLight' />
-        <Image src={guitarist_.stage} className='guitaristStage' />
-      </View>
-
-
-      <View className={`bassistBox ${bassist.type ? '' : 'hide'}`}>
-        <Image src={bassist.staticBand} className='bassist' />
-        <Image src={bassist.light} className='bassistLight' />
-        <Image src={bassist.stage} className='bassistStage' />
-      </View>
-      {/* 空缺填充 */}
-      <View className={`bassistBox ${bassist.type ? 'hide' : ''}`}>
-        <Image src={bassist_.staticBand} className='bassist' />
-        <Image src={bassist_.light} className='bassistLight' />
-        <Image src={bassist_.stage} className='bassistStage' />
-      </View>
-
-      <View className={`drummerBox ${drummer.type ? '' : 'hide'}`}>
-        <Image src={drummer.staticBand} className={`drummer`} />
-        <Image src={drummer.light} className='drummerLight' />
-        <Image src={drummer.stage} className='drummerStage' />
-      </View>
-      {/* 空缺填充 */}
-      <View className={`drummerBox ${drummer.type ? 'hide' : ''}`}>
-        <Image src={drummer_.staticBand} className={`drummer`} />
-        <Image src={drummer_.light} className='drummerLight' />
-        <Image src={drummer_.stage} className='drummerStage' />
-      </View>
-
-    </View>;
+      {Animations}
+      {/* 画空缺填充 */}
+      {Silhouette}
+    </View>
   }
 }

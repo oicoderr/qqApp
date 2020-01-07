@@ -12,7 +12,6 @@
   -webkit-box-sizing: border;
   box-sizing: border;
   z-index: 60;
-
 }
 
 // 主唱
@@ -23,36 +22,10 @@
   transform: translateX(-50%);
   z-index: 88;
 
-  // 蓝色女主唱
-  .leadSingerImg02{
-    width: 425px !important;
-    height: 657px !important;
-    background-size: 13600px 657px !important;
-    animation-fill-mode: forwards;
-    background-repeat: no-repeat;
-    -webkit-backface-visibility: hidden;
-    -webkit-transform-style: preserve-3d; 
+  .leadSvg{
+    position: absolute;
+    bottom: 70rpx;
   }
-  @keyframes leadSingerGirl02{ 
-    0%{background-position: 0 0;} 100%{ background-position: -13598px 0;}
-  }
-
-
-  // 吉他手
-  .guitaristBoyImg02{
-    width: 411px !important;
-    height: 520px !important;
-    background-size: 13152px 520px !important;
-    animation-fill-mode: forwards;
-    background-repeat: no-repeat;
-    -webkit-backface-visibility: hidden;
-    -webkit-transform-style: preserve-3d; 
-  }
-  @keyframes guitaristBoy02{ 
-    0%{background-position: 0 0;} 100%{ background-position: -13150px 0;}
-  }
-
-
 
   .leadLight {
     position: absolute;
@@ -75,12 +48,12 @@
 .guitaristBox {
   position: absolute;
   top: 0;
-  right: 60rpx;
+  right: 0;
   width: 411rpx;
   height: 590rpx;
   z-index: 86;
 
-  .guitarist {
+  .guitaristSvg{
     position: absolute;
     width: 411rpx;
     height: 520rpx;
@@ -109,12 +82,12 @@
 .bassistBox {
   position: absolute;
   bottom: 110rpx;
-  right: 0;
+  right: -90rpx;
   width: 322rpx;
   height: 590rpx;
   z-index: 87;
 
-  .bassist {
+  .bassistSvg{
     position: absolute;
     width: 322rpx;
     height: 577rpx;
@@ -143,13 +116,13 @@
 // 鼓手
 .drummerBox {
   position: absolute;
-  top: 20rpx;
+  top: 70rpx;
   left: -20rpx;
   width: 506rpx;
   height: 660rpx;
   z-index: 84;
 
-  .drummer {
+  .drummerSvg{
     position: absolute;
     width: 506rpx;
     height: 480rpx;
@@ -174,3 +147,37 @@
     bottom: 0;
   }
 }
+
+/*            动画              */
+
+// 主唱蓝色女动画02
+.leadSingerImg02{
+  width: 425px !important;
+  height: 657px !important;
+  background-size: 13600px 657px !important;
+  animation-fill-mode: forwards;
+  background-repeat: no-repeat;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d; 
+}
+@keyframes leadSingerGirl02{ 
+  0%{background-position: 0 0;} 100%{ background-position: -13598px 0;}
+}
+
+// 吉他手动画
+.guitaristBoyImg02{
+  width: 411px !important;
+  height: 520px !important;
+  background-size: 13152px 520px !important;
+  animation-fill-mode: forwards;
+  background-repeat: no-repeat;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d; 
+}
+@keyframes guitaristBoy02{ 
+  0%{background-position: 0 0;} 100%{ background-position: -13150px 0;}
+}
+
+
+
+/*            动画End              */
