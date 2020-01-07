@@ -12,139 +12,139 @@
   -webkit-box-sizing: border;
   box-sizing: border;
   z-index: 60;
-}
 
-// 主唱
-.leadSingerBox {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 88;
-
-  .leadSvg{
+  // 主唱
+  .leadSingerBox {
     position: absolute;
-    bottom: 70rpx;
-  }
-
-  .leadLight {
-    position: absolute;
-    width: 450rpx;
-    height: 203rpx;
-    bottom: 42rpx;
-    z-index: 21;
-  }
-
-  .leadStage {
-    position: absolute;
-    width: 442rpx;
-    height: 126rpx;
-    z-index: 19;
     bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 88;
+
+    .leadSvg{
+      position: absolute;
+      bottom: 70rpx;
+    }
+
+    .leadLight {
+      position: absolute;
+      width: 450rpx;
+      height: 203rpx;
+      bottom: 42rpx;
+      z-index: 21;
+    }
+
+    .leadStage {
+      position: absolute;
+      width: 442rpx;
+      height: 126rpx;
+      z-index: 19;
+      bottom: 0;
+    }
   }
-}
 
-// 吉他手 
-.guitaristBox {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 411rpx;
-  height: 590rpx;
-  z-index: 86;
-
-  .guitaristSvg{
+  // 吉他手 
+  .guitaristBox {
     position: absolute;
+    top: 0;
+    right: 0;
     width: 411rpx;
-    height: 520rpx;
-    z-index: 20;
-    bottom: 68rpx;
+    height: 590rpx;
+    z-index: 86;
+
+    .guitaristSvg{
+      position: absolute;
+      width: 411rpx;
+      height: 520rpx;
+      z-index: 20;
+      bottom: 68rpx;
+    }
+
+    .guitaristLight {
+      position: absolute;
+      width: 325rpx;
+      height: 150rpx;
+      bottom: 30rpx;
+      z-index: 21;
+    }
+
+    .guitaristStage {
+      position: absolute;
+      width: 324rpx;
+      height: 92rpx;
+      z-index: 19;
+      bottom: 20rpx;
+    }
   }
 
-  .guitaristLight {
+  // 贝斯手
+  .bassistBox {
     position: absolute;
-    width: 325rpx;
-    height: 150rpx;
-    bottom: 30rpx;
-    z-index: 21;
-  }
-
-  .guitaristStage {
-    position: absolute;
-    width: 324rpx;
-    height: 92rpx;
-    z-index: 19;
-    bottom: 20rpx;
-  }
-}
-
-// 贝斯手
-.bassistBox {
-  position: absolute;
-  bottom: 110rpx;
-  right: -90rpx;
-  width: 322rpx;
-  height: 590rpx;
-  z-index: 87;
-
-  .bassistSvg{
-    position: absolute;
+    bottom: 110rpx;
+    right: -90rpx;
     width: 322rpx;
-    height: 577rpx;
-    z-index: 20;
-    bottom: 60rpx;
+    height: 590rpx;
+    z-index: 87;
+
+    .bassistSvg{
+      position: absolute;
+      width: 322rpx;
+      height: 577rpx;
+      z-index: 20;
+      bottom: 60rpx;
+    }
+
+    .bassistLight {
+      position: absolute;
+      width: 373rpx;
+      height: 171rpx;
+      bottom: 48rpx;
+      z-index: 21;
+    }
+
+    .bassistStage {
+      position: absolute;
+      width: 368rpx;
+      height: 104rpx;
+      z-index: 19;
+      bottom: 0;
+    }
+
   }
 
-  .bassistLight {
+  // 鼓手
+  .drummerBox {
     position: absolute;
-    width: 373rpx;
-    height: 171rpx;
-    bottom: 48rpx;
-    z-index: 21;
-  }
-
-  .bassistStage {
-    position: absolute;
-    width: 368rpx;
-    height: 104rpx;
-    z-index: 19;
-    bottom: 0;
-  }
-
-}
-
-// 鼓手
-.drummerBox {
-  position: absolute;
-  top: 70rpx;
-  left: -20rpx;
-  width: 506rpx;
-  height: 660rpx;
-  z-index: 84;
-
-  .drummerSvg{
-    position: absolute;
+    top: 70rpx;
+    left: -20rpx;
     width: 506rpx;
-    height: 480rpx;
-    z-index: 20;
-    bottom: 40rpx;
-    left: -50rpx;
-  }
+    height: 660rpx;
+    z-index: 84;
 
-  .drummerLight {
-    position: absolute;
-    width: 373rpx;
-    height: 170rpx;
-    bottom: 42rpx;
-    z-index: 21;
-  }
+    .drummerSvg{
+      position: absolute;
+      width: 506rpx;
+      height: 480rpx;
+      z-index: 20;
+      bottom: 40rpx;
+      left: -50rpx;
+    }
 
-  .drummerStage {
-    position: absolute;
-    width: 368rpx;
-    height: 104rpx;
-    z-index: 19;
-    bottom: 0;
+    .drummerLight {
+      position: absolute;
+      width: 373rpx;
+      height: 170rpx;
+      bottom: 42rpx;
+      z-index: 21;
+    }
+
+    .drummerStage {
+      position: absolute;
+      width: 368rpx;
+      height: 104rpx;
+      z-index: 19;
+      bottom: 0;
+    }
   }
 }
 
@@ -215,7 +215,7 @@
   -webkit-backface-visibility: hidden;
   -webkit-transform-style: preserve-3d; 
 }
-@keyframes { 
+@keyframes bassistGirlFrame32{ 
   0%{background-position: 0 0;} 100%{ background-position: -10302px 0;}
 }
 
@@ -243,7 +243,7 @@
   -webkit-transform-style: preserve-3d; 
 }
 @keyframes drummerGirlFrame65{ 
-  0%{background-position: 0 0;} 100%{ background-position: -32889px 0;}
+  0%{background-position: 0 0;} 100%{ background-position: -32888px 0;}
 }
 
 .drummerGirlImgFrame60{

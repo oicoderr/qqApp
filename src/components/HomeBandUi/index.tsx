@@ -108,7 +108,7 @@ export default class HomeBand extends Component {
     const drummer = this.state.local_data.drummer;
 
     // 剪影
-    const default_data = this.state.default_data;
+    let default_data = this.state.default_data;
     // 动画
     let AnArry = [leadSinger.animation,  guitarist.animation, bassist.animation, drummer.animation];
     // 人物参数
