@@ -101,27 +101,16 @@ export default class HomeBand extends Component {
     }
   }
 
-
   render() {
-    // { staticBand, stage, light, type } 
     const leadSinger = this.state.local_data.leadSinger;
     const guitarist = this.state.local_data.guitarist;
     const bassist = this.state.local_data.bassist;
     const drummer = this.state.local_data.drummer;
 
-    // 当前主页展示人物参数：主唱
-    const AnParams_leadSinger = this.state.local_data.leadSinger.animation;
-    // 贝斯手
-    const AnParams_bassist = guitarist.animation;
-    // 吉他手
-    const AnParams_guitarist = bassist.animation;
-    // 鼓手
-    const AnParams_drummer = drummer.animation;
-
     // 剪影
     const default_data = this.state.default_data;
     // 动画
-    let AnArry = [AnParams_leadSinger,  AnParams_guitarist, AnParams_bassist, AnParams_drummer];
+    let AnArry = [leadSinger.animation,  guitarist.animation, bassist.animation, drummer.animation];
     // 人物参数
     let protagonist = [leadSinger, guitarist, bassist, drummer];
     // 各动画class(位置，大小信息, 灯光，舞台)

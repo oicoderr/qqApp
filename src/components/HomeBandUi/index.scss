@@ -148,10 +148,10 @@
   }
 }
 
-/*            动画              */
+/*            动画Start              */
 
-// 主唱蓝色女动画02
-.leadSingerImg02{
+// 主唱‘女’动画全部是32帧，background-size: 13600px 657px; 
+.leadSingerGirlImgFrame32{
   width: 425px !important;
   height: 657px !important;
   background-size: 13600px 657px !important;
@@ -160,12 +160,39 @@
   -webkit-backface-visibility: hidden;
   -webkit-transform-style: preserve-3d; 
 }
-@keyframes leadSingerGirl02{ 
+@keyframes leadSingerGirlFrame32{ 
   0%{background-position: 0 0;} 100%{ background-position: -13598px 0;}
 }
 
+// 主唱‘男’ 33帧，32帧； background-size: 13600px 657px； background-size: 14025px 657px
+.leadSingerBoyImgFrame_32{
+  width: 425px !important;
+  height: 657px !important;
+  background-size: 13600px 657px !important;
+  animation-fill-mode: forwards;
+  background-repeat: no-repeat;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d; 
+}
+@keyframes leadSingerBoyFrame32{ 
+  0%{background-position: 0 0;} 100%{ background-position: -13598px 0;}
+}
+
+.leadSingerBoyImgFrame_33{
+  width: 425px !important;
+  height: 657px !important;
+  background-size: 14025px 657px !important;
+  animation-fill-mode: forwards;
+  background-repeat: no-repeat;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d; 
+}
+@keyframes leadSingerBoyFrame33{ 
+  0%{background-position: 0 0;} 100%{ background-position: -14023px 0;}
+}
+
 // 吉他手动画
-.guitaristBoyImg02{
+.guitaristBoyImgFrame32{
   width: 411px !important;
   height: 520px !important;
   background-size: 13152px 520px !important;
@@ -174,10 +201,62 @@
   -webkit-backface-visibility: hidden;
   -webkit-transform-style: preserve-3d; 
 }
-@keyframes guitaristBoy02{ 
+@keyframes guitaristBoyFrame32{ 
   0%{background-position: 0 0;} 100%{ background-position: -13150px 0;}
 }
 
+// 贝斯手动画
+.bassistGirlImgFrame32{
+  width: 322px !important;
+  height: 577px !important;
+  background-size: 10304px 577px !important;
+  animation-fill-mode: forwards;
+  background-repeat: no-repeat;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d; 
+}
+@keyframes { 
+  0%{background-position: 0 0;} 100%{ background-position: -10302px 0;}
+}
 
+.bassistGirlImgFrame31{
+  width: 322px !important;
+  height: 577px !important;
+  background-size: 9982px 577px !important;
+  animation-fill-mode: forwards;
+  background-repeat: no-repeat;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d; 
+}
+@keyframes bassistGirlFrame31{ 
+  0%{background-position: 0 0;} 100%{ background-position: -9980px 0;}
+}
+
+// 鼓手动画
+.drummerGirlImgFrame65{
+  width: 506px !important;
+  height: 480px !important;
+  background-size: 32890px 480px !important;
+  animation-fill-mode: forwards;
+  background-repeat: no-repeat;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d; 
+}
+@keyframes drummerGirlFrame65{ 
+  0%{background-position: 0 0;} 100%{ background-position: -32889px 0;}
+}
+
+.drummerGirlImgFrame60{
+  width: 506px !important;
+  height: 480px !important;
+  background-size: 30360px 480px !important;
+  animation-fill-mode: forwards;
+  background-repeat: no-repeat;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d; 
+}
+@keyframes drummerGirlFrame60{ 
+  0%{background-position: 0 0;} 100%{ background-position: -30358px 0;}
+}
 
 /*            动画End              */

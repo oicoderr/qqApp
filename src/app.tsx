@@ -79,12 +79,12 @@ class _App extends Component {
 
 		// 设备提示
 		let ua = getUa();
-		// if(ua.system.indexOf('iOS')> -1 || ua.model.indexOf('iPhone') > -1){
-		// 	Taro.reLaunch({
-		// 		url: '/pages/activity/iosCaveat'
-		// 	})
-		// 	return;
-		// }
+		if(ua.system.indexOf('iOS')> -1 || ua.model.indexOf('iPhone') > -1){
+			Taro.reLaunch({
+				url: '/pages/activity/iosCaveat'
+			})
+			return;
+		}
 
 		const params = this.$router.params;
 		if(params.query){
