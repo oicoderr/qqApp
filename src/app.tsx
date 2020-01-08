@@ -71,7 +71,7 @@ class _App extends Component {
 	websocketUrl: '';
 	baseUrl: '';
 
-	componentWillMount () {}
+	componentWillMount () { }
 
 	componentDidMount () {
 		let _this = this;
@@ -84,15 +84,6 @@ class _App extends Component {
 
 		// 获取当前版本
 		configObj.getVersion();
-		// 监听requestUrl
-		this.eventEmitter = emitter.addListener('requestUrl', message => {
-			clearInterval(message[0]);
-
-			this.websocketUrl = message[1]['websocketUrl'];
-			this.baseUrl = message[1]['baseUrl'];
-			console.log('获取到的websocketUrl：' + this.websocketUrl);
-			console.log('获取到的baseUrl：' + this.baseUrl);
-		});
 
 		// 设备提示
 		let ua = getUa();
@@ -119,27 +110,37 @@ class _App extends Component {
 		// 开始自动更新app
 		this.getUpdateManager();
 
-		// 将code发后台，获取openid及accessToken
-		this.login((loginData)=>{
-			// app登录
-			loginRequest( loginData, (appLogin)=>{ // res: 返回openid，accessToken
-				let userInfo = {};
-				// 获取缓存userInfo，如果没有授权信息, 授权后并保存缓存中，如果存在openid,跳转游戏登录
-				getStorage('userInfo',(res)=>{
-					if(!res.nickName || !res.avatarUrl ){
-						console.log('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
-						userInfo = appLogin.data;
-						// 开始登陆
-						_this.createWebSocket(_this.websocketUrl);
-						setStorage('userInfo', userInfo);
-					}else{
-						// 跳转游戏主页
-						Taro.reLaunch({
-							url: '/pages/index/index'
-						});
-					}
-				});
-			})
+		// 监听requestUrl
+		this.eventEmitter = emitter.once('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.websocketUrl = message[1]['websocketUrl'];
+			this.baseUrl = message[1]['baseUrl'];
+			console.log('获取到的websocketUrl：' + this.websocketUrl);
+			console.log('获取到的baseUrl：' + this.baseUrl);
+
+			// 将code发后台，获取openid及accessToken
+			this.login((loginData)=>{
+				// app登录
+				loginRequest( loginData, (appLogin)=>{ // res: 返回openid，accessToken
+					let userInfo = {};
+					// 获取缓存userInfo，如果没有授权信息, 授权后并保存缓存中，如果存在openid,跳转游戏登录
+					getStorage('userInfo',(res)=>{
+						if(!res.nickName || !res.avatarUrl ){
+							console.log('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
+							userInfo = appLogin.data;
+							// 开始登陆
+							_this.createWebSocket(_this.websocketUrl);
+							setStorage('userInfo', userInfo);
+						}else{
+							// 跳转游戏主页
+							Taro.reLaunch({
+								url: '/pages/index/index'
+							});
+						}
+					});
+				})
+			});
 		});
 	}
 
@@ -210,6 +211,8 @@ class _App extends Component {
 			// }
 		},time);
 	}
+
+	componentWillUnmount() {}
 
 	/* 新版本检测升级 */
 	getUpdateManager(){
