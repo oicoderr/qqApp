@@ -68,20 +68,20 @@ export default class Drawer extends Component {
             title: '设置',
             x: -310,
             y: -10,
-            router: ''
+            router: '/pages/toolbar/setting'
           },
-          {
-            title: '邮件',
-            x: -310,
-            y: -170,
-            router: ''
-          },
-          {
-            title: '公告',
-            x: -310,
-            y: -10,
-            router: ''
-          }
+          // {
+          //   title: '邮件',
+          //   x: -310,
+          //   y: -170,
+          //   router: ''
+          // },
+          // {
+          //   title: '公告',
+          //   x: -310,
+          //   y: -10,
+          //   router: ''
+          // }
         ]
       },
       powerDrawer: 'https://oss.snmgame.com/v1.0.0/powerDrawer.png'
@@ -212,7 +212,7 @@ export default class Drawer extends Component {
           <View className="drawer_contentWrap">
             <View className="drawer_content">
               <View className="drawer_body">{iconBox_item}</View>
-              <View className="drawer_setting hide">{iconBox_setting}</View>
+              <View className="drawer_setting">{iconBox_setting}</View>
             </View>
           </View>
 

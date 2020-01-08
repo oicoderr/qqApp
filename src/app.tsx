@@ -43,6 +43,7 @@ class _App extends Component {
 			'pages/toolbar/backpack', 	  	  // 背包
 			'pages/toolbar/mall', 	  	  	  // 商城
 			'pages/toolbar/selfOrchestra',	  // 我的乐队
+			'pages/toolbar/setting',	  			// 设置
 			'pages/activity/iosCaveat',				// ios设备提示
 		],
 

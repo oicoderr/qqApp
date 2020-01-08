@@ -1,0 +1,143 @@
+.hide {
+  display: none;
+}
+
+.backpack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.bgColor {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(97, 130, 242, 1);
+  position: relative;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+
+  .bgImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('https://oss.snmgame.com/v1.0.0/rank-texture-0001.png');
+    background-size: 750px 3000px;
+    background-repeat: no-repeat;
+    opacity: 1;
+    filter: alpha(opacity=1);
+  }
+
+  .content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 68rpx 20rpx 20rpx 20rpx;
+    overflow: hidden;
+    box-sizing: border-box;
+    z-index: 2;
+
+    .head {
+      width: 100%;
+      height: 54rpx;
+      display: flex;
+      justify-content: left;
+      padding-bottom: 9rpx;
+
+      .backBtnBox {
+        width: 100%;
+        height: 54rpx;
+        display: flex;
+        justify-content: space-between;
+        background-color: transparent;
+        position: absolute;
+        z-index: 99;
+
+        .backBtn {
+          width: 60rpx;
+          height: 54rpx;
+        }
+      }
+    }
+
+    .body {
+      width: 100%;
+      height: auto;
+      overflow: hidden;
+      box-sizing: border-box;
+
+      .settingTitleWrap {
+        width: 100%;
+        height: auto;
+        position: absolute;
+        top: 70rpx;
+        display: flex;
+        justify-content: center;
+
+        .settingTitle {
+          width: 426rpx;
+          height: 60rpx;
+        }
+      }
+
+      .settingContent {
+
+        width: 100%;
+        height: calc(100vh - 150rpx);
+        box-sizing: border-box;
+        overflow: hidden;
+        background: rgba(0, 0, 0, .3);
+        border: 2rpx solid rgba(0, 0, 0, .3);
+        border-radius: 20rpx;
+        padding: 30rpx;
+        box-sizing: border-box;
+
+        .scrollview {
+          height: 100%;
+          position: relative;
+
+          .box {
+            box-sizing: border-box;
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: flex-start;
+
+            .item{
+              width: 650rpx;
+              height: 120rpx;
+              background:rgba(0,0,0,.3);
+              border-radius: 20rpx;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              box-sizing: border-box;
+              padding: 23rpx 30rpx;
+              margin-bottom: 20rpx;
+
+              text{
+                height: 74rpx;
+                line-height: 74rpx;
+                font-size: 30rpx;
+                font-weight: 400;
+                color:rgba(255,255,255,1);
+              }
+
+              .btn{
+                width: 164rpx;
+                height: 74rpx;
+              }
+            }
+            
+          }
+        }
+      }
+    }
+  }
+}
