@@ -26,10 +26,9 @@ export default class config {
 				'content-type': 'application/json'
 			}
 		});
-		console.log(response,999);
 		console.log('%c 版本信息：','font-size:14px;color:#D15FEE;background-color:#FAFAFA;');console.log(response.data);
-		this.diffVersion(response.data);
 		this.setStorageVersion();
+		this.diffVersion(response.data);
 		this.exportUrl();
 	}
 

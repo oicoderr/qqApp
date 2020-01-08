@@ -209,7 +209,6 @@ class _App extends Component {
 				clearTimeout(_this.globalData.timestamp);
 			// }
 		},time);
-		
 	}
 
 	/* 新版本检测升级 */

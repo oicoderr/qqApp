@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
-import { getStorage, setStorage, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem, get_OpenId_RoleId } from '../../utils'
+import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import configObj from '../../service/configObj'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
@@ -97,6 +97,7 @@ export class Index extends Component {
 				})
 			}
 		});
+		removeStorage('inviterInfo');
 	}
 
 	componentWillUnmount() { }
