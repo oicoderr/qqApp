@@ -96,6 +96,7 @@ export default class HomeBand extends Component {
         'svg': 'leadSvg',
         'type': 1,
         'status': true,
+        'eventArea': 'leadSingerArea', // 控制播放/暂停点击区
       },{
         'main': 'guitaristBox',
         'light': 'guitaristLight',
@@ -104,6 +105,7 @@ export default class HomeBand extends Component {
         'type': 2,
         'status': true,
         'sketch': 'guitaristBox_',
+        'eventArea': 'guitaristArea',
       },{
         'main': 'bassistBox',
         'light': 'bassistLight',
@@ -112,6 +114,7 @@ export default class HomeBand extends Component {
         'type': 3,
         'status': true,
         'sketch': 'bassistBox_',
+        'eventArea': 'bassistArea',
       },{
         'main': 'drummerBox',
         'light': 'drummerLight',
@@ -120,6 +123,7 @@ export default class HomeBand extends Component {
         'type': 4,
         'status': true,
         'sketch': 'drummerBox_',
+        'eventArea': 'drummerArea',
       }],
     }
   }
@@ -211,8 +215,9 @@ export default class HomeBand extends Component {
       return  <View className={`${AnClass[index]['main']} ${protagonist[index]['type'] ? '' : 'hide'}`} style={`width:${cur.width}rpx; height:${cur.height}rpx;`}>
                 <svg viewBox={`0, 0, ${cur.width}, ${cur.height}`} style={`position: absolute; z-index: ${70 - index}; width: ${cur.width}rpx; height: ${cur.height}rpx;`} >
                   <foreignObject width={cur.width} height={cur.height}>
-                    <View data-type={AnClass[index]['type']} data-status={AnClass[index]['status']} onClick={this.setAnimationStatus.bind(this)}  className={`${cur.classSvg} ${AnClass[index]['svg']} ${AnClass[index]['status']?'play':'stop'} `} style={`background:url(${cur.img}); backface-visibility: hidden;
+                    <View className={`${cur.classSvg} ${AnClass[index]['svg']} ${AnClass[index]['status']?'play':'stop'} `} style={`background:url(${cur.img}); backface-visibility: hidden;
                     animation: ${cur.classAn} ${cur.timeAn}s steps(${cur.steps}) infinite; `}></View>
+                    <View data-type={AnClass[index]['type']} data-status={AnClass[index]['status']} onClick={this.setAnimationStatus.bind(this)} className={AnClass[index]['eventArea']}></View>
                   </foreignObject>
                 </svg>
                 <Image src={protagonist[index]['light']} className={AnClass[index]['light']} />
