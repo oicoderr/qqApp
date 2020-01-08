@@ -146,6 +146,108 @@
       bottom: 0;
     }
   }
+
+  // 剪影
+  .guitaristBox_{
+    position: absolute;
+    top: -40rpx;
+    right: 20rpx;
+    width: 411rpx;
+    height: 590rpx;
+    z-index: 86;
+
+    .guitaristSvg{
+      position: absolute;
+      width: 411rpx;
+      height: 520rpx;
+      z-index: 20;
+      bottom: 0;
+    }
+
+    .guitaristLight {
+      position: absolute;
+      width: 325rpx;
+      height: 150rpx;
+      bottom: 30rpx;
+      z-index: 21;
+    }
+
+    .guitaristStage {
+      position: absolute;
+      width: 324rpx;
+      height: 92rpx;
+      z-index: 19;
+      bottom: -40rpx;
+    }
+  }
+
+  .bassistBox_{
+    position: absolute;
+    bottom: 110rpx;
+    right: 0rpx;
+    width: 322rpx;
+    height: 590rpx;
+    z-index: 87;
+
+    .bassistSvg{
+      position: absolute;
+      width: 322rpx;
+      height: 577rpx;
+      z-index: 20;
+      bottom: 70rpx;
+    }
+
+    .bassistLight {
+      position: absolute;
+      width: 373rpx;
+      height: 171rpx;
+      bottom: 48rpx;
+      z-index: 21;
+    }
+
+    .bassistStage {
+      position: absolute;
+      width: 368rpx;
+      height: 104rpx;
+      z-index: 19;
+      bottom: 0;
+    }
+  }
+
+  .drummerBox_{
+    position: absolute;
+    top: 0;
+    left: -20rpx;
+    width: 506rpx;
+    height: 660rpx;
+    z-index: 84;
+
+    .drummerSvg{
+      position: absolute;
+      width: 506rpx;
+      height: 480rpx;
+      z-index: 20;
+      bottom: 40rpx;
+      left: -50rpx;
+    }
+
+    .drummerLight {
+      position: absolute;
+      width: 373rpx;
+      height: 170rpx;
+      bottom: 42rpx;
+      z-index: 21;
+    }
+
+    .drummerStage {
+      position: absolute;
+      width: 368rpx;
+      height: 104rpx;
+      z-index: 19;
+      bottom: 0;
+    }
+  }
+
 }
 
 /*            动画Start              */

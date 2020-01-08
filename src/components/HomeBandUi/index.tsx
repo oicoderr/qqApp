@@ -103,6 +103,7 @@ export default class HomeBand extends Component {
         'svg': 'guitaristSvg',
         'type': 2,
         'status': true,
+        'sketch': 'guitaristBox_',
       },{
         'main': 'bassistBox',
         'light': 'bassistLight',
@@ -110,6 +111,7 @@ export default class HomeBand extends Component {
         'svg': 'bassistSvg',
         'type': 3,
         'status': true,
+        'sketch': 'bassistBox_',
       },{
         'main': 'drummerBox',
         'light': 'drummerLight',
@@ -117,6 +119,7 @@ export default class HomeBand extends Component {
         'svg': 'drummerSvg',
         'type': 4,
         'status': true,
+        'sketch': 'drummerBox_',
       }],
     }
   }
@@ -218,7 +221,7 @@ export default class HomeBand extends Component {
     })
     // 剪影
     const Silhouette = default_data.map((cur,index)=>{
-      return <View className={`${AnClass[index]['main']} ${protagonist[index+1]['type'] ? 'hide' : ''}`}>
+      return <View className={`${AnClass[index+1]['sketch']} ${protagonist[index+1]['type'] ? 'hide' : ''}`}>
               <Image src={cur.staticBand} className={AnClass[index+1]['svg']} />
               <Image src={cur.light} className={AnClass[index+1]['light']} />
               <Image src={cur.stage} className={AnClass[index+1]['stage']} />

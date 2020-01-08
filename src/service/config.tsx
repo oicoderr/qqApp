@@ -68,13 +68,3 @@ export default class config {
 		},20)
 	}
 }
-
-// 如果当前提的版本等于oss版本相同走测试版本，如果不同走正式socket
-// const baseUrl = 'https://login.snmgame.com/';
-// const websocketUrl = 'wss://game.snmgame.com/';
-// const test_baseUrl = 'https://login.xueyan.online/';
-// const test_websocketUrl = 'wss://game.xueyan.online';
-// export {
-// 	baseUrl,
-// 	websocketUrl
-// }
