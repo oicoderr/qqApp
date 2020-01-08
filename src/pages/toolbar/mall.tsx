@@ -3,7 +3,7 @@ import { View, ScrollView, Image, Text } from '@tarojs/components'
 import throttle from 'lodash/throttle'
 import { setStorage, getStorage, unitReplacement, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import './mall.scss'
 import GameLoading from '../../components/GameLoading'
 import MessageToast from '../../components/MessageToast'
@@ -82,7 +82,8 @@ export class Mall extends Component {
 				drummer: [],
 				// 贝斯手
 				bassist: [],
-			}
+			},
+			websocketUrl: '',
 		};
 
 		this.msgProto = new MsgProto();
@@ -128,32 +129,44 @@ export class Mall extends Component {
 		emitter.removeAllListeners('currencyChange');
 		emitter.removeAllListeners('getGameDescription');
 		emitter.removeAllListeners('closeMessageToast');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	componentDidShow () {
 		let _this = this;
 
-		if(App.globalData.websocket === ''){
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-			if(this.websocket.isLogin){
-				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-			}else{
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res){
-						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{});
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err){
-						createWebSocket(_this);
-					}
-				});
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.state.websocketUrl = message[1]['websocketUrl'];
+
+			// 接受AppGlobalSocket
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
+			} else {
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if(this.websocket.isLogin){
+					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				}else{
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res){
+							// 开始登陆
+							_this.websocket.onSocketOpened((res)=>{});
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err){
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 
 		// 获取金币/能量，如果不存在就在gameUserInfo中取
 		getStorage('currencyChange',(res)=>{

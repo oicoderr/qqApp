@@ -7,7 +7,7 @@ import { UserAgreement } from '../../utils/UserAgreement'
 import { MessageToast } from '../../components/MessageToast'
 import MsgProto from '../../service/msgProto'
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import './index.scss'
 
 const App = Taro.getApp();
@@ -39,7 +39,9 @@ export class Login extends Component {
 				loginBtn: 'https://oss.snmgame.com/v1.0.0/loginBtn.png',
 				tip0: '同意',
 				tip: '《音乐大作战用户使用须知》',
-			}
+			},
+
+			websocketUrl: '',
 		};
 		this.msgProto = new MsgProto();
 	}
@@ -49,7 +51,7 @@ export class Login extends Component {
 		this.eventEmitter = emitter.addListener('AppGlobalSocket', (message) => {
 			clearInterval(message[1]);
 
-			console.log('%c 收到的App发来的webSocket', 'font-size:14px;color:#ffad1a');
+			console.log('%c 登陆页收到的App发来的webSocket', 'font-size:14px;color:#ffad1a');
 			console.log(message[0]);
 			let socket = message[0];
 			App.globalData.websocket = socket;
@@ -73,27 +75,36 @@ export class Login extends Component {
 		// 显示分享
 		showShareMenuItem();
 
-		if (App.globalData.websocket === '') {
-			createWebSocket(this);
-		} else {
-			this.websocket = App.globalData.websocket;
-			if (this.websocket.isLogin) {
-				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			_this.state.websocketUrl = message[1]['websocketUrl'];
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
 			} else {
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res) {
-						// 开始登陆
-						_this.websocket.onSocketOpened((res) => { });
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err) {
-						createWebSocket(_this);
-					}
-				});
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if (this.websocket.isLogin) {
+					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				} else {
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res) {
+							// 开始登游戏
+							_this.websocket.onSocketOpened((res) => { });
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err) {
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 	}
 
 	componentDidHide() {

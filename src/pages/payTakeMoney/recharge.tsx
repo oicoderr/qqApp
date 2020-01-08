@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
 import { unitReplacement, getStorage } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import './recharge.scss'
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'
@@ -33,7 +33,9 @@ export class Recharge extends Component {
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				ticketsIcon: 'https://oss.snmgame.com/v1.0.0/ticketsIcon.png',
 				tips: 'Tips：每件商品都是需要QQ钱包支付的哟!!',
-			}
+			},
+
+			websocketUrl: '',
 		};
 		this.msgProto = new MsgProto();
 	}
@@ -45,35 +47,47 @@ export class Recharge extends Component {
 	componentWillUnmount () {
 		emitter.removeAllListeners('getRechargeMessage');
 		emitter.removeAllListeners('getPrePay_id');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	componentDidShow () {
 		let _this = this;
 
-		if(App.globalData.websocket === ''){
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-			if(this.websocket.isLogin){
-				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-				this.recharge();
-			}else{
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res){
-						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{
-							_this.recharge();
-						});
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err){
-						createWebSocket(_this);
-					}
-				});
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.state.websocketUrl = message[1]['websocketUrl'];
+
+			// 接受AppGlobalSocket
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
+			} else {
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if (this.websocket.isLogin) {
+					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+					this.recharge();
+				} else {
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res){
+							// 开始登陆
+							_this.websocket.onSocketOpened((res)=>{
+								_this.recharge();
+							});
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err){
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 
 		// 接受1902充值模版消息
 		this.eventEmitter = emitter.addListener('getRechargeMessage', (message) => {

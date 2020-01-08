@@ -1,13 +1,15 @@
 
 import Taro from '@tarojs/taro'
 import { setStorage, getStorage } from '../utils'
+import emitter from '../service/events';
+import '@tarojs/async-await'
 
-class config {
+export default class config {
 	// 如果当前提的版本等于oss版本相同走测试版本，如果不同走正式socket
 	constructor() {
 		// 当前版本
-		this.currentVersion = 'v.1.0.0';
-		// 1 正式  2 测试
+		this.currentVersion = 'v1.0.0';
+		// 1 正式  0 测试
 		this.isVersionType = 1;
 	}
 
@@ -17,19 +19,18 @@ class config {
 	}
 
 	// 请求版本信息
-	getVersion(){
-		Taro.request({
+	async getVersion(){
+		const response = await Taro.request({
 			url: 'https://oss.snmgame.com/vControl/version.json',
 			header: {
 				'content-type': 'application/json'
 			}
-		})
-		.then(res =>{
-			let version = JSON.parse(JSON.stringify(res.data));
-			console.log('%c 版本信息：','font-size:14px;color:#FF3030;');console.log(version);
-			this.diffVersion(version);
-			this.setStorageVersion();
-		})
+		});
+		console.log(response,999);
+		console.log('%c 版本信息：','font-size:14px;color:#D15FEE;background-color:#FAFAFA;');console.log(response.data);
+		this.diffVersion(response.data);
+		this.setStorageVersion();
+		this.exportUrl();
 	}
 
 	// diff版本
@@ -39,8 +40,10 @@ class config {
 		getStorage('currentVersion',(res)=>{
 			if(version.currentVersion == res){
 				_this.isVersionType = 0;
+				console.log('%c 走`测试`版本socket','font-size:14px;color:#D15FEE;background-color:#FAFAFA;');
 			}else{
 				_this.isVersionType = 1;
+				console.log('%c 走`生产`版本socket','font-size:14px;color:#4876FF;background-color:#FAFAFA;');
 			}
 		})
 	}
@@ -48,37 +51,30 @@ class config {
 	// 抛出当前应使用的http,socket 的url
 	exportUrl(){
 		let isVersionType = this.isVersionType;
+		let data = {};
 		if(isVersionType){
-			let data = {
+			data = {
 				baseUrl: 'https://login.snmgame.com/',
 				websocketUrl: 'wss://game.snmgame.com/',
-			}
-			urls(data);
-			
+			};
 		}else{
-			let data = {
+			data = {
 				baseUrl: 'https://login.xueyan.online/',
 				websocketUrl: 'wss://game.xueyan.online/',
-			}
-			urls(data);
+			};
 		}
+		let timer = setInterval(()=>{
+			emitter.emit('requestUrl', [timer, data]);
+		},20)
 	}
 }
 
-export const urls = (data) =>{
-	return data;
-}
-
-let config_ = new config();
-config_.getVersion();
-
-
 // 如果当前提的版本等于oss版本相同走测试版本，如果不同走正式socket
-const baseUrl = 'https://login.snmgame.com/';
-const websocketUrl = 'wss://game.snmgame.com/';
-const test_baseUrl = 'https://login.xueyan.online/';
-const test_websocketUrl = 'wss://game.xueyan.online';
-export {
-	baseUrl,
-	websocketUrl
-}
+// const baseUrl = 'https://login.snmgame.com/';
+// const websocketUrl = 'wss://game.snmgame.com/';
+// const test_baseUrl = 'https://login.xueyan.online/';
+// const test_websocketUrl = 'wss://game.xueyan.online';
+// export {
+// 	baseUrl,
+// 	websocketUrl
+// }

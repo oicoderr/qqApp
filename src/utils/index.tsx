@@ -1,5 +1,4 @@
 import Taro from '@tarojs/taro'
-import { baseUrl } from '../service/config'
 
 export const promisify = (func, ctx) => {
   // 返回一个新的function
@@ -273,7 +272,7 @@ export const request = (method = 'GET', params, callback) => {
   // 缓存获取openid
   getStorage('userInfo', (res) => {
     Taro.request({
-      url: `${baseUrl + url}`,
+      url: `${url}`,
       method: `${method}`,
       data: `${data}`,
       header: {
@@ -315,7 +314,7 @@ export const loginRequest = (params, callback) => {
   let { url, data } = params;
   data = JSON.stringify(data);
   Taro.request({
-    url: `${baseUrl + url}`,
+    url: `${url}`,
     method: `POST`,
     data: `${data}`,
     success(res) {

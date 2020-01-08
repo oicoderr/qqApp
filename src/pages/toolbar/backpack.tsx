@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import './backpack.scss'
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'
@@ -34,7 +34,8 @@ export class BackPack extends Component {
 				tipCard: '局内道具',
 				// 是否成功使用道具
 				isUsedSuccess: false,
-			}
+			},
+			websocketUrl: '',
 		};
 		this.msgProto = new MsgProto();
 	}
@@ -46,58 +47,49 @@ export class BackPack extends Component {
 	componentWillUnmount () {
 		emitter.removeAllListeners('getBackpack');
 		emitter.removeAllListeners('propsInfo');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	componentDidShow () {
 		let _this = this;
 
-		if(App.globalData.websocket === ''){
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-			this.websocket.initWebSocket({
-				url: websocketUrl,
-				success(res){
-					// 开始登陆
-					_this.websocket.onSocketOpened((res)=>{
-						// 请求背包信息
-						this.getBackPack();
-					});
-					// 对外抛出websocket
-					App.globalData.websocket = _this.websocket;
-				},
-				fail(err){
-					createWebSocket(_this);
-				}
-			});
-		}
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
 
-		if(App.globalData.websocket === ''){
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-			if(this.websocket.isLogin){
-				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-				// 请求背包信息
-				this.getBackPack();
-			}else{
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res){
-						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{
-							// 请求背包信息
-							this.getBackPack();
-						});
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err){
-						createWebSocket(_this);
-					}
-				});
+			this.state.websocketUrl = message[1]['websocketUrl'];
+
+			// 接受AppGlobalSocket
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
+			} else {
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if(this.websocket.isLogin){
+					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+					// 请求背包信息
+					this.getBackPack();
+				}else{
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res){
+							// 开始登陆
+							_this.websocket.onSocketOpened((res)=>{
+								// 请求背包信息
+								_this.getBackPack();
+							});
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err){
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 
 		// 1502 监听背包
 		this.eventEmitter = emitter.addListener('getBackpack', (message) => {

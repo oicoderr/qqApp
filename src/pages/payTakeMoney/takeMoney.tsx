@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
 import { unitReplacement, getStorage, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import './takeMoney.scss'
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'
@@ -35,7 +35,9 @@ export class TakeMoney extends Component {
 				exchangeTxt: '兑换',
 				energyIcon: 'https://oss.snmgame.com/v1.0.0/energyIcon.png',
 				energyLittleIcon: 'https://oss.snmgame.com/v1.0.0/energyLittleIcon.png',
-			}
+			},
+
+			websocketUrl: '',
 		};
 		this.msgProto = new MsgProto();
 	}
@@ -47,36 +49,49 @@ export class TakeMoney extends Component {
 	componentWillUnmount () {
 		emitter.removeAllListeners('takeMoney');
 		emitter.removeAllListeners('takeMoneyStatus');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	componentDidShow () {
 		let _this = this;
 		// pv 兑换中心
 		App.aldstat.sendEvent('pv-兑换中心', get_OpenId_RoleId());
-		if(App.globalData.websocket === ''){
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-			if(this.websocket.isLogin){
-				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-				this.takeMoneyInfo();
-			}else{
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res){
-						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{
-							_this.takeMoneyInfo();
-						});
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err){
-						createWebSocket(_this);
-					}
-				});
+
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.state.websocketUrl = message[1]['websocketUrl'];
+
+			// 接受AppGlobalSocket
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
+			} else {
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if(this.websocket.isLogin){
+					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+					this.takeMoneyInfo();
+				}else{
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res){
+							// 开始登陆
+							_this.websocket.onSocketOpened((res)=>{
+								_this.takeMoneyInfo();
+							});
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err){
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 
 		// 2102提现信息
 		this.eventEmitter = emitter.addListener('takeMoney', (message) => {

@@ -3,7 +3,7 @@ import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
 import { buildURL, getCurrentTime, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import './enterGame.scss'
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'
@@ -90,7 +90,9 @@ export class PrizeEnterGame extends Component {
 					toastUnit: '秒',
 				},
 				isShowToast: false,						// 是否显示复活toast
-			}
+			},
+
+			websocketUrl: '',
 		}
 
 		this.msgProto = new MsgProto();
@@ -118,27 +120,38 @@ export class PrizeEnterGame extends Component {
 		// 大奖赛答题pv
 		App.aldstat.sendEvent('pv-大奖赛比赛', get_OpenId_RoleId());
 
-		if (App.globalData.websocket === '') {
-			createWebSocket(this);
-		} else {
-			this.websocket = App.globalData.websocket;
-			if (this.websocket.isLogin) {
-				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.state.websocketUrl = message[1]['websocketUrl'];
+
+			// 接受AppGlobalSocket
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
 			} else {
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res) {
-						// 开始登陆
-						_this.websocket.onSocketOpened((res) => { });
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err) {
-						createWebSocket(_this);
-					}
-				});
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if (this.websocket.isLogin) {
+					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				} else {
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res) {
+							// 开始登陆
+							_this.websocket.onSocketOpened((res) => { });
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err) {
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 
 		// 隐藏答题遮罩
 		this.setState((preState) => {
@@ -316,6 +329,7 @@ export class PrizeEnterGame extends Component {
 		emitter.removeAllListeners('getResurrectResult');
 		emitter.removeAllListeners('getPrizeMatchReport');
 		emitter.removeAllListeners('getRenascenceInfo');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	// 接受到的问题答案数据放入数组, 同时设置答案optionId

@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { getStorage, buildURL, getArrayItems, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import emitter from '../../service/events'
 import './queue.scss'
 
@@ -185,7 +185,8 @@ export class PrizeQueue extends Component {
 				matchStatus: true,
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				v3Img: 'https://oss.snmgame.com/v1.0.0/3v3.png',
-			}
+			},
+			websocketUrl: '',
 		}
 		this.msgProto = new MsgProto();
 	}
@@ -234,6 +235,7 @@ export class PrizeQueue extends Component {
 	componentWillUnmount() {
 		emitter.removeAllListeners('enterMatch');
 		emitter.removeAllListeners('exitQueueStatus');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	componentDidShow() {
@@ -242,27 +244,38 @@ export class PrizeQueue extends Component {
 		// 排位赛匹配pv
 		App.aldstat.sendEvent('pv-排位赛匹配', get_OpenId_RoleId());
 
-		if (App.globalData.websocket === '') {
-			createWebSocket(this);
-		} else {
-			this.websocket = App.globalData.websocket;
-			if (this.websocket.isLogin) {
-				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.state.websocketUrl = message[1]['websocketUrl'];
+
+			// 接受AppGlobalSocket
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
 			} else {
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res) {
-						// 开始登陆
-						_this.websocket.onSocketOpened((res) => { });
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err) {
-						createWebSocket(_this);
-					}
-				});
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if (this.websocket.isLogin) {
+					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				} else {
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res) {
+							// 开始登陆
+							_this.websocket.onSocketOpened((res) => { });
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err) {
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 
 		// 切换匹配头像 1s切换一次
 		this.setState((preState) => {

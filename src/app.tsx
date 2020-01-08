@@ -5,7 +5,7 @@ import { setStorage, getStorage, getUa, hideShareMenu, loginRequest, getCurrentP
 import { Api } from './service/api'
 import './app.scss'
 import emitter from './service/events';
-import { websocketUrl } from './service/config'
+import configObj from './service/configObj'
 import Websocket from './service/webSocket'
 import ReceiveMsg from './service/receivedMsg'
 import MsgProto from './service/msgProto'
@@ -63,19 +63,36 @@ class _App extends Component {
 	globalData = {
 		// 全局setTimeout, 
 		timestamp: 1,
+		// socket对象
 		websocket: '',
 		gameUserInfo: '',
 	}
+	// socketUrl
+	websocketUrl: '';
+	baseUrl: '';
 
 	componentWillMount () {}
 
 	componentDidMount () {
 		let _this = this;
+
 		// console.log = () => {};
 		// console.info = () => {};
 		// console.error = () => {};
 		// console.warn = () => {};
 		// console.table = () => {};
+
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.websocketUrl = message[1]['websocketUrl'];
+			this.baseUrl = message[1]['baseUrl'];
+			console.log('获取到的websocketUrl：' + this.websocketUrl);
+			console.log('获取到的baseUrl：' + this.baseUrl);
+		});
 
 		// 设备提示
 		let ua = getUa();
@@ -105,7 +122,7 @@ class _App extends Component {
 		// 将code发后台，获取openid及accessToken
 		this.login((loginData)=>{
 			// app登录
-			loginRequest( loginData, (appLogin)=>{ // res: 返回openid，accessToken 
+			loginRequest( loginData, (appLogin)=>{ // res: 返回openid，accessToken
 				let userInfo = {};
 				// 获取缓存userInfo，如果没有授权信息, 授权后并保存缓存中，如果存在openid,跳转游戏登录
 				getStorage('userInfo',(res)=>{
@@ -113,7 +130,7 @@ class _App extends Component {
 						console.log('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
 						userInfo = appLogin.data;
 						// 开始登陆
-						_this.createWebSocket();
+						_this.createWebSocket(_this.websocketUrl);
 						setStorage('userInfo', userInfo);
 					}else{
 						// 跳转游戏主页
@@ -230,11 +247,13 @@ class _App extends Component {
 
 	// app登录获取code操作
 	login(callback) { 
+		let _this = this;
 		Taro.login({ // 获取code
 			success: function(res){
 				let loginCode = res.code;
+				let baseUrl = _this.baseUrl;
 				let loginData = {
-					'url': `${Api.user.login}`,
+					'url': `${baseUrl + Api.user.login}`,
 					'data':{
 						'roomId':'',
 						'code': `${loginCode}`
@@ -256,7 +275,7 @@ class _App extends Component {
 	}
 
 	// 创建网络连接
-	createWebSocket(){
+	createWebSocket(websocketUrl){
 		let _this = this;
 		console.log('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
 		// 创建websocket对象
@@ -315,7 +334,7 @@ class _App extends Component {
 				_this.globalData.websocket = _this.websocket;
 				// 通知AppGlobalSocket
 				let timer = setInterval(()=>{
-					console.log('AppGlobalSocket')
+					console.log('AppGlobalSocket');
 					emitter.emit('AppGlobalSocket', [_this.websocket, timer]);
 				},20);
 				// 开始登陆

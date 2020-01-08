@@ -5,7 +5,7 @@ import emitter from '../../service/events'
 import throttle from 'lodash/throttle'
 import { getStorage, setStorage, onShareApp, showShareMenuItem, unitReplacement,get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import { MessageToast } from '../../components/MessageToast'
 import createVideoAd from '../../service/createVideoAd'
 import MsgProto from '../../service/msgProto'
@@ -83,8 +83,8 @@ export class PrizeEntrance extends Component {
 				quickenCardBg: 'https://oss.snmgame.com/v1.0.0/quickenCardBg.png',
 				progress_item_blank: 'https://oss.snmgame.com/v1.0.0/progress_item_blank.png',
 				progress_item: 'https://oss.snmgame.com/v1.0.0/progress_item.png',
-			}
-
+			},
+			websocketUrl: '',
 		}
 		this.msgProto = new MsgProto();
 	}
@@ -108,6 +108,7 @@ export class PrizeEntrance extends Component {
 		emitter.removeAllListeners('getGameDescription');
 		emitter.removeAllListeners('closeMessageToast');
 		emitter.removeAllListeners('currencyChange');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	componentDidShow() {
@@ -115,27 +116,38 @@ export class PrizeEntrance extends Component {
 		// 显示分享
 		showShareMenuItem();
 
-		if (App.globalData.websocket === '') {
-			createWebSocket(this);
-		} else {
-			this.websocket = App.globalData.websocket;
-			if (this.websocket.isLogin) {
-				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.state.websocketUrl = message[1]['websocketUrl'];
+
+			// 接受AppGlobalSocket
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
 			} else {
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res) {
-						// 开始登陆
-						_this.websocket.onSocketOpened((res) => { });
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err) {
-						createWebSocket(_this);
-					}
-				});
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if (this.websocket.isLogin) {
+					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				} else {
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res) {
+							// 开始登陆
+							_this.websocket.onSocketOpened((res) => { });
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err) {
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 
 		// 更新金币/红包/能量-数量
 		getStorage('currencyChange', (res) => {

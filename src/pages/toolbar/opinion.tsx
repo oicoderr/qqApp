@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Textarea, Text, Image, Input } from '@tarojs/components'
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import './opinion.scss'
 
 import emitter from '../../service/events'
@@ -41,7 +41,8 @@ export class Opinion extends Component {
 				opinionTitleImg: 'https://oss.snmgame.com/v1.0.0/opinionTitleImg.png',
 				submitBtn: 'https://oss.snmgame.com/v1.0.0/submitBtn.png',
 				copyBtn: 'https://oss.snmgame.com/v1.0.0/copyBtn.png',
-			}
+			},
+			websocketUrl: '',
 		};
 		this.msgProto = new MsgProto();
 	}
@@ -52,32 +53,44 @@ export class Opinion extends Component {
 
 	componentWillUnmount () {
 		emitter.removeAllListeners('getOpinionResult');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	componentDidShow () {
 		let _this = this;
 
-		if(App.globalData.websocket === ''){
-			createWebSocket(this);
-		}else{
-			this.websocket = App.globalData.websocket;
-			if(this.websocket.isLogin){
-				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-			}else{
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res){
-						// 开始登陆
-						_this.websocket.onSocketOpened((res)=>{});
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err){
-						createWebSocket(_this);
-					}
-				});
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.state.websocketUrl = message[1]['websocketUrl'];
+
+			// 接受AppGlobalSocket
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
+			} else {
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if(this.websocket.isLogin){
+					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				}else{
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res){
+							// 开始登陆
+							_this.websocket.onSocketOpened((res)=>{});
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err){
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 
 		// 2202 监听反馈结果
 		this.eventEmitter = emitter.addListener('getOpinionResult', (message) => {

@@ -3,7 +3,7 @@ import { View, Image, Text } from '@tarojs/components'
 import emitter from '../../service/events';
 import createVideoAd from '../../service/createVideoAd'
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import { setStorage, getStorage, unitReplacement, get_OpenId_RoleId } from '../../utils';
 import './result.scss'
 
@@ -68,7 +68,8 @@ export class RankReasult extends Component {
 					copper: 1234,
 					redEnvelope: 0,
 				},
-			}
+			},
+			websocketUrl: '',
 		}
 		this.msgProto = new MsgProto();
 	}
@@ -175,6 +176,7 @@ export class RankReasult extends Component {
 		emitter.removeAllListeners('currencyChange');
 		emitter.removeAllListeners('isCheckPlayVideo');
 		emitter.removeAllListeners('getRankBattleReport');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	componentDidShow() {
@@ -183,27 +185,38 @@ export class RankReasult extends Component {
 		// 排位赛结果pv
 		App.aldstat.sendEvent('pv-排位赛结果', get_OpenId_RoleId());
 
-		if (App.globalData.websocket === '') {
-			createWebSocket(this);
-		} else {
-			this.websocket = App.globalData.websocket;
-			if (this.websocket.isLogin) {
-				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.state.websocketUrl = message[1]['websocketUrl'];
+
+			// 接受AppGlobalSocket
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
 			} else {
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res) {
-						// 开始登陆
-						_this.websocket.onSocketOpened((res) => { });
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err) {
-						createWebSocket(_this);
-					}
-				});
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if (this.websocket.isLogin) {
+					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				} else {
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res) {
+							// 开始登陆
+							_this.websocket.onSocketOpened((res) => { });
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err) {
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {

@@ -4,7 +4,7 @@ import './entrance.scss'
 import emitter from '../../service/events';
 import { getStorage, setStorage, unitReplacement, get_OpenId_RoleId } from '../../utils';
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import createVideoAd from '../../service/createVideoAd'
 import MsgProto from '../../service/msgProto'
 
@@ -62,7 +62,8 @@ export class RankEntrance extends Component {
 					copper: 1234,
 					redEnvelope: 0,
 				},
-			}
+			},
+			websocketUrl: '',
 		}
 		this.msgProto = new MsgProto();
 	}
@@ -138,27 +139,39 @@ export class RankEntrance extends Component {
 		// 排位赛pv
 		App.aldstat.sendEvent('pv-排位赛首页', get_OpenId_RoleId());
 		
-		if (App.globalData.websocket === '') {
-			createWebSocket(this);
-		} else {
-			this.websocket = App.globalData.websocket;
-			if (this.websocket.isLogin) {
-				console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.state.websocketUrl = message[1]['websocketUrl'];
+
+			// 接受AppGlobalSocket
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
 			} else {
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res) {
-						// 开始登陆
-						_this.websocket.onSocketOpened((res) => { });
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err) {
-						createWebSocket(_this);
-					}
-				});
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if (this.websocket.isLogin) {
+					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+				} else {
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res) {
+							// 开始登陆
+							_this.websocket.onSocketOpened((res) => { });
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err) {
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 
 		// 设置玩家基本信息UI显示
 		getStorage('gameUserInfo', (res) => {

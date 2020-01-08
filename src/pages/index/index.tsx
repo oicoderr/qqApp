@@ -4,7 +4,7 @@ import emitter from '../../service/events';
 import './index.scss'
 import { getStorage, setStorage, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
-import { websocketUrl } from '../../service/config'
+import configObj from '../../service/configObj'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
 import { AdvanceRoadUi } from '../../components/advanceRoadUi'
@@ -78,7 +78,9 @@ export class Index extends Component {
 				energy: 0,
 				copper: 1234,
 				redEnvelope: 0,
-			}
+			},
+
+			websocketUrl: '',
 		};
 
 		this.msgProto = new MsgProto();
@@ -109,32 +111,42 @@ export class Index extends Component {
 		// 页面超出提示,返回当前页面URL
 		let currentPageUrl = getCurrentPageUrl();
 
-		// 接受AppGlobalSocket
-		if (App.globalData.websocket === '') {
-			createWebSocket(this);
-		} else {
-			this.websocket = App.globalData.websocket;
-			if (this.websocket.isLogin) {
-				// 1601 请求乐队基本信息
-				this.getSelfOrchestra();
+		// 获取当前版本
+		configObj.getVersion();
+		// 监听requestUrl
+		this.eventEmitter = emitter.addListener('requestUrl', message => {
+			clearInterval(message[0]);
+
+			this.state.websocketUrl = message[1]['websocketUrl'];
+
+			// 接受AppGlobalSocket
+			if (App.globalData.websocket === '') {
+				createWebSocket(this);
 			} else {
-				this.websocket.initWebSocket({
-					url: websocketUrl,
-					success(res) {
-						// 开始登陆
-						_this.websocket.onSocketOpened((res) => {
-							// 1601 请求乐队基本信息
-							this.getSelfOrchestra();
-						});
-						// 对外抛出websocket
-						App.globalData.websocket = _this.websocket;
-					},
-					fail(err) {
-						createWebSocket(_this);
-					}
-				});
+				this.websocket = App.globalData.websocket;
+				let websocketUrl = this.state.websocketUrl;
+				if (this.websocket.isLogin) {
+					// 1601 请求乐队基本信息
+					this.getSelfOrchestra();
+				} else {
+					this.websocket.initWebSocket({
+						url: websocketUrl,
+						success(res) {
+							// 开始登陆
+							_this.websocket.onSocketOpened((res) => {
+								// 1601 请求乐队基本信息
+								this.getSelfOrchestra();
+							});
+							// 对外抛出websocket
+							App.globalData.websocket = _this.websocket;
+						},
+						fail(err) {
+							createWebSocket(_this);
+						}
+					});
+				}
 			}
-		}
+		});
 
 		// 更新金币/红包/能量-数量
 		getStorage('currencyChange', (res) => {
