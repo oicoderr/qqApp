@@ -81,6 +81,7 @@ export class GoldHelp extends Component {
 		emitter.removeAllListeners('getGameDescription');
 		emitter.removeAllListeners('getGoldHelp');
 		emitter.removeAllListeners('closeMessageToast');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	componentDidShow() {

@@ -110,6 +110,7 @@ export class Login extends Component {
 	componentDidHide() {
 		emitter.removeAllListeners('closeMessageToast');
 		emitter.removeAllListeners('AppGlobalSocket');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	getUserInfo() {

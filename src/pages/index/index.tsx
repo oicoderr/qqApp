@@ -383,6 +383,7 @@ export class Index extends Component {
 		emitter.removeAllListeners('checkInResult');
 		emitter.removeAllListeners('getSelfOrchestra');
 		emitter.removeAllListeners('currencyChange');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	// 设置性别
