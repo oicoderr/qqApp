@@ -29,7 +29,7 @@ export class RankEnterGame extends Component {
 
 			// 后台返回数据
 			data: {
-				timer: '', 				// 计时器
+				timer: '', 					// 计时器
 				curQuestion: {
 					currContent: '',
 					currIndex: null,
@@ -43,13 +43,13 @@ export class RankEnterGame extends Component {
 				},
 				isSuccess: -1,
 
-				curAnswer: {			// 当前题正确答案
+				curAnswer: {				// 当前题正确答案
 					questId: '',
-					optionId: '',      	// 正确选项id
+					optionId: '',     // 正确选项id
 					isSuccess: '',
 				},
 
-				prevQAInfo: {			// 所有人的得分情况
+				prevQAInfo: {				// 所有人的得分情况
 					blueScore: 0,
 					lastQuestId: '',
 					optionId: '',
@@ -57,7 +57,7 @@ export class RankEnterGame extends Component {
 					selfCamp: '',
 					list: [],
 				},
-				rankResultInfo: {},		// 结果页数据
+				rankResultInfo: {},	// 结果页数据
 			},
 
 			// 前台数据
@@ -94,17 +94,18 @@ export class RankEnterGame extends Component {
 					result: 1,
 					time: 0,
 				},
-				defultClass: '',	   	// 选项上层默认样式class 
+				defultClass: '',	   		// 选项上层默认样式class 
 				defultBottomClass: '', 	// 选项下层默认样式class 
 				selectedOptionIndex: 0, // 当前题的index
-				selectedOptionId: '',	// 用户所选optionId
-				isShowMask: false,		// 默认不显示遮罩
-				isShowLoading: true,	// 默认显示加载动画
+				selectedOptionId: '',		// 用户所选optionId
+				isShowMask: false,			// 默认不显示遮罩
+				isShowLoading: true,		// 默认显示加载动画
 				delayCardBtn: 'https://oss.snmgame.com/v1.0.0/delayCardBtn.png',
 				helpCardBtn: 'https://oss.snmgame.com/v1.0.0/helpCardBtn.png',
 				disable_delayCardBtn: 'https://oss.snmgame.com/v1.0.0/disable_delayCardBtn.png',
 				disable_helpCardBtn: 'https://oss.snmgame.com/v1.0.0/disable_helpCardBtn.png',
 				countdown: 'https://oss.snmgame.com/v1.0.0/rank-countdown.png',
+				doublePointsIcon: 'https://oss.snmgame.com/v1.0.0/doublePointsIcon.png',
 			},
 			websocketUrl: '',
 		}
@@ -159,7 +160,7 @@ export class RankEnterGame extends Component {
 
 	componentWillUnmount() {
 		clearInterval(this.state.data.timer);
-		console.log('%c rank-enterGame componentWillUnmount','font-size:14px;color:#FF34B3;background-color:#EEEED1;');
+		// console.log('%c rank-enterGame componentWillUnmount','font-size:14px;color:#FF34B3;background-color:#EEEED1;');
 		emitter.removeAllListeners('getMatchProps');
 		emitter.removeAllListeners('usedPropsResult');
 		emitter.removeAllListeners('getQuestion');
@@ -253,6 +254,7 @@ export class RankEnterGame extends Component {
 		// 1306 排位赛发题
 		this.eventEmitter = emitter.addListener('getQuestion', (message) => {
 			clearInterval(message[1]);
+
 			// console.log('%c 接受到的题目及选项', 'color:#000; font-size:14px;'); console.log(message[0]['data']);
 			console.log('%c <========== 1306发题了 ==========>' + getCurrentTime(), 'font-size:14px;color:#f04e00;');
 			let time = message[0]['data']['time'];
@@ -504,9 +506,9 @@ export class RankEnterGame extends Component {
 	render() {
 		const { defultClass, defultBottomClass, isShowMask, isShowLoading, selectedOptionIndex, countdown, scoreTeamA,
 			scoreTeamB, selfScore, delayCardBtn, helpCardBtn, rankUserInfo, PartyATeam, PartyBTeam,
-			matchProps, used_delayCardResult, used_helpCardResult, disable_delayCardBtn, disable_helpCardBtn,
+			matchProps, used_delayCardResult, used_helpCardResult, disable_delayCardBtn, disable_helpCardBtn, doublePointsIcon,
 		} = this.state.local_data;
-		const { currContent, currIndex, currQuestId, time, totalCount, options } = this.state.local_data.curQuestion;
+		const { currContent, currIndex, currQuestId, time, totalCount, options, multiple } = this.state.local_data.curQuestion;
 		const { blueScore, redScore, selfCamp } = this.state.data.prevQAInfo;
 
 		const redContent = PartyATeam.map((currentValue, index) => {
@@ -575,6 +577,9 @@ export class RankEnterGame extends Component {
 									<View className='score teamBScore'>{selfCamp ? redScore : blueScore}</View>
 								</View>
 								<View className='Text'>{currIndex + 1}. <Text decode="true">{currContent}</Text></View>
+								<View className={multiple==2?'doublePoints':'hide'}>
+									<Image src={doublePointsIcon} className='doublePointsIcon' />
+								</View>
 							</View>
 
 							<View className='blueTeam'>

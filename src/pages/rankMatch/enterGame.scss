@@ -204,6 +204,23 @@
 					color: rgba(255, 255, 255, 1);
 					font-weight: 600;
 				}
+
+				.doublePoints{
+					position: absolute;
+					width: 100%;
+					height: 78rpx;
+					box-sizing: border-box;
+					padding: 0 20rpx 20rpx 20rpx;
+					bottom: 0;
+					display: flex;
+					flex-direction: row;
+					justify-content: flex-end;
+
+					.doublePointsIcon{
+						width: 144rpx;
+						height: 58rpx;
+					}
+				}
 			}
 		}
 
