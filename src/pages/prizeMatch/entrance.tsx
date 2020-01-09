@@ -31,10 +31,6 @@ export class PrizeEntrance extends Component {
 			},
 
 			data: {
-				isOpen: {
-					type: 1,
-					value: '开放时间：上午8:00-次日凌晨2:00',
-				},
 				quickenCardHelpResult: {
 					overCount: 0,
 					speedItemCount: 0,
@@ -103,7 +99,6 @@ export class PrizeEntrance extends Component {
 
 	componentWillUnmount() {
 		emitter.removeAllListeners('enterMatch');
-		emitter.removeAllListeners('getIsPrizeOpen');
 		emitter.removeAllListeners('quickenCardHelpResult');
 		emitter.removeAllListeners('getGameDescription');
 		emitter.removeAllListeners('closeMessageToast');
@@ -210,15 +205,6 @@ export class PrizeEntrance extends Component {
 			}
 		});
 
-		// 监听 1440： 大奖赛开放结果 
-		this.eventEmitter = emitter.addListener('getIsPrizeOpen', (message) => {
-			clearInterval(message[1]);
-
-			this.setState((preState) => {
-				preState.data.isOpen = message[0]['data'];
-			})
-		});
-
 		// 监听 1506  好友助力加速卡结果
 		this.eventEmitter = emitter.addListener('quickenCardHelpResult', (message) => {
 			clearInterval(message[1]);
@@ -287,7 +273,7 @@ export class PrizeEntrance extends Component {
 
 	componentDidHide() { }
 
-	watchAdsGetReward(e) {
+	watchAdsGetReward() {
 		this.videoAd.openVideoAd();
 	}
 
@@ -460,7 +446,6 @@ export class PrizeEntrance extends Component {
 		const { backBtn, entranceBg, ruleTitle, freeBtn, ticketsBtn, tipImg, adsTip, checked,
 			StayTunedImg, quickenCardBg, directionsTitle, pendingText, surplusText, quickenTip,
 			progress_item_blank, progress_item, isShowDirections, mask_tip, unit_card, inviteBtnTxt, receiveBtnTxt } = this.state.local_data;
-		const { type, value } = this.state.data.isOpen;
 		const { energy, redEnvelope } = this.state.local_data.currencyChange;
 		const { overCount, speedItemCount, currSpeedItemCount } = this.state.data.quickenCardHelpResult;
 
@@ -510,7 +495,6 @@ export class PrizeEntrance extends Component {
 									</Label>
 								</RadioGroup>
 							</View>
-							<View className={`mask ${type ? 'hide' : ''}`}>{value}</View>
 						</View>
 
 						<View className='StayTuned'>

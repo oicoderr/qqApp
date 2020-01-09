@@ -179,29 +179,24 @@ export default class ReceiveMsg {
 					emitter.emit('getOpinionResult', [message, this.timerCount[29]]);
 				}, 20);
 				break;
-			case 1440:			// 大奖赛开放结果
-				this.timerCount[30] = setInterval(() => {
-					emitter.emit('getIsPrizeOpen', [message, this.timerCount[30]]);
-				}, 20);
-				break;
 			case 1804: 			// 当天签到结果
-				this.timerCount[31] = setInterval(() => {
-					emitter.emit('checkInResult', [message, this.timerCount[31]]);
+				this.timerCount[30] = setInterval(() => {
+					emitter.emit('checkInResult', [message, this.timerCount[30]]);
 				}, 20);
 				break;
 			case 1506:			// 主力加速卡结果
-				this.timerCount[32] = setInterval(() => {
-					emitter.emit('quickenCardHelpResult', [message, this.timerCount[32]]);
+				this.timerCount[31] = setInterval(() => {
+					emitter.emit('quickenCardHelpResult', [message, this.timerCount[31]]);
 				}, 20);
 				break;
 			case 2402:			// 玩法说明回
-				this.timerCount[33] = setInterval(() => {
-					emitter.emit('getGameDescription', [message, this.timerCount[33]]);
+				this.timerCount[32] = setInterval(() => {
+					emitter.emit('getGameDescription', [message, this.timerCount[32]]);
 				}, 20);
 				break;
 			case 1512:			// 金币助力信息
-				this.timerCount[34] = setInterval(() => {
-					emitter.emit('getGoldHelp', [message, this.timerCount[34]]);
+				this.timerCount[33] = setInterval(() => {
+					emitter.emit('getGoldHelp', [message, this.timerCount[33]]);
 				}, 20);
 				break;
 		}
