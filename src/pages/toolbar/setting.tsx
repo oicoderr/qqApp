@@ -31,17 +31,15 @@ export class Setting extends Component {
 					{
 						id: 1,
 						txt: '音乐',
-						type: 'bgm',
 						openBtn: 'https://oss.snmgame.com/v1.0.0/settingBtnOpen.png',
 						shutDownBtn: 'https://oss.snmgame.com/v1.0.0/settingBtnShutDown.png',
-						status: 1,
+						status: 0,
 					},{
 						id: 2,
 						txt: '音效',
-						type: 'musicEffects',
 						openBtn: 'https://oss.snmgame.com/v1.0.0/settingBtnOpen.png',
 						shutDownBtn: 'https://oss.snmgame.com/v1.0.0/settingBtnShutDown.png',
-						status: 1,
+						status: 0,
 					}
 				]
 			},
@@ -106,9 +104,19 @@ export class Setting extends Component {
 		});
 	}
 
-	// 开关
+	// 开关Id: 0bgm, 1音效
 	musicSwitch(e){
-		console.log(e)
+		let _this = this;
+		let id = e.currentTarget.dataset.id;
+		let status = e.currentTarget.dataset.status;
+		let list = this.state.local_data.list;
+		list.map((cur, index)=>{
+			if(id === cur['id']){
+				_this.setState((preState)=>{
+					preState.local_data.list[index]['status'] =  !status;
+				});
+			}
+		})
 	}
 
 	render () {
@@ -116,7 +124,7 @@ export class Setting extends Component {
 		const content = list.map((cur)=>{
 			return <View className='item'>
 								<Text>{cur.txt}</Text>
-								<Image data-type={cur.type} data-status={cur.status} onClick={this.musicSwitch.bind(this)} src={cur.status?cur.openBtn:cur.shutDownBtn} className='btn'></Image>
+								<Image data-id={cur.id} data-status={cur.status} onClick={this.musicSwitch.bind(this)} src={cur.status?cur.openBtn:cur.shutDownBtn} className='btn'></Image>
 							</View>
 		})
 
