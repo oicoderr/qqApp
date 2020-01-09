@@ -68,7 +68,11 @@ export class Login extends Component {
 
 	componentDidMount() { }
 
-	componentWillUnmount() { }
+	componentWillUnmount() {
+		emitter.removeAllListeners('closeMessageToast');
+		emitter.removeAllListeners('AppGlobalSocket');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	componentDidShow() {
 		let _this = this;

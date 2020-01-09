@@ -100,7 +100,20 @@ export class Index extends Component {
 		removeStorage('inviterInfo');
 	}
 
-	componentWillUnmount() { }
+	componentWillUnmount() {
+		console.log('%c 主页componentWillUnmount，开始removeAllListeners', 'font-size:14px;background-color:#fff81a; color:#00000;');
+		emitter.removeAllListeners('enterMatch');
+		emitter.removeAllListeners('getBattleTeams');
+		emitter.removeAllListeners('getWeekCheckIninfo');
+		emitter.removeAllListeners('closeWeekCheckIn');
+		emitter.removeAllListeners('curRewardStatus');
+		emitter.removeAllListeners('RedEnvelopeConvert');
+		emitter.removeAllListeners('closeAdvanceRoadToast');
+		emitter.removeAllListeners('checkInResult');
+		emitter.removeAllListeners('getSelfOrchestra');
+		emitter.removeAllListeners('currencyChange');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	componentDidShow() {
 		let _this = this;

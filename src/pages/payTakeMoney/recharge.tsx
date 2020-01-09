@@ -130,7 +130,11 @@ export class Recharge extends Component {
 		});
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('getRechargeMessage');
+		emitter.removeAllListeners('getPrePay_id');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	// 1903 购买门票
 	buyTickets(e){

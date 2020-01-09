@@ -124,7 +124,11 @@ export class TakeMoney extends Component {
 		});
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('takeMoney');
+		emitter.removeAllListeners('takeMoneyStatus');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	// 开始能量兑换现金，提现
 	takeMoney(e){

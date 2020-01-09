@@ -199,7 +199,13 @@ export class GoldHelp extends Component {
 		});
 	}
 
-	componentDidHide() { }
+	componentDidHide() {
+		clearInterval(this.state.local_data.timer);
+		emitter.removeAllListeners('getGameDescription');
+		emitter.removeAllListeners('getGoldHelp');
+		emitter.removeAllListeners('closeMessageToast');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	// 请求说明
 	DBgetQuickenCard(e) {
