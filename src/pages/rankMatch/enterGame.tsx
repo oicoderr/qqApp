@@ -111,7 +111,9 @@ export class RankEnterGame extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount() {
+	componentWillMount() { }
+
+	componentDidMount() {
 		let _this = this;
 		const params = this.$router.params;
 		console.log('自己/所有队伍信息 ==>'); console.log(JSON.parse(params.item));
@@ -155,9 +157,17 @@ export class RankEnterGame extends Component {
 		}
 	}
 
-	componentDidMount() { }
-
-	componentWillUnmount() { }
+	componentWillUnmount() {
+		clearInterval(this.state.data.timer);
+		console.log('%c rank-enterGame componentWillUnmount','font-size:14px;color:#FF34B3;background-color:#EEEED1;');
+		emitter.removeAllListeners('getMatchProps');
+		emitter.removeAllListeners('usedPropsResult');
+		emitter.removeAllListeners('getQuestion');
+		emitter.removeAllListeners('getPrevQAInfo');
+		emitter.removeAllListeners('getRankResultInfo');
+		emitter.removeAllListeners('getAnswer');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	componentDidShow() {
 		let _this = this;
@@ -382,16 +392,7 @@ export class RankEnterGame extends Component {
 		});
 	}
 
-	componentDidHide() {
-		clearInterval(this.state.data.timer);
-		emitter.removeAllListeners('getMatchProps');
-		emitter.removeAllListeners('usedPropsResult');
-		emitter.removeAllListeners('getQuestion');
-		emitter.removeAllListeners('getPrevQAInfo');
-		emitter.removeAllListeners('getRankResultInfo');
-		emitter.removeAllListeners('getAnswer');
-		emitter.removeAllListeners('requestUrl');
-	}
+	componentDidHide() { }
 
 	// 接受到的问题答案数据放入数组, 同时设置答案optionId
 	resetQA(message) {

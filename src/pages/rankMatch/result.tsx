@@ -399,9 +399,9 @@ export class RankReasult extends Component {
 
 	render() {
 		const { isShowRankResult, resultBg, scoreBg, goldIcon, leftGetAward, rightGetAward, goBackBtn,
-			replayBtn, PartyATeam, PartyBTeam, rankResultTitleUrl, personMvpUrl } = this.state.local_data;
-		const { selfCamp, blueScore, redScore, mvpRoleId } = this.state.local_data.rankBattleReport;
-		const { score, camp, roleId } = this.state.local_data.selfRankBattleReport;
+			replayBtn, PartyATeam, PartyBTeam, rankResultTitleUrl, personMvpUrl, rankBattleReport, selfRankBattleReport} = this.state.local_data;
+		const { selfCamp, blueScore, redScore, mvpRoleId } = rankBattleReport;
+		const { score, camp, roleId } = selfRankBattleReport;
 
 		const leftList = leftGetAward.map((currentValue) => {
 			return <View className='score'>
@@ -469,7 +469,7 @@ export class RankReasult extends Component {
 									<View className='player' data-roleId={roleId} data-camp={camp}>
 										<Image src={personMvpUrl} className={`personMvp ${roleId === mvpRoleId ? '' : 'hide'}`} />
 										<View className='myselfHead headImg'>
-											<openData type="userAvatarUrl"></openData>
+											<openData type="userAvatarUrl" lang='zh_CN'></openData>
 										</View>
 										<View className='nameAndscore'>
 											<View className='nickName'>

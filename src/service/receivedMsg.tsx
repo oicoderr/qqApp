@@ -199,6 +199,11 @@ export default class ReceiveMsg {
 					emitter.emit('getGoldHelp', [message, this.timerCount[33]]);
 				}, 20);
 				break;
+			case 1310:			// 排位赛成员列表
+				this.timerCount[34] = setInterval(() => {
+					emitter.emit('getRankPlayer', [message, this.timerCount[34]]);
+				}, 20);
+				break;
 		}
 	}
 }
