@@ -165,6 +165,7 @@ export default class Drawer extends Component {
       case '/pages/toolbar/review':         // 审题
         break;
       case '/pages/toolbar/sitting':        // 设置
+        App.aldstat.sendEvent('click-设置', get_OpenId_RoleId());
         break;
       case '/pages/toolbar/mail':           // 邮件
         break;

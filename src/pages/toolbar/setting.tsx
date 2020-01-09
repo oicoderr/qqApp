@@ -129,7 +129,7 @@ export class Setting extends Component {
 		})
 
 		return (
-			<View className='backpack'>
+			<View className='setting'>
 				<View className='bgColor'>
 					<View className='bgImg'></View>
 					<View className='content'>

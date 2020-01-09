@@ -1,13 +1,12 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
+import './queue.scss'
 import { getStorage, buildURL, getArrayItems, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import configObj from '../../service/configObj'
 import emitter from '../../service/events'
-import './queue.scss'
-
-import GameLoading from '../../components/GameLoading'
 import MsgProto from '../../service/msgProto'
+
 const App = Taro.getApp();
 
 export class PrizeQueue extends Component {
@@ -157,7 +156,6 @@ export class PrizeQueue extends Component {
 				],
 				selectedHead: [],
 				selectedPosi: [],
-				isShowLoading: true,
 				isreconnection: 0,					// 断线重连
 				isIntheGame: false,					// 是否游戏中断线，默认不是
 				quitBtn: 'https://oss.snmgame.com/v1.0.0/quitBtn.png',
@@ -197,15 +195,6 @@ export class PrizeQueue extends Component {
 
 	componentDidShow() {
 		let _this = this;
-
-		// 关闭加载动画
-		let timerOut = setTimeout(() => {
-			_this.setState((preState) => {
-				preState.local_data.isShowLoading = false;
-			}, () => {
-				clearTimeout(timerOut);
-			})
-		}, 500);
 
 		// 获取当前版本
 		configObj.getVersion();
@@ -373,7 +362,7 @@ export class PrizeQueue extends Component {
 	}
 
 	render() {
-		const { isShowLoading, quitBtn, selectedHead, selectedPosi, matchIngTxt, curNumberTxt } = this.state.local_data;
+		const { quitBtn, selectedHead, selectedPosi, matchIngTxt, curNumberTxt } = this.state.local_data;
 		const { curTeamInfo } = this.state.data;
 
 		const headImg = selectedPosi.map((cur, index) => {
@@ -382,11 +371,6 @@ export class PrizeQueue extends Component {
 
 		return (
 			<View className='queue'>
-				{/* 入场加载动画 */}
-				<View className={isShowLoading ? '' : 'hide'}>
-					<GameLoading />
-				</View>
-
 				<View className='bgColor'>
 					<View className='bgImg'></View>
 					<View className='mask_black'></View>
