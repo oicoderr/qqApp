@@ -39,7 +39,7 @@ export default class websocket {
 	start() {
 		let _this = this;
 		this._timeoutObj = setInterval(() => {
-			const HeartMessage = this.msgProto.heartModule(new Date().getTime());
+			const HeartMessage = this.msgProto.heartModule(+new Date());
 			const parentModule = this.msgProto.parentModule(HeartMessage);
 			Taro.sendSocketMessage({
 				// 心跳发送的信息应由前后端商量后决定

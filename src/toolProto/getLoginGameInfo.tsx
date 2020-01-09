@@ -14,7 +14,7 @@ export default class LoginGame {
 			'channel': '',
 			'roomid': '',
 			'device': '',
-			'param1': 0, // 受邀请类型(1.组队;2.加速卡)
+			'param1': 0,  // 受邀请类型(1.组队;2.加速卡)
 			'param2': '', // 受邀请内容(暂定为邀请者的roleId)
 		};
 		// 个人信息
