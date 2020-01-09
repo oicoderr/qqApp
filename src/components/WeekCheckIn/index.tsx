@@ -111,9 +111,9 @@ export default class WeekCheckIn extends Component {
     // 签到分享点击
     App.aldstat.sendEvent('click-签到分享', get_OpenId_RoleId());
 
-    console.log('%c 签到是否同意炫耀一下: ' + value, 'font-size:14px;color:#f04800;background:#000000;');
+    console.log('%c 签到`永久`勾选同意炫耀一下: ' + value, 'font-size:14px;color:#f04800;background:#000000;');
     this.setState(preState => {
-      preState.local_data.shareChecked = !value;
+      preState.local_data.shareChecked = true; // !value
     });
   }
 
