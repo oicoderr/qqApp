@@ -113,7 +113,16 @@ export class PrizeEnterGame extends Component {
 
 	componentDidMount() { }
 
-	componentWillUnmount() { }
+	componentWillUnmount() {
+		clearInterval(this.state.data.timer);
+		emitter.removeAllListeners('getQuestion');
+		emitter.removeAllListeners('getAnswer');
+		emitter.removeAllListeners('getPrizePrevQAInfo');
+		emitter.removeAllListeners('getResurrectResult');
+		emitter.removeAllListeners('getPrizeMatchReport');
+		emitter.removeAllListeners('getRenascenceInfo');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	componentDidShow() {
 		let _this = this;

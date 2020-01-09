@@ -40,7 +40,7 @@ export class PrizeQueue extends Component {
 				matchIngTxt: '匹配中...',
 				gameUserInfo: {},
 				curNumberTxt: '当前人数：',
-				headImgPosi: [
+				headImgPosition: [
 					{
 						x: -10,
 						y: -10,
@@ -97,7 +97,7 @@ export class PrizeQueue extends Component {
 						y: -274,
 					}
 				],
-				headPosi: [
+				headPosition: [
 					{
 						x: 320,
 						y: 152,
@@ -159,6 +159,7 @@ export class PrizeQueue extends Component {
 				isreconnection: 0,					// 断线重连
 				isIntheGame: false,					// 是否游戏中断线，默认不是
 				quitBtn: 'https://oss.snmgame.com/v1.0.0/quitBtn.png',
+				prizeQueueBgImg: 'https://oss.snmgame.com/v1.0.0/prizeQueueBgImg.png',
 			},
 			websocketUrl: '',
 		}
@@ -191,6 +192,7 @@ export class PrizeQueue extends Component {
 		emitter.removeAllListeners('exitQueueStatus');
 		emitter.removeAllListeners('getTeamSituation');
 		emitter.removeAllListeners('getBattleTeams');
+		emitter.removeAllListeners('requestUrl');
 	}
 
 	componentDidShow() {
@@ -231,19 +233,19 @@ export class PrizeQueue extends Component {
 
 		// 切换匹配头像 1s切换一次
 		this.setState((preState) => {
-			let headImgPosi = preState.local_data.headImgPosi;
-			let headPosi = preState.local_data.headPosi;
-			preState.local_data.selectedHead = getArrayItems(headImgPosi, 6);
-			preState.local_data.selectedPosi = getArrayItems(headPosi, 6);
+			let headImgPosition = preState.local_data.headImgPosition;
+			let headPosition = preState.local_data.headPosition;
+			preState.local_data.selectedHead = getArrayItems(headImgPosition, 6);
+			preState.local_data.selectedPosi = getArrayItems(headPosition, 6);
 		}, () => {
 			let index = 1;
 			_this.state.local_data.timer = setInterval(() => {
 				index += 1;
 				this.setState((preState) => {
-					let headImgPosi = preState.local_data.headImgPosi;
-					let headPosi = preState.local_data.headPosi;
-					preState.local_data.selectedHead = getArrayItems(headImgPosi, 6);
-					preState.local_data.selectedPosi = getArrayItems(headPosi, 6);
+					let headImgPosition = preState.local_data.headImgPosition;
+					let headPosition = preState.local_data.headPosition;
+					preState.local_data.selectedHead = getArrayItems(headImgPosition, 6);
+					preState.local_data.selectedPosi = getArrayItems(headPosition, 6);
 				}, () => {
 					if (index > 99) clearInterval(_this.state.local_data.timer);
 				})
@@ -319,7 +321,13 @@ export class PrizeQueue extends Component {
 		});
 	}
 
-	componentDidHide() { }
+	componentDidHide() {
+		clearInterval(this.state.local_data.timer);
+		emitter.removeAllListeners('exitQueueStatus');
+		emitter.removeAllListeners('getTeamSituation');
+		emitter.removeAllListeners('getBattleTeams');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	// 获取游戏自己基本个人信息
 	getGameUserInfo() {
@@ -362,7 +370,7 @@ export class PrizeQueue extends Component {
 	}
 
 	render() {
-		const { quitBtn, selectedHead, selectedPosi, matchIngTxt, curNumberTxt } = this.state.local_data;
+		const { quitBtn, selectedHead, selectedPosi, matchIngTxt, curNumberTxt, } = this.state.local_data;
 		const { curTeamInfo } = this.state.data;
 
 		const headImg = selectedPosi.map((cur, index) => {

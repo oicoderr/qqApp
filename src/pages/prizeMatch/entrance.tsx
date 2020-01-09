@@ -271,7 +271,14 @@ export class PrizeEntrance extends Component {
 
 	}
 
-	componentDidHide() { }
+	componentDidHide() {
+		emitter.removeAllListeners('enterMatch');
+		emitter.removeAllListeners('quickenCardHelpResult');
+		emitter.removeAllListeners('getGameDescription');
+		emitter.removeAllListeners('closeMessageToast');
+		emitter.removeAllListeners('currencyChange');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	watchAdsGetReward() {
 		this.videoAd.openVideoAd();
@@ -482,7 +489,7 @@ export class PrizeEntrance extends Component {
 							<View className='items'>
 								<Image onClick={this.freeAdmission.bind(this)} src={freeBtn} className='btn freeBtn' />
 								<Image onClick={this.payAdmission.bind(this)} src={ticketsBtn} className='btn ticketsBtn' />
-								<View className='mask_'>{mask_tip}</View>
+								<View className='mask_ hide'>{mask_tip}</View>
 							</View>
 							<View className='seeAdsStatus'>
 								<RadioGroup className='checkBox'>

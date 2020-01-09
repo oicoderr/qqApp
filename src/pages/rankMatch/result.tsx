@@ -312,7 +312,12 @@ export class RankReasult extends Component {
 		});
 	}
 
-	componentDidHide() { }
+	componentDidHide() {
+		emitter.removeAllListeners('currencyChange');
+		emitter.removeAllListeners('isCheckPlayVideo');
+		emitter.removeAllListeners('getRankBattleReport');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	// 重新编队
 	reForm(data) {

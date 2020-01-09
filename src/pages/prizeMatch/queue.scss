@@ -58,12 +58,13 @@
 
     .content {
       position: relative;
-      width: 710rpx;
-      height: 970rpx;
       background: rgba(68, 125, 239, 1);
       border-radius: 20rpx;
       padding: 185rpx 38rpx 147rpx 28rpx;
       box-sizing: border-box;
+      background-image: url(https://oss.snmgame.com/v1.0.0/prizeQueueBgImg.png);
+      background-repeat: no-repeat;
+      background-size: 720rpx 1060rpx;
 
       .circle {
         border-radius: 50%;
@@ -122,6 +123,7 @@
         text-align: center;
         padding-top: 52rpx;
       }
+
     }
 
     .status {

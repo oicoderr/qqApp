@@ -267,7 +267,12 @@ export class PrizeQueue extends Component {
 		}
 	}
 
-	componentDidHide() { }
+	componentDidHide() {
+		emitter.removeAllListeners('enterMatch');
+		emitter.removeAllListeners('exitQueueStatus');
+		emitter.removeAllListeners('requestUrl');
+		emitter.removeAllListeners('getRankPlayer');
+	}
 
 	rankMatching() {
 		let _this = this;

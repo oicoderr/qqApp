@@ -203,7 +203,10 @@ export class PrizeReasult extends Component {
 		});
 	}
 
-	componentDidHide() { }
+	componentDidHide() {
+		emitter.removeAllListeners('currencyChange');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	// 显示名次横幅图片
 	ranking(rank) {

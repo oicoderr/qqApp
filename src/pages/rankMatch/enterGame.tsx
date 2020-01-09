@@ -394,7 +394,17 @@ export class RankEnterGame extends Component {
 		});
 	}
 
-	componentDidHide() { }
+	componentDidHide() {
+		clearInterval(this.state.data.timer);
+		// console.log('%c rank-enterGame componentDidHide','font-size:14px;color:#FF34B3;background-color:#EEEED1;');
+		emitter.removeAllListeners('getMatchProps');
+		emitter.removeAllListeners('usedPropsResult');
+		emitter.removeAllListeners('getQuestion');
+		emitter.removeAllListeners('getPrevQAInfo');
+		emitter.removeAllListeners('getRankResultInfo');
+		emitter.removeAllListeners('getAnswer');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	// 接受到的问题答案数据放入数组, 同时设置答案optionId
 	resetQA(message) {
