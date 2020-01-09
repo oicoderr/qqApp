@@ -560,7 +560,7 @@ export class Index extends Component {
 					<View className='head'>
 						<View onClick={this.advanceRoad.bind(this)} className='avatarWrap'>
 							<View className='avatar'>
-								<openData type="userAvatarUrl"></openData>
+								<openData type="userAvatarUrl" lang="zh_CN"></openData>
 							</View>
 						</View>
 

@@ -342,7 +342,7 @@ export class RankQueue extends Component {
 								<View className='redSelf'>
 									<Image src={redTeamBg} className='redTeamBg' />
 									<View className='myselfHead headImg redHeadPosi'>
-										<openData type="userAvatarUrl"></openData>
+										<openData type="userAvatarUrl" lang="zh_CN"></openData>
 									</View>
 									<View className='danDesc redDanDec'>{ danDesc }</View>
 									<View className='nickName redNickNamePosi'>

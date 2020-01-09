@@ -572,7 +572,7 @@ export class RankEnterGame extends Component {
 							<View className='redTeam'>
 								<View className='redSelf' data-roleId={rankUserInfo.roleId}>
 									<View className='myselfHead headImg'>
-										<openData type="userAvatarUrl"></openData>
+										<openData type="userAvatarUrl" lang="zh_CN"></openData>
 									</View>
 									<View className='personalScore'>{selfScore.score}</View>
 								</View>

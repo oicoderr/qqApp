@@ -332,7 +332,7 @@ export class AdvanceRoadUi extends Component {
             {content}
             <View className="avatarWrap" style={`left: ${reusltHeadPosi.x}rpx; top: ${reusltHeadPosi.y}rpx;`}>
               <View className="avatar">
-                <openData type="userAvatarUrl"></openData>
+                <openData type="userAvatarUrl" lang="zh_CN"></openData>
               </View>
             </View>
           </View>

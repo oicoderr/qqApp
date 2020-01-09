@@ -394,7 +394,7 @@ export class PrizeQueue extends Component {
 										<View className='circle inner'>
 											<View className='avatarWrap'>
 												<View className='avatar'>
-													<openData type="userAvatarUrl"></openData>
+													<openData type="userAvatarUrl" lang="zh_CN"></openData>
 												</View>
 											</View>
 										</View>
