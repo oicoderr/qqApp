@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import 'taro-ui/dist/style/index.scss'
 import './utils/ald-stat'
-import { setStorage, getStorage, getUa, hideShareMenu, loginRequest, getCurrentPageUrl } from './utils'
+import { setStorage, getStorage, getUa, hideShareMenu, loginRequest, getCurrentPageUrl, get_OpenId_RoleId } from './utils'
 import { Api } from './service/api'
 import './app.scss'
 import emitter from './service/events';
@@ -45,6 +45,7 @@ class _App extends Component {
 			'pages/toolbar/selfOrchestra',	  // 我的乐队
 			'pages/toolbar/setting',	  			// 设置
 			'pages/activity/iosCaveat',				// ios设备提示
+			'pages/activity/notFound',				// 404未找到
 		],
 
 		window: {
@@ -76,7 +77,6 @@ class _App extends Component {
 
 	componentDidMount () {
 		let _this = this;
-
 		// console.log = () => {};
 		// console.info = () => {};
 		// console.error = () => {};
@@ -110,7 +110,8 @@ class _App extends Component {
 		this.onMemoryWarning();
 		// 开始自动更新app
 		this.getUpdateManager();
-
+		// 监听打开页面是否存在
+		this.onPageNotFound();
 		// 监听requestUrl
 		this.eventEmitter = emitter.once('requestUrl', message => {
 			clearInterval(message[0]);
@@ -136,7 +137,7 @@ class _App extends Component {
 						}else{
 							// 跳转游戏主页
 							Taro.reLaunch({
-								url: '/pages/index/index'
+								url: '/pages/index/index',
 							});
 						}
 					});
@@ -146,7 +147,6 @@ class _App extends Component {
 	}
 
 	componentDidShow() {
-
 		// 隐藏分享
 		hideShareMenu();
 
@@ -189,7 +189,6 @@ class _App extends Component {
 		// 清除全局定时器
 		clearTimeout(this.globalData.timestamp);
 		this.globalData.timestamp = 1;
-		console.error('～又进来了～', this.globalData);
 	}
 
 	componentDidHide () {
@@ -273,7 +272,26 @@ class _App extends Component {
 	// qq方法（监听内存不足告警事件）
 	onMemoryWarning(){
 		qq.onMemoryWarning(function (res) {
-			console.error(res);
+			Taro.showToast({
+				title: '内存警报',
+				icon: 'fail',
+				duration: 2000
+			});
+		});
+	}
+	// 页面丢失404Page
+	onPageNotFound(){
+		let _this = this;
+		Taro.onPageNotFound((res)=>{
+			_this.aldstat.sendEvent('页面丢失', {
+				'user': get_OpenId_RoleId(),
+				'path': res.path,
+				'query': res.query,
+				'isEntryPage': res.isEntryPage, // 是否本次启动的首个页面（例如从分享等入口进来，首个页面是开发者配置的分享页面）
+			});
+			Taro.navigateTo({
+				url: '/pages/activity/notFound',
+			})
 		})
 	}
 
@@ -357,7 +375,7 @@ class _App extends Component {
 			return;
 		}
 	}
-
+	
 	// 在 App 类中的 render() 函数没有实际作用
 	// 请勿修改此函数
 	render () {
