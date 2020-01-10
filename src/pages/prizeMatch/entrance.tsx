@@ -44,7 +44,6 @@ export class PrizeEntrance extends Component {
 				gameUserInfo: {
 					roleId: -1,
 					level: 1,
-					imgurl: '',
 					nickName: '',
 					sex: '-1',
 					copper: 1234,
@@ -89,8 +88,8 @@ export class PrizeEntrance extends Component {
 		// 创建激励视频
 		this.videoAd = new createVideoAd();
 
-		// 监听广告: 看完发2003，未看完不发
-		this.videoAd.adGet((status) => { // status.isEnded: (1完整看完激励视频) - (0中途退出) 
+		// 监听广告: 看完发2003，未看完不发; status.isEnded: (1完整看完激励视频) - (0中途退出) 
+		this.videoAd.adGet((status) => {
 			_this.lookAds_todo(status);
 		});
 	}
@@ -295,7 +294,7 @@ export class PrizeEntrance extends Component {
 		this.videoAd.openVideoAd();
 	}
 
-	// 门票入场 -> 付费入场
+	// 门票入场
 	payAdmission(e) {
 		let data = { type: 2, useSpeedItem: 1, };
 		let matchingRequest = this.msgProto.matchingRequest(data)

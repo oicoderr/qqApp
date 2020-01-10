@@ -77,11 +77,10 @@ class _App extends Component {
 
 	componentDidMount () {
 		let _this = this;
-		// console.log = () => {};
-		// console.info = () => {};
-		// console.error = () => {};
-		// console.warn = () => {};
-		// console.table = () => {};
+		console.log = () => {};
+		console.error = () => {};
+		console.warn = () => {};
+		console.table = () => {};
 
 		// 获取当前版本
 		configObj.getVersion();
@@ -118,8 +117,8 @@ class _App extends Component {
 
 			this.websocketUrl = message[1]['websocketUrl'];
 			this.baseUrl = message[1]['baseUrl'];
-			console.log('获取到的websocketUrl：' + this.websocketUrl);
-			console.log('获取到的baseUrl：' + this.baseUrl);
+			// console.log('获取到的websocketUrl：' + this.websocketUrl);
+			// console.log('获取到的baseUrl：' + this.baseUrl);
 
 			// 将code发后台，获取openid及accessToken
 			this.login((loginData)=>{

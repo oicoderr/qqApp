@@ -434,10 +434,10 @@ export const hideShareMenu = () => {
     // 'qq', 'qzone', 'wechatFriends', 'wechatMoment'
     hideShareItems: ['qq', 'qzone', 'wechatFriends', 'wechatMoment'],
     success(res) {
-      console.log('～隐藏分享成功～');
+      // console.log('～隐藏分享成功～');
     },
     fail(err) {
-      console.log('～隐藏分享失败～：' + err);
+      // console.log('～隐藏分享失败～：' + err);
     }
   })
 }
@@ -496,6 +496,6 @@ export const get_OpenId_RoleId = () => {
       'roleId': gameUserInfo.roleId,
     })
   } catch (err) {
-    console.info(err)
+    console.log(err)
   }
 }

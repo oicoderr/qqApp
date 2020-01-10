@@ -371,7 +371,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
 
-			console.info('%c 主页收到1010货币发生变化', 'font-size:14px;color:#ff311f;'); console.log(message);
+			console.log('%c 主页收到1010货币发生变化', 'font-size:14px;color:#ff311f;'); console.log(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState) => {
 				preState.currencyChange = {

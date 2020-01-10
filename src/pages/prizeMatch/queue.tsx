@@ -296,7 +296,7 @@ export class PrizeQueue extends Component {
 		// 1334 当前队伍情况
 		this.eventEmitter = emitter.addListener('getTeamSituation', (message) => {
 			clearInterval(message[1]);
-			console.log('接受当前队伍情况 ====>'); console.log(message[0]);
+			// console.log('接受当前队伍情况 ====>'); console.log(message[0]);
 			let curTeamInfo = message[0]['data'];
 			// 格式化倒计时/ 人数
 			this.formatMatchTime(curTeamInfo);

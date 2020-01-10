@@ -179,7 +179,7 @@ export class RankEntrance extends Component {
 			this.setState((preState) => {
 				preState.data.gameUserInfo = res;
 			}, () => {
-				console.info('设置成功gameUserInfo', _this.state.data.gameUserInfo)
+				console.log('设置成功gameUserInfo', _this.state.data.gameUserInfo)
 			})
 		});
 

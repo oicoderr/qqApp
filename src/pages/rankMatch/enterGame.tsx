@@ -360,7 +360,7 @@ export class RankEnterGame extends Component {
 					}
 				}
 
-				console.info(_this.state.local_data.selfScore);
+				console.log(_this.state.local_data.selfScore);
 				console.table(_this.state.local_data.scoreTeamB);
 				console.table(_this.state.local_data.scoreTeamB);
 

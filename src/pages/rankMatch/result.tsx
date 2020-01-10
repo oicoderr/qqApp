@@ -153,7 +153,7 @@ export class RankReasult extends Component {
 					this.state.local_data.gameUserInfo.danDescIcon = rankResultInfo.danDescIcon;
 					this.state.local_data.gameUserInfo.gloryUrl = rankResultInfo.gloryUrl;
 					setStorage('gameUserInfo', _this.state.local_data.gameUserInfo);
-					console.info(_this.state.local_data.gameUserInfo, 789);
+					console.log(_this.state.local_data.gameUserInfo, 789);
 				})
 			});
 

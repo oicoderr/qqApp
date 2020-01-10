@@ -44,7 +44,7 @@ export default class GenderSelectionUi extends Component {
 
   // 选择性别
   selectedGender = (gender) => {
-    console.info()
+    console.log()
     this.setState((preState) => {
       preState.local_data.gender = gender;
       preState.local_data.isSlectGender = Boolean(gender);

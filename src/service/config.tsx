@@ -39,10 +39,10 @@ export default class config {
 		getStorage('currentVersion',(res)=>{
 			if(version.currentVersion == res){
 				_this.isVersionType = 0;
-				console.log('%c 走`测试`版本socket','font-size:14px;color:#D15FEE;background-color:#FAFAFA;');
+				// console.log('%c 走`测试`版本socket','font-size:14px;color:#D15FEE;background-color:#FAFAFA;');
 			}else{
 				_this.isVersionType = 1;
-				console.log('%c 走`生产`版本socket','font-size:14px;color:#4876FF;background-color:#FAFAFA;');
+				// console.log('%c 走`生产`版本socket','font-size:14px;color:#4876FF;background-color:#FAFAFA;');
 			}
 		})
 	}
