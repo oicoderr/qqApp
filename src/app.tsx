@@ -182,7 +182,7 @@ class _App extends Component {
 		});
 		
 		// 2702 玩家游戏状态： 0.正常默认状态;1.匹配中;2.房间中
-		this.eventEmitter = emitter.once('loginGameStatus', (message) => {
+		this.eventEmitter = emitter.addListener('getPlayerStatus', (message) => {
 			clearInterval(message[1]);
 			let value = message[0]['data']['value'];
 			if(value == 0){
@@ -218,9 +218,13 @@ class _App extends Component {
 				clearTimeout(_this.globalData.timestamp);
 			// }
 		},time);
+
+		emitter.removeAllListeners('getPlayerStatus');
 	}
 
-	componentWillUnmount() {}
+	componentWillUnmount() {
+		emitter.removeAllListeners('getPlayerStatus');
+	}
 
 	/* 新版本检测升级 */
 	getUpdateManager(){

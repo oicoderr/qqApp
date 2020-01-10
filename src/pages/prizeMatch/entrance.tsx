@@ -288,7 +288,7 @@ export class PrizeEntrance extends Component {
 		});
 	}
 
-	// 开始看广告 -> 免费入场
+	// 看广告免费入场 
 	freeAdmission(e) {
 		App.aldstat.sendEvent('click-大奖赛免费入场', get_OpenId_RoleId());
 		this.videoAd.openVideoAd();
