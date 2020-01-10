@@ -72,10 +72,11 @@ class _App extends Component {
 
 	componentDidMount () {
 		let _this = this;
-		console.log = () => {};
 		console.error = () => {};
 		console.table = () => {};
-		console.dir = () => {};
+		// console.log = () => {};
+		// console.info = () => {};
+		// console.dir = () => {};
 
 		// 获取当前版本
 		configObj.getVersion();

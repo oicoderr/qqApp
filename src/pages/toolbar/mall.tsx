@@ -151,6 +151,8 @@ export class Mall extends Component {
 				let websocketUrl = this.state.websocketUrl;
 				if(this.websocket.isLogin){
 					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+					// 获取商城信息
+					this.getMall();
 				}else{
 					this.websocket.initWebSocket({
 						url: websocketUrl,
@@ -159,6 +161,8 @@ export class Mall extends Component {
 							_this.websocket.onSocketOpened((res)=>{});
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
+							// 获取商城信息
+							this.getMall();
 						},
 						fail(err){
 							createWebSocket(_this);
@@ -173,21 +177,6 @@ export class Mall extends Component {
 			this.setState((preState)=>{
 				preState.local_data.currencyChange = res;
 			})
-		});
-
-		// 请求商城信息, 默认请求道具商城
-		let getMall = this.msgProto.getMall(1);
-		let parentModule = this.msgProto.parentModule(getMall);
-		this.websocket.sendWebSocketMsg({
-			data: parentModule,
-			success(res) {console.log('请求商城信息Success')},
-			fail(err){
-				Taro.showToast({
-					title: err.errMsg,
-					icon: 'none',
-					duration: 2000
-				})
-			}
 		});
 
 		// 监听 1702 监听服务器回复商城当天已免费领取情况 
@@ -261,6 +250,23 @@ export class Mall extends Component {
 	}
 
 	componentDidHide () {}
+
+	getMall(){
+		// 请求商城信息, 默认请求道具商城
+		let getMall = this.msgProto.getMall(1);
+		let parentModule = this.msgProto.parentModule(getMall);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) {console.log('请求商城信息Success')},
+			fail(err){
+				Taro.showToast({
+					title: err.errMsg,
+					icon: 'none',
+					duration: 2000
+				})
+			}
+		});
+	}
 
 	// 返回上一页
 	goBack(){
