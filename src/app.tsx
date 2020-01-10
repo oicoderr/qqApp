@@ -74,9 +74,8 @@ class _App extends Component {
 		let _this = this;
 		console.log = () => {};
 		console.error = () => {};
-		console.warn = () => {};
 		console.table = () => {};
-		// console.dir = () => {};
+		console.dir = () => {};
 
 		// 获取当前版本
 		configObj.getVersion();

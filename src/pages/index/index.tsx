@@ -287,7 +287,7 @@ export class Index extends Component {
 		});
 
 		this.eventEmitter = emitter.addListener('RedEnvelopeConvert', (message) => {
-			console.warn(message, 111);
+			console.log(message);
 			// this.setState({
 			// 	gender: message
 			// },()=>{
