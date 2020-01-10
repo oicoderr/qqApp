@@ -204,6 +204,10 @@ export default class ReceiveMsg {
 					emitter.emit('getRankPlayer', [message, this.timerCount[34]]);
 				}, 20);
 				break;
+			case 2702:			// 玩家状态 当前角色状态(0.正常默认状态;1.匹配中;2.房间中)
+				this.timerCount[35] = setInterval(() => {
+					emitter.emit('getPlayerStatus', [message, this.timerCount[35]]);
+				}, 20);
 		}
 	}
 }

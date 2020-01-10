@@ -8,7 +8,7 @@ const App = Taro.getApp();
 
 export const createWebSocket = (that) => {
 	// console.log('%c createWebSocket-url' + that.state.websocketUrl, 'background-color:#C1CDCD;color:#8A2BE2;font-size:14px;');
-	console.log('%c 创建createWebSocket对象', 'background:#000;color:white;font-size:14px;');
+	// console.log('%c 创建createWebSocket对象', 'background:#000;color:white;font-size:14px;');
 	// 创建websocket对象
 	that.websocket = new Websocket({
 		heartCheck: true,
@@ -41,7 +41,7 @@ export const createWebSocket = (that) => {
 		let messageData = JSON.parse(message.data);
 		message.data = messageData;
 		console.info('%c 收到服务器内容：' + message['code'], 'background:#000;color:white;font-size:14px');
-		console.info(message['code'] != 1102 ? message : message['code']);
+		console.dir(message['code'] != 1102 ? message : message['code']);
 		// 要进行的操作
 		new ReceiveMsg(message);
 	});

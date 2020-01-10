@@ -54,12 +54,7 @@ class _App extends Component {
 			navigationBarTitleText: '音乐大作战',
 			navigationBarTextStyle: 'white',
 			navigationStyle: 'custom',
-		},
-		// permission: {
-		// 	"scope.userLocation": {
-		// 		"desc": "你的位置信息将用于小程序位置接口的效果展示"
-		// 	}
-		// }
+		}
 	}
 
 	globalData = {
@@ -81,6 +76,7 @@ class _App extends Component {
 		console.error = () => {};
 		console.warn = () => {};
 		console.table = () => {};
+		// console.dir = () => {};
 
 		// 获取当前版本
 		configObj.getVersion();
@@ -122,8 +118,8 @@ class _App extends Component {
 
 			// 将code发后台，获取openid及accessToken
 			this.login((loginData)=>{
-				// app登录
-				loginRequest( loginData, (appLogin)=>{ // res: 返回openid，accessToken
+				// app登录, appLogin: 返回openid，accessToken
+				loginRequest( loginData, (appLogin)=>{
 					let userInfo = {};
 					// 获取缓存userInfo，如果没有授权信息, 授权后并保存缓存中，如果存在openid,跳转游戏登录
 					getStorage('userInfo',(res)=>{
@@ -184,6 +180,19 @@ class _App extends Component {
 				});
 			}
 		});
+		
+		// 2702 玩家游戏状态： 0.正常默认状态;1.匹配中;2.房间中
+		this.eventEmitter = emitter.once('loginGameStatus', (message) => {
+			clearInterval(message[1]);
+			let value = message[0]['data']['value'];
+			if(value == 0){
+				Taro.reLaunch({
+					url: '/pages/index/index',
+				});
+				return;
+			}
+		});
+		
 
 		// 清除全局定时器
 		clearTimeout(this.globalData.timestamp);
