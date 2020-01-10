@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View, Image, Text } from '@tarojs/components'
 import './queue.scss'
 import { getStorage, buildURL, getArrayItems, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
@@ -31,12 +31,12 @@ export class PrizeQueue extends Component {
 
 			// 后台返回数据
 			data: {
-				curTeamInfo: { currCount: 1, maxCount: 50 }
+				curTeamInfo: { currCount: 1, maxCount: '', time: '' }
 			},
 
 			// 前台数据
 			local_data: {
-				timer: '',									// 定时器
+				timer: '',									// 头像定时器
 				matchIngTxt: '匹配中...',
 				gameUserInfo: {},
 				curNumberTxt: '当前人数：',
@@ -155,12 +155,16 @@ export class PrizeQueue extends Component {
 					}
 				],
 				selectedHead: [],
-				selectedPosi: [],
-				isreconnection: 0,					// 断线重连
+				selectedPosition: [],
+				isreconnection: '0',				// 默认不是断线重连
 				isIntheGame: false,					// 是否游戏中断线，默认不是
 				quitBtn: 'https://oss.snmgame.com/v1.0.0/quitBtn.png',
 				prizeQueueBgImg: 'https://oss.snmgame.com/v1.0.0/prizeQueueBgImg.png',
+				prizeQueueNumberTip: 'https://oss.snmgame.com/v1.0.0/prizeQueueNumberTip.png',
+				prizeCountdownBg: 'https://oss.snmgame.com/v1.0.0/prizeCountdownBg.png',
+				prizeCurrentNumberBg: 'https://oss.snmgame.com/v1.0.0/prizeCurrentNumberBg.png',
 			},
+
 			websocketUrl: '',
 		}
 		this.msgProto = new MsgProto();
@@ -169,20 +173,16 @@ export class PrizeQueue extends Component {
 	componentWillMount() { }
 
 	componentDidMount() {
-		let _this = this;
+		// 获取游戏个人信息
 		this.getGameUserInfo();
 
 		// 匹配中是否断线重连状态
 		const params = this.$router.params;
-		console.log('是否断线重连 ==>'); console.log(params);
+		console.log('%c 是否断线重连 ==>', 'font-size:14px;color:#FF6A6A;'); console.log(params);
 		const isreconnection = params.isreconnection;
-		if (isreconnection === '1') {
+		if(params && isreconnection){
 			this.setState((preState) => {
-				preState.local_data.isreconnection = 1;
-			});
-		} else {
-			this.setState((preState) => {
-				preState.local_data.isreconnection = 0;
+				preState.local_data.isreconnection = isreconnection;
 			});
 		}
 	}
@@ -214,6 +214,8 @@ export class PrizeQueue extends Component {
 				let websocketUrl = this.state.websocketUrl;
 				if (this.websocket.isLogin) {
 					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
+					// 断线重连开始请求匹配
+					this.OfflineMatchPrize();
 				} else {
 					this.websocket.initWebSocket({
 						url: websocketUrl,
@@ -222,6 +224,8 @@ export class PrizeQueue extends Component {
 							_this.websocket.onSocketOpened((res) => { });
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
+							// 断线重连开始请求匹配
+							_this.OfflineMatchPrize();
 						},
 						fail(err) {
 							createWebSocket(_this);
@@ -236,7 +240,7 @@ export class PrizeQueue extends Component {
 			let headImgPosition = preState.local_data.headImgPosition;
 			let headPosition = preState.local_data.headPosition;
 			preState.local_data.selectedHead = getArrayItems(headImgPosition, 6);
-			preState.local_data.selectedPosi = getArrayItems(headPosition, 6);
+			preState.local_data.selectedPosition = getArrayItems(headPosition, 6);
 		}, () => {
 			let index = 1;
 			_this.state.local_data.timer = setInterval(() => {
@@ -245,47 +249,48 @@ export class PrizeQueue extends Component {
 					let headImgPosition = preState.local_data.headImgPosition;
 					let headPosition = preState.local_data.headPosition;
 					preState.local_data.selectedHead = getArrayItems(headImgPosition, 6);
-					preState.local_data.selectedPosi = getArrayItems(headPosition, 6);
+					preState.local_data.selectedPosition = getArrayItems(headPosition, 6);
 				}, () => {
 					if (index > 99) clearInterval(_this.state.local_data.timer);
 				})
 			}, 1000);
 		});
 
-		// 是否断线重连
-		let isreconnection = this.state.local_data.isreconnection;
-		let data = { type: 4, useSpeedItem: 0, };
-		let matchingRequest = this.msgProto.matchingRequest(data)
-		let parentModule = this.msgProto.parentModule(matchingRequest);
-
-		// 请求开始大奖赛
-		if (isreconnection) {
-			this.websocket.sendWebSocketMsg({
-				data: parentModule,
-				success(res) { console.log('%c 进入匹配ing', 'font-size:14px;color:#e66900;') },
-				fail(err) {
-					Taro.showToast({
-						title: err.errormsg,
-						icon: 'none',
-						duration: 2000
-					})
-					console.error('匹配错误信息==> '); console.log(err);
-				}
-			});
-		}
+		// 监听1302: 是否允许进入匹配
+		this.eventEmitter = emitter.addListener('enterMatch', (message) => {
+			clearInterval(message[1]);
+			let isreconnection = message[0]['data']['isreconnection'];
+			let result = message[0]['data']['result'];
+			let errormsg = message[0]['data']['errormsg'];
+			if (result) {
+				Taro.showToast({
+					title: '进入匹配队列',
+					icon: 'none',
+					duration: 2000,
+				});
+			} else {
+				Taro.showToast({
+					title: errormsg,
+					icon: 'none',
+					duration: 2000,
+				});
+				// 1s后返回主页
+				let timer = setTimeout(() => {
+					let indexPage = this.state.routers.indexPage;
+					Taro.reLaunch({
+						url: indexPage
+					});
+					clearTimeout(timer);
+				}, 1000);
+			}
+		});
 
 		// 1332 玩家离开大奖赛匹配队列 
 		this.eventEmitter = emitter.addListener('exitQueueStatus', (message) => {
 			clearInterval(message[1]);
 
-			console.log('%c 玩家离开大奖赛匹配队列', 'font-size:14px;color:#ff641a;');
-			let entrancePage = this.state.routers.entrancePage;
-			Taro.redirectTo({
-				url: entrancePage,
-				success() {
-					clearInterval(_this.state.local_data.timer);
-				}
-			})
+			let data = message[0]['data'];
+			this.queueTimeEnd(data);
 		});
 
 		// 1334 当前队伍情况
@@ -293,9 +298,8 @@ export class PrizeQueue extends Component {
 			clearInterval(message[1]);
 			console.log('接受当前队伍情况 ====>'); console.log(message[0]);
 			let curTeamInfo = message[0]['data'];
-			this.setState((preState) => {
-				preState.data.curTeamInfo = curTeamInfo;
-			})
+			// 格式化倒计时/ 人数
+			this.formatMatchTime(curTeamInfo);
 		});
 
 		// 1304 服务器通知客户端角色进入比赛房间
@@ -351,8 +355,116 @@ export class PrizeQueue extends Component {
 		return prizeMatchUserInfo;
 	}
 
+	// 格式化匹配倒计时
+	formatMatchTime(curTeamInfo){
+		let time = curTeamInfo['time'];
+		let currCount = curTeamInfo['currCount'];
+		let timeArray, currCountArray;
+
+		if(time < 10 && time > -1){
+			timeArray = ('0' + time).split("");
+			time = timeArray[0] +'&nbsp;'+ timeArray[1];
+		}else if(time > 9 && time < 100){
+			timeArray = (time+'').split("");
+			time = timeArray[0] +'&nbsp;&nbsp;'+ timeArray[1];
+		}
+
+		if(currCount < 10 && currCount > -1){
+			currCountArray = ('00' + currCount).split("");
+			currCount = currCountArray[0] +'&nbsp;'+ currCountArray[1] + '&nbsp;' + currCountArray[2];
+		}else if(currCount > 9 && currCount < 100){
+			currCountArray = ('0' + currCount).split("");
+			currCount = currCountArray[0] +'&nbsp;'+ currCountArray[1] + '&nbsp;' + currCountArray[2];
+		}else if(currCount > 99 && currCount < 1000){
+			currCountArray = (currCount+'').split("");
+			currCount = currCountArray[0] +'&nbsp;'+ currCountArray[1] + '&nbsp;' + currCountArray[2];
+		}
+		this.setState((preState) => {
+			preState.data.curTeamInfo = curTeamInfo;
+			preState.data.curTeamInfo.time = time;
+			preState.data.curTeamInfo.currCount =  currCount;
+		}, () => { });
+	}
+
+	// 断线重连请求大奖赛
+	OfflineMatchPrize(){
+		let isreconnection = this.state.local_data.isreconnection;
+		let data = { type: 2, useSpeedItem: 0, };
+		let matchingRequest = this.msgProto.matchingRequest(data)
+		let parentModule = this.msgProto.parentModule(matchingRequest);
+		// 不是断线重连请求开始大奖赛
+		if (isreconnection == '1') {
+			this.websocket.sendWebSocketMsg({
+				data: parentModule,
+				success(res) { console.log('%c 进入匹配ing', 'font-size:14px;color:#e66900;') },
+				fail(err) {
+					Taro.showToast({
+						title: err.errormsg,
+						icon: 'none',
+						duration: 2000
+					})
+					console.error('匹配错误信息==> '); console.log(err);
+				}
+			});
+		}else{
+			console.log('不是断线重连，无需再次请求');
+		}
+	}
+
+	// 1301 正常请求大奖赛type:1.好友赛；2.大奖赛；3.排位赛
+	matchPrize(){
+		let data = { type: 2, useSpeedItem: 0, };
+		let matchingRequest = this.msgProto.matchingRequest(data)
+		let parentModule = this.msgProto.parentModule(matchingRequest);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) { console.log('%c 进入匹配ing', 'font-size:14px;color:#e66900;') },
+			fail(err) {
+				Taro.showToast({
+					title: err.errormsg,
+					icon: 'none',
+					duration: 2000
+				})
+				console.error('匹配错误信息==> '); console.log(err);
+			}
+		});
+	}
+
+	// 玩家退出队列信息
+	queueTimeEnd(obj){
+		let _this = this;
+		let entrancePage = this.state.routers.entrancePage;
+		if(obj.type == 2 && obj.value == 1){
+			console.log('%c 时间结束询问玩家是否重新匹配？', 'font-size:14px;color:#ff641a;');
+			Taro.showModal({
+				content: '请重新匹配？',
+				success: function(res) {
+					if (res.confirm) {
+						_this.matchPrize();
+					} else if (res.cancel) {
+						console.log('%c 玩家离开大奖赛匹配队列', 'font-size:14px;color:#ff641a;');
+						Taro.redirectTo({
+							url: entrancePage,
+							success() {
+								clearInterval(_this.state.local_data.timer);
+							}
+						});
+					}
+				}
+			})
+		}else if(obj.type == 2 && obj.value == 0){
+			console.log('%c 玩家离开大奖赛匹配队列', 'font-size:14px;color:#ff641a;');
+			Taro.reLaunch({
+				url: entrancePage,
+				success() {
+					clearInterval(_this.state.local_data.timer);
+				}
+			});
+		}
+	}
+
 	// 退出排队
-	exitQueue(e) {
+	exitQueue() {
 		// 退出匹配
 		App.aldstat.sendEvent('click-大奖赛退出匹配', get_OpenId_RoleId());
 
@@ -370,10 +482,12 @@ export class PrizeQueue extends Component {
 	}
 
 	render() {
-		const { quitBtn, selectedHead, selectedPosi, matchIngTxt, curNumberTxt, } = this.state.local_data;
-		const { curTeamInfo } = this.state.data;
+		const { quitBtn, selectedHead, selectedPosition, matchIngTxt, 
+			prizeCountdownBg, prizeCurrentNumberBg, prizeQueueNumberTip,
+		} = this.state.local_data;
+		const { maxCount, currCount, time } = this.state.data.curTeamInfo;
 
-		const headImg = selectedPosi.map((cur, index) => {
+		const headImg = selectedPosition.map((cur, index) => {
 			return <View className='headImg headSize' style={`background-position: ${selectedHead[index].x}rpx ${selectedHead[index].y}rpx; top: ${cur.y}rpx;left: ${cur.x}rpx`}></View>
 		});
 
@@ -400,7 +514,18 @@ export class PrizeQueue extends Component {
 										</View>
 									</View>
 								</View>
-								<View className='queuePeopleNum'>{curNumberTxt}{curTeamInfo['currCount']}/{curTeamInfo['maxCount']}</View>
+
+								<View className='queuePeople'>
+									<View className='prizeCountdownWrap'>
+										<Image src={prizeCountdownBg} className='prizeCountdownBg' />
+										<Text className='QueueCountdown' decode="true">{time}</Text>
+									</View>
+									<View className='prizeCurrentNumberWrap'>
+										<Image src={prizeCurrentNumberBg} className='prizeCurrentNumberBg' />
+										<Text className='currCount' decode="true">{currCount}</Text>
+									</View>
+									<Image src={prizeQueueNumberTip} className='curPeopleTip' />
+								</View>
 								{/* 头像 */}
 								{headImg}
 							</View>

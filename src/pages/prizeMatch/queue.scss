@@ -52,6 +52,7 @@
     padding: 0 20rpx;
 
     .main {
+      width: 710rpx;
       position: absolute;
       top: 14%;
     }
@@ -60,11 +61,11 @@
       position: relative;
       background: rgba(68, 125, 239, 1);
       border-radius: 20rpx;
-      padding: 185rpx 38rpx 147rpx 28rpx;
+      padding: 170rpx 38rpx 230rpx 38rpx;
       box-sizing: border-box;
       background-image: url(https://oss.snmgame.com/v1.0.0/prizeQueueBgImg.png);
       background-repeat: no-repeat;
-      background-size: 720rpx 1060rpx;
+      background-size: 710rpx 1070rpx;
 
       .circle {
         border-radius: 50%;
@@ -113,15 +114,64 @@
         }
       }
 
-      .queuePeopleNum {
-        font-size: 30rpx;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 1);
-        width: 100%;
-        height: 30rpx;
-        line-height: 30rpx;
-        text-align: center;
-        padding-top: 52rpx;
+      .queuePeople {
+        position: absolute;
+        left: 50%;
+        bottom: 30rpx;
+        transform: translateX(-50%);
+        width: 280rpx;
+        height: 144rpx;
+
+        .curPeopleTip{
+          position: absolute;
+          bottom: 0;
+          width: 280rpx;
+          height: 132rpx;
+        }
+
+        .prizeCountdownWrap{
+          position: absolute;
+          left: 45rpx;
+          top: 0;
+          width: 97rpx;
+          height: 36rpx;
+
+          .prizeCountdownBg{
+            width: 97rpx;
+            height: 36rpx;
+          }
+
+          .QueueCountdown{
+            position: absolute;
+            left: 10rpx;
+            top: 2rpx;
+            font-size: 30rpx;
+            color: rgba(0, 0, 0, 1);
+            font-weight: 500;
+          }
+        }
+
+        .prizeCurrentNumberWrap{
+          position: absolute;
+          left: 160rpx;
+          top: 0;
+          width: 90rpx;
+          height: 36rpx;
+
+          .prizeCurrentNumberBg{
+            width: 90rpx;
+            height: 36rpx;
+          }
+
+          .currCount{
+            position: absolute;
+            left: 10rpx;
+            top: 2rpx;
+            font-size: 30rpx;
+            color: rgba(0, 0, 0, 1);
+            font-weight: 500;
+          }
+        }
       }
 
     }

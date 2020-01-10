@@ -168,10 +168,11 @@ export class PrizeEntrance extends Component {
 			let isreconnection = message[0]['data']['isreconnection'];
 			let result = message[0]['data']['result'];
 			let errormsg = message[0]['data']['errormsg'];
+			let queuePage = this.state.routers.queuePage;
 			if (result) {
 				// 跳转匹配页
 				Taro.navigateTo({
-					url: this.state.routers.queuePage,
+					url: queuePage,
 					success() {
 						Taro.showToast({
 							title: '进入匹配队列',
@@ -280,10 +281,6 @@ export class PrizeEntrance extends Component {
 		emitter.removeAllListeners('requestUrl');
 	}
 
-	watchAdsGetReward() {
-		this.videoAd.openVideoAd();
-	}
-
 	// 返回上一页
 	goBack() {
 		let indexPage = this.state.routers.indexPage;
@@ -378,6 +375,25 @@ export class PrizeEntrance extends Component {
 			}
 		}
 		return onShareApp(shareData);
+	}
+
+	// 1301 请求大奖赛type:1.好友赛；2.大奖赛；3.排位赛
+	matchPrize(){
+		let data = { type: 2, useSpeedItem: 0, };
+		let matchingRequest = this.msgProto.matchingRequest(data)
+		let parentModule = this.msgProto.parentModule(matchingRequest);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) { console.log('%c 进入匹配ing', 'font-size:14px;color:#e66900;') },
+			fail(err) {
+				Taro.showToast({
+					title: err.errormsg,
+					icon: 'none',
+					duration: 2000
+				})
+				console.error('匹配错误信息==> '); console.log(err);
+			}
+		});
 	}
 
 	// 领取加速卡
