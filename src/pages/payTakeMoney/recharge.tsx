@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
 import { unitReplacement, getStorage } from '../../utils'
+import createVideoAd from '../../service/createVideoAd'
 import { createWebSocket } from '../../service/createWebSocket'
 import configObj from '../../service/configObj'
 import './recharge.scss'
@@ -50,7 +51,36 @@ export class Recharge extends Component {
 
 	componentWillMount () {}
 
-	componentDidMount () {}
+	componentDidMount () {
+		this.videoAd = new createVideoAd();
+		 // status.isEnded: (1完整看完激励视频) - (0中途退出);
+		this.videoAd.adGet((status) => { 
+			let redReceiveCount = this.data.redReceiveCount;
+			if(redReceiveCount < 1){
+				return;
+			}else{
+				let data_ = {
+					type: 6,
+					value: '',
+					param1: '',
+					param2: '',
+				}
+				let adsRewards = this.msgProto.adsRewards(data_);
+				let parentModule = this.msgProto.parentModule(adsRewards);
+				this.websocket.sendWebSocketMsg({
+					data: parentModule,
+					success(res) { },
+					fail(err) {
+						Taro.showToast({
+							title: '门票领取发送失败',
+							icon: 'none',
+							duration: 2000
+						});
+					}
+				});
+			}
+		});
+	}
 
 	componentWillUnmount () {
 		emitter.removeAllListeners('getRechargeMessage');
@@ -165,6 +195,12 @@ export class Recharge extends Component {
 		})
 	}
 
+	// 观看视频获取免费门票
+	watchAdsGetReward(e) {
+		// 开始播放激励视频
+		this.videoAd.openVideoAd();
+	}
+
 	// 返回上一页
 	goBack(){
 		let indexPage = this.state.routers.indexPage;
@@ -227,8 +263,8 @@ export class Recharge extends Component {
 										scrollWithAnimation
 										scrollTop='0'>
 								<View className='ticketsContent'>
-
-									<View className='freeTicketsBox'>
+									{/* 看视频免费领取门票 */}
+									<View onClick={this.watchAdsGetReward.bind(this)} data-times={redReceiveCount} className='freeTicketsBox'>
 										<View className='bar1'>{bar1Txt}</View>
 										<View className='box'>
 											<View className='ticket'>
@@ -246,7 +282,7 @@ export class Recharge extends Component {
 											</View>
 										</View>
 									</View>
-
+									{/* 门票 */}
 									<View className='ticketsBox'>
 										<View className='bar2'>{bar2Txt}</View>
 										{content}
