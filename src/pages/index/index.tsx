@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
 import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem, get_OpenId_RoleId } from '../../utils'
@@ -530,6 +530,19 @@ export class Index extends Component {
 		});
 	}
 
+	// 一键发说说
+	onOpenQzonePublish(){
+		qq.openQzonePublish({
+			text: '我爱中国',
+			media: [
+				{
+					type: 'photo',
+					path: 'http://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/logo.png'
+				}
+			]
+	})
+	}
+
 	render() {
 		const { sex } = this.state.gameUserInfo;
 		const { redEnvelope, copper, energy } = this.state.currencyChange;
@@ -579,8 +592,11 @@ export class Index extends Component {
 
 					{/* 右侧按钮list */}
 					<View className='rightListBtn'>
-						<View className='rightBtnIcon problemBtn'></View>
+						<View onClick={this.onOpenQzonePublish.bind(this)} className='oneKeyShareImg'>
+							<Button open-type='share' className='oneKeyShare'></Button>
+						</View>
 						<View onClick={this.weekCheckIn.bind(this)} className='rightBtnIcon signInBtn'></View>
+						<View className='rightBtnIcon problemBtn'></View>
 						<View className='hide rightBtnIcon welfareBtn'></View>
 					</View>
 					<View className='body'>

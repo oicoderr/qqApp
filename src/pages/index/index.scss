@@ -176,28 +176,50 @@
 // 右侧按钮
 .rightListBtn {
   position: absolute;
-  top: 150rpx;
+  top: 90rpx;
   right: 20rpx;
   z-index: 9;
   width: auto;
   height: auto;
 
+  .oneKeyShareImg{
+    background-image: url(https://oss.snmgame.com/v1.0.0/oneKeyShareImg.png);
+    background-repeat: no-repeat;
+    background-size: 124rpx 130rpx;
+    width: 124rpx;
+    height: 130rpx;
+    margin-bottom: 18rpx !important;
+
+    .oneKeyShare{
+      width: 124rpx;
+      height: 130rpx;
+      background-color: transparent;
+      font-size: 24rpx;
+      line-height: 130rpx;
+      border-radius: 20rpx;
+      padding: 0;
+    }
+  }
+
   .problemBtn {
     width: 86px;
     height: 94rpx;
-    background-position: -358px -266px
+    background-position: -358px -266px;
+    margin-bottom: 18rpx !important;
   }
 
   .signInBtn {
     width: 86px;
     height: 94rpx;
     background-position: -382px -388px;
+    margin-bottom: 18rpx !important;
   }
 
   .welfareBtn {
     width: 86px;
     height: 94rpx;
     background-position: -278px -388px;
+    margin-bottom: 18rpx !important;
   }
 
   .rightBtnIcon {
@@ -205,9 +227,8 @@
     background-repeat: no-repeat;
     background-size: 525px 500px;
     margin-bottom: 20px;
+    margin: 0 auto;
   }
-
-
 }
 
 // 身体区域
