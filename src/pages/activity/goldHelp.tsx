@@ -113,11 +113,13 @@ export class GoldHelp extends Component {
 						url: websocketUrl,
 						success(res) {
 							// 开始登陆
-							_this.websocket.onSocketOpened((res) => {});
+							_this.websocket.onSocketOpened((res) => {
+								// 请求金币助力信息
+								_this.goldHelpInfo();
+							});
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
-							// 请求金币助力信息
-							this.goldHelpInfo();
+							
 						},
 						fail(err) {
 							createWebSocket(_this);

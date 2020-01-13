@@ -357,6 +357,7 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('getSelfOrchestra', (message) => {
 			clearInterval(message[1]);
 
+			console.log(123456);
 			let selfOrchestra = message[0]['data'];
 			this.setState((preState) => {
 				preState.selfOrchestra = selfOrchestra;
@@ -538,7 +539,6 @@ export class Index extends Component {
 		const isShowAdvanceRoadUi = this.state.isShowAdvanceRoadUi;
 		return (
 			<View className='index' catchtouchmove="ture">
-
 				{/* 左侧按钮list */}
 				<Drawer />
 
@@ -571,12 +571,11 @@ export class Index extends Component {
 							<View onClick={this.goldHelp.bind(this)} className='addIcon-same addIcon' ></View>
 						</View>
 
-						<View className='redEnvelopeWrap hide'>
+						<View className='redEnvelopeWrap'>
 							<View className='board-same board'></View>
 							<View className='icon-same envelopeIcon' ></View>
 							<Text className='num-same envelopeNum'>{redEnvelope}</Text>
-							{/* 隐藏购票 onClick={this.goPayTickets.bind(this)} */}
-							<View className='addIcon-same addIcon' ></View>
+							<View onClick={this.goPayTickets.bind(this)} className='addIcon-same addIcon' ></View>
 						</View>
 					</View>
 

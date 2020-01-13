@@ -158,11 +158,13 @@ export class Mall extends Component {
 						url: websocketUrl,
 						success(res){
 							// 开始登陆
-							_this.websocket.onSocketOpened((res)=>{});
+							_this.websocket.onSocketOpened((res)=>{
+								// 获取商城信息
+								_this.getMall();
+							});
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
-							// 获取商城信息
-							this.getMall();
+							
 						},
 						fail(err){
 							createWebSocket(_this);

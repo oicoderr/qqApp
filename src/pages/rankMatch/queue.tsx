@@ -174,8 +174,10 @@ export class PrizeQueue extends Component {
 						url: websocketUrl,
 						success(res) {
 							// 开始登陆
-							_this.websocket.onSocketOpened((res) => { });
-							this.rankMatching();
+							_this.websocket.onSocketOpened((res) => {
+								_this.rankMatching();
+							});
+							
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
 						},

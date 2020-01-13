@@ -121,7 +121,10 @@ export class SelfOrchestra extends Component {
 		});
 	}
 
-	componentDidHide () {}
+	componentDidHide () {
+		emitter.removeAllListeners('getSelfOrchestra');
+		emitter.removeAllListeners('requestUrl');
+	}
 
 	// 返回上一页
 	goBack(){

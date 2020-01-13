@@ -69,14 +69,14 @@ export class Recharge extends Component {
 				let websocketUrl = this.state.websocketUrl;
 				if (this.websocket.isLogin) {
 					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-					this.recharge();
+					this.getRecharge();
 				} else {
 					this.websocket.initWebSocket({
 						url: websocketUrl,
 						success(res){
 							// 开始登陆
 							_this.websocket.onSocketOpened((res)=>{
-								_this.recharge();
+								_this.getRecharge();
 							});
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
@@ -164,12 +164,12 @@ export class Recharge extends Component {
 	}
 
 	// 请求充值模版消息
-	recharge(){
+	getRecharge(){
 		let recharge = this.msgProto.recharge();
 		let parentModule = this.msgProto.parentModule(recharge);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.log('请求充值Success')},
+			success(res) {console.log('请求充值模版消息Success')},
 			fail(err){
 				Taro.showToast({
 					title: err.errMsg,

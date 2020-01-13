@@ -221,11 +221,12 @@ export class PrizeQueue extends Component {
 						url: websocketUrl,
 						success(res) {
 							// 开始登陆
-							_this.websocket.onSocketOpened((res) => { });
+							_this.websocket.onSocketOpened((res) => {
+								// 断线重连开始请求匹配
+								_this.OfflineMatchPrize();
+							});
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
-							// 断线重连开始请求匹配
-							_this.OfflineMatchPrize();
 						},
 						fail(err) {
 							createWebSocket(_this);
