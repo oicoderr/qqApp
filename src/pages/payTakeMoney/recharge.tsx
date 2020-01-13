@@ -46,6 +46,7 @@ export class Recharge extends Component {
 
 			websocketUrl: '',
 		};
+
 		this.msgProto = new MsgProto();
 	}
 
@@ -55,7 +56,7 @@ export class Recharge extends Component {
 		this.videoAd = new createVideoAd();
 		 // status.isEnded: (1完整看完激励视频) - (0中途退出);
 		this.videoAd.adGet((status) => { 
-			let redReceiveCount = this.data.redReceiveCount;
+			let redReceiveCount = this.state.data.redReceiveCount;
 			if(redReceiveCount < 1){
 				return;
 			}else{
