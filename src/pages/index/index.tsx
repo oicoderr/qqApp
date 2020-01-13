@@ -357,7 +357,6 @@ export class Index extends Component {
 		this.eventEmitter = emitter.addListener('getSelfOrchestra', (message) => {
 			clearInterval(message[1]);
 
-			console.log(123456);
 			let selfOrchestra = message[0]['data'];
 			this.setState((preState) => {
 				preState.selfOrchestra = selfOrchestra;
