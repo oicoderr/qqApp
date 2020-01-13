@@ -454,6 +454,20 @@ export const showShareMenuItem = () => {
     }
   })
 }
+
+/* 转发QQ说说平台 */
+export const qqOpenQzonePublish = (data={text:'酸柠檬', img:''}) => {
+  qq.openQzonePublish({
+    text: data.text,
+    media: [
+      {
+        type: 'photo',
+        path: data.img
+      }
+    ]
+})
+}
+
 /* 将秒转换成时间格式 */
 export const formatSeconds = (value) => {
   var theTime = parseInt(value);

@@ -8,85 +8,62 @@ export default class HomeBand extends Component {
     super(props);
     this.state = {
 
-      data: {
-        list: [],
-      },
+      data: {},
 
       local_data: {
-        // 主唱
-        leadSinger: {
-          animation:{
-            classAn: "",
-            classSvg: "",
-            height: "",
-            img: "",
-            steps: "",
-            timeAn: "",
-            width: "",
-          }
-        },
+        persons: [
+          // 主唱
+          {
+            animation:{
+              classAn: "",
+              classSvg: "",
+              height: "",
+              img: "",
+              steps: "",
+              timeAn: "",
+              width: "",
+            },
+          },
+          // 吉他手
+          {
+            animation:{
+              classAn: "",
+              classSvg: "",
+              height: "",
+              img: "",
+              steps: "",
+              timeAn: "",
+              width: "",
+            },
+          },
 
-        // 吉他手
-        guitarist: {
-          animation:{
-            classAn: "",
-            classSvg: "",
-            height: "",
-            img: "",
-            steps: "",
-            timeAn: "",
-            width: "",
-          }
-        },
+          // 贝斯手
+          {
+            animation:{
+              classAn: "",
+              classSvg: "",
+              height: "",
+              img: "",
+              steps: "",
+              timeAn: "",
+              width: "",
+            },
+          },
 
-        // 贝斯手
-        bassist: {
-          animation:{
-            classAn: "",
-            classSvg: "",
-            height: "",
-            img: "",
-            steps: "",
-            timeAn: "",
-            width: "",
-          }
-        },
-
-        // 鼓手
-        drummer: {
-          animation:{
-            classAn: "",
-            classSvg: "",
-            height: "",
-            img: "",
-            steps: "",
-            timeAn: "",
-            width: "",
-          }
-        }
+          // 鼓手
+          {
+            animation:{
+              classAn: "",
+              classSvg: "",
+              height: "",
+              img: "",
+              steps: "",
+              timeAn: "",
+              width: "",
+            },
+          },
+        ],
       },
-
-      // 未使用人物默认主图代替
-      default_data: [
-        // 吉他手
-        {
-          staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/guitar-shadow-1.png',
-          stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/guitar-stage-shadow-1.png',
-          light: '',
-        },
-        // 贝斯手
-        {
-          staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/bass-shadow-1.png',
-          stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/bass-stage-shadow-1.png',
-          light: '',
-        },
-        // 鼓手
-        {
-          staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/drum-shadow-1.png',
-          stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/drum-stage-shadow-1.png',
-          light: '',
-        }
-      ],
 
       // 各动画class(位置，大小信息, 灯光，舞台)
       anClass: [{
@@ -132,19 +109,22 @@ export default class HomeBand extends Component {
 
   componentDidMount() { }
 
-  componentWillUnmount() { }
+  componentWillUnmount() {
+    console.error('组件卸载ing');
+    emitter.removeAllListeners('selfOrchestra');
+  }
 
   componentDidShow() {
+    let index = 0;
     // 接受签到基本数据
     this.eventEmitter = emitter.addListener('selfOrchestra', message => {
-      clearInterval(message[1]);
-
-      // console.log('%c 接受父组件`我的乐队信息`====>', 'font-size:14px;color:#273df1;');console.log(message[0]['list']);
-      let list = message[0]['list'];
-      this.setState((preState) => {
-        preState.data.list = list;
-      });
-      // 重新分组
+      console.log(index++)
+      console.log('%c 接受父组件`我的乐队信息`====>', 'font-size:14px;color:#273df1;');console.log(message['list']);
+      let list = message['list'];
+      for(let i = 0 ; i < list.length; i++){
+        list[i]['animation'] = JSON.parse(list[i]['animation']);
+      }
+      // 将拥有主页所展示的人物抽出
       this.elicitPart(list);
     });
   }
@@ -153,30 +133,89 @@ export default class HomeBand extends Component {
     emitter.removeAllListeners('selfOrchestra');
   }
 
-  // 将使用的主唱，贝斯手，吉他手，鼓手抽出
-  elicitPart(list) {
-    let leadSinger, guitarist, bassist, drummer;
-    // type 类型(1.主唱;2.吉他手;3.贝斯手;4.鼓手)
-    let elicitPart = JSON.parse(JSON.stringify(list));
-    for (let i = 0; i < elicitPart.length; i++) {
-      elicitPart[i]['animation'] = JSON.parse(elicitPart[i]['animation']);
-      if (elicitPart[i]['type'] == 1 && elicitPart[i]['status']) {
-        leadSinger = elicitPart[i];
-      } else if (elicitPart[i]['type'] == 2 && elicitPart[i]['status']) {
-        guitarist = elicitPart[i];
-      } else if (elicitPart[i]['type'] == 3 && elicitPart[i]['status']) {
-        bassist = elicitPart[i];
-      } else if (elicitPart[i]['type'] == 4 && elicitPart[i]['status']) {
-        drummer = elicitPart[i];
-      }
+  elicitPart(list){
+
+    let leadSinger_data = {
+      animation:{
+        classAn: "",
+        classSvg: "",
+        height: "",
+        img: "",
+        steps: "",
+        timeAn: "",
+        width: "",
+      },
+      type: 1,
+      status: 0,
     }
-    this.setState((preState)=>{
-      preState.local_data.leadSinger = leadSinger;
-      preState.local_data.guitarist = guitarist;
-      preState.local_data.bassist =  bassist;
-      preState.local_data.drummer = drummer;
+
+    let guitarist_data = {
+      animation:{
+        classAn: "",
+        classSvg: "",
+        height: "",
+        img: "",
+        steps: "",
+        timeAn: "",
+        width: "",
+      },
+      staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/guitar-shadow-1.png',
+      stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/guitar-stage-shadow-1.png',
+      light: '',
+      type: 2,
+      status: 0,
+    }
+
+    let bassist_data = {
+      animation:{
+        classAn: "",
+        classSvg: "",
+        height: "",
+        img: "",
+        steps: "",
+        timeAn: "",
+        width: "",
+      },
+      staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/bass-shadow-1.png',
+      stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/bass-stage-shadow-1.png',
+      light: '',
+      type: 3,
+      status: 0,
+    }
+
+    let drummer_data = {
+      animation:{
+        classAn: "",
+        classSvg: "",
+        height: "",
+        img: "",
+        steps: "",
+        timeAn: "",
+        width: "",
+      },
+      staticBand: 'https://oss.snmgame.com/characters/characters/shadow/characters/drum-shadow-1.png',
+      stage: 'https://oss.snmgame.com/characters/characters/shadow/stages/drum-stage-shadow-1.png',
+      light: '',
+      type: 4,
+      status: 0,
+    }
+
+    let leadSinger_ = leadSinger_data, guitarist_ = guitarist_data, bassist_ = bassist_data, drummer_ = drummer_data;
+    list.forEach((currentValue)=>{
+      if(currentValue.type == 1 && currentValue.status){
+        leadSinger_ = currentValue;
+      }else if(currentValue.type == 2 && currentValue.status){
+        guitarist_ = currentValue;
+      }else if(currentValue.type == 3 && currentValue.status){
+        bassist_ = currentValue;
+      }else if(currentValue.type == 4 && currentValue.status){
+        drummer_ = currentValue;
+      }
     });
-    console.log('%c 主页乐队动画：','font-size:14px;color:#FF6347;background:#F8F8FF;');console.log(elicitPart);
+    let array = [leadSinger_, guitarist_, bassist_, drummer_];
+    this.setState((preState)=>{
+      preState.local_data.persons = array;
+    },()=>{});
   }
 
   // 更改播放/暂停状态
@@ -195,47 +234,35 @@ export default class HomeBand extends Component {
   }
 
   render() {
-    const leadSinger = this.state.local_data.leadSinger;
-    const guitarist = this.state.local_data.guitarist;
-    const bassist = this.state.local_data.bassist;
-    const drummer = this.state.local_data.drummer;
-
-    // 剪影
-    let default_data = this.state.default_data;
+    const persons = this.state.local_data.persons;
+    const AnClass = this.state.anClass;
+    console.log(persons,1919);
     // 动画
-    let AnArry = [leadSinger.animation,  guitarist.animation, bassist.animation, drummer.animation];
-    // 人物参数
-    let protagonist = [leadSinger, guitarist, bassist, drummer];
-    // 各动画class(位置，大小信息, 灯光，舞台)
-    let AnClass = this.state.anClass;
-
-    // 动画
-    const Animations = AnArry.map((cur, index)=>{
-      return  <View className={`${AnClass[index]['main']} ${protagonist[index]['type'] ? '' : 'hide'}`} style={`width:${cur.width}rpx; height:${cur.height}rpx;`}>
-                <svg viewBox={`0, 0, ${cur.width}, ${cur.height}`} style={`position: absolute; z-index: ${70 - index}; width: ${cur.width}rpx; height: ${cur.height}rpx;`} >
-                  <foreignObject width={cur.width} height={cur.height}>
-                    <View className={`${cur.classSvg} ${AnClass[index]['svg']} ${AnClass[index]['status']?'play':'stop'} `} style={`background:url(${cur.img}); backface-visibility: hidden;
-                    animation: ${cur.classAn} ${cur.timeAn}s steps(${cur.steps}) infinite; `}></View>
-                    <View data-type={AnClass[index]['type']} data-status={AnClass[index]['status']} onClick={this.setAnimationStatus.bind(this)} className={AnClass[index]['eventArea']}></View>
-                  </foreignObject>
-                </svg>
-                <Image src={protagonist[index]['light']} className={AnClass[index]['light']} />
-                <Image src={protagonist[index]['stage']} className={AnClass[index]['stage']} />
+    const Animations = persons.map((cur, index)=>{
+      return  <View>
+                <View className={` ${AnClass[index]['main']} ${ cur['status']? '':'hide'}`} style={`width:${cur.animation.width}rpx; height:${cur.animation.height}rpx;`}>
+                  <svg viewBox={`0, 0, ${cur.animation.width}, ${cur.animation.height}`} style={`position: absolute; z-index: ${70 - index}; width: ${cur.animation.width}rpx; height: ${cur.animation.height}rpx;`} >
+                    <foreignObject width={cur.animation.width} height={cur.height}>
+                      <View className={`${cur.animation.classSvg} ${AnClass[index]['svg']} ${AnClass[index]['status']?'play':'stop'} `} style={`background:url(${cur.animation.img}); backface-visibility: hidden;
+                      animation: ${cur.animation.classAn} ${cur.animation.timeAn}s steps(${cur.animation.steps}) infinite; `}></View>
+                      <View data-type={AnClass[index]['type']} data-status={AnClass[index]['status']} onClick={this.setAnimationStatus.bind(this)} className={AnClass[index]['eventArea']}></View>
+                    </foreignObject>
+                  </svg>
+                  <Image src={cur['light']} className={AnClass[index]['light']} />
+                  <Image src={cur['stage']} className={AnClass[index]['stage']} />
+                </View>
+        
+                <View className={`${ cur['status']? 'hide': ''} ${AnClass[index]['type'] == cur['type']?AnClass[index]['sketch']:'hide'}      `}>
+                  <Image src={cur.staticBand} className={AnClass[index]['svg']} />
+                  <Image src={cur.light} className={AnClass[index]['light']} />
+                  <Image src={cur.stage} className={AnClass[index]['stage']} />
+                </View>
               </View>
-    })
-    // 剪影
-    const Silhouette = default_data.map((cur,index)=>{
-      return <View className={`${AnClass[index+1]['sketch']} ${protagonist[index+1]['type'] ? 'hide' : ''}`}>
-              <Image src={cur.staticBand} className={AnClass[index+1]['svg']} />
-              <Image src={cur.light} className={AnClass[index+1]['light']} />
-              <Image src={cur.stage} className={AnClass[index+1]['stage']} />
-            </View>
-    })
+    });
+
 
     return <View className="homeBand">
       {Animations}
-      {/* 画空缺填充 */}
-      {Silhouette}
     </View>
   }
 }

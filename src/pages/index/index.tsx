@@ -362,9 +362,7 @@ export class Index extends Component {
 			this.setState((preState) => {
 				preState.selfOrchestra = selfOrchestra;
 			});
-			let timer = setInterval(() => {
-				emitter.emit('selfOrchestra', [selfOrchestra, timer]);
-			}, 20);
+			emitter.emit('selfOrchestra', selfOrchestra);
 			console.log('%c 我的乐队信息 ===>', 'font-size:14px;color:#ff1a85;background:#e0e0e0;'); console.log(message[0]['data']);
 		});
 

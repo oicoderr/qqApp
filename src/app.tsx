@@ -72,7 +72,7 @@ class _App extends Component {
 
 	componentDidMount () {
 		let _this = this;
-		console.error = () => {};
+		// console.error = () => {};
 		console.table = () => {};
 		// console.log = () => {};
 		// console.info = () => {};

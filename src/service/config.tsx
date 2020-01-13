@@ -8,7 +8,7 @@ export default class config {
 	// 如果当前提的版本等于oss版本相同走测试版本，如果不同走正式socket
 	constructor() {
 		// 当前版本
-		this.currentVersion = 'v1.0.0';
+		this.currentVersion = 'v1.0.1';
 		// 1 正式  0 测试
 		this.isVersionType = 1;
 	}

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image, Text, RadioGroup, Radio, Label, Button } from '@tarojs/components';
+import { View, Image, Button } from '@tarojs/components';
 import emitter from '../../service/events';
-import { onShareApp, get_OpenId_RoleId } from '../../utils';
+import { onShareApp, get_OpenId_RoleId, qqOpenQzonePublish } from '../../utils';
 import './index.scss';
 
 const App = Taro.getApp()
@@ -63,12 +63,14 @@ export default class WeekCheckIn extends Component {
 
   componentDidMount() { }
 
-  componentWillUnmount() { }
+  componentWillUnmount() {
+    emitter.removeAllListeners('weekCheckInInfo_child');
+  }
 
   componentDidShow() {
     let _this = this;
     // 接受签到基本数据
-    this.eventEmitter = emitter.addListener('weekCheckIninfo_child', message => {
+    this.eventEmitter = emitter.addListener('weekCheckInInfo_child', message => {
       console.log('～接受父组件签到基本信息：～');
       console.log(message);
       // 接受父组件签到基本信息
@@ -90,7 +92,7 @@ export default class WeekCheckIn extends Component {
   }
 
   componentDidHide() {
-    emitter.removeAllListeners('weekCheckIninfo_child');
+    emitter.removeAllListeners('weekCheckInInfo_child');
   }
 
   // 关闭签到弹窗,传给父组件关闭标示
@@ -106,17 +108,6 @@ export default class WeekCheckIn extends Component {
     emitter.emit('closeWeekCheckIn', !value);
   }
 
-  // 是否勾选炫耀一下
-  shareCheckedChange(value) {
-    // 签到分享点击
-    App.aldstat.sendEvent('click-签到分享', get_OpenId_RoleId());
-
-    console.log('%c 签到`永久`勾选同意炫耀一下: ' + value, 'font-size:14px;color:#f04800;background:#000000;');
-    this.setState(preState => {
-      preState.local_data.shareChecked = true; // !value
-    });
-  }
-
   // 领取奖励
   receiveAward(value) {
     // 签到领奖点击
@@ -124,15 +115,26 @@ export default class WeekCheckIn extends Component {
     this.setState(
       preState => {
         preState.local_data.curRewardStatus = !value;
-        preState.local_data.isShowWeekCheckIn = false;
       },
       () => {
         emitter.emit('curRewardStatus', {
           // 领取当日奖励
-          receiveReward: 1,
-          // 是否勾选炫耀分享
-          shareCheckedChange: this.state.local_data.shareChecked
+          receiveReward: 1
         });
+        // let data = {
+        //   text: "一键嗨秀",
+        //   img: "https://oss.snmgame.com/v1.0.0/logo.png",
+        // }
+        // qqOpenQzonePublish(data);
+        qq.openQzonePublish({
+          text: '我爱中国',
+          media: [
+              {
+                  type: 'photo',
+                  path: 'https://oss.snmgame.com/v1.0.0/logo.png'
+              }
+          ]
+      })
       }
     );
   }
@@ -170,8 +172,6 @@ export default class WeekCheckIn extends Component {
       title,
       curRewardStatus,
       submitBtnText,
-      shareChecked,
-      shareText,
       isShowWeekCheckIn,
       closeImgBtn,
       calendarIcon
@@ -206,25 +206,10 @@ export default class WeekCheckIn extends Component {
 
           <View className="submitBtnBox">
             <View className="submitBtn">
-              <Button openType="share" onClick={this.receiveAward.bind(this, curRewardStatus)} className="submitBtn_">
+              <Button onClick={this.receiveAward.bind(this, curRewardStatus)} className="submitBtn_">
                 {submitBtnText}
               </Button>
             </View>
-          </View>
-
-          <View className="checkBoxOption">
-            <RadioGroup className="checkBox">
-              <Label className="share_label" for="1" key="1">
-                <Radio
-                  className="radio_"
-                  value={this.state.data.shareText}
-                  onClick={this.shareCheckedChange.bind(this, shareChecked)}
-                  checked={shareChecked}
-                >
-                  {shareText}
-                </Radio>
-              </Label>
-            </RadioGroup>
           </View>
         </View>
       </View>
