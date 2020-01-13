@@ -139,7 +139,7 @@ export default class HomeBand extends Component {
     this.eventEmitter = emitter.addListener('selfOrchestra', message => {
       clearInterval(message[1]);
 
-      console.log('%c 接受父组件`我的乐队信息`====>', 'font-size:14px;color:#273df1;');console.log(message[0]['list']);
+      // console.log('%c 接受父组件`我的乐队信息`====>', 'font-size:14px;color:#273df1;');console.log(message[0]['list']);
       let list = message[0]['list'];
       this.setState((preState) => {
         preState.data.list = list;

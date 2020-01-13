@@ -68,7 +68,7 @@ export class Index extends Component {
 			// 晋级之路
 			isShowAdvanceRoadUi: false,
 			// 签到基本信息
-			weekCheckIninfo: {},
+			weekCheckInInfo: {},
 			// 默认勾选了签到分享
 			isShareCheckedChange: true,
 			// 我的乐队信息
@@ -101,7 +101,7 @@ export class Index extends Component {
 	}
 
 	componentWillUnmount() {
-		console.log('%c 主页componentWillUnmount，开始removeAllListeners', 'font-size:14px;background-color:#fff81a; color:#00000;');
+		console.log('%c 主页WillUnmount，开始removeAllListeners', 'font-size:14px;background-color:#fff81a; color:#00000;');
 		emitter.removeAllListeners('enterMatch');
 		emitter.removeAllListeners('getBattleTeams');
 		emitter.removeAllListeners('getWeekCheckIninfo');
@@ -257,12 +257,12 @@ export class Index extends Component {
 			clearInterval(message[1]);
 
 			console.log('%c ～签到基本信息：～', 'font-size: 14px; color: #ffda57;background:#000000;'); console.log(message[0]['data']);
-			let weekCheckIninfo = message[0]['data'];
+			let weekCheckInInfo = message[0]['data'];
 			// 发给子组件签到信息
-			emitter.emit('weekCheckIninfo_child', weekCheckIninfo);
+			emitter.emit('weekCheckInInfo_child', weekCheckInInfo);
 			// 显示签到组件
 			this.setState((preState) => {
-				preState.weekCheckIninfo = weekCheckIninfo;
+				preState.weekCheckInInfo = weekCheckInInfo;
 				preState.isShowWeekCheckIn = true;
 			});
 		});

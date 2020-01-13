@@ -119,7 +119,7 @@
     .rewardTip {
       position: absolute;
       bottom: 160rpx;
-      width: 100%;
+      width: calc((100% - 40rpx);
       line-height: 24rpx;
       overflow: hidden;
       font-size: 24rpx;
@@ -127,6 +127,7 @@
       color: rgba(255, 255, 255, 1);
       text-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, 1);
       text-align: center;
+      box-sizing: border-box;
     }
 
     .watchAdsGetReward {
