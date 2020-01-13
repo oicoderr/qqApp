@@ -123,10 +123,11 @@ export class Index extends Component {
 		// 显示分享
 		showShareMenuItem();
 		// 页面超出提示,返回当前页面URL
-		let currentPageUrl = getCurrentPageUrl();
+		getCurrentPageUrl();
 
 		// 获取当前版本
 		configObj.getVersion();
+
 		// 监听requestUrl
 		this.eventEmitter = emitter.addListener('requestUrl', message => {
 			clearInterval(message[0]);
