@@ -90,6 +90,7 @@ export class Index extends Component {
 
 	componentDidMount() {
 		let _this = this;
+
 		getStorage('gameUserInfo', (res) => {
 			if (res !== '') {
 				_this.setState((preState) => {

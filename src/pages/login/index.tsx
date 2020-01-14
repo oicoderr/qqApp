@@ -28,9 +28,7 @@ export class Login extends Component {
 				indexPage: '/pages/index/index'
 			},
 
-			data: {
-
-			},
+			data: { },
 
 			local_data: {
 				isAgreeNotice: false, 	// 已同意用户须知, 已打开
@@ -46,18 +44,9 @@ export class Login extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount() {
-		// 接受AppGlobalSocket
-		this.eventEmitter = emitter.addListener('AppGlobalSocket', (message) => {
-			clearInterval(message[1]);
+	componentWillMount() { }
 
-			console.log('%c 登陆页收到的App发来的webSocket', 'font-size:14px;color:#ffad1a');
-			console.log(message[0]);
-			let socket = message[0];
-			App.globalData.websocket = socket;
-			this.websocket = socket;
-		});
-
+	componentDidMount() {
 		// 监听 子组件MessageToast 关闭弹窗消息 
 		this.eventEmitter = emitter.addListener('closeMessageToast', (message) => {
 			this.setState((preState) => {
@@ -65,8 +54,6 @@ export class Login extends Component {
 			})
 		});
 	}
-
-	componentDidMount() { }
 
 	componentWillUnmount() {
 		emitter.removeAllListeners('closeMessageToast');
@@ -171,6 +158,7 @@ export class Login extends Component {
 			preState.local_data.isShowDirections = true;
 		})
 	}
+
 	// 发送昵称，头像信息
 	basicInfo(userInfo) {
 		let _this = this;

@@ -72,11 +72,11 @@ class _App extends Component {
 
 	componentDidMount () {
 		let _this = this;
-		console.error = () => {};
+		// console.error = () => {};
 		// console.table = () => {};
-		console.log = () => {};
-		console.info = () => {};
-		console.dir = () => {};
+		// console.log = () => {};
+		// console.info = () => {};
+		// console.dir = () => {};
 
 		// 获取当前版本
 		configObj.getVersion();
@@ -118,7 +118,7 @@ class _App extends Component {
 
 			// 将code发后台，获取openid及accessToken
 			this.login((loginData)=>{
-				// app登录, appLogin: 返回openid，accessToken
+				// app登录, appLogin.data: 返回openid，accessToken, session_key
 				loginRequest( loginData, (appLogin)=>{
 					let userInfo = {};
 					// 获取缓存userInfo，如果没有授权信息, 授权后并保存缓存中，如果存在openid,跳转游戏登录
@@ -126,13 +126,22 @@ class _App extends Component {
 						if(!res.nickName || !res.avatarUrl ){
 							console.log('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
 							userInfo = appLogin.data;
-							// 开始登陆
-							_this.createWebSocket(_this.websocketUrl);
-							setStorage('userInfo', userInfo);
+							// 跳转游戏主页
+							Taro.reLaunch({
+								url: '/pages/login/index',
+								success(){
+									// 开始登陆
+									setStorage('userInfo', userInfo);
+									_this.createWebSocket(_this.websocketUrl);
+								}
+							});
 						}else{
 							// 跳转游戏主页
 							Taro.reLaunch({
 								url: '/pages/index/index',
+								success(){
+									_this.createWebSocket(_this.websocketUrl);
+								}
 							});
 						}
 					});
@@ -180,19 +189,28 @@ class _App extends Component {
 				});
 			}
 		});
-		
+
 		// 2702 玩家游戏状态： 0.正常默认状态;1.匹配中;2.房间中
 		this.eventEmitter = emitter.addListener('getPlayerStatus', (message) => {
 			clearInterval(message[1]);
 			let value = message[0]['data']['value'];
-			if(value == 0){
-				Taro.reLaunch({
-					url: '/pages/index/index',
-				});
-				return;
-			}
+			getStorage('userInfo',(res)=>{
+				if(!res.nickName || !res.avatarUrl ){
+					Taro.reLaunch({
+						url: '/pages/login/index',
+					});
+					return;
+				}else{
+					if(value == 0){
+						Taro.reLaunch({
+							url: '/pages/index/index',
+						});
+						return;
+					}
+				}
+			})
+			
 		});
-		
 
 		// 清除全局定时器
 		clearTimeout(this.globalData.timestamp);
@@ -234,21 +252,21 @@ class _App extends Component {
 				if (res.hasUpdate) {
 				updateManager.onUpdateReady(function() {
 					Taro.showModal({
-					title: '更新提示',
-					content: '新版本已经准备好，是否重启应用？',
-					success: function(res) {
-						if (res.confirm) {
-						updateManager.applyUpdate()
+						title: '更新提示',
+						content: '新版本已经准备好，是否重启应用？',
+						success: function(res) {
+							if (res.confirm) {
+							updateManager.applyUpdate()
+							}
 						}
-					}
 					})
 				})
 				updateManager.onUpdateFailed(function() {
-					Taro.showModal({
-					title: '更新失败',
-					content: '更新失败，请重新进入'
+						Taro.showModal({
+							title: '更新失败',
+							content: '更新失败，请重新进入'
+						})
 					})
-				})
 				}
 			})
 		} else {
@@ -362,14 +380,8 @@ class _App extends Component {
 		this.websocket.initWebSocket({
 			url: websocketUrl,
 			success(res) { 
-				console.log('～建立连接成功！可以onSocketOpened拉～');
 				// 对外抛出websocket
 				_this.globalData.websocket = _this.websocket;
-				// 通知AppGlobalSocket
-				let timer = setInterval(()=>{
-					console.log('AppGlobalSocket');
-					emitter.emit('AppGlobalSocket', [_this.websocket, timer]);
-				},20);
 				// 开始登陆
 				_this.websocket.onSocketOpened();
 			},

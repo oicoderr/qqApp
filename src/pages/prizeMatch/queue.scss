@@ -119,61 +119,68 @@
         left: 50%;
         bottom: 30rpx;
         transform: translateX(-50%);
-        width: 280rpx;
-        height: 144rpx;
+        width: 470rpx;
+        height: 160rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .timeNumber{
+          width: 470rpx;
+          height: 70rpx;
+
+          .prizeCountdownWrap{
+            position: absolute;
+            left: 45rpx;
+            top: 0;
+            width: 225rpx;
+            height: 67rpx;
+  
+            .prizeCountdownBg{
+              width: 225rpx;
+              height: 67rpx;
+            }
+  
+            .QueueCountdown{
+              position: absolute;
+              left: 10rpx;
+              top: 2rpx;
+              font-size: 30rpx;
+              color: rgba(0, 0, 0, 1);
+              font-weight: 500;
+            }
+          }
+
+          .prizeCurrentNumberWrap{
+            position: absolute;
+            left: 160rpx;
+            top: 0;
+            width: 204rpx;
+            height: 67rpx;
+  
+            .prizeCurrentNumberBg{
+              width: 204rpx;
+              height: 67rpx;
+            }
+  
+            .currCount{
+              position: absolute;
+              left: 10rpx;
+              top: 2rpx;
+              font-size: 30rpx;
+              color: rgba(0, 0, 0, 1);
+              font-weight: 500;
+            }
+          }
+        }
 
         .curPeopleTip{
           position: absolute;
           bottom: 0;
-          width: 280rpx;
-          height: 132rpx;
-        }
-
-        .prizeCountdownWrap{
-          position: absolute;
-          left: 45rpx;
-          top: 0;
-          width: 97rpx;
-          height: 36rpx;
-
-          .prizeCountdownBg{
-            width: 97rpx;
-            height: 36rpx;
-          }
-
-          .QueueCountdown{
-            position: absolute;
-            left: 10rpx;
-            top: 2rpx;
-            font-size: 30rpx;
-            color: rgba(0, 0, 0, 1);
-            font-weight: 500;
-          }
-        }
-
-        .prizeCurrentNumberWrap{
-          position: absolute;
-          left: 160rpx;
-          top: 0;
-          width: 90rpx;
-          height: 36rpx;
-
-          .prizeCurrentNumberBg{
-            width: 90rpx;
-            height: 36rpx;
-          }
-
-          .currCount{
-            position: absolute;
-            left: 10rpx;
-            top: 2rpx;
-            font-size: 30rpx;
-            color: rgba(0, 0, 0, 1);
-            font-weight: 500;
-          }
+          width: 283rpx;
+          height: 104rpx;
         }
       }
-
     }
 
     .status {

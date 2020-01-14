@@ -517,13 +517,15 @@ export class PrizeQueue extends Component {
 								</View>
 
 								<View className='queuePeople'>
-									<View className='prizeCountdownWrap'>
-										<Image src={prizeCountdownBg} className='prizeCountdownBg' />
-										<Text className='QueueCountdown' decode="true">{time}</Text>
-									</View>
-									<View className='prizeCurrentNumberWrap'>
-										<Image src={prizeCurrentNumberBg} className='prizeCurrentNumberBg' />
-										<Text className='currCount' decode="true">{currCount}</Text>
+									<View className='timeNumber'>
+										<View className='prizeCountdownWrap'>
+											<Image src={prizeCountdownBg} className='prizeCountdownBg' />
+											<Text className='QueueCountdown' decode="true">{time}</Text>
+										</View>
+										<View className='prizeCurrentNumberWrap'>
+											<Image src={prizeCurrentNumberBg} className='prizeCurrentNumberBg' />
+											<Text className='currCount' decode="true">{currCount}</Text>
+										</View>
 									</View>
 									<Image src={prizeQueueNumberTip} className='curPeopleTip' />
 								</View>
