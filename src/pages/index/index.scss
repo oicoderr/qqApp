@@ -176,11 +176,14 @@
 // 右侧按钮
 .rightListBtn {
   position: absolute;
-  top: 90rpx;
-  right: 20rpx;
+  top: 9vh;
+  right: 0rpx;
   z-index: 9;
   width: auto;
   height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   .oneKeyShareImg{
     background-image: url(https://oss.snmgame.com/v1.0.0/oneKeyShareImg.png);
@@ -188,7 +191,7 @@
     background-size: 124rpx 130rpx;
     width: 124rpx;
     height: 130rpx;
-    margin-bottom: 18rpx !important;
+    margin-bottom: 10rpx !important;
 
     .oneKeyShare{
       width: 124rpx;
@@ -202,32 +205,33 @@
   }
 
   .problemBtn {
-    width: 86px;
-    height: 94rpx;
-    background-position: -358px -266px;
-    margin-bottom: 18rpx !important;
+    width: 84px;
+    height: 90rpx;
+    margin-bottom: 20rpx !important;
+    background-image: url(https://oss.snmgame.com/v1.0.0/problemBtn.png);
+    background-repeat: no-repeat;
+    background-size: 84rpx 90rpx;
+    margin: auto 30rpx;
   }
 
   .signInBtn {
-    width: 86px;
-    height: 94rpx;
-    background-position: -382px -388px;
-    margin-bottom: 18rpx !important;
+    width: 84px;
+    height: 90rpx;
+    margin-bottom: 20rpx !important;
+    background-image: url(https://oss.snmgame.com/v1.0.0/signInBtn.png);
+    background-repeat: no-repeat;
+    background-size: 84rpx 90rpx;
+    margin: auto 30rpx;
   }
 
   .welfareBtn {
-    width: 86px;
-    height: 94rpx;
-    background-position: -278px -388px;
-    margin-bottom: 18rpx !important;
-  }
-
-  .rightBtnIcon {
-    background-image: url(https://oss.snmgame.com/v1.0.0/index-game-import-icon0.png );
+    width: 84px;
+    height: 90rpx;
+    margin-bottom: 20rpx !important;
+    background-image: url(https://oss.snmgame.com/v1.0.0/welfareBtn.png);
     background-repeat: no-repeat;
-    background-size: 525px 500px;
-    margin-bottom: 20px;
-    margin: 0 auto;
+    background-size: 84rpx 90rpx;
+    margin: auto 30rpx;
   }
 }
 
@@ -259,14 +263,14 @@
   background-size: 750px 360px;
 
   .sameBtn {
-    background-image: url(https://oss.snmgame.com/v1.0.0/index-game-import-icon0.png );
+    background-image: url( https://oss.snmgame.com/v1.0.0/index-game-import-icon0.png );
     background-repeat: no-repeat;
     background-size: 525px 500px;
     position: absolute;
   }
 
   .cashTip {
-    background-image: url(https://oss.snmgame.com/v1.0.0/cashTip.png );
+    background-image: url( https://oss.snmgame.com/v1.0.0/cashTip.png );
     background-repeat: no-repeat;
     background-size: 124px 100px;
     position: absolute;

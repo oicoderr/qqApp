@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
-import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem, get_OpenId_RoleId } from '../../utils'
+import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem, get_OpenId_RoleId, onShareApp } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import configObj from '../../service/configObj'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
@@ -532,17 +532,51 @@ export class Index extends Component {
 	}
 
 	// 一键发说说
-	// onOpenQzonePublish(){
-	// 	qq.openQzonePublish({
-	// 		text: '我爱中国',
-	// 		media: [
-	// 			{
-	// 				type: 'photo',
-	// 				path: 'http://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/logo.png'
-	// 			}
-	// 		]
-	// 	})
-	// }
+	onOpenQzonePublish(res){
+		return {
+			text: '我爱中国',
+			media: [
+				{
+					type: 'photo',
+					path: 'http://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/logo.png'
+				}
+			]
+		}
+	}
+
+	// 一键空间
+	onShareAppMessage(res) {
+		let value = 1, _this = this;
+		let getShareReward = this.msgProto.getShareReward(value);
+		let parentModule = this.msgProto.parentModule(getShareReward);
+		let shareData = {
+			title: '酸柠檬',
+			path: '/pages/login/index',
+			imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
+			callback: (status) => {},
+		};
+		// 按钮分享
+		if (res.from === 'button') {
+			shareData.callback = (status) => {
+				if (status.errMsg === "shareAppMessage:fail cancel") {
+					Taro.showToast({
+						title: '分享失败',
+						icon: 'none',
+						duration: 2000,
+					})
+				} else {
+					_this.websocket.sendWebSocketMsg({
+						data: parentModule,
+						success(res) { },
+						fail(err) {
+							console.log(err);
+						}
+					});
+				}
+			}
+		}
+		return onShareApp(shareData);
+	}
 
 	render() {
 		const { sex } = this.state.gameUserInfo;
@@ -593,12 +627,12 @@ export class Index extends Component {
 
 					{/* 右侧按钮list */}
 					<View className='rightListBtn'>
-						<View onClick={this.onOpenQzonePublish.bind(this)} className='oneKeyShareImg'>
-							<Button open-type='share' className='oneKeyShare'></Button>
+						<View className='oneKeyShareImg'>
+							<Button open-type='share' share-mode="{{['qq', 'qzone']}}" className='oneKeyShare'></Button>
 						</View>
-						<View onClick={this.weekCheckIn.bind(this)} className='rightBtnIcon signInBtn'></View>
-						<View className='rightBtnIcon problemBtn'></View>
-						<View className='hide rightBtnIcon welfareBtn'></View>
+						<View onClick={this.weekCheckIn.bind(this)} className='signInBtn'></View>
+						<View className='problemBtn'></View>
+						<View className='hide welfareBtn'></View>
 					</View>
 					<View className='body'>
 						<HomeBandUi />
