@@ -535,17 +535,9 @@ export class Index extends Component {
 		let getShareReward = this.msgProto.getShareReward(value);
 		let parentModule = this.msgProto.parentModule(getShareReward);
 		let shareData = {
-			text: '',
-			img: ''
+			text: '来不及解释了,快上车！跟我一起组建梦想乐队！',
+			img: 'https://oss.snmgame.com/v1.0.0/openQzonePublish-01.png'
 		}
-		this.websocket.sendWebSocketMsg({
-			data: parentModule,
-			success(res) { },
-			fail(err) {
-				console.log(err);
-			}
-		});
-
 		qq.openQzonePublish({
 			text: shareData.text,
 			media: [
@@ -554,7 +546,14 @@ export class Index extends Component {
 					path: shareData.img
 				}
 			]
-		})
+		});
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) { },
+			fail(err) {
+				console.log(err);
+			}
+		});
 	}
 
 	render() {
