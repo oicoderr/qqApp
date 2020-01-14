@@ -324,6 +324,16 @@ export default class MsgProto {
 		}
 	}
 
+	// 2601 分享领取奖励 (1.首页分享领能量;2.大奖赛分享战绩领加速卡;3.排位赛分享战绩领取金币)
+	getShareReward(val){
+		return {
+			code: 2601,
+			data: {
+				type: val
+			}
+		}
+	}
+
 
 
 

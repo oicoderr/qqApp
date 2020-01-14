@@ -531,17 +531,17 @@ export class Index extends Component {
 	}
 
 	// 一键发说说
-	onOpenQzonePublish(){
-		qq.openQzonePublish({
-			text: '我爱中国',
-			media: [
-				{
-					type: 'photo',
-					path: 'http://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/logo.png'
-				}
-			]
-	})
-	}
+	// onOpenQzonePublish(){
+	// 	qq.openQzonePublish({
+	// 		text: '我爱中国',
+	// 		media: [
+	// 			{
+	// 				type: 'photo',
+	// 				path: 'http://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/logo.png'
+	// 			}
+	// 		]
+	// 	})
+	// }
 
 	render() {
 		const { sex } = this.state.gameUserInfo;
