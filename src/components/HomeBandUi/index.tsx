@@ -115,10 +115,8 @@ export default class HomeBand extends Component {
   }
 
   componentDidShow() {
-    let index = 0;
     // 接受签到基本数据
     this.eventEmitter = emitter.addListener('selfOrchestra', message => {
-      console.log(index++)
       console.log('%c 接受父组件`我的乐队信息`====>', 'font-size:14px;color:#273df1;');console.log(message['list']);
       let list = message['list'];
       for(let i = 0 ; i < list.length; i++){
@@ -236,7 +234,6 @@ export default class HomeBand extends Component {
   render() {
     const persons = this.state.local_data.persons;
     const AnClass = this.state.anClass;
-    console.log(persons,1919);
     // 动画
     const Animations = persons.map((cur, index)=>{
       return  <View>

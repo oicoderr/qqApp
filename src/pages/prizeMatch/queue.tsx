@@ -31,7 +31,7 @@ export class PrizeQueue extends Component {
 
 			// 后台返回数据
 			data: {
-				curTeamInfo: { currCount: 1, maxCount: '', time: '' }
+				curTeamInfo: { currCount: [0,0,1], maxCount: '', time: [0,1,5] }
 			},
 
 			// 前台数据
@@ -364,21 +364,21 @@ export class PrizeQueue extends Component {
 
 		if(time < 10 && time > -1){
 			timeArray = ('0' + time).split("");
-			time = timeArray[0] +'&nbsp;'+ timeArray[1];
+			time = [timeArray[0],timeArray[1]];
 		}else if(time > 9 && time < 100){
 			timeArray = (time+'').split("");
-			time = timeArray[0] +'&nbsp;&nbsp;'+ timeArray[1];
+			time = [timeArray[0],timeArray[1]];
 		}
 
 		if(currCount < 10 && currCount > -1){
 			currCountArray = ('00' + currCount).split("");
-			currCount = currCountArray[0] +'&nbsp;'+ currCountArray[1] + '&nbsp;' + currCountArray[2];
+			currCount = [currCountArray[0],currCountArray[1],currCountArray[2]];
 		}else if(currCount > 9 && currCount < 100){
 			currCountArray = ('0' + currCount).split("");
-			currCount = currCountArray[0] +'&nbsp;'+ currCountArray[1] + '&nbsp;' + currCountArray[2];
+			currCount = [currCountArray[0] ,currCountArray[1], currCountArray[2]];
 		}else if(currCount > 99 && currCount < 1000){
 			currCountArray = (currCount+'').split("");
-			currCount = currCountArray[0] +'&nbsp;'+ currCountArray[1] + '&nbsp;' + currCountArray[2];
+			currCount = [currCountArray[0], currCountArray[1], currCountArray[2]];
 		}
 		this.setState((preState) => {
 			preState.data.curTeamInfo = curTeamInfo;
@@ -520,11 +520,18 @@ export class PrizeQueue extends Component {
 									<View className='timeNumber'>
 										<View className='prizeCountdownWrap'>
 											<Image src={prizeCountdownBg} className='prizeCountdownBg' />
-											<Text className='QueueCountdown' decode="true">{time}</Text>
+											<View className='QueueCountdown'>
+												<Text className='firstTime'>{time[0]}</Text>
+												<Text className='secondTime'>{time[1]}</Text>
+											</View>
 										</View>
 										<View className='prizeCurrentNumberWrap'>
 											<Image src={prizeCurrentNumberBg} className='prizeCurrentNumberBg' />
-											<Text className='currCount' decode="true">{currCount}</Text>
+											<View className='currCount'>
+												<Text className='firstCount'>{currCount[0]}</Text>
+												<Text className='secondCount'>{currCount[1]}</Text>
+												<Text className='lastCount'>{currCount[2]}</Text>
+											</View>
 										</View>
 									</View>
 									<Image src={prizeQueueNumberTip} className='curPeopleTip' />
