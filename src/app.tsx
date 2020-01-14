@@ -127,22 +127,11 @@ class _App extends Component {
 							console.log('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
 							userInfo = appLogin.data;
 							// 跳转游戏主页
-							Taro.reLaunch({
-								url: '/pages/login/index',
-								success(){
-									// 开始登陆
-									setStorage('userInfo', userInfo);
-									_this.createWebSocket(_this.websocketUrl);
-								}
-							});
+							setStorage('userInfo', userInfo);
+							_this.createWebSocket(_this.websocketUrl);
 						}else{
 							// 跳转游戏主页
-							Taro.reLaunch({
-								url: '/pages/index/index',
-								success(){
-									_this.createWebSocket(_this.websocketUrl);
-								}
-							});
+							_this.createWebSocket(_this.websocketUrl);
 						}
 					});
 				})
@@ -196,20 +185,15 @@ class _App extends Component {
 			let value = message[0]['data']['value'];
 			getStorage('userInfo',(res)=>{
 				if(!res.nickName || !res.avatarUrl ){
-					Taro.reLaunch({
-						url: '/pages/login/index',
-					});
 					return;
 				}else{
 					if(value == 0){
 						Taro.reLaunch({
 							url: '/pages/index/index',
 						});
-						return;
 					}
 				}
 			})
-			
 		});
 
 		// 清除全局定时器
