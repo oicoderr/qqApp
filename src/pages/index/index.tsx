@@ -151,7 +151,7 @@ export class Index extends Component {
 							// 开始登陆
 							_this.websocket.onSocketOpened((res) => {
 								// 1601 请求乐队基本信息
-								this.getSelfOrchestra();
+								_this.getSelfOrchestra();
 							});
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
