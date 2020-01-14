@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
-import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, showShareMenuItem, get_OpenId_RoleId, onShareApp } from '../../utils'
+import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, get_OpenId_RoleId, onShareApp } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import configObj from '../../service/configObj'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
@@ -121,8 +121,6 @@ export class Index extends Component {
 		// 首页pv
 		App.aldstat.sendEvent('pv-主页', get_OpenId_RoleId());
 
-		// 显示分享
-		showShareMenuItem();
 		// 页面超出提示,返回当前页面URL
 		getCurrentPageUrl();
 
@@ -532,50 +530,31 @@ export class Index extends Component {
 	}
 
 	// 一键发说说
-	onOpenQzonePublish(res){
-		return {
-			text: '我爱中国',
-			media: [
-				{
-					type: 'photo',
-					path: 'http://snm-qqapp.oss-cn-beijing.aliyuncs.com/v1.0.0/logo.png'
-				}
-			]
-		}
-	}
-
-	// 一键空间
-	onShareAppMessage(res) {
-		let value = 1, _this = this;
+	onOpenQzonePublish(){
+		let value = 1;
 		let getShareReward = this.msgProto.getShareReward(value);
 		let parentModule = this.msgProto.parentModule(getShareReward);
 		let shareData = {
-			title: '酸柠檬',
-			path: '/pages/login/index',
-			imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
-			callback: (status) => {},
-		};
-		// 按钮分享
-		if (res.from === 'button') {
-			shareData.callback = (status) => {
-				if (status.errMsg === "shareAppMessage:fail cancel") {
-					Taro.showToast({
-						title: '分享失败',
-						icon: 'none',
-						duration: 2000,
-					})
-				} else {
-					_this.websocket.sendWebSocketMsg({
-						data: parentModule,
-						success(res) { },
-						fail(err) {
-							console.log(err);
-						}
-					});
-				}
-			}
+			text: '',
+			img: ''
 		}
-		return onShareApp(shareData);
+		this.websocket.sendWebSocketMsg({
+			data: parentModule,
+			success(res) { },
+			fail(err) {
+				console.log(err);
+			}
+		});
+
+		qq.openQzonePublish({
+			text: shareData.text,
+			media: [
+				{
+					type: 'photo',
+					path: shareData.img
+				}
+			]
+		})
 	}
 
 	render() {
@@ -628,7 +607,7 @@ export class Index extends Component {
 					{/* 右侧按钮list */}
 					<View className='rightListBtn'>
 						<View className='oneKeyShareImg'>
-							<Button open-type='share' share-mode="{{['qq', 'qzone']}}" className='oneKeyShare'></Button>
+							<Button onClick={this.onOpenQzonePublish.bind(this)} className='oneKeyShare'></Button>
 						</View>
 						<View onClick={this.weekCheckIn.bind(this)} className='signInBtn'></View>
 						<View className='problemBtn'></View>

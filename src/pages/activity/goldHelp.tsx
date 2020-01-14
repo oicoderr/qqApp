@@ -340,8 +340,8 @@ export class GoldHelp extends Component {
 		};
 		// 按钮分享
 		if (res.from === 'button' && roleId) {
-			console.log(' =====>按钮分享加速卡<=====');
-			shareData.title = '迎接音乐大考验，组建Wuli梦想乐队！';
+			console.log(' =====>按钮分享获取金币助力<=====');
+			shareData.title = '击败所有对手，赢取现金红包！';
 			shareData.path = `/pages/login/index?param1=${param1}&inviterRoleId=${roleId}`,
 				shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
 			shareData.shareCallBack = (status) => {

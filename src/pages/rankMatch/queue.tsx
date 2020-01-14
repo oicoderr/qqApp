@@ -93,7 +93,7 @@ export class PrizeQueue extends Component {
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				rankCenterIcon: 'https://oss.snmgame.com/v1.0.0/rankCenterIcon.png',
 				rankQueueTip: 'https://oss.snmgame.com/v1.0.0/rankQueueTip.png',
-				searchIcon: 'https://oss.snmgame.com/v1.0.0/searchIcon.png',
+				searchIcon: 'https://oss.snmgame.com/v1.0.0/searchIcon.gif',
 				rankDefaultHeadImg: 'https://oss.snmgame.com/v1.0.0/rankDefaultHeadImg.png',
 				matchingTxt: '匹配中...',
 			},
