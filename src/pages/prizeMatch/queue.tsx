@@ -512,6 +512,7 @@ export class PrizeQueue extends Component {
 
 		return (
 			<View className='queue'>
+				{/* 匹配倒计时结束，toast提示 */}
 				<View className={`toastWrap ${isShowToast?'':'hide'}`}>
 					<View className='toast'>
 						<View className='title'>{matchToastTip}</View>
