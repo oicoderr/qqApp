@@ -482,11 +482,10 @@ export class PrizeEntrance extends Component {
 						<Image onClick={this.goBack.bind(this)} src={backBtn} className='backBtn' />
 
 						{/* 门票bar */}
-						<View className='prizeMatchBar hide'>
-							<View className='board-same board'></View>
+						<View className='prizeMatchBar'>
+							<View className='board-same board'>{redEnvelope}</View>
 							<View className='icon-same ticketsIcon' ></View>
-							<Text className='num-same ticketsNum'>{redEnvelope}</Text>
-							<View onClick={this.goPayTickets.bind(this)} className='addIcon-same addIcon' ></View>
+							<View onClick={this.goPayTickets.bind(this)} className='hide addIcon-same addIcon' ></View>
 						</View>
 
 						{/* 能量bar */}

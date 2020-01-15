@@ -64,8 +64,8 @@
 
     // 能量bar
     .energyBar {
-      width: 230rpx;
-      max-width: 230rpx;
+      width: 180rpx;
+      max-width: 180rpx;
       height: 66rpx;
       line-height: 96rpx;
       overflow: hidden;
@@ -100,17 +100,17 @@
 
     // 门票bar
     .prizeMatchBar {
-      position: absolute;
+      width: 180rpx;
+      max-width: 180rpx;
+      height:66rpx;
+      line-height:96rpx;
+      overflow:hidden;
+      position:absolute;
       top: 42rpx;
-      left: 100rpx;
-      width: 230rpx;
-      max-width: 230rpx;
-      height: 70rpx;
-      line-height: 96rpx;
-      overflow: hidden;
+      left: 300rpx;
 
       .board {
-        top: 10rpx;
+        top: 14rpx;
         left: 20rpx;
       }
 
