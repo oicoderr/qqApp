@@ -562,19 +562,17 @@ export class Index extends Component {
 		let value = 1, _this = this;
 		let getShareReward = this.msgProto.getShareReward(value);
 		let parentModule = this.msgProto.parentModule(getShareReward);
-		let shareData = {
-			title: '酸柠檬',
-			path: '/pages/login/index',
-			imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
-		};
 		// 按钮分享
-		if (res.from === 'button' ) {
-			shareData.title = '来不及解释了,快上车！跟我一起组建梦想乐队！';
-			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
-		} else { // 右上角分享App
+		let shareData = {
+			title: '来不及解释了,快上车！跟我一起组建梦想乐队！',
+			path: '/pages/login/index',
+			imageUrl: 'https://oss.snmgame.com/v1.0.0/openQzonePublish-02.png',
+		};
+		// 右上角分享App
+		if (res.from != 'button' ) {
 			shareData.title = '明星、热点、八卦知多少？一试便知！';
 			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
-		};
+		}
 		return {
 			title: shareData.title,
 			path: shareData.path,
