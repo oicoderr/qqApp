@@ -36,10 +36,13 @@ export class PrizeQueue extends Component {
 
 			// 前台数据
 			local_data: {
+				isShowToast: false,					// 是否显示重新匹配弹簧
 				timer: '',									// 头像定时器
 				matchIngTxt: '匹配中...',
 				gameUserInfo: {},
 				curNumberTxt: '当前人数：',
+				matchToastTip: '匹配提醒',
+				matchToastBody: '客官，此时此刻你是独一无二的！',
 				headImgPosition: [
 					{
 						x: -10,
@@ -163,6 +166,8 @@ export class PrizeQueue extends Component {
 				prizeQueueNumberTip: 'https://oss.snmgame.com/v1.0.0/prizeQueueNumberTip.png',
 				prizeCountdownBg: 'https://oss.snmgame.com/v1.0.0/prizeCountdownBg.png',
 				prizeCurrentNumberBg: 'https://oss.snmgame.com/v1.0.0/prizeCurrentNumberBg.png',
+				cancelBtn: 'https://oss.snmgame.com/v1.0.0/cancelBtn.png',
+				confirmBtn: 'https://oss.snmgame.com/v1.0.0/confirmBtn.png',
 			},
 
 			websocketUrl: '',
@@ -437,22 +442,9 @@ export class PrizeQueue extends Component {
 		let entrancePage = this.state.routers.entrancePage;
 		if(obj.type == 2 && obj.value == 1){
 			console.log('%c 时间结束询问玩家是否重新匹配？', 'font-size:14px;color:#ff641a;');
-			Taro.showModal({
-				content: '请重新匹配？',
-				success: function(res) {
-					if (res.confirm) {
-						_this.matchPrize();
-					} else if (res.cancel) {
-						console.log('%c 玩家离开大奖赛匹配队列', 'font-size:14px;color:#ff641a;');
-						Taro.redirectTo({
-							url: entrancePage,
-							success() {
-								clearInterval(_this.state.local_data.timer);
-							}
-						});
-					}
-				}
-			})
+			this.setState((preState)=>{
+				preState.local_data.isShowToast = true;
+			});
 		}else if(obj.type == 2 && obj.value == 0){
 			console.log('%c 玩家离开大奖赛匹配队列', 'font-size:14px;color:#ff641a;');
 			Taro.reLaunch({
@@ -462,6 +454,32 @@ export class PrizeQueue extends Component {
 				}
 			});
 		}
+	}
+
+	// 玩家离开大奖赛匹配队列
+	toastCancel(){
+		let _this = this;
+		let entrancePage = this.state.routers.entrancePage;
+		this.setState((preState)=>{
+			preState.local_data.isShowToast = false;
+		},()=>{
+			Taro.redirectTo({
+				url: entrancePage,
+				success() {
+					clearInterval(_this.state.local_data.timer);
+				}
+			});
+		});
+	}
+
+	// 重新匹配
+	toastConfirm(){
+		let _this = this;
+		this.setState((preState)=>{
+			preState.local_data.isShowToast = false;
+		},()=>{
+			_this.matchPrize();
+		})
 	}
 
 	// 退出排队
@@ -483,8 +501,8 @@ export class PrizeQueue extends Component {
 	}
 
 	render() {
-		const { quitBtn, selectedHead, selectedPosition, matchIngTxt, 
-			prizeCountdownBg, prizeCurrentNumberBg, prizeQueueNumberTip,
+		const { quitBtn, selectedHead, selectedPosition, matchIngTxt, cancelBtn, confirmBtn, matchToastTip, matchToastBody,
+			prizeCountdownBg, prizeCurrentNumberBg, prizeQueueNumberTip, isShowToast,
 		} = this.state.local_data;
 		const { maxCount, currCount, time } = this.state.data.curTeamInfo;
 
@@ -494,6 +512,16 @@ export class PrizeQueue extends Component {
 
 		return (
 			<View className='queue'>
+				<View className={`toastWrap ${isShowToast?'':'hide'}`}>
+					<View className='toast'>
+						<View className='title'>{matchToastTip}</View>
+						<View className='body'>{matchToastBody}</View>
+						<View className='btns'>
+							<Image onClick={this.toastCancel.bind(this)} src={cancelBtn} className='cancelBtn'/>
+							<Image onClick={this.toastConfirm.bind(this)} src={confirmBtn} className='confirmBtn'/>
+						</View>
+					</View>
+				</View>
 				<View className='bgColor'>
 					<View className='bgImg'></View>
 					<View className='mask_black'></View>
