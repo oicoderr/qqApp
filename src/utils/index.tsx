@@ -444,13 +444,13 @@ export const hideShareMenu = () => {
 
 /* 显示分享转发平台：qq */
 export const showShareMenuItem = () => {
-  Taro.hideShareMenu({
+  Taro.showShareMenu({
     showShareItems: ['qq'],
     success(res) {
-      console.log('～显示分享qq成功～');
+      // console.log('～显示分享qq成功～');
     },
     fail(err) {
-      console.log('～显示分享失败～：' + err);
+      // console.log('～显示分享失败～：' + err);
     }
   })
 }

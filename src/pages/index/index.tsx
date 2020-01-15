@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
-import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, get_OpenId_RoleId, onShareApp } from '../../utils'
+import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, get_OpenId_RoleId, showShareMenuItem } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import configObj from '../../service/configObj'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
@@ -121,6 +121,7 @@ export class Index extends Component {
 		// 首页pv
 		App.aldstat.sendEvent('pv-主页', get_OpenId_RoleId());
 
+		showShareMenuItem();
 		// 页面超出提示,返回当前页面URL
 		getCurrentPageUrl();
 
@@ -543,7 +544,7 @@ export class Index extends Component {
 			media: [
 				{
 					type: 'photo',
-					path: shareData.img
+					path: shareData.img,
 				}
 			]
 		});
@@ -605,8 +606,9 @@ export class Index extends Component {
 
 					{/* 右侧按钮list */}
 					<View className='rightListBtn'>
-						<View className='oneKeyShareImg'>
-							<Button onClick={this.onOpenQzonePublish.bind(this)} className='oneKeyShare'></Button>
+						<View onClick={this.onOpenQzonePublish.bind(this)} className='oneKeyShareImg'>
+							{/* open-type="share" share-mode="{{['qq', 'qzone']}}" */}
+							<Button className='oneKeyShare'></Button>
 						</View>
 						<View onClick={this.weekCheckIn.bind(this)} className='signInBtn'></View>
 						<View className='problemBtn'></View>

@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import 'taro-ui/dist/style/index.scss'
 import './utils/ald-stat'
+import Index from './pages/index'
 import { setStorage, getStorage, getUa, hideShareMenu, loginRequest, getCurrentPageUrl, get_OpenId_RoleId } from './utils'
 import { Api } from './service/api'
 import './app.scss'
