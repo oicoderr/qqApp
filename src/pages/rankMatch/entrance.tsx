@@ -139,7 +139,7 @@ export class RankEntrance extends Component {
 
 		// 排位赛pv
 		App.aldstat.sendEvent('pv-排位赛首页', get_OpenId_RoleId());
-		
+
 
 		// 获取当前版本
 		configObj.getVersion();

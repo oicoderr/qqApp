@@ -31,7 +31,7 @@ export class PrizeQueue extends Component {
 
 			// 后台返回数据
 			data: {
-				curTeamInfo: { currCount: [0,0,1], maxCount: '', time: [0,1,5] }
+				curTeamInfo: { currCount: [0, 0, 1], maxCount: '', time: [0, 1, 5] }
 			},
 
 			// 前台数据
@@ -185,7 +185,7 @@ export class PrizeQueue extends Component {
 		const params = this.$router.params;
 		console.log('%c 是否断线重连 ==>', 'font-size:14px;color:#FF6A6A;'); console.log(params);
 		const isreconnection = params.isreconnection;
-		if(params && isreconnection){
+		if (params && isreconnection) {
 			this.setState((preState) => {
 				preState.local_data.isreconnection = isreconnection;
 			});
@@ -362,38 +362,38 @@ export class PrizeQueue extends Component {
 	}
 
 	// 格式化匹配倒计时
-	formatMatchTime(curTeamInfo){
+	formatMatchTime(curTeamInfo) {
 		let time = curTeamInfo['time'];
 		let currCount = curTeamInfo['currCount'];
 		let timeArray, currCountArray;
 
-		if(time < 10 && time > -1){
+		if (time < 10 && time > -1) {
 			timeArray = ('0' + time).split("");
-			time = [timeArray[0],timeArray[1]];
-		}else if(time > 9 && time < 100){
-			timeArray = (time+'').split("");
-			time = [timeArray[0],timeArray[1]];
+			time = [timeArray[0], timeArray[1]];
+		} else if (time > 9 && time < 100) {
+			timeArray = (time + '').split("");
+			time = [timeArray[0], timeArray[1]];
 		}
 
-		if(currCount < 10 && currCount > -1){
+		if (currCount < 10 && currCount > -1) {
 			currCountArray = ('00' + currCount).split("");
-			currCount = [currCountArray[0],currCountArray[1],currCountArray[2]];
-		}else if(currCount > 9 && currCount < 100){
+			currCount = [currCountArray[0], currCountArray[1], currCountArray[2]];
+		} else if (currCount > 9 && currCount < 100) {
 			currCountArray = ('0' + currCount).split("");
-			currCount = [currCountArray[0] ,currCountArray[1], currCountArray[2]];
-		}else if(currCount > 99 && currCount < 1000){
-			currCountArray = (currCount+'').split("");
+			currCount = [currCountArray[0], currCountArray[1], currCountArray[2]];
+		} else if (currCount > 99 && currCount < 1000) {
+			currCountArray = (currCount + '').split("");
 			currCount = [currCountArray[0], currCountArray[1], currCountArray[2]];
 		}
 		this.setState((preState) => {
 			preState.data.curTeamInfo = curTeamInfo;
 			preState.data.curTeamInfo.time = time;
-			preState.data.curTeamInfo.currCount =  currCount;
+			preState.data.curTeamInfo.currCount = currCount;
 		}, () => { });
 	}
 
 	// 断线重连请求大奖赛
-	OfflineMatchPrize(){
+	OfflineMatchPrize() {
 		let isreconnection = this.state.local_data.isreconnection;
 		let data = { type: 2, useSpeedItem: 0, };
 		let matchingRequest = this.msgProto.matchingRequest(data)
@@ -412,13 +412,13 @@ export class PrizeQueue extends Component {
 					console.error('匹配错误信息==> '); console.log(err);
 				}
 			});
-		}else{
+		} else {
 			console.log('不是断线重连，无需再次请求');
 		}
 	}
 
 	// 1301 正常请求大奖赛type:1.好友赛；2.大奖赛；3.排位赛
-	matchPrize(){
+	matchPrize() {
 		let data = { type: 2, useSpeedItem: 0, };
 		let matchingRequest = this.msgProto.matchingRequest(data)
 		let parentModule = this.msgProto.parentModule(matchingRequest);
@@ -437,15 +437,15 @@ export class PrizeQueue extends Component {
 	}
 
 	// 玩家退出队列信息
-	queueTimeEnd(obj){
+	queueTimeEnd(obj) {
 		let _this = this;
 		let entrancePage = this.state.routers.entrancePage;
-		if(obj.type == 2 && obj.value == 1){
+		if (obj.type == 2 && obj.value == 1) {
 			console.log('%c 时间结束询问玩家是否重新匹配？', 'font-size:14px;color:#ff641a;');
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.local_data.isShowToast = true;
 			});
-		}else if(obj.type == 2 && obj.value == 0){
+		} else if (obj.type == 2 && obj.value == 0) {
 			console.log('%c 玩家离开大奖赛匹配队列', 'font-size:14px;color:#ff641a;');
 			Taro.reLaunch({
 				url: entrancePage,
@@ -457,12 +457,12 @@ export class PrizeQueue extends Component {
 	}
 
 	// 玩家离开大奖赛匹配队列
-	toastCancel(){
+	toastCancel() {
 		let _this = this;
 		let entrancePage = this.state.routers.entrancePage;
-		this.setState((preState)=>{
+		this.setState((preState) => {
 			preState.local_data.isShowToast = false;
-		},()=>{
+		}, () => {
 			Taro.redirectTo({
 				url: entrancePage,
 				success() {
@@ -473,11 +473,11 @@ export class PrizeQueue extends Component {
 	}
 
 	// 重新匹配
-	toastConfirm(){
+	toastConfirm() {
 		let _this = this;
-		this.setState((preState)=>{
+		this.setState((preState) => {
 			preState.local_data.isShowToast = false;
-		},()=>{
+		}, () => {
 			_this.matchPrize();
 		})
 	}
@@ -513,13 +513,13 @@ export class PrizeQueue extends Component {
 		return (
 			<View className='queue'>
 				{/* 匹配倒计时结束，toast提示 */}
-				<View className={`toastWrap ${isShowToast?'':'hide'}`}>
+				<View className={`toastWrap ${isShowToast ? '' : 'hide'}`}>
 					<View className='toast'>
 						<View className='title'>{matchToastTip}</View>
 						<View className='body'>{matchToastBody}</View>
 						<View className='btns'>
-							<Image onClick={this.toastCancel.bind(this)} src={cancelBtn} className='cancelBtn'/>
-							<Image onClick={this.toastConfirm.bind(this)} src={confirmBtn} className='confirmBtn'/>
+							<Image onClick={this.toastCancel.bind(this)} src={cancelBtn} className='cancelBtn' />
+							<Image onClick={this.toastConfirm.bind(this)} src={confirmBtn} className='confirmBtn' />
 						</View>
 					</View>
 				</View>

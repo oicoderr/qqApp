@@ -28,7 +28,7 @@ export class Login extends Component {
 				indexPage: '/pages/index/index'
 			},
 
-			data: { },
+			data: {},
 
 			local_data: {
 				isAgreeNotice: false, 	// 已同意用户须知, 已打开

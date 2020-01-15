@@ -121,20 +121,6 @@ export default class WeekCheckIn extends Component {
           // 领取当日奖励
           receiveReward: 1
         });
-        // let data = {
-        //   text: "一键嗨秀",
-        //   img: "https://oss.snmgame.com/v1.0.0/logo.png",
-        // }
-        // qqOpenQzonePublish(data);
-        qq.openQzonePublish({
-          text: '我爱中国',
-          media: [
-              {
-                  type: 'photo',
-                  path: 'https://oss.snmgame.com/v1.0.0/logo.png'
-              }
-          ]
-      })
       }
     );
   }
@@ -206,7 +192,7 @@ export default class WeekCheckIn extends Component {
 
           <View className="submitBtnBox">
             <View className="submitBtn">
-              <Button onClick={this.receiveAward.bind(this, curRewardStatus)} className="submitBtn_">
+              <Button onClick={this.receiveAward.bind(this, curRewardStatus)} open-type='share' className="submitBtn_">
                 {submitBtnText}
               </Button>
             </View>

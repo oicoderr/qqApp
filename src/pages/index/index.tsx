@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
-import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, get_OpenId_RoleId, showShareMenuItem,onShareApp } from '../../utils'
+import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, get_OpenId_RoleId, showShareMenuItem, onShareApp } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import configObj from '../../service/configObj'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
@@ -177,10 +177,10 @@ export class Index extends Component {
 		// 返回并设置性别
 		this.eventEmitter = emitter.once('genderMessage', (message) => {
 			console.log('%c 接受< 性别选择 >子组件发送的信息==> ' + message, 'font-size:14px; color: blue;');
-			App.aldstat.sendEvent('设置性别',{
-				"sex" : message,
+			App.aldstat.sendEvent('设置性别', {
+				"sex": message,
 				'ids': get_OpenId_RoleId(),
-      });
+			});
 			this.setSex(message);
 		});
 
@@ -400,7 +400,7 @@ export class Index extends Component {
 	}
 
 	// 设置性别
-	setSex(message){
+	setSex(message) {
 		let _this = this;
 		let setSex = this.msgProto.gameSex(message);
 		let parentModule = this.msgProto.parentModule(setSex);
@@ -531,7 +531,7 @@ export class Index extends Component {
 	}
 
 	// 一键发说说
-	onOpenQzonePublish(){
+	onOpenQzonePublish() {
 		let value = 1;
 		let getShareReward = this.msgProto.getShareReward(value);
 		let parentModule = this.msgProto.parentModule(getShareReward);
@@ -558,7 +558,7 @@ export class Index extends Component {
 	}
 
 	// 转发好友/空间
-	onShareAppMessage(res){
+	onShareAppMessage(res) {
 		let value = 1, _this = this;
 		let getShareReward = this.msgProto.getShareReward(value);
 		let parentModule = this.msgProto.parentModule(getShareReward);
@@ -569,7 +569,7 @@ export class Index extends Component {
 			imageUrl: 'https://oss.snmgame.com/v1.0.0/openQzonePublish-02.png',
 		};
 		// 右上角分享App
-		if (res.from != 'button' ) {
+		if (res.from != 'button') {
 			shareData.title = '明星、热点、八卦知多少？一试便知！';
 			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
 		}

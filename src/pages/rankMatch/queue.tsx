@@ -41,29 +41,29 @@ export class PrizeQueue extends Component {
 				timer: '',						// 定时器
 				players: [],					// 所有玩家头像
 				curTeamInfo: { currCount: 1, maxCount: 6 },
-				playerPosition:[			// 头像位置
+				playerPosition: [			// 头像位置
 					{
 						x: 66,
 						y: 434,
 						headUrl: 'https://oss.snmgame.com/v1.0.0/rankDefaultHeadImg.png',
-					},{
+					}, {
 						x: 162,
 						y: 640,
 						headUrl: 'https://oss.snmgame.com/v1.0.0/rankDefaultHeadImg.png',
-					},{
+					}, {
 						x: 457,
 						y: 241,
 						headUrl: 'https://oss.snmgame.com/v1.0.0/rankDefaultHeadImg.png',
-					},{
+					}, {
 						x: 534,
 						y: 434,
 						headUrl: 'https://oss.snmgame.com/v1.0.0/rankDefaultHeadImg.png',
-					},{
+					}, {
 						x: 457,
 						y: 620,
 						headUrl: 'https://oss.snmgame.com/v1.0.0/rankDefaultHeadImg.png',
 					}
-				],		
+				],
 				isShowLoading: true,
 				isreconnection: 0,		// 断线重连
 				isIntheGame: false,		// 是否游戏中断线，默认不是
@@ -177,7 +177,7 @@ export class PrizeQueue extends Component {
 							_this.websocket.onSocketOpened((res) => {
 								_this.rankMatching();
 							});
-							
+
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
 						},
@@ -195,14 +195,14 @@ export class PrizeQueue extends Component {
 			let list = JSON.parse(JSON.stringify(message[0]['data']['list']));
 			let myRoleId = this.state.local_data.gameUserInfo.roleId;
 			let playerPosition = this.state.local_data.playerPosition;
-			list.map((cur, index)=>{
-				if(cur.roleId == myRoleId){
-					list.splice(index,1);
+			list.map((cur, index) => {
+				if (cur.roleId == myRoleId) {
+					list.splice(index, 1);
 				}
 			});
 
-			this.setState((preState)=>{
-				list.map((cur,index)=>{
+			this.setState((preState) => {
+				list.map((cur, index) => {
 					preState.local_data.playerPosition[index]['headUrl'] = cur.headUrl;
 					preState.local_data.curTeamInfo = { currCount: 6, maxCount: 6 };
 				});
@@ -396,8 +396,8 @@ export class PrizeQueue extends Component {
 
 		const playerHeadImg = playerPosition.map((cur) => {
 			return <View className='playerHead' style={`position: absolute;top: ${cur['y']}rpx; left:${cur['x']}rpx;`}>
-							<Image src={cur.headUrl} className='headUrl' />
-						</View>
+				<Image src={cur.headUrl} className='headUrl' />
+			</View>
 		});
 
 		return (
@@ -415,7 +415,7 @@ export class PrizeQueue extends Component {
 							<View className='matchingWrap'>
 								<Image src={rankQueueTip} className='rankMatchTip' />
 								<View className='matching'>
-									<Image src={searchIcon} className='searchIcon'/>
+									<Image src={searchIcon} className='searchIcon' />
 									<View className='txt'>
 										<Text className='matchingTxt'>{matchingTxt}</Text>
 										<Text className='queuePeopleNum'>{curTeamInfo['currCount']}/{curTeamInfo['maxCount']}</Text>

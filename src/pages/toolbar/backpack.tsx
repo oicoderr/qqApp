@@ -18,15 +18,15 @@ export class BackPack extends Component {
 		super(props);
 
 		this.state = {
-			routers:{
+			routers: {
 				indexPage: '/pages/index/index',
 			},
 
-			data:{
+			data: {
 				list: []
 			},
 
-			local_data:{
+			local_data: {
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				backpackTitle: 'https://oss.snmgame.com/v1.0.0/backpackTitle.png',
 				usedBtn: 'https://oss.snmgame.com/v1.0.0/usedBtn.png',
@@ -40,17 +40,17 @@ export class BackPack extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {}
+	componentWillMount() { }
 
-	componentDidMount () {}
+	componentDidMount() { }
 
-	componentWillUnmount () {
+	componentWillUnmount() {
 		emitter.removeAllListeners('getBackpack');
 		emitter.removeAllListeners('propsInfo');
 		emitter.removeAllListeners('requestUrl');
 	}
 
-	componentDidShow () {
+	componentDidShow() {
 		let _this = this;
 
 		// 获取当前版本
@@ -67,23 +67,23 @@ export class BackPack extends Component {
 			} else {
 				this.websocket = App.globalData.websocket;
 				let websocketUrl = this.state.websocketUrl;
-				if(this.websocket.isLogin){
+				if (this.websocket.isLogin) {
 					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
 					// 请求背包信息
 					this.getBackPack();
-				}else{
+				} else {
 					this.websocket.initWebSocket({
 						url: websocketUrl,
-						success(res){
+						success(res) {
 							// 开始登陆
-							_this.websocket.onSocketOpened((res)=>{
+							_this.websocket.onSocketOpened((res) => {
 								// 请求背包信息
 								_this.getBackPack();
 							});
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
 						},
-						fail(err){
+						fail(err) {
 							createWebSocket(_this);
 						}
 					});
@@ -95,7 +95,7 @@ export class BackPack extends Component {
 		this.eventEmitter = emitter.addListener('getBackpack', (message) => {
 			clearInterval(message[1]);
 
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.data.list = message[0]['data']['list'];
 			})
 		});
@@ -106,25 +106,25 @@ export class BackPack extends Component {
 
 			let list = this.state.data.list;
 			let curPropsCount = message[0]['data']['count'];
-			let curPropsId= message[0]['data']['id'];
-			list.map((cur, index)=>{
-				if(cur.id == curPropsId){
-					_this.setState((preState)=>{
+			let curPropsId = message[0]['data']['id'];
+			list.map((cur, index) => {
+				if (cur.id == curPropsId) {
+					_this.setState((preState) => {
 						preState.data.list[index].count = curPropsCount;
 					});
 				}
 			});
 			// 如果请求的是宝箱，再请求背包数据
-			if(curPropsId == 6){
+			if (curPropsId == 6) {
 				this.getBackPack();
 			}
 		});
 	}
 
-	componentDidHide () {}
+	componentDidHide() { }
 
 	// 返回上一页
-	goBack(){
+	goBack() {
 		let indexPage = this.state.routers.indexPage;
 		Taro.reLaunch({
 			url: indexPage
@@ -132,14 +132,14 @@ export class BackPack extends Component {
 	}
 
 	// 道具使用
-	usedCard(e){
+	usedCard(e) {
 		let count = e.currentTarget.dataset.count;
 		let id = e.currentTarget.dataset.id;
 		let data = {
 			'id': id,
 			'count': 1,
 		};
-		if(count > 0){
+		if (count > 0) {
 			let usedProps = this.msgProto.usedProps(data);
 			let parentModule = this.msgProto.parentModule(usedProps);
 			this.websocket.sendWebSocketMsg({
@@ -151,7 +151,7 @@ export class BackPack extends Component {
 						duration: 2000
 					});
 				},
-				fail(err){
+				fail(err) {
 					Taro.showToast({
 						title: err.errMsg,
 						icon: 'none',
@@ -159,7 +159,7 @@ export class BackPack extends Component {
 					})
 				}
 			});
-		}else{
+		} else {
 			Taro.showToast({
 				title: '道具不足',
 				icon: 'none',
@@ -169,13 +169,13 @@ export class BackPack extends Component {
 	}
 
 	// 请求背包信息
-	getBackPack(){
+	getBackPack() {
 		let getBackpack = this.msgProto.getBackpack();
 		let parentModule = this.msgProto.parentModule(getBackpack);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.log('请求背包信息Success')},
-			fail(err){
+			success(res) { console.log('请求背包信息Success') },
+			fail(err) {
 				Taro.showToast({
 					title: err.errMsg,
 					icon: 'none',
@@ -185,21 +185,21 @@ export class BackPack extends Component {
 		});
 	}
 
-	render () {
+	render() {
 		const { backpackTitle, backBtn, tipCard, tipHaveCard, usedBtn, isUsedSuccess } = this.state.local_data;
 		const list = this.state.data.list;
-		const content  = list.map((cur, index)=>{
-			return  <View className={`item ${index%3== 1?'bothMargin':''}`} data-count={cur.count} data-type={cur.type}>
-						<View className='cardBg'>
-							<Image src={cur.icon} className='cardImg' />
-							<View className='haveNum'>{tipHaveCard} {cur.count}</View>
-						</View>
-						<View className='name'>{cur.name}</View>
-						<View className={`isUsed`}>
-							<View className={`tipCard ${cur.type?'hide':''}`}>{tipCard}</View>
-							<Image onClick={this.usedCard.bind(this)} data-id={cur.id} data-count={cur.count} data-name={cur.name} data-type={cur.type} src={usedBtn} className={`usedBtn ${cur.type?'':'hide'}`} />
-						</View>
-					</View>
+		const content = list.map((cur, index) => {
+			return <View className={`item ${index % 3 == 1 ? 'bothMargin' : ''}`} data-count={cur.count} data-type={cur.type}>
+				<View className='cardBg'>
+					<Image src={cur.icon} className='cardImg' />
+					<View className='haveNum'>{tipHaveCard} {cur.count}</View>
+				</View>
+				<View className='name'>{cur.name}</View>
+				<View className={`isUsed`}>
+					<View className={`tipCard ${cur.type ? 'hide' : ''}`}>{tipCard}</View>
+					<Image onClick={this.usedCard.bind(this)} data-id={cur.id} data-count={cur.count} data-name={cur.name} data-type={cur.type} src={usedBtn} className={`usedBtn ${cur.type ? '' : 'hide'}`} />
+				</View>
+			</View>
 		});
 
 		return (

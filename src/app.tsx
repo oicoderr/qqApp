@@ -69,11 +69,11 @@ class _App extends Component {
 	websocketUrl: '';
 	baseUrl: '';
 
-	componentWillMount () { }
+	componentWillMount() { }
 
-	componentDidMount () {
+	componentDidMount() {
 		let _this = this;
-		console.error = () => {};
+		console.error = () => { };
 		// console.table = () => {};
 		// console.log = () => {};
 		// console.info = () => {};
@@ -84,7 +84,7 @@ class _App extends Component {
 
 		// 设备提示
 		let ua = getUa();
-		if(ua.system.indexOf('iOS')> -1 || ua.model.indexOf('iPhone') > -1){
+		if (ua.system.indexOf('iOS') > -1 || ua.model.indexOf('iPhone') > -1) {
 			Taro.reLaunch({
 				url: '/pages/activity/iosCaveat'
 			})
@@ -92,7 +92,7 @@ class _App extends Component {
 		}
 
 		const params = this.$router.params;
-		if(params.query){
+		if (params.query) {
 			let inviterRoleId = params.query.inviterRoleId;
 			let param1 = parseInt(params.query.param1);
 			let inviterInfo = {
@@ -118,19 +118,19 @@ class _App extends Component {
 			// console.log('获取到的baseUrl：' + this.baseUrl);
 
 			// 将code发后台，获取openid及accessToken
-			this.login((loginData)=>{
+			this.login((loginData) => {
 				// app登录, appLogin.data: 返回openid，accessToken, session_key
-				loginRequest( loginData, (appLogin)=>{
+				loginRequest(loginData, (appLogin) => {
 					let userInfo = {};
 					// 获取缓存userInfo，如果没有授权信息, 授权后并保存缓存中，如果存在openid,跳转游戏登录
-					getStorage('userInfo',(res)=>{
-						if(!res.nickName || !res.avatarUrl ){
-							console.log('%c app未在缓存中找到·userInfo·信息,请重新授权','font-size:14px; color:#c27d00;');
+					getStorage('userInfo', (res) => {
+						if (!res.nickName || !res.avatarUrl) {
+							console.log('%c app未在缓存中找到·userInfo·信息,请重新授权', 'font-size:14px; color:#c27d00;');
 							userInfo = appLogin.data;
 							// 跳转游戏主页
 							setStorage('userInfo', userInfo);
 							_this.createWebSocket(_this.websocketUrl);
-						}else{
+						} else {
 							// 跳转游戏主页
 							_this.createWebSocket(_this.websocketUrl);
 						}
@@ -146,7 +146,7 @@ class _App extends Component {
 
 		// 监测1040 全局提示
 		this.eventEmitter = emitter.addListener('globalTips', (message) => {
-			console.error('收到1040 全局提示');console.log(message);
+			console.error('收到1040 全局提示'); console.log(message);
 			clearInterval(message[1]);
 			Taro.showToast({
 				title: message[0].data.content,
@@ -161,16 +161,16 @@ class _App extends Component {
 			// 清除消息转发定时器
 			clearInterval(message[1]);
 			// 消息本体
-			let loginDesc =  message[0]['data']['loginDesc'];
+			let loginDesc = message[0]['data']['loginDesc'];
 			let loginResult = message[0]['data']['loginResult'];
-			if(loginDesc && loginResult){
+			if (loginDesc && loginResult) {
 				console.log('%c 登陆成功！', 'font-size:14px;color:#20ff1f;background-color:#000000;')
 				// Taro.showToast({
 				// 	title: loginDesc,
 				// 	icon: 'none',
 				// 	duration: 2000,
 				// });
-			}else{
+			} else {
 				console.error(loginDesc);
 				Taro.showToast({
 					title: loginDesc,
@@ -184,11 +184,11 @@ class _App extends Component {
 		this.eventEmitter = emitter.addListener('getPlayerStatus', (message) => {
 			clearInterval(message[1]);
 			let value = message[0]['data']['value'];
-			getStorage('userInfo',(res)=>{
-				if(!res.nickName || !res.avatarUrl ){
+			getStorage('userInfo', (res) => {
+				if (!res.nickName || !res.avatarUrl) {
 					return;
-				}else{
-					if(value == 0){
+				} else {
+					if (value == 0) {
 						Taro.reLaunch({
 							url: '/pages/index/index',
 						});
@@ -202,25 +202,25 @@ class _App extends Component {
 		this.globalData.timestamp = 1;
 	}
 
-	componentDidHide () {
+	componentDidHide() {
 		let currentPage = getCurrentPageUrl();
 		let _this = this;
 		let time = 10000;
 
 		// 支付页面会触发hide函数,将支付页面排除
-		this.globalData.timestamp = setTimeout(()=>{
+		this.globalData.timestamp = setTimeout(() => {
 			// if(currentPage != 'pages/payTakeMoney/recharge'){
-				console.error('～人为卸载socket～');
-				if(_this.globalData.websocket){
-					_this.websocket = _this.globalData.websocket;
-					_this.websocket.closeWebSocket();
-					_this.globalData.websocket = '';
-				};
-				console.log('('+_this.globalData.websocket+')');
-				console.error('卸载的当前路由 ==>');console.log(currentPage);
-				clearTimeout(_this.globalData.timestamp);
+			console.error('～人为卸载socket～');
+			if (_this.globalData.websocket) {
+				_this.websocket = _this.globalData.websocket;
+				_this.websocket.closeWebSocket();
+				_this.globalData.websocket = '';
+			};
+			console.log('(' + _this.globalData.websocket + ')');
+			console.error('卸载的当前路由 ==>'); console.log(currentPage);
+			clearTimeout(_this.globalData.timestamp);
 			// }
-		},time);
+		}, time);
 
 		emitter.removeAllListeners('getPlayerStatus');
 	}
@@ -230,23 +230,23 @@ class _App extends Component {
 	}
 
 	/* 新版本检测升级 */
-	getUpdateManager(){
+	getUpdateManager() {
 		if (Taro.canIUse('getUpdateManager')) {
 			const updateManager = Taro.getUpdateManager()
-			updateManager.onCheckForUpdate(function(res) {
+			updateManager.onCheckForUpdate(function (res) {
 				if (res.hasUpdate) {
-				updateManager.onUpdateReady(function() {
-					Taro.showModal({
-						title: '更新提示',
-						content: '新版本已经准备好，是否重启应用？',
-						success: function(res) {
-							if (res.confirm) {
-							updateManager.applyUpdate()
+					updateManager.onUpdateReady(function () {
+						Taro.showModal({
+							title: '更新提示',
+							content: '新版本已经准备好，是否重启应用？',
+							success: function (res) {
+								if (res.confirm) {
+									updateManager.applyUpdate()
+								}
 							}
-						}
+						})
 					})
-				})
-				updateManager.onUpdateFailed(function() {
+					updateManager.onUpdateFailed(function () {
 						Taro.showModal({
 							title: '更新失败',
 							content: '更新失败，请重新进入'
@@ -263,29 +263,29 @@ class _App extends Component {
 	}
 
 	// app登录获取code操作
-	login(callback) { 
+	login(callback) {
 		let _this = this;
 		Taro.login({ // 获取code
-			success: function(res){
+			success: function (res) {
 				let loginCode = res.code;
 				let baseUrl = _this.baseUrl;
 				let loginData = {
 					'url': `${baseUrl + Api.user.login}`,
-					'data':{
-						'roomId':'',
+					'data': {
+						'roomId': '',
 						'code': `${loginCode}`
 					}
 				};
-				if(callback)callback(loginData); // 获取accessToken，openid, roleId
+				if (callback) callback(loginData); // 获取accessToken，openid, roleId
 			},
-			fail: function(err){
+			fail: function (err) {
 				console.error(err);
 			}
 		});
 	}
 
 	// qq方法（监听内存不足告警事件）
-	onMemoryWarning(){
+	onMemoryWarning() {
 		qq.onMemoryWarning(function (res) {
 			Taro.showToast({
 				title: '内存警报',
@@ -295,9 +295,9 @@ class _App extends Component {
 		});
 	}
 	// 页面丢失404Page
-	onPageNotFound(){
+	onPageNotFound() {
 		let _this = this;
-		Taro.onPageNotFound((res)=>{
+		Taro.onPageNotFound((res) => {
 			_this.aldstat.sendEvent('页面丢失', {
 				'user': get_OpenId_RoleId(),
 				'path': res.path,
@@ -311,7 +311,7 @@ class _App extends Component {
 	}
 
 	// 创建网络连接
-	createWebSocket(websocketUrl){
+	createWebSocket(websocketUrl) {
 		let _this = this;
 		console.log('%c 创建websocket对象', 'background:#000;color:white;font-size:14px');
 		// 创建websocket对象
@@ -331,12 +331,12 @@ class _App extends Component {
 					duration: 2000
 				});
 			},
-			fail(err) { console.error('当前websocket连接已关闭,错误信息为:' + JSON.stringify(err));}
+			fail(err) { console.error('当前websocket连接已关闭,错误信息为:' + JSON.stringify(err)); }
 		});
 
 		// 捕获websocket异常
-		this.websocket.getOnerror((err)=>{
-			console.error('appjs捕获到websocket异常');console.log(err);
+		this.websocket.getOnerror((err) => {
+			console.error('appjs捕获到websocket异常'); console.log(err);
 			Taro.showToast({
 				title: err,
 				icon: 'none',
@@ -364,7 +364,7 @@ class _App extends Component {
 
 		this.websocket.initWebSocket({
 			url: websocketUrl,
-			success(res) { 
+			success(res) {
 				// 对外抛出websocket
 				_this.globalData.websocket = _this.websocket;
 				// 开始登陆
@@ -375,19 +375,19 @@ class _App extends Component {
 	}
 
 	// ios设备跳转提示
-	iosTip(){
+	iosTip() {
 		let ua = getUa();
-		if(ua.system.indexOf('iOS')> -1 || ua.model.indexOf('iPhone') > -1){
+		if (ua.system.indexOf('iOS') > -1 || ua.model.indexOf('iPhone') > -1) {
 			Taro.redirectTo({
 				url: '/pages/activity/iosCaveat'
 			})
 			return;
 		}
 	}
-	
+
 	// 在 App 类中的 render() 函数没有实际作用
 	// 请勿修改此函数
-	render () {
+	render() {
 		return (
 			<Index />
 		)

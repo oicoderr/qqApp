@@ -109,7 +109,7 @@ export default class Drawer extends Component {
     this.util(currentStatu, isAnimateClass);
 
     // 抽屉点击
-		App.aldstat.sendEvent('click-抽屉', get_OpenId_RoleId());
+    App.aldstat.sendEvent('click-抽屉', get_OpenId_RoleId());
   }
 
   util(currentStatu, isAnimateClass) {
@@ -140,8 +140,8 @@ export default class Drawer extends Component {
   }
 
   // 判断抽屉页面
-  drawerPageChild(router){
-    switch(router){
+  drawerPageChild(router) {
+    switch (router) {
       case '/pages/toolbar/backpack':
         App.aldstat.sendEvent('click-背包', get_OpenId_RoleId());
         break;

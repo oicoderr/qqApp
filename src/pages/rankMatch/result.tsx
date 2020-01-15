@@ -404,7 +404,7 @@ export class RankReasult extends Component {
 
 	render() {
 		const { isShowRankResult, resultBg, scoreBg, goldIcon, leftGetAward, rightGetAward, goBackBtn,
-			replayBtn, PartyATeam, PartyBTeam, rankResultTitleUrl, personMvpUrl, rankBattleReport, selfRankBattleReport} = this.state.local_data;
+			replayBtn, PartyATeam, PartyBTeam, rankResultTitleUrl, personMvpUrl, rankBattleReport, selfRankBattleReport } = this.state.local_data;
 		const { selfCamp, blueScore, redScore, mvpRoleId } = rankBattleReport;
 		const { score, camp, roleId } = selfRankBattleReport;
 

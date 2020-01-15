@@ -18,23 +18,23 @@ export class Setting extends Component {
 		super(props);
 
 		this.state = {
-			routers:{
+			routers: {
 				indexPage: '/pages/index/index',
 			},
 
-			data:{},
+			data: {},
 
-			local_data:{
+			local_data: {
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				settingTitle: 'https://oss.snmgame.com/v1.0.0/settingTitle.png',
-				list:[
+				list: [
 					{
 						id: 1,
 						txt: '音乐',
 						openBtn: 'https://oss.snmgame.com/v1.0.0/settingBtnOpen.png',
 						shutDownBtn: 'https://oss.snmgame.com/v1.0.0/settingBtnShutDown.png',
 						status: 0,
-					},{
+					}, {
 						id: 2,
 						txt: '音效',
 						openBtn: 'https://oss.snmgame.com/v1.0.0/settingBtnOpen.png',
@@ -49,15 +49,15 @@ export class Setting extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {}
+	componentWillMount() { }
 
-	componentDidMount () {}
+	componentDidMount() { }
 
-	componentWillUnmount () {
+	componentWillUnmount() {
 		emitter.removeAllListeners('requestUrl');
 	}
 
-	componentDidShow () {
+	componentDidShow() {
 		let _this = this;
 
 		// 获取当前版本
@@ -74,18 +74,18 @@ export class Setting extends Component {
 			} else {
 				this.websocket = App.globalData.websocket;
 				let websocketUrl = this.state.websocketUrl;
-				if(this.websocket.isLogin){
+				if (this.websocket.isLogin) {
 					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-				}else{
+				} else {
 					this.websocket.initWebSocket({
 						url: websocketUrl,
-						success(res){
+						success(res) {
 							// 开始登陆
-							_this.websocket.onSocketOpened((res)=>{});
+							_this.websocket.onSocketOpened((res) => { });
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
 						},
-						fail(err){
+						fail(err) {
 							createWebSocket(_this);
 						}
 					});
@@ -94,10 +94,10 @@ export class Setting extends Component {
 		});
 	}
 
-	componentDidHide () { }
+	componentDidHide() { }
 
 	// 返回上一页
-	goBack(){
+	goBack() {
 		let indexPage = this.state.routers.indexPage;
 		Taro.reLaunch({
 			url: indexPage
@@ -105,27 +105,27 @@ export class Setting extends Component {
 	}
 
 	// 开关Id: 0bgm, 1音效
-	musicSwitch(e){
+	musicSwitch(e) {
 		let _this = this;
 		let id = e.currentTarget.dataset.id;
 		let status = e.currentTarget.dataset.status;
 		let list = this.state.local_data.list;
-		list.map((cur, index)=>{
-			if(id === cur['id']){
-				_this.setState((preState)=>{
-					preState.local_data.list[index]['status'] =  !status;
+		list.map((cur, index) => {
+			if (id === cur['id']) {
+				_this.setState((preState) => {
+					preState.local_data.list[index]['status'] = !status;
 				});
 			}
 		})
 	}
 
-	render () {
+	render() {
 		const { settingTitle, backBtn, list } = this.state.local_data;
-		const content = list.map((cur)=>{
+		const content = list.map((cur) => {
 			return <View className='item'>
-								<Text>{cur.txt}</Text>
-								<Image data-id={cur.id} data-status={cur.status} onClick={this.musicSwitch.bind(this)} src={cur.status?cur.openBtn:cur.shutDownBtn} className='btn'></Image>
-							</View>
+				<Text>{cur.txt}</Text>
+				<Image data-id={cur.id} data-status={cur.status} onClick={this.musicSwitch.bind(this)} src={cur.status ? cur.openBtn : cur.shutDownBtn} className='btn'></Image>
+			</View>
 		})
 
 		return (

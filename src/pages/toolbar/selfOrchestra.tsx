@@ -22,11 +22,11 @@ export class SelfOrchestra extends Component {
 		this.DBreplaceOrchestra = throttle(this.DBreplaceOrchestra, 1000);
 		this.state = {
 
-			routers:{
+			routers: {
 				indexPage: '/pages/index/index',
 			},
 
-			data:{
+			data: {
 				/*
 					乐队基本数据
 					type: (1.主唱;2.吉他手;3.贝斯手;4.鼓手)
@@ -34,7 +34,7 @@ export class SelfOrchestra extends Component {
 				list: []
 			},
 
-			local_data:{
+			local_data: {
 				isShowLoading: true,
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				orchestraTitleImg: 'https://oss.snmgame.com/v1.0.0/orchestraTitleImg.png',
@@ -45,7 +45,7 @@ export class SelfOrchestra extends Component {
 				bassistTitle: '贝斯手',
 				drummerTitle: '鼓手',
 				// 主唱
-				leadSinger:[],
+				leadSinger: [],
 				// 吉他手
 				guitarist: [],
 				// 鼓手
@@ -59,16 +59,16 @@ export class SelfOrchestra extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {}
+	componentWillMount() { }
 
-	componentDidMount () {}
+	componentDidMount() { }
 
-	componentWillUnmount () {
+	componentWillUnmount() {
 		emitter.removeAllListeners('getSelfOrchestra');
 		emitter.removeAllListeners('requestUrl');
 	}
 
-	componentDidShow () {
+	componentDidShow() {
 		let _this = this;
 
 		// 获取当前版本
@@ -85,21 +85,21 @@ export class SelfOrchestra extends Component {
 			} else {
 				this.websocket = App.globalData.websocket;
 				let websocketUrl = this.state.websocketUrl;
-				if(this.websocket.isLogin){
+				if (this.websocket.isLogin) {
 					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
 					this.selfOrchestra();
-				}else{
+				} else {
 					this.websocket.initWebSocket({
 						url: websocketUrl,
-						success(res){
+						success(res) {
 							// 开始登陆
-							_this.websocket.onSocketOpened((res)=>{
+							_this.websocket.onSocketOpened((res) => {
 								_this.selfOrchestra();
 							});
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
 						},
-						fail(err){
+						fail(err) {
 							createWebSocket(_this);
 						}
 					});
@@ -113,7 +113,7 @@ export class SelfOrchestra extends Component {
 
 			console.log('乐队基本信息:');
 			console.log(message[0]['data']);
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.data.list = message[0]['data']['list'];
 				preState.local_data.isShowLoading = false;
 			});
@@ -121,13 +121,13 @@ export class SelfOrchestra extends Component {
 		});
 	}
 
-	componentDidHide () {
+	componentDidHide() {
 		emitter.removeAllListeners('getSelfOrchestra');
 		emitter.removeAllListeners('requestUrl');
 	}
 
 	// 返回上一页
-	goBack(){
+	goBack() {
 		let indexPage = this.state.routers.indexPage;
 		Taro.reLaunch({
 			url: indexPage
@@ -135,13 +135,13 @@ export class SelfOrchestra extends Component {
 	}
 
 	// list分类： 
-	classification(list){
+	classification(list) {
 		let list_ = JSON.parse(JSON.stringify(list));
-		try{
+		try {
 			// 乐队人物类型 1主唱 2吉他手  3贝斯手 4鼓手
 			let leadSinger = [], guitarist = [], bassist = [], drummer = [];
-			list_.map((cur,index)=>{
-				switch(cur.type){
+			list_.map((cur, index) => {
+				switch (cur.type) {
 					case 1:
 						leadSinger.push(cur);
 						break;
@@ -156,7 +156,7 @@ export class SelfOrchestra extends Component {
 						break;
 				}
 			});
-			this.setState((preState)=>{
+			this.setState((preState) => {
 				preState.local_data.leadSinger = leadSinger;
 				preState.local_data.guitarist = guitarist;
 				preState.local_data.bassist = bassist;
@@ -167,27 +167,27 @@ export class SelfOrchestra extends Component {
 			console.log(guitarist);
 			console.log(bassist);
 			console.log(drummer);
-		}catch(err){
+		} catch (err) {
 			//在这里处理错误
 			console.error('错误：' + err);
 		}
-		
+
 	}
 
 	// 替换主页乐队显示
-	DBreplaceOrchestra(e){
+	DBreplaceOrchestra(e) {
 		this.replaceOrchestra(e);
 	}
 
-	replaceOrchestra(e){
+	replaceOrchestra(e) {
 		let id = e.currentTarget.dataset.id;
-		if( id!= -1){
+		if (id != -1) {
 			let usedOrchestra = this.msgProto.usedOrchestra(id);
 			let parentModule = this.msgProto.parentModule(usedOrchestra);
 			this.websocket.sendWebSocketMsg({
 				data: parentModule,
-				success(res) {console.log('请求`使用乐队主页显示`Success')},
-				fail(err){
+				success(res) { console.log('请求`使用乐队主页显示`Success') },
+				fail(err) {
 					Taro.showToast({
 						title: err.errMsg,
 						icon: 'none',
@@ -199,13 +199,13 @@ export class SelfOrchestra extends Component {
 	}
 
 	// 请求乐队基本信息
-	selfOrchestra(){
+	selfOrchestra() {
 		let selfOrchestra = this.msgProto.selfOrchestra();
 		let parentModule = this.msgProto.parentModule(selfOrchestra);
 		this.websocket.sendWebSocketMsg({
 			data: parentModule,
-			success(res) {console.log('请求我的乐队基本信息Success')},
-			fail(err){
+			success(res) { console.log('请求我的乐队基本信息Success') },
+			fail(err) {
 				Taro.showToast({
 					title: err.errMsg,
 					icon: 'none',
@@ -215,8 +215,8 @@ export class SelfOrchestra extends Component {
 		});
 	}
 
-	render () {
-		const { isShowLoading, orchestraTitleImg,  backBtn, usingPrompt, replaceBtn,
+	render() {
+		const { isShowLoading, orchestraTitleImg, backBtn, usingPrompt, replaceBtn,
 			leadSingerTitle, guitaristTitle, bassistTitle, drummerTitle } = this.state.local_data;
 
 		// 乐队
@@ -224,58 +224,58 @@ export class SelfOrchestra extends Component {
 		const guitarist = this.state.local_data.guitarist;
 		const bassist = this.state.local_data.bassist;
 		const drummer = this.state.local_data.drummer;
-		const leadSingerContent = leadSinger.map((cur, index)=>{
-			return  <View className={`item_ ${index%3== 1?'bothMargin':''}`}>
-						<View className='cardBg_'>
-							<Image src={cur.icon} className='cardImg_' />
-						</View>
-						<View className='name name_'>{cur.name}</View>
+		const leadSingerContent = leadSinger.map((cur, index) => {
+			return <View className={`item_ ${index % 3 == 1 ? 'bothMargin' : ''}`}>
+				<View className='cardBg_'>
+					<Image src={cur.icon} className='cardImg_' />
+				</View>
+				<View className='name name_'>{cur.name}</View>
 
-						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
-							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
-						</View>
-					</View>
+				<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status ? cur.id : '-1'} className='btn'>
+					<Image src={cur.status ? usingPrompt : replaceBtn} className='btnImg' />
+				</View>
+			</View>
 		});
-		const guitaristContent = guitarist.map((cur, index)=>{
-			return  <View className={`item_ ${index%3== 1?'bothMargin':''}`}>
-						<View className='cardBg_'>
-							<Image src={cur.icon} className='cardImg_' />
-						</View>
-						<View className='name name_'>{cur.name}</View>
+		const guitaristContent = guitarist.map((cur, index) => {
+			return <View className={`item_ ${index % 3 == 1 ? 'bothMargin' : ''}`}>
+				<View className='cardBg_'>
+					<Image src={cur.icon} className='cardImg_' />
+				</View>
+				<View className='name name_'>{cur.name}</View>
 
-						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
-							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
-						</View>
-					</View>
+				<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status ? cur.id : '-1'} className='btn'>
+					<Image src={cur.status ? usingPrompt : replaceBtn} className='btnImg' />
+				</View>
+			</View>
 		});
-		const bassistContent = bassist.map((cur, index)=>{
-			return  <View className={`item_ ${index%3== 1?'bothMargin':''}`}>
-						<View className='cardBg_'>
-							<Image src={cur.icon} className='cardImg_' />
-						</View>
-						<View className='name name_'>{cur.name}</View>
+		const bassistContent = bassist.map((cur, index) => {
+			return <View className={`item_ ${index % 3 == 1 ? 'bothMargin' : ''}`}>
+				<View className='cardBg_'>
+					<Image src={cur.icon} className='cardImg_' />
+				</View>
+				<View className='name name_'>{cur.name}</View>
 
-						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
-							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
-						</View>
-					</View>
+				<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status ? cur.id : '-1'} className='btn'>
+					<Image src={cur.status ? usingPrompt : replaceBtn} className='btnImg' />
+				</View>
+			</View>
 		});
-		const drummerContent = drummer.map((cur, index)=>{
-			return  <View className={`item_ ${index%3== 1?'bothMargin':''}`}>
-						<View className='cardBg_'>
-							<Image src={cur.icon} className='cardImg_' />
-						</View>
-						<View className='name name_'>{cur.name}</View>
+		const drummerContent = drummer.map((cur, index) => {
+			return <View className={`item_ ${index % 3 == 1 ? 'bothMargin' : ''}`}>
+				<View className='cardBg_'>
+					<Image src={cur.icon} className='cardImg_' />
+				</View>
+				<View className='name name_'>{cur.name}</View>
 
-						<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status?cur.id:'-1'} className='btn'>
-							<Image src={cur.status?usingPrompt:replaceBtn} className='btnImg' />
-						</View>
-					</View>
+				<View onClick={this.DBreplaceOrchestra.bind(this)} data-id={!cur.status ? cur.id : '-1'} className='btn'>
+					<Image src={cur.status ? usingPrompt : replaceBtn} className='btnImg' />
+				</View>
+			</View>
 		});
 
 		return (
 			<View className='selfOrchestra'>
-				<View className={`${isShowLoading?'':'hide'}`}>
+				<View className={`${isShowLoading ? '' : 'hide'}`}>
 					< GameLoading />
 				</View>
 				<View className='bgColor'>
@@ -294,7 +294,7 @@ export class SelfOrchestra extends Component {
 								<ScrollView className='scrollview' scrollY scrollWithAnimation scrollTop='0'>
 									<View className={`box`}>
 										{/* 主唱 */}
-										<View className={`samePiece ${leadSinger.length > 0?'':'hide'}`}>
+										<View className={`samePiece ${leadSinger.length > 0 ? '' : 'hide'}`}>
 											<View className='bar bar3'>
 												<Text className='Title title3'>{leadSingerTitle}</Text>
 											</View>
@@ -303,7 +303,7 @@ export class SelfOrchestra extends Component {
 											</View>
 										</View>
 										{/* 吉他手 */}
-										<View className={`samePiece ${guitarist.length > 0?'':'hide'}`}>
+										<View className={`samePiece ${guitarist.length > 0 ? '' : 'hide'}`}>
 											<View className='bar bar4'>
 												<Text className='Title title4'>{guitaristTitle}</Text>
 											</View>
@@ -312,7 +312,7 @@ export class SelfOrchestra extends Component {
 											</View>
 										</View>
 										{/* 贝斯手  */}
-										<View className={`samePiece ${bassist.length > 0?'':'hide'}`}>
+										<View className={`samePiece ${bassist.length > 0 ? '' : 'hide'}`}>
 											<View className='bar bar6'>
 												<Text className='Title title6'>{bassistTitle}</Text>
 											</View>
@@ -321,7 +321,7 @@ export class SelfOrchestra extends Component {
 											</View>
 										</View>
 										{/* 鼓手 */}
-										<View className={`samePiece ${drummer.length > 0?'':'hide'}`}>
+										<View className={`samePiece ${drummer.length > 0 ? '' : 'hide'}`}>
 											<View className='bar bar5'>
 												<Text className='Title title5'>{drummerTitle}</Text>
 											</View>

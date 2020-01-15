@@ -19,13 +19,13 @@ export class Opinion extends Component {
 		super(props);
 
 		this.state = {
-			routers:{
+			routers: {
 				indexPage: '/pages/index/index',
 			},
 
-			data:{},
+			data: {},
 
-			local_data:{
+			local_data: {
 				// 反馈内容
 				textareaVal: '',
 				inputVal: '',
@@ -47,16 +47,16 @@ export class Opinion extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount () {}
+	componentWillMount() { }
 
-	componentDidMount () {}
+	componentDidMount() { }
 
-	componentWillUnmount () {
+	componentWillUnmount() {
 		emitter.removeAllListeners('getOpinionResult');
 		emitter.removeAllListeners('requestUrl');
 	}
 
-	componentDidShow () {
+	componentDidShow() {
 		let _this = this;
 
 		// 获取当前版本
@@ -73,18 +73,18 @@ export class Opinion extends Component {
 			} else {
 				this.websocket = App.globalData.websocket;
 				let websocketUrl = this.state.websocketUrl;
-				if(this.websocket.isLogin){
+				if (this.websocket.isLogin) {
 					console.log("%c 您已经登录了", 'background:#000;color:white;font-size:14px');
-				}else{
+				} else {
 					this.websocket.initWebSocket({
 						url: websocketUrl,
-						success(res){
+						success(res) {
 							// 开始登陆
-							_this.websocket.onSocketOpened((res)=>{});
+							_this.websocket.onSocketOpened((res) => { });
 							// 对外抛出websocket
 							App.globalData.websocket = _this.websocket;
 						},
-						fail(err){
+						fail(err) {
 							createWebSocket(_this);
 						}
 					});
@@ -95,18 +95,18 @@ export class Opinion extends Component {
 		// 2202 监听反馈结果
 		this.eventEmitter = emitter.addListener('getOpinionResult', (message) => {
 			clearInterval(message[1]);
-			
-			if(message[0]['data']['value']){
+
+			if (message[0]['data']['value']) {
 				Taro.showToast({
 					title: '反馈成功',
 					icon: 'none',
 					duration: 2000
 				});
-				this.setState((preState)=>{
+				this.setState((preState) => {
 					preState.local_data.textareaVal = '';
 					// preState.local_data.inputVal = '';
-				},()=>{})
-			}else{
+				}, () => { })
+			} else {
 				Taro.showToast({
 					title: '反馈失败',
 					icon: 'none',
@@ -116,10 +116,10 @@ export class Opinion extends Component {
 		});
 	}
 
-	componentDidHide () {}
+	componentDidHide() { }
 
 	// 返回上一页
-	goBack(){
+	goBack() {
 		let indexPage = this.state.routers.indexPage;
 		Taro.reLaunch({
 			url: indexPage
@@ -127,26 +127,26 @@ export class Opinion extends Component {
 	}
 
 	// 记录反馈内容
-	onInput(e){
+	onInput(e) {
 		let detail = e.detail.value;
 		let cursor = e.detail.cursor;
 		console.log(e)
-		this.setState((preState)=>{
+		this.setState((preState) => {
 			preState.local_data.contentVal = detail;
 			preState.local_data.textareaVal = detail;
 		});
 	}
 
 	// 记录联系方式
-	contactInput(e){
+	contactInput(e) {
 		let detail = e.detail.value;
-		this.setState((preState)=>{
+		this.setState((preState) => {
 			preState.local_data.inputVal = detail;
 		});
 	}
 
 	// 提交反馈
-	submit(){
+	submit() {
 		// 发送反馈信息
 		let contentVal = String(this.state.local_data.textareaVal);
 		let contactVal = this.state.local_data.inputVal;
@@ -155,13 +155,13 @@ export class Opinion extends Component {
 			contact: contactVal,
 		};
 
-		if(contentVal.length > 0){
+		if (contentVal.length > 0) {
 			let opinion = this.msgProto.opinion(data);
 			let parentModule = this.msgProto.parentModule(opinion);
 			this.websocket.sendWebSocketMsg({
 				data: parentModule,
-				success(res) {console.log('发送反馈信息Success')},
-				fail(err){
+				success(res) { console.log('发送反馈信息Success') },
+				fail(err) {
 					Taro.showToast({
 						title: err.errMsg,
 						icon: 'none',
@@ -169,7 +169,7 @@ export class Opinion extends Component {
 					})
 				}
 			});
-		}else{
+		} else {
 			Taro.showToast({
 				title: '请填写反馈内容',
 				icon: 'none',
@@ -179,12 +179,12 @@ export class Opinion extends Component {
 	}
 
 	// 复制QQ好
-	copyQQ(){
+	copyQQ() {
 		var that = this;
 		Taro.setClipboardData({
 			//准备复制的数据
 			data: that.state.local_data.tipQQ,
-			success(res){
+			success(res) {
 				Taro.showToast({
 					title: '复制成功',
 					duration: 1000,
@@ -193,8 +193,8 @@ export class Opinion extends Component {
 		});
 	}
 
-	render () {
-		const { opinionTitleImg, backBtn, submitBtn, placeholder, contactTip, textareaVal,inputVal,
+	render() {
+		const { opinionTitleImg, backBtn, submitBtn, placeholder, contactTip, textareaVal, inputVal,
 			maxlength, qqIcon, tip1, tip2, tip3, tipQQ, copyBtn } = this.state.local_data;
 
 		return (
@@ -213,10 +213,10 @@ export class Opinion extends Component {
 							</View>
 							<View className='opinionContent'>
 								<View className='detailWrap'>
-									<Textarea value={textareaVal} onInput={this.onInput.bind(this)} maxlength={maxlength} placeholder={placeholder} autoHeight autoFocus/>
+									<Textarea value={textareaVal} onInput={this.onInput.bind(this)} maxlength={maxlength} placeholder={placeholder} autoHeight autoFocus />
 								</View>
 								<View className='contact'>
-									<Input onInput={this.contactInput.bind(this)} value={inputVal} type='number' placeholder={contactTip} maxLength='11'/>
+									<Input onInput={this.contactInput.bind(this)} value={inputVal} type='number' placeholder={contactTip} maxLength='11' />
 								</View>
 								<View onClick={this.submit.bind(this)} className='submit'>
 									<Image src={submitBtn} className='submitBtn' />
@@ -227,7 +227,7 @@ export class Opinion extends Component {
 								<View className='tips'>
 									<View className='tip2'>{tip2}</View>
 									<View onClick={this.copyQQ.bind(this)} className='tip3'>
-										<Image src={qqIcon} className='qqIcon'/>
+										<Image src={qqIcon} className='qqIcon' />
 										<Text decode='true' className='customer'>{tip3}&ensp;</Text>
 										<Text>{tipQQ}</Text>
 										<Image src={copyBtn} className='copyBtn' />

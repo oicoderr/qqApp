@@ -3,7 +3,7 @@ import { View, Image, Text, Button, RadioGroup, Radio, Label } from '@tarojs/com
 import './entrance.scss'
 import emitter from '../../service/events'
 import throttle from 'lodash/throttle'
-import { getStorage, setStorage, onShareApp, showShareMenuItem, unitReplacement,get_OpenId_RoleId } from '../../utils'
+import { getStorage, setStorage, onShareApp, showShareMenuItem, unitReplacement, get_OpenId_RoleId } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import configObj from '../../service/configObj'
 import { MessageToast } from '../../components/MessageToast'
@@ -377,7 +377,7 @@ export class PrizeEntrance extends Component {
 	}
 
 	// 1301 请求大奖赛type:1.好友赛；2.大奖赛；3.排位赛
-	matchPrize(){
+	matchPrize() {
 		let data = { type: 2, useSpeedItem: 0, };
 		let matchingRequest = this.msgProto.matchingRequest(data)
 		let parentModule = this.msgProto.parentModule(matchingRequest);

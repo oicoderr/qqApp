@@ -587,7 +587,7 @@ export class RankEnterGame extends Component {
 									<View className='score teamBScore'>{selfCamp ? redScore : blueScore}</View>
 								</View>
 								<View className='Text'>{currIndex + 1}. <Text decode="true">{currContent}</Text></View>
-								<View className={multiple==2?'doublePoints':'hide'}>
+								<View className={multiple == 2 ? 'doublePoints' : 'hide'}>
 									<Image src={doublePointsIcon} className='doublePointsIcon' />
 								</View>
 							</View>
