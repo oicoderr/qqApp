@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import emitter from '../../service/events';
 import './index.scss'
-import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, get_OpenId_RoleId, showShareMenuItem } from '../../utils'
+import { getStorage, setStorage, removeStorage, getCurrentPageUrl, unitReplacement, buildURL, get_OpenId_RoleId, showShareMenuItem,onShareApp } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import configObj from '../../service/configObj'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
@@ -120,7 +120,7 @@ export class Index extends Component {
 		let _this = this;
 		// 首页pv
 		App.aldstat.sendEvent('pv-主页', get_OpenId_RoleId());
-
+		// 显示转发Menu
 		showShareMenuItem();
 		// 页面超出提示,返回当前页面URL
 		getCurrentPageUrl();
@@ -557,6 +557,52 @@ export class Index extends Component {
 		});
 	}
 
+	// 转发好友/空间
+	onShareAppMessage(res){
+		let value = 1, _this = this;
+		let getShareReward = this.msgProto.getShareReward(value);
+		let parentModule = this.msgProto.parentModule(getShareReward);
+		let shareData = {
+			title: '酸柠檬',
+			path: '/pages/login/index',
+			imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
+		};
+		// 按钮分享
+		if (res.from === 'button' ) {
+			shareData.title = '来不及解释了,快上车！跟我一起组建梦想乐队！';
+			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+		} else { // 右上角分享App
+			shareData.title = '明星、热点、八卦知多少？一试便知！';
+			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+		};
+		return {
+			title: shareData.title,
+			path: shareData.path,
+			imageUrl: shareData.imageUrl,
+			query: '',
+			success(res) {
+				_this.websocket.sendWebSocketMsg({
+					data: parentModule,
+					success(res) { },
+					fail(err) {
+						Taro.showToast({
+							title: '奖励领取失败',
+							icon: 'none',
+							duration: 2000,
+						})
+					}
+				});
+			},
+			fail(err) {
+				Taro.showToast({
+					title: '请重新分享',
+					icon: 'none',
+					duration: 2000,
+				})
+			}
+		}
+	}
+
 	render() {
 		const { sex } = this.state.gameUserInfo;
 		const { redEnvelope, copper, energy } = this.state.currencyChange;
@@ -606,9 +652,9 @@ export class Index extends Component {
 
 					{/* 右侧按钮list */}
 					<View className='rightListBtn'>
-						<View onClick={this.onOpenQzonePublish.bind(this)} className='oneKeyShareImg'>
-							{/* open-type="share" share-mode="{{['qq', 'qzone']}}" */}
-							<Button className='oneKeyShare'></Button>
+						<View className='oneKeyShareImg'>
+							{/* open-type="share" share-mode="{{['qq', 'qzone']}}" onClick={this.onOpenQzonePublish.bind(this)} */}
+							<Button open-type="contact" open-type="share" share-mode="{{['qq', 'qzone']}}" className='oneKeyShare'></Button>
 						</View>
 						<View onClick={this.weekCheckIn.bind(this)} className='signInBtn'></View>
 						<View className='problemBtn'></View>
