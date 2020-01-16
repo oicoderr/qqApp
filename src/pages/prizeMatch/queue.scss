@@ -175,36 +175,36 @@
       .queuePeople {
         position: absolute;
         left: 50%;
-        bottom: 30rpx;
+        bottom: 50rpx;
         transform: translateX(-50%);
-        width: 470rpx;
-        height: 170rpx;
+        width: 534rpx;
+        height: 140rpx;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
 
         .timeNumber{
-          width: 470rpx;
+          width: auto;
           height: 70rpx;
           display: flex;
           flex-direction: row;
           justify-content: space-between;
 
           .prizeCountdownWrap{
-            width: 225rpx;
-            height: 67rpx;
+            width: 196rpx;
+            height: 70rpx;
   
             .prizeCountdownBg{
-              width: 225rpx;
-              height: 67rpx;
+              width: 196rpx;
+              height: 70rpx;
             }
   
             .QueueCountdown{
               position: absolute;
               top: 0;
               left: 0;
-              font-size: 30rpx;
-              color: rgba(0, 0, 0, 1);
+              font-size: 40rpx;
+              color: rgba(255, 255, 255, 1);
               font-weight: 500;
               height: 68rpx;
               line-height: 68rpx;
@@ -221,22 +221,22 @@
               }
 
               .firstTime{
-                padding-left: 14rpx;
+                padding-right: 8rpx;
               }
 
               .secondTime{
-                padding-left: 4rpx;
+                padding-right: 4rpx;
               }
             }
           }
 
           .prizeCurrentNumberWrap{
-            width: 204rpx;
-            height: 67rpx;
+            width: 196rpx;
+            height: 70rpx;
   
             .prizeCurrentNumberBg{
-              width: 204rpx;
-              height: 67rpx;
+              width: 196rpx;
+              height: 70rpx;
             }
   
             .currCount{
@@ -244,44 +244,39 @@
               top: 0;
               right: 0rpx;
               width: 204rpx;
-              font-size: 30rpx;
-              color: rgba(0, 0, 0, 1);
+              font-size: 40rpx;
+              color: rgba(255, 255, 255, 1);
               font-weight: 500;
-              height: 68rpx;
-              line-height: 68rpx;
+              height: 70rpx;
+              line-height: 70rpx;
               display: flex;
               flex-direction: row;
               justify-content: flex-start;
 
               text{
-                width: 68rpx;
-                height: 68rpx;
-                line-height: 68rpx;
+                width: 70rpx;
+                height: 70rpx;
+                line-height: 70rpx;
                 text-align: center;
                 box-sizing: border-box;
-              }
-              .firstCount{
-                padding-left: 14rpx;
-              }
-
-              .secondCount{
-                padding-left: 2rpx;
-              }
-
-              .lastCount{
-                padding-right: 14rpx;
+                padding-left: 8rpx;
               }
             }
           }
         }
 
-        .curPeopleTip{
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          bottom: 0;
-          width: 283rpx;
-          height: 104rpx;
+        .numberTip{
+          width: auto;
+          height: 50rpx;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+
+          Image{
+            width: 170rpx;
+            height: 50rpx;
+            padding:0 12rpx;
+          }
         }
       }
     }

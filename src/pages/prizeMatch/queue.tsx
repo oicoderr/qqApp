@@ -139,7 +139,7 @@ export class PrizeQueue extends Component {
 						y: 172,
 					}, {
 						x: 340,
-						y: 780,
+						y: 760,
 					}, {
 						x: 146,
 						y: 623,
@@ -163,11 +163,12 @@ export class PrizeQueue extends Component {
 				isIntheGame: false,					// 是否游戏中断线，默认不是
 				quitBtn: 'https://oss.snmgame.com/v1.0.0/quitBtn.png',
 				prizeQueueBgImg: 'https://oss.snmgame.com/v1.0.0/prizeQueueBgImg.png',
-				prizeQueueNumberTip: 'https://oss.snmgame.com/v1.0.0/prizeQueueNumberTip.png',
 				prizeCountdownBg: 'https://oss.snmgame.com/v1.0.0/prizeCountdownBg.png',
 				prizeCurrentNumberBg: 'https://oss.snmgame.com/v1.0.0/prizeCurrentNumberBg.png',
 				cancelBtn: 'https://oss.snmgame.com/v1.0.0/cancelBtn.png',
 				confirmBtn: 'https://oss.snmgame.com/v1.0.0/confirmBtn.png',
+				countdownTipTxt: 'https://oss.snmgame.com/v1.0.0/countdownTipTxt.png',
+				InNumberTip: 'https://oss.snmgame.com/v1.0.0/InNumberTip.png',
 			},
 
 			websocketUrl: '',
@@ -502,7 +503,7 @@ export class PrizeQueue extends Component {
 
 	render() {
 		const { quitBtn, selectedHead, selectedPosition, matchIngTxt, cancelBtn, confirmBtn, matchToastTip, matchToastBody,
-			prizeCountdownBg, prizeCurrentNumberBg, prizeQueueNumberTip, isShowToast,
+			prizeCountdownBg, prizeCurrentNumberBg, isShowToast, countdownTipTxt, InNumberTip,
 		} = this.state.local_data;
 		const { maxCount, currCount, time } = this.state.data.curTeamInfo;
 
@@ -563,7 +564,10 @@ export class PrizeQueue extends Component {
 											</View>
 										</View>
 									</View>
-									<Image src={prizeQueueNumberTip} className='curPeopleTip' />
+									<View className='numberTip'>
+										<Image src={countdownTipTxt} className='countdownTipTxt'></Image>
+										<Image src={InNumberTip}  className='InNumberTip'></Image>
+									</View>
 								</View>
 								{/* 头像 */}
 								{headImg}
