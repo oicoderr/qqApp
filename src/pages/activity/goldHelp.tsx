@@ -64,6 +64,7 @@ export class GoldHelp extends Component {
 				goldIconOverlay: 'https://oss.snmgame.com/v1.0.0/goldIcon.png',
 				addIcon: 'https://oss.snmgame.com/v1.0.0/addIcon.png',
 				receiveBtn: 'https://oss.snmgame.com/v1.0.0/receiveBtn_goldHelp.png',
+				goldHelpTip: 'https://oss.snmgame.com/v1.0.0/goldHelpTip.png',
 			},
 
 			websocketUrl: '',
@@ -384,7 +385,7 @@ export class GoldHelp extends Component {
 	
 	render() {
 		const { backBtn, goldIcon, goldIconOverlay, addIcon, gold_help_bg, baseGoldTxt,
-			isShowDirections, howPlayTip, inviteTxt0, inviteTxt1, inviteTxt2, countdownTxt,
+			isShowDirections, howPlayTip, inviteTxt0, inviteTxt1, inviteTxt2, countdownTxt, goldHelpTip,
 			receiveBtn, isShowGameLoading, } = this.state.local_data;
 		const { bonus, cd, icon, currCopper, list } = this.state.data.getGoldHelpInfo;
 		const { hour, minutes, seconds } = this.state.local_data.countdown;
@@ -431,6 +432,9 @@ export class GoldHelp extends Component {
 								<View onClick={this.DBgetQuickenCard.bind(this)} data-type='1' className='howPlayTip'>{howPlayTip}</View>
 								<ScrollView className='scrollview' scrollY scrollWithAnimation>
 									<View className='itemBox'>
+										<View className={`tip ${list.length>0?'hide':''}`}>
+											<Image src={goldHelpTip} className='goldHelpTip' />
+										</View>
 										{content}
 									</View>
 								</ScrollView>

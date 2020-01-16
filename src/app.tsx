@@ -74,10 +74,10 @@ class _App extends Component {
 	componentDidMount() {
 		let _this = this;
 		console.error = () => { };
-		console.table = () => {};
-		console.log = () => {};
-		console.info = () => {};
-		console.dir = () => {};
+		// console.table = () => {};
+		// console.log = () => {};
+		// console.info = () => {};
+		// console.dir = () => {};
 
 		// 获取当前版本
 		configObj.getVersion();
@@ -119,8 +119,10 @@ class _App extends Component {
 
 			// 将code发后台，获取openid及accessToken
 			this.login((loginData) => {
+				
 				// app登录, appLogin.data: 返回openid，accessToken, session_key
 				loginRequest(loginData, (appLogin) => {
+					console.log(appLogin,1818);
 					let userInfo = {};
 					// 获取缓存userInfo，如果没有授权信息, 授权后并保存缓存中，如果存在openid,跳转游戏登录
 					getStorage('userInfo', (res) => {

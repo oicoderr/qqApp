@@ -130,11 +130,12 @@
     justify-content: space-between;
     box-sizing: border-box;
     flex-wrap: wrap;
-    padding: 15rpx 46rpx 34rpx 28rpx;
+    padding: 14rpx 28rpx;
 
     .item {
       width: 60px;
-      height: 118px;
+      height: auto;
+      margin: 0 auto;
 
       .settingItemBg {
         width: 60rpx;

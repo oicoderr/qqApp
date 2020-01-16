@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
 import { createWebSocket } from '../../service/createWebSocket'
+import { removeStorage } from '../../utils'
 import configObj from '../../service/configObj'
 import './setting.scss'
 import emitter from '../../service/events'
@@ -19,6 +20,7 @@ export class Setting extends Component {
 
 		this.state = {
 			routers: {
+				loginPage: '/pages/login/index',
 				indexPage: '/pages/index/index',
 			},
 
@@ -27,6 +29,8 @@ export class Setting extends Component {
 			local_data: {
 				backBtn: 'https://oss.snmgame.com/v1.0.0/backBtn.png',
 				settingTitle: 'https://oss.snmgame.com/v1.0.0/settingTitle.png',
+				signOutBtn: 'https://oss.snmgame.com/v1.0.0/signOutBtn.png',
+
 				list: [
 					{
 						id: 1,
@@ -119,8 +123,16 @@ export class Setting extends Component {
 		})
 	}
 
+	// 退出登录
+	signOut(){
+		let loginPage = this.state.routers.loginPage;
+		Taro.reLaunch({
+			url: loginPage,
+		});
+	}
+
 	render() {
-		const { settingTitle, backBtn, list } = this.state.local_data;
+		const { settingTitle, backBtn, list, signOutBtn } = this.state.local_data;
 		const content = list.map((cur) => {
 			return <View className='item'>
 				<Text>{cur.txt}</Text>
@@ -148,6 +160,9 @@ export class Setting extends Component {
 										{content}
 									</View>
 								</ScrollView>
+								<View onClick={this.signOut.bind(this)} className='signOutBtnWrap'>
+									<Image src={signOutBtn} className='signOutBtn' />
+								</View>
 							</View>
 						</View>
 					</View>

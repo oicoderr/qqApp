@@ -152,6 +152,18 @@
           flex-direction: row;
           flex-wrap: wrap;
 
+          .tip{
+            position: absolute;
+            top: 160rpx;
+            left: 50%;
+            transform: translateX(-50%);
+
+            .goldHelpTip{
+              width: 480rpx;
+              height: 110rpx;
+            }
+          }
+
           .item {
             width: 320rpx;
             height: 120rpx;

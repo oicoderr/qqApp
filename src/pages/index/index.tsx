@@ -608,7 +608,7 @@ export class Index extends Component {
 		const isShowAdvanceRoadUi = this.state.isShowAdvanceRoadUi;
 		return (
 			<View className='index' catchtouchmove="ture">
-				{/* 左侧按钮list */}
+				{/* 左侧抽屉list */}
 				<Drawer />
 
 				{/* 签到 */}
@@ -622,10 +622,12 @@ export class Index extends Component {
 				</View>
 
 				<View className='bgColor'>
+					<View className='bgImg'></View>
+					{/* 性别选择 */}
 					<View className={`genderSlection ${sex === -1 ? '' : 'hide'} `} >
 						<GenderSelectionUi />
 					</View>
-					<View className='bgImg'></View>
+					{/* 金币/门票 */}
 					<View className='head'>
 						<View onClick={this.advanceRoad.bind(this)} className='avatarWrap'>
 							<View className='avatar'>
@@ -647,8 +649,7 @@ export class Index extends Component {
 							<View onClick={this.goPayTickets.bind(this)} className='addIcon-same addIcon' ></View>
 						</View>
 					</View>
-
-					{/* 右侧按钮list */}
+					{/* 右侧list */}
 					<View className='rightListBtn'>
 						<View className='oneKeyShareImg'>
 							{/* open-type="share" share-mode="{{['qq', 'qzone']}}" onClick={this.onOpenQzonePublish.bind(this)} */}
@@ -658,9 +659,11 @@ export class Index extends Component {
 						<View className='problemBtn'></View>
 						<View className='hide welfareBtn'></View>
 					</View>
+					{/* 乐队展示 */}
 					<View className='body'>
 						<HomeBandUi />
 					</View>
+					{/* 游戏按钮 */}
 					<View className='foot'>
 						<View onClick={this.goPrizeMatchBtn.bind(this)} className='sameBtn redEnvelopeBtn'>
 							<View className='cashTip'></View>

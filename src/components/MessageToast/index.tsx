@@ -8,7 +8,7 @@ export class MessageToast extends Component {
     super(props);
     this.state = {
       data: {
-        confirmBtn: 'https://oss.snmgame.com/v1.0.0/confirmBtn.png',
+        confirmBtn: 'https://oss.snmgame.com/v1.0.0/sureBtn.png',
         closeImgBtn: 'https://oss.snmgame.com/v1.0.0/closeBtn.png'
       },
       userAgreement_data: []
