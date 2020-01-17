@@ -19,7 +19,7 @@ export class BackPack extends Component {
 
 		this.state = {
 			routers: {
-				indexPage: '/pages/index/index',
+				indexPage: '/pages/index/index?bgm=1',
 			},
 
 			data: {

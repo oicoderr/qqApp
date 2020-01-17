@@ -8,6 +8,7 @@ import configObj from '../../service/configObj'
 import GenderSelectionUi from '../../components/GenderSelectionUi'
 import WeekCheckIn from '../../components/WeekCheckIn'
 import { AdvanceRoadUi } from '../../components/advanceRoadUi'
+import { Setting } from '../../toobar/setting'
 import HomeBandUi from '../../components/HomeBandUi'
 import Drawer from '../../components/drawer'
 import MsgProto from '../../service/msgProto'
@@ -24,7 +25,9 @@ export class Index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-
+			// bgm
+			InnerAudioContext: Taro.createInnerAudioContext(),
+			switchBgmStatus: true,
 			routers: {
 				/* 断线重连 */
 				rankQueue: '/pages/rankMatch/queue',
@@ -90,6 +93,7 @@ export class Index extends Component {
 
 	componentDidMount() {
 		let _this = this;
+		const params = this.$router.params;
 
 		getStorage('gameUserInfo', (res) => {
 			if (res !== '') {
@@ -99,6 +103,15 @@ export class Index extends Component {
 			}
 		});
 		removeStorage('inviterInfo');
+
+		// 如果是从loginPage, appJS 跳转到主页存在params.bgm,创建背景音乐并播放，否则不创建背景音乐
+		if(params.bgm){
+			getStorage('sounds',(res)=>{
+				if(res.type == 1 || res == ''){
+					_this.createBgm();
+				}
+			})
+		}
 	}
 
 	componentWillUnmount() {
@@ -382,6 +395,7 @@ export class Index extends Component {
 				setStorage('currencyChange', _this.state.currencyChange);
 			});
 		});
+
 	}
 
 	componentDidHide() {
@@ -601,6 +615,77 @@ export class Index extends Component {
 		}
 	}
 
+	// 监听Bgm
+	createBgm(){
+		// 当设置了新的 src 时，会自动开始播放
+		this.state.InnerAudioContext.src = 'https://oss.snmgame.com/sounds/bgm.m4a';
+		// 是否自动开始
+		this.state.InnerAudioContext.autoplay = true;
+		// 循环播放
+		this.state.InnerAudioContext.loop = true;
+		// 音量范围
+		this.state.InnerAudioContext.volume = 1;
+		// 是否与其他音频混播，设置为 true 之后，不会终止其他应用或QQ内的音乐
+		this.state.InnerAudioContext.mixWithOther = false;
+		App.globalData.InnerAudioContext = this.state.InnerAudioContext;
+
+		// 监听音频进入可以播放状态的事件。但不保证后面可以流畅播放
+		this.state.InnerAudioContext.onCanplay(()=>{
+			Taro.hideLoading();
+		})
+
+		this.state.InnerAudioContext.onPlay(() => {
+			console.log('========> 开始播放bgm <=========');
+			// type(背景音乐): 1, status(状态): 1播放状态 0停止状态
+			setStorage('sounds',{type: 1, status: 1});
+		});
+		this.state.InnerAudioContext.onStop(()=>{
+			console.log('========> 停止Stop播放bgm <=========');
+			setStorage('sounds',{type: 1, status: 0});
+		});
+		// 监听音频自然播放至结束的事件
+		this.state.InnerAudioContext.onEnded(()=>{
+			console.log('========> bgm播放结束 <=========');
+		});
+
+		// 监听音频播放错误事件
+		this.state.InnerAudioContext.onError((res) => {
+			switch (res.errCode){
+				case 10001:
+					this.toastSoundBg('系统错误');
+					break;
+				case 10002:
+					this.toastSoundBg('网络错误');
+					break;
+				case 10003:
+					this.toastSoundBg('文件错误');
+					break;
+				case 10004:
+					this.toastSoundBg('格式错误');
+					break;
+				case -1:
+					this.toastSoundBg('未知错误');
+					break;
+			}
+		});
+
+		// 监听音频加载中事件。当音频因为数据不足，需要停下来加载时会触
+		this.state.InnerAudioContext.onWaiting(()=>{
+			Taro.showLoading({
+				title: '音频正在加载ing',
+				mask: true,
+			});
+		})
+
+	}
+	// sounds 音频onError错误码
+	toastSoundBg(msg){
+		Taro.showToast({
+			title: msg,
+			icon: 'fail',
+			duration: 2000
+		})
+	}
 	render() {
 		const { sex } = this.state.gameUserInfo;
 		const { redEnvelope, copper, energy } = this.state.currencyChange;

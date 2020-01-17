@@ -22,7 +22,7 @@ export class Recharge extends Component {
 		this.state = {
 
 			routers: {
-				indexPage: '/pages/index/index'
+				indexPage: '/pages/index/index',
 			},
 
 			data: {

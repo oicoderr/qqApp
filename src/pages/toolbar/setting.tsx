@@ -1,9 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
 import { createWebSocket } from '../../service/createWebSocket'
-import { removeStorage } from '../../utils'
 import configObj from '../../service/configObj'
 import './setting.scss'
+import { getStorage, setStorage } from '../../utils'
 import emitter from '../../service/events'
 import MsgProto from '../../service/msgProto'
 
@@ -19,6 +19,9 @@ export class Setting extends Component {
 		super(props);
 
 		this.state = {
+			bgmStatus: true,
+			musicEffectsStatus: true,
+
 			routers: {
 				loginPage: '/pages/login/index',
 				indexPage: '/pages/index/index',
@@ -37,13 +40,13 @@ export class Setting extends Component {
 						txt: '音乐',
 						openBtn: 'https://oss.snmgame.com/v1.0.0/settingBtnOpen.png',
 						shutDownBtn: 'https://oss.snmgame.com/v1.0.0/settingBtnShutDown.png',
-						status: 0,
+						status: 0, // 默认开启状态（显示关闭按钮）
 					}, {
 						id: 2,
 						txt: '音效',
 						openBtn: 'https://oss.snmgame.com/v1.0.0/settingBtnOpen.png',
 						shutDownBtn: 'https://oss.snmgame.com/v1.0.0/settingBtnShutDown.png',
-						status: 0,
+						status: 0, // 默认开启状态（显示关闭按钮）
 					}
 				]
 			},
@@ -96,6 +99,21 @@ export class Setting extends Component {
 				}
 			}
 		});
+
+		// 获取bgm播放状态
+		getStorage('sounds',(res)=>{
+			if(res.type == 1){
+				if(res.status){
+					_this.setState((preState)=>{
+						preState.local_data.list[0]['status'] = 0;
+					});
+				}else{
+					_this.setState((preState)=>{
+						preState.local_data.list[0]['status'] = 1;
+					});
+				}
+			}
+		})
 	}
 
 	componentDidHide() { }
@@ -119,12 +137,24 @@ export class Setting extends Component {
 				_this.setState((preState) => {
 					preState.local_data.list[index]['status'] = !status;
 				});
+				// bgm 开关
+				if(id == 1){
+					if(status){
+						App.globalData.InnerAudioContext.play();
+						setStorage('sounds',{type: 1, status: 1});
+					}else{
+						App.globalData.InnerAudioContext.stop();
+						setStorage('sounds',{type: 1, status: 0});
+					}
+				}
 			}
 		})
 	}
 
 	// 退出登录
 	signOut(){
+		// 销毁bgm实例
+		App.globalData.InnerAudioContext.destroy();
 		let loginPage = this.state.routers.loginPage;
 		Taro.reLaunch({
 			url: loginPage,
@@ -136,7 +166,7 @@ export class Setting extends Component {
 		const content = list.map((cur) => {
 			return <View className='item'>
 				<Text>{cur.txt}</Text>
-				<Image data-id={cur.id} data-status={cur.status} onClick={this.musicSwitch.bind(this)} src={cur.status ? cur.openBtn : cur.shutDownBtn} className='btn'></Image>
+				<Image data-id={cur.id} data-status={cur.status} onClick={this.musicSwitch.bind(this)} src={cur.status ? cur.openBtn:cur.shutDownBtn } className='btn'></Image>
 			</View>
 		})
 

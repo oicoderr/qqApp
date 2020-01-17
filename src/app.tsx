@@ -64,6 +64,8 @@ class _App extends Component {
 		// socket对象
 		websocket: '',
 		gameUserInfo: '',
+		// bgm
+		InnerAudioContext: '',
 	}
 	// socketUrl
 	websocketUrl: '';
@@ -73,7 +75,7 @@ class _App extends Component {
 
 	componentDidMount() {
 		let _this = this;
-		console.error = () => { };
+		// console.error = () => { };
 		// console.table = () => {};
 		// console.log = () => {};
 		// console.info = () => {};
@@ -119,7 +121,6 @@ class _App extends Component {
 
 			// 将code发后台，获取openid及accessToken
 			this.login((loginData) => {
-				
 				// app登录, appLogin.data: 返回openid，accessToken, session_key
 				loginRequest(loginData, (appLogin) => {
 					console.log(appLogin,1818);
@@ -129,7 +130,6 @@ class _App extends Component {
 						if (!res.nickName || !res.avatarUrl) {
 							console.log('%c app未在缓存中找到·userInfo·信息,请重新授权', 'font-size:14px; color:#c27d00;');
 							userInfo = appLogin.data;
-							// 跳转游戏主页
 							setStorage('userInfo', userInfo);
 							_this.createWebSocket(_this.websocketUrl);
 						} else {
@@ -146,7 +146,7 @@ class _App extends Component {
 		// 隐藏分享
 		hideShareMenu();
 
-		// 监测1040 全局提示
+		// 监听1040 全局提示
 		this.eventEmitter = emitter.addListener('globalTips', (message) => {
 			console.error('收到1040 全局提示'); console.log(message);
 			clearInterval(message[1]);
@@ -156,9 +156,8 @@ class _App extends Component {
 				duration: 2000,
 			});
 		});
-
-		// 1002 游戏登录状态
-		this.eventEmitter = emitter.once('loginGameStatus', (message) => {
+		// 监听1002 游戏登录状态
+		this.eventEmitter = emitter.addListener('loginGameStatus', (message) => {
 			// console.log('%c 游戏登录状态： ', 'color: blue;font-size:14px;'); console.log(message);
 			// 清除消息转发定时器
 			clearInterval(message[1]);
@@ -167,13 +166,7 @@ class _App extends Component {
 			let loginResult = message[0]['data']['loginResult'];
 			if (loginDesc && loginResult) {
 				console.log('%c 登陆成功！', 'font-size:14px;color:#20ff1f;background-color:#000000;')
-				// Taro.showToast({
-				// 	title: loginDesc,
-				// 	icon: 'none',
-				// 	duration: 2000,
-				// });
 			} else {
-				console.error(loginDesc);
 				Taro.showToast({
 					title: loginDesc,
 					icon: 'none',
@@ -181,8 +174,7 @@ class _App extends Component {
 				});
 			}
 		});
-
-		// 2702 玩家游戏状态： 0.正常默认状态;1.匹配中;2.房间中
+		// 监听2702 玩家游戏状态： 0.正常默认状态;1.匹配中;2.房间中
 		this.eventEmitter = emitter.addListener('getPlayerStatus', (message) => {
 			clearInterval(message[1]);
 			let value = message[0]['data']['value'];
@@ -192,7 +184,7 @@ class _App extends Component {
 				} else {
 					if (value == 0) {
 						Taro.reLaunch({
-							url: '/pages/index/index',
+							url: '/pages/index/index?bgm=1',
 						});
 					}
 				}

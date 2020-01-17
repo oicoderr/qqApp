@@ -25,6 +25,7 @@ export class PrizeQueue extends Component {
 		this.state = {
 			// 路由
 			routers: {
+				indexPage: '/pages/index/index',
 				enterGame: '/pages/prizeMatch/enterGame',
 				entrancePage: '/pages/prizeMatch/entrance'
 			},
@@ -283,7 +284,7 @@ export class PrizeQueue extends Component {
 				});
 				// 1s后返回主页
 				let timer = setTimeout(() => {
-					let indexPage = this.state.routers.indexPage;
+					let indexPage = _this.state.routers.indexPage;
 					Taro.reLaunch({
 						url: indexPage
 					});
