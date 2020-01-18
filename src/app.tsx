@@ -87,10 +87,10 @@ class _App extends Component {
 	componentDidMount() {
 		let _this = this;
 		// console.error = () => { };
-		console.table = () => {};
-		console.log = () => {};
-		console.info = () => {};
-		console.dir = () => {};
+		// console.table = () => {};
+		// console.log = () => {};
+		// console.info = () => {};
+		// console.dir = () => {};
 
 		// 获取当前版本
 		configObj.getVersion();
@@ -416,14 +416,14 @@ class _App extends Component {
 		});
 
 		obj.onPlay(() => {
-			console.log('========> 开始播放bgm <=========');
+			console.log('%c ========> 开始播放音频 <=========', 'color:#0000FF;background:	#FFFF00;');
 		});
 		obj.onStop(()=>{
-			console.log('========> 停止Stop播放bgm <=========');
+			console.log('%c ========> 停止播放音频 <=========', 'color:#FF0000;background: #C0C0C0;');
 		});
 		// 监听音频自然播放至结束的事件
 		obj.onEnded(()=>{
-			console.log('========> bgm播放结束 <=========');
+			console.log('%c ========> 音频播放结束 <=========', 'color:#006400;background: #C0C0C0;');
 		});
 
 		// 监听音频播放错误事件
@@ -456,7 +456,7 @@ class _App extends Component {
 		});
 		// 默认音频开启状态
 		setStorage('sounds',[{'type': 1, 'status': 1,},{'type': 2, 'status': 1,}]);
-		console.log('%c AppJs音频实例创建成功','font-size:14px;color:#0000FF；background-color:#C0C0C0;')
+		console.log('%c Appjs音频实例创建成功','font-size:14px;color:#0000FF;background:#C0C0C0;')
 	}
 	// sounds 音频onError错误码
 	toastSoundBg(msg){

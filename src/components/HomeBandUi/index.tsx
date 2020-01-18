@@ -110,7 +110,6 @@ export default class HomeBand extends Component {
   componentDidMount() { }
 
   componentWillUnmount() {
-    console.log('%c 组件卸载ing', 'font-size:14px;color:red;');
     emitter.removeAllListeners('selfOrchestra');
   }
 
