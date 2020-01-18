@@ -411,7 +411,7 @@ class _App extends Component {
 
 		// 监听音频进入可以播放状态的事件。但不保证后面可以流畅播放
 		obj.onCanplay(()=>{
-			Taro.hideLoading();
+			// Taro.hideLoading();
 		})
 
 		obj.onPlay(() => {
@@ -448,10 +448,10 @@ class _App extends Component {
 
 		// 监听音频加载中事件。当音频因为数据不足，需要停下来加载时会触
 		obj.onWaiting(()=>{
-			Taro.showLoading({
-				title: '音频正在加载ing',
-				mask: true,
-			});
+			// Taro.showLoading({
+			// 	title: '音频正在加载ing',
+			// 	mask: true,
+			// });
 		});
 		// 默认音频开启状态
 		setStorage('sounds',[{'type': 1, 'status': 1,},{'type': 2, 'status': 1,}]);
