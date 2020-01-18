@@ -412,7 +412,7 @@ class _App extends Component {
 		// 监听音频进入可以播放状态的事件。但不保证后面可以流畅播放
 		obj.onCanplay(()=>{
 			// Taro.hideLoading();
-		})
+		});
 
 		obj.onPlay(() => {
 			console.log('========> 开始播放bgm <=========');
