@@ -64,8 +64,19 @@ class _App extends Component {
 		// socket对象
 		websocket: '',
 		gameUserInfo: '',
-		// bgm
-		InnerAudioContext: '',
+
+		// 音效(正确/错误)
+		audioObj: {
+			soundOrderly: Taro.createInnerAudioContext(),
+			soundError: Taro.createInnerAudioContext(),
+			soundBgm: Taro.createInnerAudioContext(),
+			// 正确音效
+			answerOrderlyUrl:'https://oss.snmgame.com/sounds/answer_correct.wav',
+			// 错误音效
+			answerErrorUrl: 'https://oss.snmgame.com/sounds/answer_error.wav',
+			// bgm
+			soundBgmUrl: 'https://oss.snmgame.com/sounds/bgm.m4a',
+		},
 	}
 	// socketUrl
 	websocketUrl: '';
@@ -140,6 +151,11 @@ class _App extends Component {
 				})
 			});
 		});
+		// 创建bgm
+		this.createSounds(this.globalData.audioObj.soundBgm,this.globalData.audioObj.soundBgmUrl, true);
+		// 创建音效
+		this.createSounds(this.globalData.audioObj.soundOrderly,this.globalData.audioObj.answerOrderlyUrl, false);
+		this.createSounds(this.globalData.audioObj.soundError,this.globalData.audioObj.answerErrorUrl, false);
 	}
 
 	componentDidShow() {
@@ -221,6 +237,7 @@ class _App extends Component {
 
 	componentWillUnmount() {
 		emitter.removeAllListeners('getPlayerStatus');
+		this.onDestroy();
 	}
 
 	/* 新版本检测升级 */
@@ -377,6 +394,83 @@ class _App extends Component {
 			})
 			return;
 		}
+	}
+
+	// 创建/bgm/音效(正确/错误)
+	createSounds(obj, src, loop){
+		// 当设置了新的 src 时，会自动开始播放
+		obj.src = src;
+		// 是否自动开始
+		obj.autoplay = false;
+		// 循环播放
+		obj.loop = loop;
+		// 音量范围
+		obj.volume = 1;
+		// 是否与其他音频混播，设置为 true 之后，不会终止其他应用或QQ内的音乐
+		obj.mixWithOther = true;
+
+		// 监听音频进入可以播放状态的事件。但不保证后面可以流畅播放
+		obj.onCanplay(()=>{
+			Taro.hideLoading();
+		})
+
+		obj.onPlay(() => {
+			console.log('========> 开始播放bgm <=========');
+		});
+		obj.onStop(()=>{
+			console.log('========> 停止Stop播放bgm <=========');
+		});
+		// 监听音频自然播放至结束的事件
+		obj.onEnded(()=>{
+			console.log('========> bgm播放结束 <=========');
+		});
+
+		// 监听音频播放错误事件
+		obj.onError((res) => {
+			switch (res.errCode){
+				case 10001:
+					this.toastSoundBg('系统错误');
+					break;
+				case 10002:
+					this.toastSoundBg('网络错误');
+					break;
+				case 10003:
+					this.toastSoundBg('文件错误');
+					break;
+				case 10004:
+					this.toastSoundBg('格式错误');
+					break;
+				case -1:
+					this.toastSoundBg('未知错误');
+					break;
+			}
+		});
+
+		// 监听音频加载中事件。当音频因为数据不足，需要停下来加载时会触
+		obj.onWaiting(()=>{
+			Taro.showLoading({
+				title: '音频正在加载ing',
+				mask: true,
+			});
+		});
+		// 默认音频开启状态
+		setStorage('sounds',[{'type': 1, 'status': 1,},{'type': 2, 'status': 1,}]);
+		console.log('%c AppJs音频实例创建成功','font-size:14px;color:#0000FF；background-color:#C0C0C0;')
+	}
+	// sounds 音频onError错误码
+	toastSoundBg(msg){
+		Taro.showToast({
+			title: msg,
+			icon: 'fail',
+			duration: 2000
+		})
+	}
+
+	// 销毁音频实例(正确/错误)
+	onDestroy(){
+		this.globalData.audioObj.soundBgm.destroy();
+		this.globalData.audioObj.soundOrderly.destroy();
+		this.globalData.audioObj.soundError.destroy();
 	}
 
 	// 在 App 类中的 render() 函数没有实际作用

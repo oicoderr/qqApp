@@ -140,11 +140,49 @@ export class Setting extends Component {
 				// bgm 开关
 				if(id == 1){
 					if(status){
-						App.globalData.InnerAudioContext.play();
-						setStorage('sounds',{type: 1, status: 1});
+						App.globalData.audioObj.soundBgm.play();
+						getStorage('sounds',(res)=>{
+							let sounds = JSON.parse(JSON.stringify(res))
+							sounds.map((cur)=>{
+								if(cur['type'] == 1){
+									sounds[0] = {'type': 1,'status': 1,};
+								}
+							});
+							setStorage('sounds',sounds);
+						});
 					}else{
-						App.globalData.InnerAudioContext.stop();
-						setStorage('sounds',{type: 1, status: 0});
+						App.globalData.audioObj.soundBgm.stop();
+						getStorage('sounds',(res)=>{
+							let sounds = JSON.parse(JSON.stringify(res))
+							sounds.map((cur)=>{
+								if(cur['type'] == 1){
+									sounds[0] = {'type': 1,'status': 0,};
+								}
+							});
+							setStorage('sounds',sounds);
+						});
+					}
+				}else if(id == 2){ // 音效开关
+					if(status){
+						getStorage('sounds',(res)=>{
+							let sounds = JSON.parse(JSON.stringify(res))
+							sounds.map((cur)=>{
+								if(cur['type'] == 2){
+									sounds[1] = {'type': 2,'status': 1,};
+								}
+							});
+							setStorage('sounds',sounds);
+						});
+					}else{
+						getStorage('sounds',(res)=>{
+							let sounds = JSON.parse(JSON.stringify(res))
+							sounds.map((cur)=>{
+								if(cur['type'] == 2){
+									sounds[1] = {'type': 2,'status': 0,};
+								}
+							});
+							setStorage('sounds',sounds);
+						});
 					}
 				}
 			}

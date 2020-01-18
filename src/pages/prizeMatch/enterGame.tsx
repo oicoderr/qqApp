@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
-import { buildURL, getCurrentTime, get_OpenId_RoleId } from '../../utils'
+import { buildURL, getCurrentTime, get_OpenId_RoleId, getStorage } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import configObj from '../../service/configObj'
 import './enterGame.scss'
@@ -21,6 +21,7 @@ export class PrizeEnterGame extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+
 			// 路由
 			routers: {
 				resultPage: '/pages/prizeMatch/result',
@@ -98,7 +99,9 @@ export class PrizeEnterGame extends Component {
 		this.msgProto = new MsgProto();
 	}
 
-	componentWillMount() {
+	componentWillMount() { }
+
+	componentDidMount() {
 		// 设置总人数
 		const params = this.$router.params;
 		console.log('%c 收到大奖赛自己信息 / 参赛总人数 ==>', 'font-size:14px;color:#ff751a;'); console.log(JSON.parse(params.item));
@@ -110,8 +113,6 @@ export class PrizeEnterGame extends Component {
 			})
 		}
 	}
-
-	componentDidMount() { }
 
 	componentWillUnmount() {
 		clearInterval(this.state.data.timer);
@@ -259,6 +260,21 @@ export class PrizeEnterGame extends Component {
 						_this.isResurrection();
 					}
 				}
+
+				// 播放正确/错误音效
+				let isSuccess = _this.state.local_data.curQuestion['isSuccess'];
+				let sound_orderly = App.globalData.audioObj.soundOrderly;
+				let sound_error = App.globalData.audioObj.soundError;
+				getStorage('sounds',(res)=>{
+					if(res[1]['type'] == 2 && res[1]['status'] == 1){
+						// 正确/错误音效
+						if(isSuccess){
+							_this.playSound(sound_orderly);
+						}else{
+							_this.playSound(sound_error);
+						}
+					}
+				});
 			})
 		});
 
@@ -478,6 +494,16 @@ export class PrizeEnterGame extends Component {
 			success(res) { console.log('选择 --> 确认复活') },
 			fail(err) { console.log(err) }
 		});
+	}
+
+	// 播放音效
+	playSound(obj){
+		obj.play();
+	}
+
+	// 停止播放音效
+	stopSound(obj){
+		obj.stop();
 	}
 
 	render() {

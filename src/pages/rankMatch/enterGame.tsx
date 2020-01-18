@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import GameLoading from '../../components/GameLoading'
-import { buildURL, getCurrentTime } from '../../utils'
+import { getStorage, buildURL, getCurrentTime } from '../../utils'
 import { createWebSocket } from '../../service/createWebSocket'
 import configObj from '../../service/configObj'
 import './enterGame.scss'
@@ -168,6 +168,7 @@ export class RankEnterGame extends Component {
 		emitter.removeAllListeners('getRankResultInfo');
 		emitter.removeAllListeners('getAnswer');
 		emitter.removeAllListeners('requestUrl');
+
 	}
 
 	componentDidShow() {
@@ -303,6 +304,20 @@ export class RankEnterGame extends Component {
 			clearInterval(message[1]);
 
 			// console.log('%c 已接受到答案', 'color:blue; font-size:12px;');
+			let isSuccess = message[0]['data']['isSuccess'];
+			let sound_orderly = App.globalData.audioObj.soundOrderly;
+			let sound_error = App.globalData.audioObj.soundError;
+			getStorage('sounds',(res)=>{
+				if(res[1]['type'] == 2 && res[1]['status'] == 1){
+					// 正确/错误音效
+					if(isSuccess){
+						_this.playSound(sound_orderly);
+					}else{
+						_this.playSound(sound_error);
+					}
+				}
+			})
+
 			let selectedOptionId = this.state.local_data.selectedOptionId;
 			this.setState((preState) => {
 				preState.data.curAnswer = message[0]['data'];
@@ -511,6 +526,16 @@ export class RankEnterGame extends Component {
 			success(res) { console.log(res) },
 			fail(err) { console.log(err) }
 		});
+	}
+
+	// 播放音效
+	playSound(obj){
+		obj.play();
+	}
+
+	// 停止播放音效
+	stopSound(obj){
+		obj.stop();
 	}
 
 	render() {

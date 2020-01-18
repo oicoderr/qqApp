@@ -57,7 +57,7 @@ export class PrizeReasult extends Component {
 				thirdBar: 'https://oss.snmgame.com/v1.0.0/thirdBar.png',
 				thanThreeBar: 'https://oss.snmgame.com/v1.0.0/4-10Bar.png',
 				thanTenBar: 'https://oss.snmgame.com/v1.0.0/11Bar.png',
-				confirmBtn: 'https://oss.snmgame.com/v1.0.0/confirmBtn.png',
+				confirmBtn: 'https://oss.snmgame.com/v1.0.0/sureBtn.png',
 				// 当前玩家名次
 				gradeBar: 'https://oss.snmgame.com/v1.0.0/11Bar.png',
 				getRewardTip: '奖励已存入当前账户',
