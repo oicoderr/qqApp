@@ -164,8 +164,9 @@ class _App extends Component {
 
 		// 监听1040 全局提示
 		this.eventEmitter = emitter.addListener('globalTips', (message) => {
-			console.error('收到1040 全局提示'); console.log(message);
 			clearInterval(message[1]);
+
+			console.log('%c 收到1040 全局提示','font-size:14px;color:#FF0000;background-color:#C0C0C0;'); console.log(message);
 			Taro.showToast({
 				title: message[0].data.content,
 				icon: 'none',
@@ -220,14 +221,14 @@ class _App extends Component {
 		// 支付页面会触发hide函数,将支付页面排除
 		this.globalData.timestamp = setTimeout(() => {
 			// if(currentPage != 'pages/payTakeMoney/recharge'){
-			console.error('～人为卸载socket～');
+			console.log('%c ～人为卸载socket～','font-size:14px;color:red;');
 			if (_this.globalData.websocket) {
 				_this.websocket = _this.globalData.websocket;
 				_this.websocket.closeWebSocket();
 				_this.globalData.websocket = '';
 			};
 			console.log('(' + _this.globalData.websocket + ')');
-			console.error('卸载的当前路由 ==>'); console.log(currentPage);
+			console.log('%c 卸载的当前路由 ==>','font-size:14px;color:red;'); console.log(currentPage);
 			clearTimeout(_this.globalData.timestamp);
 			// }
 		}, time);
@@ -347,7 +348,7 @@ class _App extends Component {
 
 		// 捕获websocket异常
 		this.websocket.getOnerror((err) => {
-			console.error('appjs捕获到websocket异常'); console.log(err);
+			console.log('%c appjs捕获到websocket异常', 'font-size:14px;color:red;'); console.log(err);
 			Taro.showToast({
 				title: err,
 				icon: 'none',

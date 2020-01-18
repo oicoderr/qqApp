@@ -130,7 +130,7 @@ export class PrizeQueue extends Component {
 				// 收到后台 ‘匹配成功后开始从新编队’
 				let goenterGamePage = this.state.routers.goenterGamePage;
 				this.afreshFormation(teams['redPalyerOnInstance'], teams['bluePalyerOnInstance'], (data) => {
-					console.error('断线data ===>')
+					console.log('%c 断线重连data ===>', 'font-size:14px;color:red;')
 					console.log(data);
 					Taro.reLaunch({
 						url: buildURL(goenterGamePage, { item: data })
@@ -301,7 +301,6 @@ export class PrizeQueue extends Component {
 						icon: 'none',
 						duration: 2000
 					})
-					console.error('匹配错误信息==> '); console.log(err);
 				}
 			});
 		} else {
@@ -361,8 +360,7 @@ export class PrizeQueue extends Component {
 			let rankUserInfo = _this.state.local_data.rankUserInfo;
 			let PartyATeam = _this.state.local_data.PartyATeam;
 			let PartyBTeam = _this.state.local_data.PartyBTeam;
-			console.error('所有队伍 ===>')
-			console.log(rankUserInfo, PartyATeam, PartyBTeam)
+
 			if (callback) callback({
 				'rankUserInfo': rankUserInfo,
 				'PartyATeam': PartyATeam,

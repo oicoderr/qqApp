@@ -186,7 +186,7 @@ export class RankEntrance extends Component {
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('收到1010货币发生变化,排位赛入口页面观看广告->'); console.log(message);
+
 			let currencyChange = message[0]['data'];
 			this.setState((preState) => {
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);

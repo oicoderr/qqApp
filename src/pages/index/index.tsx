@@ -241,7 +241,7 @@ export class Index extends Component {
 			let isreconnection = message[0]['data']['redPalyerOnInstance'][0]['isreconnection'];
 			// 在游戏中杀死的
 			if (isreconnection_ === 1 || isreconnection === 1) {
-				console.error('游戏中杀死游戏退出，进来的玩家');
+				console.log('%c 游戏中杀死游戏退出，进来的玩家', 'font-size:14px;color:red;');
 				// 比赛类型 1.好友赛；2.大奖赛；3.排位赛；
 				let type = message[0]['data']['redPalyerOnInstance'][0]['type'];
 				switch (type) {
@@ -425,7 +425,11 @@ export class Index extends Component {
 				});
 			},
 			fail(err) {
-				console.error('性别发送失败'); console.log(err);
+				Taro.showToast({
+					title: '性别发送失败' + err,
+					icon: 'fail',
+					duration: 2000,
+				})
 			}
 		});
 	}
@@ -481,7 +485,11 @@ export class Index extends Component {
 			data: parentModule,
 			success(res) { },
 			fail(err) {
-				console.error('请求签到基本信息发送失败：'); console.log(err);
+				Taro.showToast({
+					title: '请求签到基本信息发送失败',
+					icon: 'fail',
+					duration: 2000
+				})
 			}
 		});
 	}
@@ -495,7 +503,11 @@ export class Index extends Component {
 			data: parentModule,
 			success(res) { },
 			fail(err) {
-				console.error('请求我要签到发送失败：'); console.log(err);
+				Taro.showToast({
+					title: '请求签到基本信息发送失败',
+					icon: 'fail',
+					duration: 2000
+				})
 			}
 		});
 	}

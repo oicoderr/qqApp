@@ -83,7 +83,7 @@ export class RankReasult extends Component {
 
 		// 下发视频监听事件 (排位额外奖励)
 		this.videoAd.adGet((status) => { // status.isEnded: (1完整看完激励视频) - (0中途退出) 
-			console.error('是否征途退出？' + status);
+
 			if (status.isEnded) {
 				console.log('%c 正常播放结束，下发奖励', 'font-size:14px;color:#0fdb24;');
 				let data_ = {
@@ -161,7 +161,6 @@ export class RankReasult extends Component {
 			let timer = setInterval(() => {
 				emitter.emit('rankResultInfo', [item.rankResultInfo, timer]);
 			}, 20);
-			console.error('发射rankResultInfo');
 		} else {
 			Taro.showToast({
 				title: '未获得排位赛结果数据',
@@ -221,7 +220,7 @@ export class RankReasult extends Component {
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('排位赛结果观看广告->收到1010货币发生变化'); console.log(message);
+
 			let currencyChange = message[0]['data'];
 			this.setState((preState) => {
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
@@ -246,7 +245,7 @@ export class RankReasult extends Component {
 					preState.local_data.isShowRankResult = message;
 				}, () => { });
 			} else {
-				console.error('～未勾选观看激励视频，无法播放视频～');
+				console.log('%c ～未勾选观看激励视频，无法播放视频～','font-size:14px;color:red;');
 				let isSeeAds = this.msgProto.isSeeAds('');
 				let parentModule = this.msgProto.parentModule(isSeeAds);
 				this.websocket.sendWebSocketMsg({

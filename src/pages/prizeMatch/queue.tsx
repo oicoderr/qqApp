@@ -411,7 +411,6 @@ export class PrizeQueue extends Component {
 						icon: 'none',
 						duration: 2000
 					})
-					console.error('匹配错误信息==> '); console.log(err);
 				}
 			});
 		} else {
@@ -433,7 +432,6 @@ export class PrizeQueue extends Component {
 					icon: 'none',
 					duration: 2000
 				})
-				console.error('匹配错误信息==> '); console.log(err);
 			}
 		});
 	}

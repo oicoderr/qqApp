@@ -302,7 +302,11 @@ export const request = (method = 'GET', params, callback) => {
         }
       },
       fail(err) {
-        console.error(err, 'ERR');
+        Taro.showToast({
+          title: err,
+          icon: 'fail',
+          duration: 2000
+        })
       }
     })
 

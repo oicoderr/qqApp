@@ -168,8 +168,11 @@ export class SelfOrchestra extends Component {
 			console.log(bassist);
 			console.log(drummer);
 		} catch (err) {
-			//在这里处理错误
-			console.error('错误：' + err);
+			Taro.showToast({
+				title: err,
+				icon: 'fail',
+				duration: 2000
+			})
 		}
 
 	}

@@ -160,7 +160,6 @@ export class Recharge extends Component {
 					})
 				},
 				fail(err) {
-					console.error(err);
 					Taro.showToast({
 						title: err.errMsg,
 						icon: 'none',

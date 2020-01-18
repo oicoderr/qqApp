@@ -141,12 +141,7 @@ export class RankEnterGame extends Component {
 				preState.local_data.scoreTeamA = arrayJsonA;
 				preState.local_data.PartyBTeam = item.PartyBTeam;
 				preState.local_data.scoreTeamB = arrayJsonB;
-			}, () => {
-				// console.error('设置好了scoreTeamA/B/selfScore')
-				// console.log(_this.state.local_data.selfScore);
-				// console.log(_this.state.local_data.scoreTeamA);
-				// console.log(_this.state.local_data.scoreTeamB);
-			});
+			}, () => {});
 		} else {
 			Taro.showToast({
 				title: '未接收到队伍信息',
@@ -245,7 +240,6 @@ export class RankEnterGame extends Component {
 				}, () => {
 					// 开始倒计时
 					clearInterval(this.state.data.timer);
-					// console.error('时间：' + data.time);
 					this.getCountdown(data.time);
 				});
 			}
@@ -513,7 +507,7 @@ export class RankEnterGame extends Component {
 		// 延迟卡增加的时间， 求助卡时间0
 		let time = e.currentTarget.dataset.time;
 
-		console.error('道具使用 ==>');
+		console.log('%c 道具使用 ==>','font-size:14px;color:red;');
 		console.log('(id: ' + id + ')', '(status: ' + status + ')', '(time: ' + time + ')');
 
 		let getMatchProps = this.msgProto.usedPropsMatch(id)

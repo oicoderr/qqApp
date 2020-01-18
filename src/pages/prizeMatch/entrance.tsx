@@ -259,7 +259,7 @@ export class PrizeEntrance extends Component {
 		// 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
-			console.error('大奖赛入口->收到1010货币发生变化'); console.log(message);
+
 			let currencyChange = message[0]['data'];
 			this.setState((preState) => {
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
@@ -308,7 +308,6 @@ export class PrizeEntrance extends Component {
 					icon: 'none',
 					duration: 2000
 				})
-				console.error('匹配错误信息==> '); console.log(err);
 			}
 		});
 	}
@@ -390,7 +389,6 @@ export class PrizeEntrance extends Component {
 					icon: 'none',
 					duration: 2000
 				})
-				console.error('匹配错误信息==> '); console.log(err);
 			}
 		});
 	}
@@ -409,7 +407,6 @@ export class PrizeEntrance extends Component {
 					icon: 'none',
 					duration: 2000
 				})
-				console.error('请求领取加速卡失败==> '); console.log(err);
 			}
 		});
 	}

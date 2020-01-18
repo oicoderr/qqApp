@@ -103,7 +103,6 @@ export class PrizeReasult extends Component {
 		this.videoAd = new createVideoAd();
 		// 下发视频监听事件
 		this.videoAd.adGet((status) => { // status.isEnded: (1完整看完激励视频) - (0中途退出) 
-			console.error('是否看完视频？' + status.isEnded);
 			let entrancePage = this.state.routers.entrancePage;
 			if (status.isEnded) {
 				// 大奖赛结果观看视频
@@ -189,7 +188,6 @@ export class PrizeReasult extends Component {
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
 			clearInterval(message[1]);
 
-			console.error('收到1010货币发生变化, 排位赛结果观看广告->'); console.log(message);
 			let currencyChange = message[0]['data'];
 			this.setState((preState) => {
 				preState.local_data.currencyChange = {

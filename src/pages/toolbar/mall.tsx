@@ -195,8 +195,8 @@ export class Mall extends Component {
 
 		// 监听 1010 货币发生变化
 		this.eventEmitter = emitter.addListener('currencyChange', (message) => {
-			console.error('mall 收到1010货币发生变化'); console.log(message);
 			clearInterval(message[1]);
+
 			let currencyChange = message[0]['data'];
 			this.setState((preState) => {
 				preState.local_data.currencyChange.copper = unitReplacement(currencyChange.copper);
@@ -325,8 +325,11 @@ export class Mall extends Component {
 			}
 
 		} catch (err) {
-			//在这里处理错误
-			console.error('错误：' + err);
+			Taro.showToast({
+				title: err,
+				icon: 'fail',
+				duration: 2000
+			})
 		}
 
 	}

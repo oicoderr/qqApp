@@ -102,7 +102,6 @@ export class Setting extends Component {
 
 		// 获取bgm播放状态
 		getStorage('sounds',(res)=>{
-			console.error(res)
 			if(res[0]['type'] == 1){
 				if(res[0]['status']){
 					_this.setState((preState)=>{
@@ -114,7 +113,6 @@ export class Setting extends Component {
 					});
 				}
 			}
-			console.error(res[1]['status'])
 			if(res[1]['type'] == 2){
 				if(res[1]['status']){
 					_this.setState((preState)=>{
