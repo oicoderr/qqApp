@@ -115,7 +115,6 @@ export class RankEnterGame extends Component {
 	componentWillMount() { }
 
 	componentDidMount() {
-		let _this = this;
 		const params = this.$router.params;
 		console.log('自己/所有队伍信息 ==>'); console.log(JSON.parse(params.item));
 		let item = JSON.parse(params.item);
@@ -143,10 +142,10 @@ export class RankEnterGame extends Component {
 				preState.local_data.PartyBTeam = item.PartyBTeam;
 				preState.local_data.scoreTeamB = arrayJsonB;
 			}, () => {
-				console.error('设置好了scoreTeamA/B/selfScore')
-				console.log(_this.state.local_data.selfScore);
-				console.log(_this.state.local_data.scoreTeamA);
-				console.log(_this.state.local_data.scoreTeamB);
+				// console.error('设置好了scoreTeamA/B/selfScore')
+				// console.log(_this.state.local_data.selfScore);
+				// console.log(_this.state.local_data.scoreTeamA);
+				// console.log(_this.state.local_data.scoreTeamB);
 			});
 		} else {
 			Taro.showToast({
@@ -246,7 +245,7 @@ export class RankEnterGame extends Component {
 				}, () => {
 					// 开始倒计时
 					clearInterval(this.state.data.timer);
-					console.error('时间：' + data.time);
+					// console.error('时间：' + data.time);
 					this.getCountdown(data.time);
 				});
 			}
@@ -447,12 +446,10 @@ export class RankEnterGame extends Component {
 			preState.data.timer = setInterval(function () {			// 执行计时器
 				if (time > 0) {
 					time--;
-					// console.error('倒计时==>' + time);
 					_this.setState((preState) => {
 						preState.local_data.curQuestion.time = time < 10 ? '0' + time : time;
 					}, () => { })
 				} else {
-					// console.error('倒计时结束');
 					clearInterval(_this.state.data.timer);
 					// 开启遮罩，不可选择
 					_this.setState((preState) => {

@@ -385,12 +385,10 @@ export class PrizeEnterGame extends Component {
 			preState.data.timer = setInterval(function () {
 				if (time > 0) {
 					time--;
-					// console.error('倒计时==>' + time);
 					_this.setState((preState) => {
 						preState.local_data.curQuestion.time = time < 10 ? '0' + time : time;
 					}, () => { })
 				} else {
-					// console.error('倒计时结束');
 					clearInterval(_this.state.data.timer);
 					// 开启遮罩，不可选择
 					_this.setState((preState) => {

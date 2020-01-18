@@ -92,7 +92,7 @@ export class Index extends Component {
 	componentDidMount() {
 		let _this = this;
 		const params = this.$router.params;
-		console.error(params)
+
 		getStorage('gameUserInfo', (res) => {
 			if (res !== '') {
 				_this.setState((preState) => {
