@@ -87,11 +87,11 @@ class _App extends Component {
 	componentDidMount() {
 		let _this = this;
 		// console.error = () => { };
-		// console.table = () => {};
-		// console.log = () => {};
-		// console.info = () => {};
-		// console.warn = () => {};
-		// console.dir = () => {};
+		console.table = () => {};
+		console.log = () => {};
+		console.info = () => {};
+		console.warn = () => {};
+		console.dir = () => {};
 
 		// 获取当前版本
 		configObj.getVersion();
@@ -163,12 +163,6 @@ class _App extends Component {
 		let _this = this;
 		// 隐藏分享
 		hideShareMenu();
-		// 获取bgm状态
-		getStorage('sounds',(res)=>{
-			if (res[0]['type'] == 1 && res[0]['status'] == 1){
-				_this.globalData.audioObj.soundBgm.play();
-			}
-		})
 
 		// 监听1040 全局提示
 		this.eventEmitter = emitter.addListener('globalTips', (message) => {

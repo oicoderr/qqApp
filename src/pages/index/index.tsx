@@ -136,6 +136,13 @@ export class Index extends Component {
 		// 页面超出提示,返回当前页面URL
 		getCurrentPageUrl();
 
+		// 获取bgm状态
+		getStorage('sounds',(res)=>{
+			if (res[0]['type'] == 1 && res[0]['status'] == 1){
+				_this.playSound(App.globalData.audioObj.soundBgm);
+			}
+		});
+
 		// 获取当前版本
 		configObj.getVersion();
 
