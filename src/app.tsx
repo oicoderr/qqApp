@@ -218,7 +218,7 @@ class _App extends Component {
 	componentDidHide() {
 		let currentPage = getCurrentPageUrl();
 		let _this = this;
-		let time = 10000;
+		let time = 15000;
 
 		// 支付页面会触发hide函数,将支付页面排除
 		this.globalData.timestamp = setTimeout(() => {
