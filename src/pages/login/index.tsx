@@ -63,6 +63,7 @@ export class Login extends Component {
 
 	componentDidShow() {
 		let _this = this;
+
 		// 显示分享
 		showShareMenuItem();
 

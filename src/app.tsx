@@ -22,7 +22,7 @@ class _App extends Component {
 	config: Config = {
 
 		pages: [
-
+			
 			'pages/login/index',			  			// app 登录
 			'pages/index/index',			  			// 游戏登录
 			'pages/rankMatch/entrance', 	  	// 排位赛入口
@@ -90,6 +90,7 @@ class _App extends Component {
 		// console.table = () => {};
 		// console.log = () => {};
 		// console.info = () => {};
+		// console.warn = () => {};
 		// console.dir = () => {};
 
 		// 获取当前版本

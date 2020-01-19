@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text, Button, ScrollView } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import './iosCaveat.scss'
 
 export class IosCaveat extends Component {
