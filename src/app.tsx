@@ -160,8 +160,15 @@ class _App extends Component {
 	}
 
 	componentDidShow() {
+		let _this = this;
 		// 隐藏分享
 		hideShareMenu();
+		// 获取bgm状态
+		getStorage('sounds',(res)=>{
+			if (res[0]['type'] == 1 && res[0]['status'] == 1){
+				_this.globalData.audioObj.soundBgm.play();
+			}
+		})
 
 		// 监听1040 全局提示
 		this.eventEmitter = emitter.addListener('globalTips', (message) => {
@@ -230,6 +237,7 @@ class _App extends Component {
 			};
 			console.log('(' + _this.globalData.websocket + ')');
 			console.log('%c 卸载的当前路由 ==>','font-size:14px;color:red;'); console.log(currentPage);
+			this.onDestroy();
 			clearTimeout(_this.globalData.timestamp);
 			// }
 		}, time);
@@ -239,7 +247,7 @@ class _App extends Component {
 
 	componentWillUnmount() {
 		emitter.removeAllListeners('getPlayerStatus');
-		this.onDestroy();
+		
 	}
 
 	/* 新版本检测升级 */
