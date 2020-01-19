@@ -56,10 +56,11 @@
       background-color: rgba(0, 0, 0, .3);
       font-size: 28rpx;
       font-weight: 600;
-      padding: 0 15rpx 0 50rpx;
+      padding: 0 15rpx 0 35rpx;
       box-sizing: border-box;
       font-weight: 600;
       color: rgba(255, 255, 255, 1);
+      text-align: center;
     }
 
     // 能量bar
@@ -76,7 +77,7 @@
       .board {
         top: 14rpx;
         left: 20rpx;
-        min-width: 120rpx;
+        min-width: 160rpx;
       }
 
       .energyIcon {
@@ -112,7 +113,7 @@
       .board {
         top: 14rpx;
         left: 20rpx;
-        min-width: 120rpx;
+        min-width: 160rpx;
       }
 
       .ticketsIcon {

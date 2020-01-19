@@ -237,7 +237,7 @@ class _App extends Component {
 			};
 			console.log('(' + _this.globalData.websocket + ')');
 			console.log('%c 卸载的当前路由 ==>','font-size:14px;color:red;'); console.log(currentPage);
-			this.onDestroy();
+			// this.onDestroy();
 			clearTimeout(_this.globalData.timestamp);
 			// }
 		}, time);
