@@ -124,7 +124,7 @@ export class Setting extends Component {
 					});
 				}
 			}
-		})
+		});
 	}
 
 	componentDidHide() { }

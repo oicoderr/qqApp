@@ -455,7 +455,11 @@ class _App extends Component {
 			// });
 		});
 		// 默认音频开启状态
-		setStorage('sounds',[{'type': 1, 'status': 1,},{'type': 2, 'status': 1,}]);
+		getStorage('sounds',(res)=>{
+			if(res==''){
+				setStorage('sounds',[{'type': 1, 'status': 1,},{'type': 2, 'status': 1,}]);
+			}
+		})
 		console.log('%c Appjs音频实例创建成功','font-size:14px;color:#0000FF;background:#C0C0C0;')
 	}
 	// sounds 音频onError错误码

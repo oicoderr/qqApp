@@ -105,7 +105,7 @@ export class Index extends Component {
 		// 如果是从loginPage, appJS 跳转到主页存在params.bgm,播放背景音乐，否则不播放背景音乐
 		if(params.bgm){
 			getStorage('sounds',(res)=>{
-				if(res[0]['type'] == 1 || res == ''){
+				if(res[0]['type'] == 1 && res[0]['status'] == 1 || res == ''){
 					_this.playSound(App.globalData.audioObj.soundBgm);
 				}
 			})
