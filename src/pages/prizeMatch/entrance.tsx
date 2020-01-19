@@ -62,7 +62,7 @@ export class PrizeEntrance extends Component {
 				pendingText: '待领取：',
 				surplusText: '剩余：',
 				adsTip: '每局比赛自动使用一张加速卡',
-				quickenTip: 'Tips: 邀请好友获取加速卡，减少每局答题总耗时。',
+				quickenTip: 'tips: 每邀请1位好友即可获赠1张加速卡，减少每局答题总耗时。',
 				mask_tip: '即将开放',
 				unit_card: '张',
 				inviteBtnTxt: '邀请',
@@ -525,8 +525,9 @@ export class PrizeEntrance extends Component {
 							<Image src={quickenCardBg} className='quickenCardBg' />
 							<View className='title'>
 								<View className='num'>
-									{pendingText}<Text decode={true}>{speedItemCount}&ensp;</Text>{unit_card}
-									{surplusText}<Text decode={true}>{currSpeedItemCount}&ensp;</Text>{unit_card}
+									{pendingText}
+									<Text decode={true}>{speedItemCount}&nbsp;</Text>{unit_card}<Text decode={true}>&nbsp;</Text>
+									{surplusText}<Text decode={true}>{currSpeedItemCount}&nbsp;</Text>{unit_card}
 								</View>
 								<View onClick={this.DBdescription.bind(this)} data-type='3' className='directions'>{directionsTitle}</View>
 							</View>
