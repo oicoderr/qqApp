@@ -595,7 +595,7 @@ export class Index extends Component {
 		// 右上角分享App
 		if (res.from != 'button') {
 			shareData.title = '明星、热点、八卦知多少？一试便知！';
-			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/openQzonePublish-02.png';
+			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
 		}
 		return {
 			title: shareData.title,
