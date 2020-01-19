@@ -130,7 +130,7 @@ export default class WeekCheckIn extends Component {
     let shareData = {
       title: '明星、热点、八卦知多少？一试便知！',
       path: '/pages/login/index',
-      imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
+      imageUrl: 'https://oss.snmgame.com/v1.0.0/openQzonePublish-02.png',
       callback: status => {
         if (status.errMsg === 'shareAppMessage:fail cancel') {
           Taro.showToast({
