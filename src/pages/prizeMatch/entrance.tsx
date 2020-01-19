@@ -328,7 +328,7 @@ export class PrizeEntrance extends Component {
 		let shareData = {
 			title: '酸柠檬',
 			path: '/pages/login/index',
-			imageUrl: 'https://oss.snmgame.com/v1.0.0/shareImg.png',
+			imageUrl: 'https://oss.snmgame.com/v1.0.0/openQzonePublish-02.png',
 			callback: (status) => { },
 		};
 		// 按钮分享
@@ -336,7 +336,7 @@ export class PrizeEntrance extends Component {
 			console.log(' =====>按钮分享加速卡<=====');
 			shareData.title = '迎接音乐大考验，组建Wuli梦想乐队！';
 			shareData.path = `/pages/login/index?param1=${param1}&inviterRoleId=${roleId}`,
-				shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+				shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/openQzonePublish-02.png';
 			shareData.shareCallBack = (status) => {
 				if (status.errMsg === "shareAppMessage:fail cancel") {
 					Taro.showToast({
@@ -355,7 +355,7 @@ export class PrizeEntrance extends Component {
 		} else { // 右上角分享App
 			shareData.title = '明星、热点、八卦知多少？一试便知！';
 			shareData.path = '/pages/login/index';
-			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+			shareData.imageUrl = 'https://oss.snmgame.com/v1.0.0/openQzonePublish-02.png';
 			shareData.shareCallBack = (status) => {
 				if (status.errMsg === "shareAppMessage:fail cancel") {
 					Taro.showToast({

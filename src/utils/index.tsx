@@ -416,7 +416,7 @@ export const getArrayItems = (arr, num) => {
 /* 大奖赛加速卡转发 */
 export const onShareApp = (params) => {
   const { title, path, imageUrl, callback } = params;
-  let defaultImageUrl = 'https://oss.snmgame.com/v1.0.0/shareImg.png';
+  let defaultImageUrl = 'https://oss.snmgame.com/v1.0.0/openQzonePublish-02.png';
   return {
     title: title,
     path: path,
